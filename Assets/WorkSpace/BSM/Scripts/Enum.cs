@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public enum CommonCanvasType
+public enum ButtonType
 {
     NEWSTART, CONTINUEWSTART, ENVIRONMENT, EXIT
 }

@@ -7,11 +7,17 @@ using Zenject;
 public class CanvasManager : MonoBehaviour
 {
     [SerializedDictionary("Canvas Type", "Canvas Object")] [SerializeField]
-    private SerializedDictionary<CommonCanvasType, GameObject> canvasDict;
+    private SerializedDictionary<ButtonType, GameObject> canvasDict;
 
-    public void ChangeCanvas(CommonCanvasType canvasType)
+    private GameObject curCanvas;
+    
+    /// <summary>
+    /// 캔버스 변경
+    /// </summary>
+    /// <param name="buttonType">활성화 할 캔버스 버튼 타입</param>
+    public void ChangeCanvas(ButtonType buttonType)
     {
-        if (canvasType == CommonCanvasType.EXIT)
+        if (buttonType == ButtonType.EXIT)
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
@@ -21,9 +27,19 @@ public class CanvasManager : MonoBehaviour
 
 #endif
             return;
-        }
+        } 
         
-        canvasDict[canvasType].SetActive(true);
+        curCanvas = canvasDict[buttonType];
         
+        canvasDict[buttonType].SetActive(true);    
     }
+
+    /// <summary>
+    /// 캔버스 닫기
+    /// </summary>
+    public void CloseCanvas()
+    {
+        curCanvas.SetActive(false);
+    }
+    
 }
