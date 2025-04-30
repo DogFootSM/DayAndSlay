@@ -8,3 +8,9 @@ public enum ButtonType
 {
     NEWSTART, CONTINUEWSTART, ENVIRONMENT, EXIT
 }
+
+[Serializable]
+public enum CharacterStateType
+{
+    IDLE, WALK, RUN, ATTACK, HURT, DEATH, SIZE
+}
