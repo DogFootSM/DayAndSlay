@@ -7,6 +7,7 @@ public class Door : MonoBehaviour
 {
     Animator animator;
     [SerializeField] SceneReference scene;
+    [SerializeField] SceneReference loadingScene;
 
     private void Start()
     {
@@ -19,7 +20,8 @@ public class Door : MonoBehaviour
         {
             Debug.Log("Ãæµ¹!!!");
             animator.Play("DoorOpenAni");
-            SceneManager.LoadScene(scene.Name);
+            Loading.LoadScene(scene);
+            SceneManager.LoadScene(loadingScene.Name);
         }
     }
 }
