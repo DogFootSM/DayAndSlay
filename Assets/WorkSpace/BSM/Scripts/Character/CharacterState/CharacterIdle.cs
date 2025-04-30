@@ -9,7 +9,7 @@ public class CharacterIdle : CharacterState
 
     public override void Enter()
     {
-        Debug.Log("Idle 상태 진입");
+        characterController.CharacterAnimator.Play(idleAnimHash);
     }
 
     public override void Update()
