@@ -11,15 +11,12 @@ public class HideObject : MonoBehaviour
         originColor = gameObject.GetComponent<SpriteRenderer>().color;
         
         hideColor = originColor;
-        Debug.Log(hideColor);
         hideColor.a = 0.5f;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("감지시작");
         if(collision.CompareTag("Player"))
         {
-            Debug.Log("플레이어 감지됨");
             //투명화 처리
             gameObject.GetComponent<SpriteRenderer>().color = hideColor;
         }
