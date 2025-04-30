@@ -106,4 +106,5 @@ public class CharacterController : MonoBehaviour
         IsUpWalk = !IsUpWalk;
         BodyRenderer.flipX = IsUpWalk; 
     }
+    
 }
