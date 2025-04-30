@@ -8,10 +8,7 @@ public class CharacterWalk : CharacterState
     
     public override void Enter()
     {
-        //좌, 우 이동에 대한 애니메이션 반전
-        characterController.BodyRenderer.flipX = characterController.moveDir.x < 0;
         characterController.CharacterAnimator.Play(walkBlendTreeHash);
-        
     }
 
     public override void Update()

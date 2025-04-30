@@ -24,7 +24,7 @@ public class CharacterController : MonoBehaviour
      
     private float posX;
     private float posY;
-
+    
     
     
     private void Awake()
@@ -62,13 +62,20 @@ public class CharacterController : MonoBehaviour
     {
         posX = Input.GetAxisRaw("Horizontal");
         posY = Input.GetAxisRaw("Vertical");
+
+        if (posX != 0)
+        {
+            posY = 0;
+            if (posX < 0) BodyRenderer.flipX = true;
+            if (posX > 0) BodyRenderer.flipX = false;
+        }
+
+        if (posY != 0)
+        {
+            posX = 0;
+        }
         
         moveDir = new Vector2(posX, posY);
-
-        if (moveDir.SqrMagnitude() >= 1f)
-        {
-            moveDir.Normalize();
-        } 
     }
     
     /// <summary>
@@ -99,5 +106,4 @@ public class CharacterController : MonoBehaviour
         IsUpWalk = !IsUpWalk;
         BodyRenderer.flipX = IsUpWalk; 
     }
-    
 }

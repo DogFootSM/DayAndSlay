@@ -9,6 +9,7 @@ public class CharacterIdle : CharacterState
 
     public override void Enter()
     {
+        characterController.BodyRenderer.flipX = false;
         characterController.CharacterAnimator.Play(idleAnimHash);
     }
 
