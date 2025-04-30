@@ -66,8 +66,7 @@ public class CharacterController : MonoBehaviour
         if (posX != 0)
         {
             posY = 0;
-            if (posX < 0) BodyRenderer.flipX = true;
-            if (posX > 0) BodyRenderer.flipX = false;
+            BodyRenderer.flipX = posX < 0;
         }
 
         if (posY != 0)
