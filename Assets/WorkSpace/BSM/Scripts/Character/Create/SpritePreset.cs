@@ -25,6 +25,7 @@ public class SpritePreset : BaseUI
         Bind();
         ButtonAddListener();
         SpriteLoad(); 
+        SendSelectedPreset();
     }
 
     /// <summary>
@@ -61,9 +62,7 @@ public class SpritePreset : BaseUI
         presetIndex--;
         
         if(presetIndex < 0) presetIndex = spriteList.Count - 1;
-        
-        curSprite = spriteList[presetIndex]; 
-        SelectPreset.ChangePreset(CurPresetType, curSprite);
+        SendSelectedPreset(); 
     }
 
     /// <summary>
@@ -73,9 +72,16 @@ public class SpritePreset : BaseUI
     {
         presetIndex++;
         if(presetIndex > spriteList.Count - 1) presetIndex = 0;
-        
-        curSprite = spriteList[presetIndex];
-        SelectPreset.ChangePreset(CurPresetType, curSprite);
+        SendSelectedPreset();
+    }
+
+    /// <summary>
+    /// 선택 프리셋 정보를 보냄
+    /// </summary>
+    private void SendSelectedPreset()
+    {
+        curSprite = spriteList[presetIndex]; 
+        SelectPreset.ChangePreset(CurPresetType, curSprite); 
     }
     
     

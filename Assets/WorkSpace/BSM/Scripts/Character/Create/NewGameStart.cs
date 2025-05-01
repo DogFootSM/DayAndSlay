@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class NewGameStart : BaseUI
 {
@@ -11,6 +12,8 @@ public class NewGameStart : BaseUI
     
     [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: PANTS, 4: SHOES")]
     [SerializeField] private List<Image> presets;
+
+    [Inject] private DataManager dataManager;
     
     private Button createButton;
     
@@ -35,7 +38,7 @@ public class NewGameStart : BaseUI
 
     private void ButtonAddListener()
     {
-        createButton.onClick.AddListener(ButtonAddListener);
+        createButton.onClick.AddListener(PlayerCreate);
     }
 
     /// <summary>
@@ -44,7 +47,9 @@ public class NewGameStart : BaseUI
     private void PlayerCreate()
     {
         //TODO: JSON으로 캐릭터 프리셋 저장
-        SceneManager.LoadScene(inGameScene.Name);
+        dataManager.SavePresetData(presets);
+        
+        //SceneManager.LoadScene(inGameScene.Name);
     }
     
     /// <summary>
@@ -54,7 +59,7 @@ public class NewGameStart : BaseUI
     /// <param name="presetSprite">변경할 이미지</param>
     public void ChangePreset(CharacterPresetType preset, Sprite presetSprite)
     {
-        presets[(int)preset].sprite = presetSprite; 
+        presets[(int)preset].sprite = presetSprite;
     }
     
 }
