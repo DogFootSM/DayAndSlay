@@ -21,7 +21,6 @@ public class Door : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("충돌");
         PlayerInteractionDoor(collision);
 
     }
@@ -30,12 +29,13 @@ public class Door : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("도어");
             animator.Play("DoorOpenAni");
-            SceneManager.LoadScene(loadingScene.Name);
+            
             collision.gameObject.transform.position = movePos;
         }
     }
+
+    
 
 
 }

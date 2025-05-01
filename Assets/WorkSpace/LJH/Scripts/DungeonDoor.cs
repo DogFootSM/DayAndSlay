@@ -17,7 +17,6 @@ public class DungeonDoor : Door
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("던젼도어");
             Loading.LoadScene(scene);
             SceneManager.LoadScene(loadingScene.Name);
         }
