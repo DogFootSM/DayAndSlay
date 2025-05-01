@@ -24,7 +24,7 @@ public class SpritePreset : BaseUI
     {
         Bind();
         ButtonAddListener();
-        SpriteLoad();
+        SpriteLoad(); 
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class SpritePreset : BaseUI
     /// </summary>
     private void SpriteLoad()
     {
-        spriteList = Resources.LoadAll<Sprite>($"Preset/{(int)CurPresetType}").ToList();
+        spriteList = Resources.LoadAll<Sprite>($"Preset/{CurPresetType.ToString()}").ToList();
     }
     
     /// <summary>
