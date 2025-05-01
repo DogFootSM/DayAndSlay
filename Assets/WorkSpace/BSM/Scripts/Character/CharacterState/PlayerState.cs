@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterState : CharacterStateMachine
+public class PlayerState : PlayerStateMachine
 {
-    protected CharacterController characterController;
+    protected PlayerController playerController;
     
     protected int idleAnimHash = Animator.StringToHash("CharacterIdleAnim");
     protected int walkBlendTreeHash = Animator.StringToHash("CharacterWalkBlend");
@@ -12,9 +12,9 @@ public class CharacterState : CharacterStateMachine
     protected int walkPosXHash = Animator.StringToHash("WalkPosX");
     protected int walkPosYHash = Animator.StringToHash("WalkPosY");
     
-    public CharacterState(CharacterController characterController)
+    public PlayerState(PlayerController playerController)
     {
-        this.characterController = characterController;
+        this.playerController = playerController;
     }
      
 }
