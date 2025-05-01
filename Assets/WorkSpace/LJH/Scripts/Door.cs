@@ -5,23 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
-    Animator animator;
-    [SerializeField] SceneReference scene;
-    [SerializeField] SceneReference loadingScene;
+    protected Animator animator;
 
-    private void Start()
+    [Header("·Îµù ¾À")]
+    [SerializeField] protected SceneReference loadingScene;
+
+    [SerializeField] private Transform movePosTrans;
+    private Vector2 movePos;
+
+    public virtual void Start()
     {
         animator = GetComponent<Animator>();
+        movePos = movePosTrans.position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerInteractionDoor(collision);
+
+    }
+
+    protected virtual void PlayerInteractionDoor(Collision2D collision)
+    {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Ãæµ¹!!!");
             animator.Play("DoorOpenAni");
-            Loading.LoadScene(scene);
-            SceneManager.LoadScene(loadingScene.Name);
+            
+            collision.gameObject.transform.position = movePos;
         }
     }
+
+    
+
+
 }

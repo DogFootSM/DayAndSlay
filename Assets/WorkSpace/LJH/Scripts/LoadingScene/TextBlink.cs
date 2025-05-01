@@ -24,7 +24,6 @@ public class TextBlink : MonoBehaviour
 
         while (true)
         {
-            Debug.Log("코루틴 돌아가는중");
             yield return new WaitForSeconds(0.01f);
 
             if (isDecreasing)
