@@ -14,3 +14,9 @@ public enum CharacterStateType
 {
     IDLE, WALK, RUN, ATTACK, HURT, DEATH, SIZE
 }
+
+[Serializable]
+public enum CharacterPresetType
+{
+    HAIR, BODY, SHIRT, PANTS, SHOES
+}

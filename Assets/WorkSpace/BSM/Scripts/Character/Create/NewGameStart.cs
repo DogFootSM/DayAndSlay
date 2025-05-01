@@ -2,24 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NewGameStart : BaseUI
 {
     [SerializeField] private SceneReference inGameScene;
     
-    private Image hiarImage;
+    [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: PANTS, 4: SHOES")]
+    [SerializeField] private List<Image> presets;
+    
     private Button createButton;
-
-    private void Start()
+    
+    protected void Start()
     {
         Bind();
         ButtonAddListener();
     }
-
+    
+    private void OnValidate()
+    {
+        if (presets.Count <= 0)
+        {
+            Debug.LogError($"프리셋 이미지를 넣어주세요. -{gameObject.name}-");
+        }
+    }
+    
     private void Bind()
     {
-        createButton = GetUI<Button>("CreateButton");
+        createButton = GetUI<Button>("CreateButton"); 
     }
 
     private void ButtonAddListener()
@@ -32,7 +43,18 @@ public class NewGameStart : BaseUI
     /// </summary>
     private void PlayerCreate()
     {
-        
+        //TODO: JSON으로 캐릭터 프리셋 저장
+        SceneManager.LoadScene(inGameScene.Name);
+    }
+    
+    /// <summary>
+    /// 캐릭터 프리셋 변경
+    /// </summary>
+    /// <param name="preset">변경할 부위</param>
+    /// <param name="presetSprite">변경할 이미지</param>
+    public void ChangePreset(CharacterPresetType preset, Sprite presetSprite)
+    {
+        presets[(int)preset].sprite = presetSprite; 
     }
     
 }
