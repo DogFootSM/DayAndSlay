@@ -4,19 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class CharacterController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public bool IsDownWalk;
     [NonSerialized] public bool IsUpWalk;
     
     public Rigidbody2D CharacterRb => characterRb;
-    public CharacterModel CharacterModel => characterModel;
+    public PlayerModel PlayerModel => playerModel;
     public Animator CharacterAnimator => characterAnimator;
     public SpriteRenderer BodyRenderer;
     
-    private CharacterState[] characterStates = new CharacterState[(int)CharacterStateType.SIZE];
-    private CharacterModel characterModel;
+    private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
+    private PlayerModel playerModel;
     private Rigidbody2D characterRb;
     private Animator characterAnimator;
     
@@ -46,13 +46,13 @@ public class CharacterController : MonoBehaviour
      
     private void Init()
     {
-        characterModel = GetComponent<CharacterModel>();
+        playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
         characterAnimator = GetComponent<Animator>();
         
         
-        characterStates[(int)CharacterStateType.IDLE] = new CharacterIdle(this);
-        characterStates[(int)CharacterStateType.WALK] = new CharacterWalk(this);
+        characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
+        characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
     }
 
     /// <summary>

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStateMachine
+public class PlayerStateMachine
 {
     public virtual void Enter(){}
     public virtual void Update(){}
