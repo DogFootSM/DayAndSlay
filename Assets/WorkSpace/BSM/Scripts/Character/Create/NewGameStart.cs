@@ -46,10 +46,8 @@ public class NewGameStart : BaseUI
     /// </summary>
     private void PlayerCreate()
     {
-        //TODO: JSON으로 캐릭터 프리셋 저장
-        dataManager.SavePresetData(presets);
-        
-        //SceneManager.LoadScene(inGameScene.Name);
+        dataManager.SavePresetData(presets); 
+        SceneManager.LoadScene(inGameScene.Name);
     }
     
     /// <summary>
