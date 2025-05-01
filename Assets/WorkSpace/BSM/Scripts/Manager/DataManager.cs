@@ -38,14 +38,22 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, presetJson); 
     }
 
-    public void LoadPresetData()
+    public void LoadPresetData(List<SpriteRenderer> playerSprites)
     {
         SetSavePath();
         
         SavePresetData savePresetData = new SavePresetData();
+
+        string loadPresetJson = File.ReadAllText(path);
+        savePresetData = JsonUtility.FromJson<SavePresetData>(loadPresetJson);
+
+        for (int i = 0; i < savePresetData.PresetNames.Count; i++)
+        {
+            playerSprites[i].sprite = Resources.Load<Sprite>($"Preset/{((CharacterPresetType)i).ToString()}/{savePresetData.PresetNames[i]}");
+            
+        }
         
-        
-        
+
     }
     
     

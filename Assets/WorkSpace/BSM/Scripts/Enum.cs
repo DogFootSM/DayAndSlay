@@ -18,5 +18,5 @@ public enum CharacterStateType
 [Serializable]
 public enum CharacterPresetType
 {
-    HAIR, BODY, SHIRT, PANTS, SHOES
+    HAIR, BODY, SHIRT, PANTS, SHOES, HAT, GLASSES, NECT, OUTER, HAND
 }

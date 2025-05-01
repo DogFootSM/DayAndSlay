@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public bool IsDownWalk;
     [NonSerialized] public bool IsUpWalk;
-    
+
+    public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
     public Animator CharacterAnimator => characterAnimator;
