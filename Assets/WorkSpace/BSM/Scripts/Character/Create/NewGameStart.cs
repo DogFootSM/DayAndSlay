@@ -22,7 +22,6 @@ public class NewGameStart : BaseUI
         Bind();
         ButtonAddListener();
     }
-    
     private void OnValidate()
     {
         if (presets.Count <= 0)
