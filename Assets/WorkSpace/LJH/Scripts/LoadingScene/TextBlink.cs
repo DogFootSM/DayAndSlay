@@ -7,12 +7,17 @@ using UnityEngine;
 public class TextBlink : MonoBehaviour
 {
     private Color curColor;
-    private Color originColor;
 
+    float Tick = 0.01f;
+    float LowCut = 0.25f;
+    float HighCut = 0.99f;
+
+    TextMeshProUGUI loadingText;
 
     void Start()
     {
-        curColor = gameObject.GetComponent<TextMeshProUGUI>().color;
+        loadingText = GetComponent<TextMeshProUGUI>();
+        curColor = loadingText.color;
 
         StartCoroutine(BlinkCoroutine());
     }
@@ -22,41 +27,40 @@ public class TextBlink : MonoBehaviour
     {
         bool isDecreasing = true;
 
+        //실제로 들어갈 값
+        float tick;
+
         while (true)
         {
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(Tick);
 
             if (isDecreasing)
             {
-                MinusAlpha();
-                if (curColor.a <= 0.25f)
+                tick = -Tick;
+                if (curColor.a <= LowCut)
                 {
-                    isDecreasing = false;
+                    isDecreasing = !isDecreasing;
                 }
             }
             else
             {
-                PlusAlpha();
-                if (curColor.a >= 0.99f)
+                tick = Tick;
+                if (curColor.a >= HighCut)
                 {
-                    isDecreasing = true;
+                    isDecreasing = !isDecreasing;
                 }
             }
+
+            ChangeAlpha(tick);
         }
     }
 
-
-    void MinusAlpha()
+    void ChangeAlpha(float num)
     {
-        curColor.a -= 0.01f;
-        gameObject.GetComponent<TextMeshProUGUI>().color = curColor;
+        curColor.a += num;
+        loadingText.color = curColor;
     }
 
-    void PlusAlpha()
-    {
-        curColor.a += 0.01f;
-        gameObject.GetComponent<TextMeshProUGUI>().color = curColor;
-    }
 }
 
 
