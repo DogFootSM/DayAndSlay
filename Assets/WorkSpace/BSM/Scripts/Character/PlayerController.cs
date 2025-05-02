@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public PlayerModel PlayerModel => playerModel;
     public Animator CharacterAnimator => characterAnimator;
     public SpriteRenderer BodyRenderer;
+    public SpriteRenderer HairRenderer;
+    
     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviour
         {
             posY = 0;
             BodyRenderer.flipX = posX < 0;
+            HairRenderer.flipX = posX < 0;
         }
 
         if (posY != 0)

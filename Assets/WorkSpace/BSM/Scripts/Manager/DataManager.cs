@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class DataManager : MonoBehaviour
 
     private string path;
     private PlayerController playerController;
+
+    public Sprite[] test;
     
     /// <summary>
     /// 저장 경로 지정
@@ -56,8 +59,14 @@ public class DataManager : MonoBehaviour
             
         }
         
-        this.playerController.SpriteLibraryAsset.AddCategoryLabel(playerSprites[1].sprite, "Idle", "Idle_0");
+        this.playerController.SpriteLibraryAsset.AddCategoryLabel(playerSprites[1].sprite, "IDLE", "Idle_0");
+
+        test = Resources.LoadAll<Sprite>($"Preset/Animations/Body/{savePresetData.PresetNames[1]}/1");
+ 
         
+        
+        
+
 
     }
     
