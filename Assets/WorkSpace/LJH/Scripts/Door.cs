@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
-    protected Animator animator;
+    private Animator animator;
 
     [Header("·Îµù ¾À")]
-    [SerializeField] protected SceneReference loadingScene;
+    [SerializeField] private SceneReference loadingScene;
 
     [SerializeField] private Transform movePosTrans;
     private Vector2 movePos;
 
-    public virtual void Start()
+    void Start()
     {
         animator = GetComponent<Animator>();
         movePos = movePosTrans.position;
@@ -25,7 +25,7 @@ public class Door : MonoBehaviour
 
     }
 
-    protected virtual void PlayerInteractionDoor(Collision2D collision)
+    void PlayerInteractionDoor(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {

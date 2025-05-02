@@ -7,11 +7,11 @@ public class DungeonDoor : MonoBehaviour
 {
 
     [Header("·Îµù ¾À")]
-    [SerializeField] protected SceneReference loadingScene;
+    [SerializeField] private SceneReference loadingScene;
     [Header("ÀÌµ¿ÇÒ ¾À")]
-    [SerializeField] SceneReference scene;
+    [SerializeField] private SceneReference scene;
 
-    Animator animator;
+    private Animator animator;
 
     void Start()
     {

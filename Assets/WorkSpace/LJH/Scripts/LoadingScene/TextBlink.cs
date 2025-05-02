@@ -8,9 +8,10 @@ public class TextBlink : MonoBehaviour
 {
     private Color curColor;
 
-    float Tick = 0.01f;
-    float LowCut = 0.25f;
-    float HighCut = 0.99f;
+    [Header("텍스트 색상 변경 속도 조절 default: 0.01f")]
+    [SerializeField] private float tick = 0.01f;
+    private float lowCut = 0.25f;
+    private float highCut = 0.99f;
 
     TextMeshProUGUI loadingText;
 
@@ -32,20 +33,20 @@ public class TextBlink : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(Tick);
+            yield return new WaitForSeconds(this.tick);
 
             if (isDecreasing)
             {
-                tick = -Tick;
-                if (curColor.a <= LowCut)
+                tick = -this.tick;
+                if (curColor.a <= lowCut)
                 {
                     isDecreasing = !isDecreasing;
                 }
             }
             else
             {
-                tick = Tick;
-                if (curColor.a >= HighCut)
+                tick = this.tick;
+                if (curColor.a >= highCut)
                 {
                     isDecreasing = !isDecreasing;
                 }
