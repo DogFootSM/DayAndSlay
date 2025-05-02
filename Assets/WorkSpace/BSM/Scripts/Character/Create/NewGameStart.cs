@@ -10,7 +10,7 @@ public class NewGameStart : BaseUI
 {
     [SerializeField] private SceneReference inGameScene;
     
-    [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: PANTS, 4: SHOES")]
+    [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: WEAPON")]
     [SerializeField] private List<Image> presets;
 
     [Inject] private DataManager dataManager;
@@ -22,7 +22,6 @@ public class NewGameStart : BaseUI
         Bind();
         ButtonAddListener();
     }
-    
     private void OnValidate()
     {
         if (presets.Count <= 0)

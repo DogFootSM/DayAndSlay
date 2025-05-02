@@ -33,8 +33,7 @@ public class PlayerWalk : PlayerState
 
     public override void Exit()
     {
-        playerController.IsDownWalk = false;
-        playerController.IsUpWalk = false;
+        
     }
  
     
