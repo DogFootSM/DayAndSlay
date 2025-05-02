@@ -9,7 +9,11 @@ public class PlayerIdle : PlayerState
 
     public override void Enter()
     {
-        playerController.BodyRenderer.flipX = false;
+        for (int i = 0; i < playerController.PlayerSprites.Count; i++)
+        {
+            playerController.PlayerSprites[i].flipX = false;
+        }
+         
         playerController.CharacterAnimator.Play(idleAnimHash);
     }
 

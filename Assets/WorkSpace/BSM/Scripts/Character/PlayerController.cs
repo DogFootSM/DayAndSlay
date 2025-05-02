@@ -9,18 +9,15 @@ public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
  
-    [Header("캐릭터 애니메이션 에셋")]
-    public SpriteLibraryAsset SpriteLibraryAsset;
+    [Header("캐릭터 애니메이션 에셋 / 1.Hair, 2.Body, 3.Shirt")]
+    public SpriteLibraryAsset[] SpriteLibraryAsset;
  
     [Header("캐릭터 부위")]
     public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
     public Animator CharacterAnimator => characterAnimator;
-    public SpriteRenderer BodyRenderer;
-    public SpriteRenderer HairRenderer;
-    
-    
+     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
@@ -71,9 +68,13 @@ public class PlayerController : MonoBehaviour
 
         if (posX != 0)
         {
-            posY = 0;
-            BodyRenderer.flipX = posX < 0;
-            HairRenderer.flipX = posX < 0;
+            posY = 0; 
+
+            for (int i = 0; i < PlayerSprites.Count; i++)
+            {
+                PlayerSprites[i].flipX = posX < 0;
+            }
+            
         }
 
         if (posY != 0)

@@ -26,3 +26,15 @@ public enum CharacterAnimType
 {
     IDLE, SIDEWALK, UPWALK, DOWNWALK, SIZE
 }
+
+[Serializable]
+public enum CharacterWeaponStateType
+{
+    NONE, EQUIPPED
+}
+
+[Serializable]
+public enum NoneEquipStateType
+{
+    HAIR, BODY, SHIRT, SIZE
+}
