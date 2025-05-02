@@ -3,13 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.U2D.Animation;
 
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public bool IsDownWalk;
     [NonSerialized] public bool IsUpWalk;
+    
+    public SpriteLibrary spriteLibrary;
+    public SpriteLibraryAsset SpriteLibraryAsset;
 
+    
+    
     public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;

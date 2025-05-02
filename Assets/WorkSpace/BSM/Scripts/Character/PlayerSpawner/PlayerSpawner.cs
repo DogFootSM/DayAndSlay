@@ -8,17 +8,17 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform spawnPoint;
-    
+
     [Inject] private DataManager dataManager;
-    
+
     private GameObject playerInstance;
     private PlayerController playerController;
-    
-    
+
+
     private void Start()
     {
         PlayerSpawn();
-        PlayerSpriteLoad(); 
+        PlayerSpriteLoad();
     }
 
     /// <summary>
@@ -37,7 +37,6 @@ public class PlayerSpawner : MonoBehaviour
     private void PlayerSpriteLoad()
     {
         dataManager.LoadPresetData(playerController.PlayerSprites);
+
     }
-    
-    
 }
