@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Forge : MonoBehaviour
 {
-    [SerializeField] private GameObject forgeUi;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -16,11 +15,5 @@ public class Forge : MonoBehaviour
         UiOnOffMethod(collision);
     }
 
-    public virtual void UiOnOffMethod(Collision2D collision) 
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            forgeUi.SetActive(!forgeUi.activeSelf);
-        }
-    }
+    public virtual void UiOnOffMethod(Collision2D collision) {}
 }

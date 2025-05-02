@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class DungeonDoor : MonoBehaviour
 {
-
+    [Inject(Id = "LoadingScene")]
     [Header("·Îµù ¾À")]
-    [SerializeField] private SceneReference loadingScene;
+    private SceneReference loadingScene;
+
+    [Inject(Id = "DungeonScene")]
     [Header("ÀÌµ¿ÇÒ ¾À")]
-    [SerializeField] private SceneReference scene;
+    private SceneReference scene;
 
     private Animator animator;
 

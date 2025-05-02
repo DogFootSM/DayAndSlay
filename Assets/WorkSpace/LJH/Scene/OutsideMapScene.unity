@@ -1253,6 +1253,97 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182662637}
   m_CullTransparentMesh: 1
+--- !u!1 &182901212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 182901214}
+  - component: {fileID: 182901213}
+  - component: {fileID: 182901215}
+  m_Layer: 0
+  m_Name: SceneContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &182901213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182901212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 182901215}
+  _installerPrefabs: []
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames: []
+  _parentContractNames: []
+--- !u!4 &182901214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182901212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &182901215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182901212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb9c76311464a14f8a69483d921fb52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponForge: {fileID: 1100016330}
+  armorForge: {fileID: 791760737}
+  loadingScene:
+    sceneAsset: {fileID: 102900000, guid: 5a649dfc05d391d41b767179f37aaae2, type: 3}
+    path: Assets/WorkSpace/LJH/Scene/LoadingScene.unity
+    isDirty: 0
+  dungeonScene:
+    sceneAsset: {fileID: 102900000, guid: a11647ddf2f1fba4db4b275edbf5257a, type: 3}
+    path: Assets/WorkSpace/LJH/Scene/Temp_DungeonScene.unity
+    isDirty: 0
+  outsideScene:
+    sceneAsset: {fileID: 102900000, guid: 0dc1e2ade73a43e4eadb1312412cd7fd, type: 3}
+    path: Assets/WorkSpace/LJH/Scene/OutsideMapScene.unity
+    isDirty: 0
 --- !u!1 &189385160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2796,8 +2887,8 @@ GameObject:
   m_Component:
   - component: {fileID: 599070526}
   - component: {fileID: 599070525}
-  - component: {fileID: 599070527}
   - component: {fileID: 599070528}
+  - component: {fileID: 599070529}
   m_Layer: 0
   m_Name: WeaponForge
   m_TagString: Untagged
@@ -2873,19 +2964,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &599070527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 599070524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3fbde7bde6f4d45b64f26ee8ed6d25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forgeUi: {fileID: 1100016330}
 --- !u!61 &599070528
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2912,6 +2990,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.5, y: 6}
   m_EdgeRadius: 0
+--- !u!114 &599070529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599070524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638c4190d33f5154d918b8350c32cee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &606216624
 GameObject:
   m_ObjectHideFlags: 0
@@ -3701,8 +3791,8 @@ GameObject:
   m_Component:
   - component: {fileID: 851593848}
   - component: {fileID: 851593847}
-  - component: {fileID: 851593849}
   - component: {fileID: 851593850}
+  - component: {fileID: 851593851}
   m_Layer: 0
   m_Name: ArmorForge
   m_TagString: Untagged
@@ -3778,19 +3868,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &851593849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 851593846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3fbde7bde6f4d45b64f26ee8ed6d25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forgeUi: {fileID: 791760737}
 --- !u!61 &851593850
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3817,6 +3894,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.5, y: 6}
   m_EdgeRadius: 0
+--- !u!114 &851593851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851593846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32505573930e1da4b9cd29c1a0947164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &866886960
 GameObject:
   m_ObjectHideFlags: 0

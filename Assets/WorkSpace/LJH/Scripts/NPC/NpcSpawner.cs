@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 enum DayAndNight
 {
@@ -19,7 +20,8 @@ public class NpcSpawner : MonoBehaviour
     private float npcSpawnDelay = 1f;
     private WaitForSeconds delayTime;
 
-    [SerializeField] private List<NPC> npcPreset = new List<NPC>();
+    [Inject]
+    private List<NPC> npcPreset = new List<NPC>();
     private List<NPC> npcList = new List<NPC>();
     void Start()
     {

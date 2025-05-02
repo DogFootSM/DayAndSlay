@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class Door : MonoBehaviour
 {
     private Animator animator;
 
+    [Inject(Id = "LoadingScene")]
     [Header("·Îµù ¾À")]
-    [SerializeField] private SceneReference loadingScene;
-
+    private SceneReference loadingScene;
+    
     [SerializeField] private Transform movePosTrans;
     private Vector2 movePos;
 
