@@ -7,12 +7,18 @@ using UnityEngine;
 public class TextBlink : MonoBehaviour
 {
     private Color curColor;
-    private Color originColor;
 
+    [Header("텍스트 색상 변경 속도 조절 default: 0.01f")]
+    [SerializeField] private float tick = 0.01f;
+    private float lowCut = 0.25f;
+    private float highCut = 0.99f;
+
+    TextMeshProUGUI loadingText;
 
     void Start()
     {
-        curColor = gameObject.GetComponent<TextMeshProUGUI>().color;
+        loadingText = GetComponent<TextMeshProUGUI>();
+        curColor = loadingText.color;
 
         StartCoroutine(BlinkCoroutine());
     }
@@ -22,41 +28,40 @@ public class TextBlink : MonoBehaviour
     {
         bool isDecreasing = true;
 
+        //실제로 들어갈 값
+        float tick;
+
         while (true)
         {
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(this.tick);
 
             if (isDecreasing)
             {
-                MinusAlpha();
-                if (curColor.a <= 0.25f)
+                tick = -this.tick;
+                if (curColor.a <= lowCut)
                 {
-                    isDecreasing = false;
+                    isDecreasing = !isDecreasing;
                 }
             }
             else
             {
-                PlusAlpha();
-                if (curColor.a >= 0.99f)
+                tick = this.tick;
+                if (curColor.a >= highCut)
                 {
-                    isDecreasing = true;
+                    isDecreasing = !isDecreasing;
                 }
             }
+
+            ChangeAlpha(tick);
         }
     }
 
-
-    void MinusAlpha()
+    void ChangeAlpha(float num)
     {
-        curColor.a -= 0.01f;
-        gameObject.GetComponent<TextMeshProUGUI>().color = curColor;
+        curColor.a += num;
+        loadingText.color = curColor;
     }
 
-    void PlusAlpha()
-    {
-        curColor.a += 0.01f;
-        gameObject.GetComponent<TextMeshProUGUI>().color = curColor;
-    }
 }
 
 

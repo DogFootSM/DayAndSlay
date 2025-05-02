@@ -2,18 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
-public class DungeonDoor : Door
+public class DungeonDoor : MonoBehaviour
 {
-    [Header("ÀÌµ¿ÇÒ ¾À")]
-    [SerializeField] SceneReference scene;
+    [Inject(Id = "LoadingScene")]
+    [Header("·Îµù ¾À")]
+    private SceneReference loadingScene;
 
-    public override void Start()
+    [Inject(Id = "DungeonScene")]
+    [Header("ÀÌµ¿ÇÒ ¾À")]
+    private SceneReference scene;
+
+    private Animator animator;
+
+    void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    protected override void PlayerInteractionDoor(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        PlayerInteractionDoor(collision);
+
+    }
+
+    void PlayerInteractionDoor(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
