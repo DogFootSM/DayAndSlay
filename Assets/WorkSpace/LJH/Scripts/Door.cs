@@ -30,7 +30,7 @@ public class Door : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             animator.Play("DoorOpenAni");
-            
+            SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
             collision.gameObject.transform.position = movePos;
         }
     }

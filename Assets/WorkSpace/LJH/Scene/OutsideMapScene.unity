@@ -404,7 +404,6 @@ MonoBehaviour:
     sceneAsset: {fileID: 102900000, guid: 5a649dfc05d391d41b767179f37aaae2, type: 3}
     path: Assets/WorkSpace/LJH/Scene/LoadingScene.unity
     isDirty: 0
-  movePosTrans: {fileID: 0}
   scene:
     sceneAsset: {fileID: 102900000, guid: a11647ddf2f1fba4db4b275edbf5257a, type: 3}
     path: Assets/WorkSpace/LJH/Scene/Temp_DungeonScene.unity
@@ -10883,6 +10882,7 @@ GameObject:
   - component: {fileID: 1764236121}
   - component: {fileID: 1764236120}
   - component: {fileID: 1764236123}
+  - component: {fileID: 1764236124}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -10989,6 +10989,19 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1764236124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764236119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce20a0018f2c5c42ad40398b626684e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1053399692}
 --- !u!1 &1844241658
 GameObject:
   m_ObjectHideFlags: 0
