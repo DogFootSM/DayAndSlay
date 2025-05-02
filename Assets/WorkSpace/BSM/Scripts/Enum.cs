@@ -12,11 +12,17 @@ public enum ButtonType
 [Serializable]
 public enum CharacterStateType
 {
-    IDLE, WALK, RUN, ATTACK, HURT, DEATH, SIZE
+    IDLE, WALK, SIZE
 }
 
 [Serializable]
 public enum CharacterPresetType
 {
     HAIR, BODY, SHIRT, WEAPON, HAT, GLASSES, NECT, OUTER, HAND
+}
+
+[Serializable]
+public enum CharacterAnimType
+{
+    IDLE, SIDEWALK, UPWALK, DOWNWALK, SIZE
 }

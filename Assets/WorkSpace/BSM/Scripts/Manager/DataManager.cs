@@ -9,7 +9,7 @@ public class DataManager : MonoBehaviour
 {
 
     private string path;
-  
+    private PlayerController playerController;
     
     /// <summary>
     /// 저장 경로 지정
@@ -38,9 +38,10 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, presetJson); 
     }
 
-    public void LoadPresetData(List<SpriteRenderer> playerSprites)
+    public void LoadPresetData(List<SpriteRenderer> playerSprites, PlayerController playerController)
     {
         SetSavePath();
+        this.playerController = playerController;
         
         SavePresetData savePresetData = new SavePresetData();
 
@@ -49,9 +50,13 @@ public class DataManager : MonoBehaviour
 
         for (int i = 0; i < savePresetData.PresetNames.Count; i++)
         {
+            Debug.Log(savePresetData.PresetNames[i]);
+            
             playerSprites[i].sprite = Resources.Load<Sprite>($"Preset/{((CharacterPresetType)i).ToString()}/{savePresetData.PresetNames[i]}");
             
         }
+        
+        this.playerController.SpriteLibraryAsset.AddCategoryLabel(playerSprites[1].sprite, "Idle", "Idle_0");
         
 
     }

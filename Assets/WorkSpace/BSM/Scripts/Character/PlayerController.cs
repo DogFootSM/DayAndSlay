@@ -8,8 +8,6 @@ using UnityEngine.U2D.Animation;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
-    [NonSerialized] public bool IsDownWalk;
-    [NonSerialized] public bool IsUpWalk;
  
     [Header("캐릭터 애니메이션 에셋")]
     public SpriteLibraryAsset SpriteLibraryAsset;
@@ -94,22 +92,4 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)curState].Enter(); 
     }
 
-    /// <summary>
-    /// 아래로 걷는 애니메이션 좌우 반전 재생 이벤트
-    /// </summary>
-    public void WalkDownAnimationEvent()
-    {
-        IsDownWalk = !IsDownWalk;
-        BodyRenderer.flipX = IsDownWalk; 
-    }
-
-    /// <summary>
-    /// 위로 걷는 애니메이션 좌우 반전 재생 이벤트
-    /// </summary>
-    public void WalkUpAnimationEvent()
-    {
-        IsUpWalk = !IsUpWalk;
-        BodyRenderer.flipX = IsUpWalk; 
-    }
-    
 }
