@@ -11221,6 +11221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1947445290}
+  - component: {fileID: 1947445291}
   m_Layer: 0
   m_Name: NpcSpawner
   m_TagString: Untagged
@@ -11243,6 +11244,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1947445291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947445289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8541d3f8cbbb1ff429a3856aaf250842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcBuyProbability: 3
+  npcPreset:
+  - {fileID: 4711483628701645930, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
+  - {fileID: 990356106862589458, guid: 72a7830a9bb537c4f8844f540932912f, type: 3}
+  - {fileID: 6820275586894725156, guid: db0b33c6227c6df48929fbbefb1d1061, type: 3}
+  - {fileID: 6525075426294832929, guid: 92cfe7a2b5e533042a4d108b2e1068cb, type: 3}
 --- !u!1 &2077947416
 GameObject:
   m_ObjectHideFlags: 0
