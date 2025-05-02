@@ -10,12 +10,11 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public bool IsDownWalk;
     [NonSerialized] public bool IsUpWalk;
-    
-    public SpriteLibrary spriteLibrary;
+ 
+    [Header("캐릭터 애니메이션 에셋")]
     public SpriteLibraryAsset SpriteLibraryAsset;
-
-    
-    
+ 
+    [Header("캐릭터 부위")]
     public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
