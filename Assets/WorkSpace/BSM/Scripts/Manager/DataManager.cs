@@ -45,7 +45,6 @@ public class DataManager : MonoBehaviour
     public void LoadPresetData(List<SpriteRenderer> playerSprites, PlayerController playerController)
     {
         SetSavePath();
-        playerController = playerController;
         
         //저장 데이터
         SavePresetData savePresetData = new SavePresetData();
