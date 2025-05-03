@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,7 +12,7 @@ public class DataManager : MonoBehaviour
 {
 
     private string path; 
-    private Sprite[] changeSprites;
+    private Sprite[][] changeSprites = new Sprite[(int)NoneEquipStateType.SIZE][];
     
     /// <summary>
     /// 저장 경로 지정
@@ -58,28 +59,34 @@ public class DataManager : MonoBehaviour
         {
             playerSprites[i].sprite = Resources.Load<Sprite>($"Preset/{((CharacterPresetType)i).ToString()}/{savePresetData.PresetNames[i]}");
         }
-          
-        //웨폰 애니메이션은 제외로 -1
+
+        
         //노말(무기 장착x) 상태의 애니메이션 스프라이트 이미지 교체
-        for (int i = 0; i < savePresetData.PresetNames.Count - 1; i++)
+        for (int i = 0; i < playerController.SpriteLibraryAsset.Length; i++)
         {
-            //TODO: 저장이 잘 안됨
-            changeSprites = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/{((NoneEquipStateType)i).ToString()}/{savePresetData.PresetNames[i]}/{i}");
-            Debug.Log(changeSprites.Length);
             
-            for (int j = 0; j < changeSprites.Length; j++)
-            {
-                 
-                CharacterAnimType category = (CharacterAnimType)i;
-                Debug.Log(category);
+            //타입의 사이즈만큼 반복
+            for (int j = 0; j < (int)CharacterNormalAnimType.SIZE; j++)
+            {  
+                // 경로 : 어느 부위 - 에셋 이름 - 캐릭터 상태
+                changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
+                                                             $"{((NoneEquipStateType)i).ToString()}/" +
+                                                             $"{savePresetData.PresetNames[i]}/{j}");
                 
-                playerController.SpriteLibraryAsset[i].AddCategoryLabel(changeSprites[j], $"{(category).ToString()}", $"{changeSprites[j].name}");
+                //찾아온 애셋의 개수만큼 반복
+                for (int k = 0; k < changeSprites[i].Length; k++)
+                {
+                    playerController.SpriteLibraryAsset[i].AddCategoryLabel(changeSprites[i][k], 
+                        ((CharacterNormalAnimType)j).ToString(),
+                        $"{((CharacterNormalAnimType)j) + "_" + k}");
+                }
+                 
             } 
         }
-        
-        
+   
+
         //TODO: Weapon, weapon 장착 애니메이션 따로 제작 및 추가 필요
-        
+
 
     }
  
