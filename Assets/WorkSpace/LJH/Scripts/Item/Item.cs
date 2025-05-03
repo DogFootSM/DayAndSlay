@@ -8,7 +8,7 @@ public class Item : MonoBehaviour
 
     [Header("아이템 데이터 분류값")]
     public int ItemId;
-    public itemType Type;
+    public bool isWeapon;
     public detailType_Weapon detail_Weapon;
     public detailType_Armor detail_Armor;
 
@@ -21,19 +21,29 @@ public class Item : MonoBehaviour
     public int buyPrice;
     public int sellPrice;
 
+    ItemStruct itemStruct;
+
     private void Start()
     {
-        ItemId  = itemData.ItemId;
-        Type = itemData.Type;
-        detail_Weapon = itemData.detail_Weapon;
-        detail_Armor = itemData.detail_Armor;
+        Init();
+    }
 
-        name = itemData.Name;
-        Tier = itemData.Tier;
-        attack = itemData.attack;
-        deffence = itemData.deffence;
+    void Init()
+    {
+        itemStruct = itemData.GetItemData(itemStruct);
 
-        buyPrice = itemData.buyPrice;
-        sellPrice = itemData.sellPrice;
+        isWeapon = itemStruct.isWeapon;
+        detail_Weapon = itemStruct.DetailType_Weapon;
+        detail_Armor = itemStruct.DetailType_Armor;
+
+        Name = itemStruct.Name;
+        Tier = itemStruct.Tier;
+        attack = itemStruct.Attack;
+        deffence = itemStruct.Deffence;
+
+        buyPrice = itemStruct.BuyPrice;
+        sellPrice = itemStruct.SellPrice;
+
+        gameObject.name = Name;
     }
 }
