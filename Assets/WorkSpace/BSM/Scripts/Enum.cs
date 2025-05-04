@@ -18,11 +18,25 @@ public enum CharacterStateType
 [Serializable]
 public enum CharacterPresetType
 {
-    HAIR, BODY, SHIRT, WEAPON, HAT, GLASSES, NECT, OUTER, HAND
+    HAIR, BODY, SHIRT, WEAPON, HAT, GLASSES, NECT, OUTER, HAND, SIZE
+}
+
+//무기를 장착하지 않은 상태의 캐릭터 상태 타입
+[Serializable]
+public enum CharacterNormalAnimType
+{
+    IDLE, SIDEWALK, UPWALK, DOWNWALK, SIZE
 }
 
 [Serializable]
-public enum CharacterAnimType
+public enum CharacterWeaponStateType
 {
-    IDLE, SIDEWALK, UPWALK, DOWNWALK, SIZE
+    NONE, EQUIPPED
+}
+
+//무기를 장착하지 않은 상태의 애니메이션 타입
+[Serializable]
+public enum NoneEquipStateType
+{
+    HAIR, BODY, SHIRT, SIZE
 }
