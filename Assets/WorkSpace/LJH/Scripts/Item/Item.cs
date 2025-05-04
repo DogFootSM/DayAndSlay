@@ -4,15 +4,46 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] ItemData itemData;
+
+    [Header("아이템 데이터 분류값")]
+    public int ItemId;
+    public bool isWeapon;
+    public detailType_Weapon detail_Weapon;
+    public detailType_Armor detail_Armor;
+
+    [Header("아이템 정보")]
+    public string Name;
+    public int Tier;
+    public int attack;
+    public int deffence;
+
+    public int buyPrice;
+    public int sellPrice;
+
+    ItemStruct itemStruct;
+
+    private void Start()
     {
-        
+        Init();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Init()
     {
-        
+        itemStruct = itemData.GetItemData(itemStruct);
+
+        isWeapon = itemStruct.isWeapon;
+        detail_Weapon = itemStruct.DetailType_Weapon;
+        detail_Armor = itemStruct.DetailType_Armor;
+
+        Name = itemStruct.Name;
+        Tier = itemStruct.Tier;
+        attack = itemStruct.Attack;
+        deffence = itemStruct.Deffence;
+
+        buyPrice = itemStruct.BuyPrice;
+        sellPrice = itemStruct.SellPrice;
+
+        gameObject.name = Name;
     }
 }
