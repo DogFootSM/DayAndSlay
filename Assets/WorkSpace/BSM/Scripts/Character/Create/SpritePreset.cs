@@ -11,7 +11,12 @@ public class SpritePreset : BaseUI
     [SerializeField] private List<Sprite> spriteList;
     
     public NewGameStart SelectPreset;
+    
+    [Header("현재 프리셋 부위")]
     public CharacterPresetType CurPresetType;
+
+    [Header("현재 선택한 무기 타입")] 
+    public CharacterWeaponType CurWeaponType;
     
     private Sprite curSprite;
 
@@ -25,7 +30,7 @@ public class SpritePreset : BaseUI
         Bind();
         ButtonAddListener();
         SpriteLoad(); 
-        SendSelectedPreset();
+        SendSelectedPreset(); 
     }
 
     /// <summary>
@@ -81,7 +86,14 @@ public class SpritePreset : BaseUI
     private void SendSelectedPreset()
     {
         curSprite = spriteList[presetIndex]; 
-        SelectPreset.ChangePreset(CurPresetType, curSprite); 
+        SelectPreset.ChangePreset(CurPresetType, curSprite);
+
+        if (CurPresetType == CharacterPresetType.WEAPON)
+        {
+            CurWeaponType = (CharacterWeaponType)presetIndex + 1;
+            SelectPreset.ChangeWeapon(CurWeaponType);
+        }
+        
     }
     
     
