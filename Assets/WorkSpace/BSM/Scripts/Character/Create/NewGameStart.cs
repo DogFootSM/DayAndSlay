@@ -47,7 +47,10 @@ public class NewGameStart : BaseUI
     /// </summary>
     private void PlayerCreate()
     {
-        dataManager.SavePresetData(presets); 
+        //현재 프리셋, 무기 타입 저장
+        dataManager.SavePresetData(presets, (int)curWeaponType); 
+        
+        //게임 씬 이동
         SceneManager.LoadScene(inGameScene.Name);
     }
     

@@ -26,7 +26,7 @@ public class DataManager : MonoBehaviour
     /// 선택한 프리셋 json 저장
     /// </summary>
     /// <param name="presets"></param>
-    public void SavePresetData(List<Image> presets)
+    public void SavePresetData(List<Image> presets, int WeaponType)
     {
         SetSavePath();
         
@@ -37,7 +37,10 @@ public class DataManager : MonoBehaviour
             //착용 에셋명 저장
             savePresetData.PresetNames.Add(presets[i].sprite.name);
         }
-
+        
+        //현재 무기 타입 저장
+        savePresetData.CharacterWeaponType = WeaponType;
+        
         string presetJson = JsonUtility.ToJson(savePresetData);
         File.WriteAllText(path, presetJson); 
     }
