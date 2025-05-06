@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class NPC : MonoBehaviour
 {
     public bool IsBuyer;
 
+    [Inject]
+    ItemManager itemManager;
 
-    //Todo : 상점에서 뚫린 아이템 목록을 가져와서 넣어줘야함
-    [SerializeField]
     private List<Item> wantItemList = new List<Item>();
     private Item wantItem;
 
@@ -16,6 +17,7 @@ public class NPC : MonoBehaviour
     {
         NpcBehaviour();
     }
+
 
     void NpcBehaviour()
     {
@@ -25,9 +27,20 @@ public class NPC : MonoBehaviour
             return;
         }
 
+        ItemListSetting(itemManager.ItemList);
         PickItem();
         GoStore();
     }
+
+    /// <summary>
+    /// 아이템매니저에서 현재 판매 가능한 아이템 리스트 넣어줌
+    /// </summary>
+    /// <param name="itemList"></param>
+    private void ItemListSetting(List<Item> itemList)
+    {
+        wantItemList = new List<Item>(itemList);
+    }
+
 
     /// <summary>
     /// 어떤 아이템을 원하는지 설정

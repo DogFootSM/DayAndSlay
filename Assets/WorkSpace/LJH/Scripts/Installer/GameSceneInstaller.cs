@@ -17,6 +17,8 @@ public class GameSceneInstaller : MonoInstaller
 
     [SerializeField] List<NPC> npc = new List<NPC>();
 
+    [SerializeField] ItemManager itemManager;
+
     public override void InstallBindings()
     {
         Container
@@ -42,5 +44,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<List<NPC>>()
             .FromInstance(npc);
+
+        Container
+            .Bind<ItemManager>()
+            .FromInstance(itemManager);
     }
 }
