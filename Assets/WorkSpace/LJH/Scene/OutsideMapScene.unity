@@ -1349,6 +1349,7 @@ MonoBehaviour:
   - {fileID: 990356106862589458, guid: 72a7830a9bb537c4f8844f540932912f, type: 3}
   - {fileID: 6820275586894725156, guid: db0b33c6227c6df48929fbbefb1d1061, type: 3}
   - {fileID: 6525075426294832929, guid: 92cfe7a2b5e533042a4d108b2e1068cb, type: 3}
+  itemManager: {fileID: 0}
 --- !u!1 &189385160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3448,61 +3449,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723588387}
   m_CullTransparentMesh: 1
---- !u!1 &762896482
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 762896483}
-  - component: {fileID: 762896484}
-  m_Layer: 0
-  m_Name: testArmor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &762896483
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762896482}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.332664, y: 2.0639124, z: -0.10223692}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 25
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &762896484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762896482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79db32023b75722419e9f8c4b838440e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 0d3cdb4803b119541924133f6bd0c9b3, type: 2}
-  ItemId: 0
-  isWeapon: 0
-  detail_Weapon: 0
-  detail_Armor: 0
-  Name: 
-  Tier: 0
-  attack: 0
-  deffence: 0
-  buyPrice: 0
-  sellPrice: 0
 --- !u!1 &791760737
 GameObject:
   m_ObjectHideFlags: 0
@@ -7618,6 +7564,7 @@ GameObject:
   - component: {fileID: 1053399693}
   - component: {fileID: 1053399695}
   - component: {fileID: 1053399696}
+  - component: {fileID: 1053399697}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -7739,6 +7686,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1053399697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053399692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caea296579209cc4580cdd98508a7459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1071377946
 GameObject:
   m_ObjectHideFlags: 0
@@ -8671,61 +8630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b6da3c8b90863e4e9ee49a2ab1bb910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1250082036
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1250082037}
-  - component: {fileID: 1250082038}
-  m_Layer: 0
-  m_Name: testSpear
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1250082037
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250082036}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.332664, y: 2.0639124, z: -0.10223692}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 24
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1250082038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250082036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79db32023b75722419e9f8c4b838440e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 2707a5c5d6f6d504c92f638273dac68d, type: 2}
-  ItemId: 0
-  isWeapon: 0
-  detail_Weapon: 0
-  detail_Armor: 0
-  Name: 
-  Tier: 0
-  attack: 0
-  deffence: 0
-  buyPrice: 0
-  sellPrice: 0
 --- !u!1 &1338385841
 GameObject:
   m_ObjectHideFlags: 0
@@ -16536,61 +16440,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862956358}
   m_CullTransparentMesh: 1
---- !u!1 &1883731610
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1883731611}
-  - component: {fileID: 1883731612}
-  m_Layer: 0
-  m_Name: testSword
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1883731611
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883731610}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.332664, y: 2.0639124, z: -0.10223692}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1883731612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883731610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79db32023b75722419e9f8c4b838440e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 94d5b0d3173b6f1409c15dda1d127e72, type: 2}
-  ItemId: 0
-  isWeapon: 0
-  detail_Weapon: 0
-  detail_Armor: 0
-  Name: 
-  Tier: 0
-  attack: 0
-  deffence: 0
-  buyPrice: 0
-  sellPrice: 0
 --- !u!1 &1886518666
 GameObject:
   m_ObjectHideFlags: 0
