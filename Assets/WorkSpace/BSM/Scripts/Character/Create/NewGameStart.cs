@@ -8,6 +8,7 @@ using Zenject;
 
 public class NewGameStart : BaseUI
 {
+    //TODO: 추후 씬 변경 예정
     [SerializeField] private SceneReference inGameScene;
     
     [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: WEAPON")]
@@ -16,6 +17,7 @@ public class NewGameStart : BaseUI
     [Inject] private DataManager dataManager;
     
     private Button createButton;
+    private CharacterWeaponType curWeaponType; 
     
     protected void Start()
     {
@@ -45,7 +47,10 @@ public class NewGameStart : BaseUI
     /// </summary>
     private void PlayerCreate()
     {
-        dataManager.SavePresetData(presets); 
+        //현재 프리셋, 무기 타입 저장
+        dataManager.SavePresetData(presets, (int)curWeaponType); 
+        
+        //게임 씬 이동
         SceneManager.LoadScene(inGameScene.Name);
     }
     
@@ -57,6 +62,15 @@ public class NewGameStart : BaseUI
     public void ChangePreset(CharacterPresetType preset, Sprite presetSprite)
     {
         presets[(int)preset].sprite = presetSprite;
+    }
+
+    /// <summary>
+    /// 캐릭터 무기 타입 변경
+    /// </summary>
+    /// <param name="weaponType">기본은 활 무기로 설정</param>
+    public void ChangeWeapon(CharacterWeaponType weaponType = CharacterWeaponType.BOW)
+    {
+        curWeaponType = weaponType;
     }
     
 }

@@ -8,6 +8,6 @@ using UnityEngine;
 public class SavePresetData 
 {
     public List<string> PresetNames = new List<string>(16);
-    
-    
+    public int CharacterWeaponType;
+
 }
