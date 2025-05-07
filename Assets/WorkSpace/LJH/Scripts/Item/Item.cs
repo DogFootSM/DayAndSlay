@@ -35,15 +35,15 @@ public class Item : MonoBehaviour
         isWeapon = itemStruct.isWeapon;
         detail_Weapon = itemStruct.DetailType_Weapon;
         detail_Armor = itemStruct.DetailType_Armor;
-
+        
         Name = itemStruct.Name;
         Tier = itemStruct.Tier;
         attack = itemStruct.Attack;
         deffence = itemStruct.Deffence;
-
+        
         buyPrice = itemStruct.BuyPrice;
         sellPrice = itemStruct.SellPrice;
-
+        
         gameObject.name = Name;
     }
 }
