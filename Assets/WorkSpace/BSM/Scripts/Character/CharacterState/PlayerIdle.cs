@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class PlayerIdle : PlayerState
 {
+    private const string UpDir = "w";
+    private const string DownDir = "s";
+    private const string RightDir = "d";
+    private const string LeftDir = "a";
+
+    private int playIdleHash;
     
     public PlayerIdle(PlayerController playerController) : base(playerController){}
 
     public override void Enter()
     {
-        for (int i = 0; i < playerController.PlayerSprites.Count; i++)
+        playIdleHash = playerController.LastKey switch
         {
-            playerController.PlayerSprites[i].flipX = false;
-        }
-         
-        playerController.CharacterAnimator.Play(idleAnimHash);
+            "w" => upIdleAnimHash,
+            "s" => downIdleAnimHash,
+            "a" => leftIdleAnimHash,
+            "d" => rightIdleAnimHash    
+        };
+        
+        playerController.CharacterAnimator.Play(playIdleHash); 
     }
 
     public override void Update()

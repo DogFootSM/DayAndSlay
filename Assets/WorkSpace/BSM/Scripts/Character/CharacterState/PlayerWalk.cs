@@ -9,13 +9,17 @@ public class PlayerWalk : PlayerState
     public override void Enter()
     {
         playerController.CharacterAnimator.Play(walkBlendTreeHash);
+        
+
+        
     }
 
     public override void Update()
-    {
+    { 
         playerController.CharacterAnimator.SetFloat(walkPosXHash, playerController.moveDir.x);
         playerController.CharacterAnimator.SetFloat(walkPosYHash, playerController.moveDir.y);
-      
+  
+
         if (playerController.moveDir == Vector2.zero)
         { 
             playerController.ChangeState(CharacterStateType.IDLE);
@@ -33,7 +37,7 @@ public class PlayerWalk : PlayerState
 
     public override void Exit()
     {
-        
+
     }
  
     

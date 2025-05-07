@@ -6,7 +6,12 @@ public class PlayerState : PlayerStateMachine
 {
     protected PlayerController playerController;
     
-    protected int idleAnimHash = Animator.StringToHash("CharacterIdleAnim");
+    protected int upIdleAnimHash = Animator.StringToHash("CharacterUpIdleAnim");
+    protected int downIdleAnimHash = Animator.StringToHash("CharacterIdleAnim");
+    protected int leftIdleAnimHash = Animator.StringToHash("CharacterLeftIdleAnim");
+    protected int rightIdleAnimHash = Animator.StringToHash("CharacterRightIdleAnim");
+    
+    
     protected int walkBlendTreeHash = Animator.StringToHash("CharacterWalkBlend");
     
     protected int walkPosXHash = Animator.StringToHash("WalkPosX");
