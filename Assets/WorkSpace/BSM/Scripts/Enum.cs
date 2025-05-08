@@ -13,7 +13,7 @@ public enum ButtonType
 [Serializable]
 public enum CharacterStateType
 {
-    IDLE, WALK, SIZE
+    IDLE, WALK, ATTACK, SIZE
 }
 
 //이어하기 캐릭터 스프라이트 데이터 저장할 타입

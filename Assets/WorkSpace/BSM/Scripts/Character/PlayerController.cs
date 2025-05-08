@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
+        characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
     }
   
 
