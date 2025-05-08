@@ -23,7 +23,7 @@ public class DataManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 선택한 프리셋 json 저장
+    /// 캐릭터 생성 -> 선택한 프리셋 json 저장
     /// </summary>
     /// <param name="presets"></param>
     public void SavePresetData(List<Image> presets, int WeaponType)
@@ -57,10 +57,10 @@ public class DataManager : MonoBehaviour
         savePresetData = JsonUtility.FromJson<SavePresetData>(loadPresetJson);
         
         //착용한 스프라이트의 경로에 있는 리소스로 변경 
-        for (int i = 0; i < savePresetData.PresetNames.Count; i++)
-        {
-            playerSprites[i].sprite = Resources.Load<Sprite>($"Preset/{((CharacterPresetType)i).ToString()}/{savePresetData.PresetNames[i]}");
-        }
+        // for (int i = 0; i < savePresetData.PresetNames.Count; i++)
+        // {
+        //     playerSprites[i].sprite = Resources.Load<Sprite>($"Preset/{((CharacterPresetType)i).ToString()}/{savePresetData.PresetNames[i]}");
+        // }
 
         
         //노말(무기 장착x) 상태의 애니메이션 스프라이트 이미지 교체
@@ -87,8 +87,7 @@ public class DataManager : MonoBehaviour
                  
             } 
         }
-   
-
+        
         //TODO: Weapon, weapon 장착 애니메이션 따로 제작 및 추가 필요
 
 
