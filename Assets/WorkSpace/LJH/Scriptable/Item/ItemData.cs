@@ -6,10 +6,9 @@ public enum detailType_Weapon
 {
     NotWeapon,
     Sword,
-    Axe,
+    bow,
     Spear,
-    Wand,
-    Dagger
+    Wand
 }
 public enum detailType_Armor
 {
@@ -18,7 +17,9 @@ public enum detailType_Armor
     armor,
     arm,
     pants,
-    shoes
+    shoes,
+    accessery,
+    cloak
 }
 public struct ItemStruct
 {
