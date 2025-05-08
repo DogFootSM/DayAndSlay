@@ -9,6 +9,7 @@ public class WeaponForge : Forge
     [Inject(Id = "WeaponForge")]
     GameObject forgeUi;
 
+
     public override void UiOnOffMethod(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
