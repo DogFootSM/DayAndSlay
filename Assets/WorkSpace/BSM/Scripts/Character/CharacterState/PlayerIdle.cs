@@ -30,7 +30,7 @@ public class PlayerIdle : PlayerState
             LeftDir => leftIdleHash,
             RightDir => rightIdleHash
         };
-        
+         
         playerController.BodyAnimator.Play(playIdleHash); 
         playerController.WeaponAnimator.Play(playIdleHash);
     }
@@ -47,6 +47,6 @@ public class PlayerIdle : PlayerState
             playerController.ChangeState(CharacterStateType.ATTACK);
         }
         
-    }
+    } 
     
 }
