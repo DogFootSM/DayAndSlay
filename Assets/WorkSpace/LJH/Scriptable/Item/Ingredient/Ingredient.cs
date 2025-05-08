@@ -6,4 +6,5 @@ using UnityEngine;
 public class Ingredient : ScriptableObject
 {
     public string itemName;
+    public string itemText;
 }

@@ -5,7 +5,6 @@ using Zenject;
 
 public class MonsterInstaller : MonoInstaller
 {
-    [SerializeField] GameObject testMonster;
     [SerializeField] List<GameObject> monsters;
 
     public override void InstallBindings()
