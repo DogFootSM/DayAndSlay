@@ -6,12 +6,13 @@ using Zenject;
 public class MonsterInstaller : MonoInstaller
 {
     [SerializeField] GameObject testMonster;
+    [SerializeField] List<GameObject> monsters;
 
     public override void InstallBindings()
     {
         Container
-            .Bind<GameObject>()
-            .FromInstance(testMonster);
+            .Bind<List<GameObject>>()
+            .FromInstance(monsters);
     }
     
 }
