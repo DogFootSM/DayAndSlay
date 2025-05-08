@@ -25,13 +25,14 @@ public class PlayerIdle : PlayerState
         //키 입력 시 CapsLock 활성화 예외 처리
         playIdleHash = playerController.LastKey.ToLower() switch
         {
-            UpDir => upIdleAnimHash,
-            DownDir => downIdleAnimHash,
-            LeftDir => leftIdleAnimHash,
-            RightDir => rightIdleAnimHash
+            UpDir => upIdleHash,
+            DownDir => downIdleHash,
+            LeftDir => leftIdleHash,
+            RightDir => rightIdleHash
         };
         
-        playerController.CharacterAnimator.Play(playIdleHash); 
+        playerController.BodyAnimator.Play(playIdleHash); 
+        playerController.WeaponAnimator.Play(playIdleHash);
     }
 
     public override void Update()
