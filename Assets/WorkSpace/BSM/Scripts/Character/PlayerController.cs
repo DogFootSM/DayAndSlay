@@ -19,12 +19,13 @@ public class PlayerController : MonoBehaviour
     public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
-    public Animator CharacterAnimator => characterAnimator;
- 
+    public Animator BodyAnimator => bodyAnimator;
+    public Animator WeaponAnimator;
+    
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
-    private Animator characterAnimator;
+    private Animator bodyAnimator;
     
     private CharacterStateType curState = CharacterStateType.IDLE;
     
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         Init();
-        characterStates[(int)curState].Enter();
+        characterStates[(int)curState].Enter(); 
     }
 
     private void Update()
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
-        characterAnimator = GetComponent<Animator>();
+        bodyAnimator = GetComponent<Animator>();
         
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);

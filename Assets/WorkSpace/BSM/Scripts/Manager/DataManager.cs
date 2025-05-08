@@ -78,6 +78,8 @@ public class DataManager : MonoBehaviour
                 //찾아온 애셋의 개수만큼 반복
                 for (int k = 0; k < changeSprites[i].Length; k++)
                 {
+                    //TODO: 스프라이트 라이브러리 초기화 필요할듯
+                    
                     playerController.SpriteLibraryAsset[i].AddCategoryLabel(changeSprites[i][k], 
                         ((CharacterNormalAnimType)j).ToString(),
                         $"{((CharacterNormalAnimType)j) + "_" + k}");
