@@ -90,7 +90,7 @@ public class SpritePreset : BaseUI
 
         if (CurPresetType == CharacterPresetType.WEAPON)
         {
-            CurWeaponType = (CharacterWeaponType)presetIndex + 1;
+            CurWeaponType = (CharacterWeaponType)presetIndex;
             SelectPreset.ChangeWeapon(CurWeaponType);
         }
         

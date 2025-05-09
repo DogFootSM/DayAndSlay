@@ -12,7 +12,7 @@ public class DataManager : MonoBehaviour
 {
 
     private string path; 
-    private Sprite[][] changeSprites = new Sprite[(int)NoneEquipStateType.SIZE][];
+    private Sprite[][] changeSprites = new Sprite[(int)SpritePartsType.SIZE][];
     
     /// <summary>
     /// 저장 경로 지정
@@ -55,24 +55,23 @@ public class DataManager : MonoBehaviour
         //데이터 파일 변환
         string loadPresetJson = File.ReadAllText(path);
         savePresetData = JsonUtility.FromJson<SavePresetData>(loadPresetJson);
-        
-        //착용한 스프라이트의 경로에 있는 리소스로 변경 
-        // for (int i = 0; i < savePresetData.PresetNames.Count; i++)
-        // {
-        //     playerSprites[i].sprite = Resources.Load<Sprite>($"Preset/{((CharacterPresetType)i).ToString()}/{savePresetData.PresetNames[i]}");
-        // }
-
-        
-        //노말(무기 장착x) 상태의 애니메이션 스프라이트 이미지 교체
+         
+        //캐릭터 애니메이션 스프라이트 이미지 교체
         for (int i = 0; i < playerController.SpriteLibraryAsset.Length; i++)
         {
             
             //타입의 사이즈만큼 반복
-            for (int j = 0; j < (int)CharacterNormalAnimType.SIZE; j++)
+            for (int j = 0; j < (int)CharacterAnimationType.SIZE; j++)
             {  
                 // 경로 : 어느 부위 - 에셋 이름 - 캐릭터 상태
+                //CharacterWeaponType 경로 설정 필요 - if(j > 5) 일 때로 나누면 될 듯
+                // changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
+                //                                              $"{((SpritePartsType)i).ToString()}/" +
+                //                                              $"{savePresetData.PresetNames[i]}/{j}/savePresetData.CharacterWeaponType");
+                
+                
                 changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
-                                                             $"{((NoneEquipStateType)i).ToString()}/" +
+                                                             $"{((SpritePartsType)i).ToString()}/" +
                                                              $"{savePresetData.PresetNames[i]}/{j}");
                 
                 //찾아온 애셋의 개수만큼 반복
@@ -80,9 +79,10 @@ public class DataManager : MonoBehaviour
                 {
                     //TODO: 스프라이트 라이브러리 초기화 필요할듯
                     
+                    
                     playerController.SpriteLibraryAsset[i].AddCategoryLabel(changeSprites[i][k], 
-                        ((CharacterNormalAnimType)j).ToString(),
-                        $"{((CharacterNormalAnimType)j) + "_" + k}");
+                        ((CharacterAnimationType)j).ToString(),
+                        $"{((CharacterAnimationType)j) + "_" + k}");
                 }
                  
             } 

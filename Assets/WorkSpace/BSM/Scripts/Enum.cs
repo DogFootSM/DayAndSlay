@@ -25,20 +25,20 @@ public enum CharacterPresetType
 
 //캐릭터 상태 스프라이트 라이브러리 교체 타입
 [Serializable]
-public enum CharacterNormalAnimType
+public enum CharacterAnimationType
 {
-    IDLE, SIDEWALK, UPWALK, DOWNWALK, SIZE
+    DOWNIDLE, SIDEIDLE, UPIDLE, SIDEWALK, UPWALK, DOWNWALK, SIDEATTACK, UPATTACK, DOWNATTACK, SIZE
 }
 
 [Serializable]
 public enum CharacterWeaponType
 {
-    NONE, BOW, WAND, SHORT_SWORD, SPEAR, LONG_SWORD, SIZE
+    BOW, WAND, SHORT_SWORD, SPEAR, LONG_SWORD, SIZE
 }
 
 //캐릭터 생성 시 스프라이트 데이터 경로에 사용 타입, 
 [Serializable]
-public enum NoneEquipStateType
+public enum SpritePartsType
 {
-    HAIR, BODY, SHIRT, SIZE
+    HAIR, BODY, SHIRT, WEAPON, SIZE
 }
