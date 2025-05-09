@@ -2,10 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DataManager : MonoBehaviour
@@ -45,6 +42,7 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, presetJson); 
     }
 
+    //TODO: 매개변수로 List 전달하는거 지우기
     public void LoadPresetData(List<SpriteRenderer> playerSprites, PlayerController playerController)
     {
         SetSavePath();
@@ -57,33 +55,33 @@ public class DataManager : MonoBehaviour
         savePresetData = JsonUtility.FromJson<SavePresetData>(loadPresetJson);
          
         //캐릭터 애니메이션 스프라이트 이미지 교체
-        for (int i = 0; i < playerController.SpriteLibraryAsset.Length; i++)
+        for (int i = 0; i < playerController.BodyLibraryAsset.Length; i++)
         {
             
             //타입의 사이즈만큼 반복
             for (int j = 0; j < (int)CharacterAnimationType.SIZE; j++)
             {  
-                // 경로 : 어느 부위 - 에셋 이름 - 캐릭터 상태
-                //CharacterWeaponType 경로 설정 필요 - if(j > 5) 일 때로 나누면 될 듯
-                // changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
-                //                                              $"{((SpritePartsType)i).ToString()}/" +
-                //                                              $"{savePresetData.PresetNames[i]}/{j}/savePresetData.CharacterWeaponType");
-                
-                
-                changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
-                                                             $"{((SpritePartsType)i).ToString()}/" +
-                                                             $"{savePresetData.PresetNames[i]}/{j}");
-                
+                // 경로 : 어느 부위 - 에셋 이름 - 캐릭터 상태 
+                 if (j > 5)
+                 { 
+                     changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
+                                                                  $"{((SpritePartsType)i).ToString()}/" +
+                                                                  $"{savePresetData.PresetNames[i]}/{j}/{savePresetData.CharacterWeaponType}");
+                 }
+                 else
+                 {
+                     changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Normal/" +
+                                                                  $"{((SpritePartsType)i).ToString()}/" +
+                                                                  $"{savePresetData.PresetNames[i]}/{j}");
+                 }  
+                 
                 //찾아온 애셋의 개수만큼 반복
-                for (int k = 0; k < changeSprites[i].Length; k++)
-                {
-                    //TODO: 스프라이트 라이브러리 초기화 필요할듯
-                    
-                    
-                    playerController.SpriteLibraryAsset[i].AddCategoryLabel(changeSprites[i][k], 
-                        ((CharacterAnimationType)j).ToString(),
-                        $"{((CharacterAnimationType)j) + "_" + k}");
-                }
+                 for (int k = 0; k < changeSprites[i].Length; k++)
+                 {
+                     playerController.BodyLibraryAsset[i].AddCategoryLabel(changeSprites[i][k], 
+                         ((CharacterAnimationType)j).ToString(),
+                         $"{((CharacterAnimationType)j) + "_" + k}"); 
+                 }
                  
             } 
         }

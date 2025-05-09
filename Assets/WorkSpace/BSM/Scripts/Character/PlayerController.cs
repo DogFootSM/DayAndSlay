@@ -6,21 +6,30 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.U2D.Animation;
+using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public string LastKey = "s";
     
-    [Header("캐릭터 애니메이션 에셋 / 1.Hair, 2.Body, 3.Shirt")]
-    public SpriteLibraryAsset[] SpriteLibraryAsset;
+    [Header("캐릭터 애니메이션 에셋 - 1.Hair, 2.Body, 3.Shirt")]
+    public SpriteLibraryAsset[] BodyLibraryAsset;
  
+    [Header("캐릭터 무기 애니메이션 에셋 - 1.Bow, 2.Wand, 3.Sword, 4.Spear")]
+    public SpriteLibraryAsset[] WeaponLibraryAsset;
+    
     [Header("캐릭터 부위")]
     public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
     public Animator BodyAnimator => bodyAnimator;
     public Animator WeaponAnimator;
+    public WaitCache WaitCache => waitCache;
+    
+    
+    [Inject] private WaitCache waitCache;
+    
     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
@@ -46,7 +55,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         KeyInput();
-        characterStates[(int)curState].Update(); 
+        characterStates[(int)curState].Update();  
     }
 
     private void FixedUpdate()

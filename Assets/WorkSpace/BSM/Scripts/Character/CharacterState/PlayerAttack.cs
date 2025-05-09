@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Zenject;
 
 public class PlayerAttack : PlayerState
 {
     private int attackHash;
     private StringBuilder sb;
 
+    private Coroutine attackCo; 
     public PlayerAttack(PlayerController playerController) : base(playerController)
     {
     }
@@ -31,16 +33,24 @@ public class PlayerAttack : PlayerState
             RightDir => rightAttackHash
         };
 
-        playerController.StartCoroutine(AttackExitRoutine());
+        attackCo = playerController.StartCoroutine(AttackExitRoutine());
     }
 
+    public override void Exit()
+    {
+        if (attackCo != null)
+        {
+            playerController.StopCoroutine(attackCo);
+            attackCo = null;
+        }
+    }
+    
     private IEnumerator AttackExitRoutine()
     {
         playerController.BodyAnimator.Play(attackHash);
-        playerController.WeaponAnimator.Play(attackHash);
-        
-        yield return new WaitForSeconds(0.5f);
-
+        playerController.WeaponAnimator.Play(attackHash); 
+        yield return playerController.WaitCache.GetWait(0.5f);
+    
         playerController.ChangeState(CharacterStateType.IDLE);
     }
     

@@ -14,8 +14,7 @@ public class NewGameStart : BaseUI
     [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: WEAPON")]
     [SerializeField] private List<Image> presets;
 
-    [Inject] private DataManager dataManager;
-    
+    [Inject] private DataManager dataManager; 
     private Button createButton;
     private CharacterWeaponType curWeaponType; 
     
@@ -30,7 +29,7 @@ public class NewGameStart : BaseUI
         {
             Debug.LogError($"프리셋 이미지를 넣어주세요. -{gameObject.name}-");
         }
-    }
+    } 
     
     private void Bind()
     {
@@ -49,6 +48,8 @@ public class NewGameStart : BaseUI
     {
         //현재 프리셋, 무기 타입 저장
         dataManager.SavePresetData(presets, (int)curWeaponType); 
+        
+        //TODO: 씬전환 코루틴 추가 필요
         
         //게임 씬 이동
         SceneManager.LoadScene(inGameScene.Name);
