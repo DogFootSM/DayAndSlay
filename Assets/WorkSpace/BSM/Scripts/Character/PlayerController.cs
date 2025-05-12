@@ -13,11 +13,11 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public string LastKey = "s";
     
-    [Header("캐릭터 애니메이션 에셋 - 1.Hair, 2.Body, 3.Shirt")]
+    [Header("캐릭터 애니메이션 에셋 - 1.Hair, 2.Body")]
     public SpriteLibraryAsset[] BodyLibraryAsset;
  
-    [Header("캐릭터 무기 애니메이션 에셋 - 1.Bow, 2.Wand, 3.Sword, 4.Spear")]
-    public SpriteLibraryAsset[] WeaponLibraryAsset;
+    [Header("캐릭터 장비 애니메이션 에셋 ")]
+    public SpriteLibraryAsset[] EquipmentLibraryAsset;
     
     [Header("캐릭터 부위")]
     public List<SpriteRenderer> PlayerSprites;
@@ -52,6 +52,11 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)curState].Enter(); 
     }
 
+    private void Start()
+    {
+        ProjectContext.Instance.Container.Inject(this);
+    }
+    
     private void Update()
     {
         KeyInput();

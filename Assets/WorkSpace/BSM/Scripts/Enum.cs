@@ -38,7 +38,13 @@ public enum CharacterWeaponType
 
 //캐릭터 생성 시 스프라이트 데이터 경로에 사용 타입, 
 [Serializable]
-public enum SpritePartsType
+public enum BodyPartsType
 {
-    HAIR, BODY, SHIRT, WEAPON, SIZE
+    HAIR, BODY, SIZE
+}
+
+[Serializable]
+public enum EquipmentPartsType
+{ 
+    SHIRT, BOW, WAND, SHORT_SWORD, SPEAR, LONG_SWORD, SIZE
 }

@@ -36,6 +36,8 @@ public class PlayerSpawner : MonoBehaviour
     /// </summary>
     private void PlayerSpriteLoad()
     {
+        ProjectContext.Instance.Container.Inject(this);
+        
         dataManager.LoadPresetData(playerController.PlayerSprites, playerController); 
     }
 }
