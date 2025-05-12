@@ -9,8 +9,7 @@ public class DataManager : MonoBehaviour
 {
     private string path;
     private Sprite[][] changeSprites = new Sprite[(int)BodyPartsType.SIZE][];
-    private Sprite[][] weaponSprites = new Sprite[1][];
-    
+    private int weaponIndex;
     
     /// <summary>
     /// 저장 경로 지정
@@ -43,8 +42,12 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, presetJson);
     }
 
-    //TODO: 매개변수로 List 전달하는거 지우기
-    public void LoadPresetData(List<SpriteRenderer> playerSprites, PlayerController playerController)
+    
+    /// <summary>
+    /// 캐릭터 데이터 로드
+    /// </summary>
+    /// <param name="characterAnimatorController">현재 캐릭터</param>
+    public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
     {
         SetSavePath();
 
@@ -56,7 +59,7 @@ public class DataManager : MonoBehaviour
         savePresetData = JsonUtility.FromJson<SavePresetData>(loadPresetJson);
 
         //캐릭터 애니메이션 스프라이트 이미지 교체
-        for (int i = 0; i < playerController.BodyLibraryAsset.Length; i++)
+        for (int i = 0; i < characterAnimatorController.BodyLibraryAsset.Length; i++)
         {
             //타입의 사이즈만큼 반복
             for (int j = 0; j < (int)CharacterAnimationType.SIZE; j++)
@@ -81,7 +84,7 @@ public class DataManager : MonoBehaviour
                 //찾아온 애셋의 개수만큼 반복
                 for (int k = 0; k < changeSprites[i].Length; k++)
                 {
-                    playerController.BodyLibraryAsset[i].AddCategoryLabel(changeSprites[i][k],
+                    characterAnimatorController.BodyLibraryAsset[i].AddCategoryLabel(changeSprites[i][k],
                         ((CharacterAnimationType)j).ToString(),
                         $"{((CharacterAnimationType)j) + "_" + k}");
                 }
@@ -97,7 +100,7 @@ public class DataManager : MonoBehaviour
                                                          $"{(CharacterAnimationType)i}");
             
             //현재 무기가 Wand일 경우 Short Sword 인덱스로, 그 외 자기 무기 인덱스 할당
-            int weaponIndex = (CharacterWeaponType)savePresetData.CharacterWeaponType switch
+            weaponIndex = (CharacterWeaponType)savePresetData.CharacterWeaponType switch
             {
                 CharacterWeaponType.WAND => (int)CharacterWeaponType.SHORT_SWORD,
                 _ => savePresetData.CharacterWeaponType
@@ -105,11 +108,13 @@ public class DataManager : MonoBehaviour
             
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
-                playerController.EquipmentLibraryAsset[weaponIndex].AddCategoryLabel(changeSprites[0][j],
+                characterAnimatorController.EquipmentLibraryAsset[weaponIndex].AddCategoryLabel(changeSprites[0][j],
                     ((CharacterAnimationType)i).ToString(),
                     $"{(CharacterAnimationType)i + "_" + j}");
                 
             } 
         } 
+        
+        characterAnimatorController.WeaponAnimatorChange(weaponIndex);
     }
 }

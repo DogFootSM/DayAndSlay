@@ -12,7 +12,7 @@ public class PlayerSpawner : MonoBehaviour
     [Inject] private DataManager dataManager;
 
     private GameObject playerInstance;
-    private PlayerController playerController;
+    private CharacterAnimatorController characterAnimatorController;
 
 
     private void Start()
@@ -28,7 +28,7 @@ public class PlayerSpawner : MonoBehaviour
     {
         playerInstance = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);
 
-        playerController = playerInstance.GetComponent<PlayerController>();
+        characterAnimatorController = playerInstance.GetComponent<CharacterAnimatorController>();
     }
 
     /// <summary>
@@ -38,6 +38,6 @@ public class PlayerSpawner : MonoBehaviour
     {
         ProjectContext.Instance.Container.Inject(this);
         
-        dataManager.LoadPresetData(playerController.PlayerSprites, playerController); 
+        dataManager.LoadPresetData(characterAnimatorController); 
     }
 }

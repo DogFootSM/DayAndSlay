@@ -160,7 +160,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ab8562652c44fa04392ca19846f5d687, type: 2}
+  m_Sprite: {fileID: 1915208073, guid: a7180231546eb6f4393a00402a990fa6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -603,6 +603,7 @@ GameObject:
   - component: {fileID: 1891904026602976497}
   - component: {fileID: 1891904026602976496}
   - component: {fileID: 1891904026602976510}
+  - component: {fileID: 4380858450188246216}
   - component: {fileID: 1891904026602976511}
   m_Layer: 0
   m_Name: Player
@@ -640,23 +641,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0}
-  BodyLibraryAsset:
-  - {fileID: 7108339969198208228, guid: aefae5b7adf849d4082c1e5efbae22c1, type: 3}
-  - {fileID: 7108339969198208228, guid: 380ae53c16823d94e962e03ef532d1be, type: 3}
-  - {fileID: 7108339969198208228, guid: 178ba733b5422304cb0696afb839de2c, type: 3}
-  EquipmentLibraryAsset:
-  - {fileID: 7108339969198208228, guid: fe7e0ff5db9afe842a8c5584f4b9a078, type: 3}
-  - {fileID: 7108339969198208228, guid: 92a8003171e2f3048a5eae7ac73689f0, type: 3}
-  - {fileID: 7108339969198208228, guid: 4ac58736e2fc3e14a889e8095ee7c8fa, type: 3}
-  PlayerSprites:
-  - {fileID: 1891904025907480348}
-  - {fileID: 1891904027062351244}
-  - {fileID: 1891904027253029481}
-  - {fileID: 1891904025710590701}
-  - {fileID: 1891904026350270311}
-  - {fileID: 1891904026513248970}
-  - {fileID: 1891904026432771516}
-  - {fileID: 1891904025662002240}
   WeaponAnimator: {fileID: 1891904025710590697}
 --- !u!114 &1891904026602976498
 MonoBehaviour:
@@ -750,6 +734,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4380858450188246216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891904026602976503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2ef75f5cce829419e310090f09d29b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BodyLibraryAsset:
+  - {fileID: 7108339969198208228, guid: aefae5b7adf849d4082c1e5efbae22c1, type: 3}
+  - {fileID: 7108339969198208228, guid: 380ae53c16823d94e962e03ef532d1be, type: 3}
+  - {fileID: 7108339969198208228, guid: 178ba733b5422304cb0696afb839de2c, type: 3}
+  EquipmentLibraryAsset:
+  - {fileID: 7108339969198208228, guid: fe7e0ff5db9afe842a8c5584f4b9a078, type: 3}
+  - {fileID: 7108339969198208228, guid: 92a8003171e2f3048a5eae7ac73689f0, type: 3}
+  - {fileID: 7108339969198208228, guid: 4ac58736e2fc3e14a889e8095ee7c8fa, type: 3}
+  WeaponLibrary: {fileID: 1891904025710590698}
+  WeaponAnimator: {fileID: 1891904025710590697}
+  WeaponAnimators:
+  - {fileID: 1891904026602976510}
+  - {fileID: 1891904025710590697}
+  - {fileID: 1891904025710590697}
+  - {fileID: 1891904025710590697}
 --- !u!114 &1891904026602976511
 MonoBehaviour:
   m_ObjectHideFlags: 0
