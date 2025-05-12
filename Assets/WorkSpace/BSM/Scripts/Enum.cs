@@ -30,21 +30,17 @@ public enum CharacterAnimationType
     DOWNIDLE, SIDEIDLE, UPIDLE, SIDEWALK, UPWALK, DOWNWALK, SIDEATTACK, UPATTACK, DOWNATTACK, SIZE
 }
 
+//캐릭터 생성 시 무기 설정 타입
 [Serializable]
 public enum CharacterWeaponType
 {
-    BOW, WAND, SHORT_SWORD, SPEAR, LONG_SWORD, SIZE
+    BOW, SHORT_SWORD, SPEAR, WAND, LONG_SWORD, SIZE
 }
 
 //캐릭터 생성 시 스프라이트 데이터 경로에 사용 타입, 
 [Serializable]
 public enum BodyPartsType
 {
-    HAIR, BODY, SIZE
+    HAIR, BODY, SHIRT, SIZE
 }
-
-[Serializable]
-public enum EquipmentPartsType
-{ 
-    SHIRT, BOW, WAND, SHORT_SWORD, SPEAR, LONG_SWORD, SIZE
-}
+ 

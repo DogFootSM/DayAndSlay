@@ -9,7 +9,9 @@ public class DataManager : MonoBehaviour
 {
     private string path;
     private Sprite[][] changeSprites = new Sprite[(int)BodyPartsType.SIZE][];
-
+    private Sprite[][] weaponSprites = new Sprite[1][];
+    
+    
     /// <summary>
     /// 저장 경로 지정
     /// </summary>
@@ -64,7 +66,9 @@ public class DataManager : MonoBehaviour
                 {
                     changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/" +
                                                                  $"{((BodyPartsType)i)}/" +
-                                                                 $"{savePresetData.PresetNames[i]}/{(CharacterAnimationType)j}/{(CharacterWeaponType)savePresetData.CharacterWeaponType}");
+                                                                 $"{savePresetData.PresetNames[i]}/" +
+                                                                 $"{(CharacterAnimationType)j}/" +
+                                                                 $"{(CharacterWeaponType)savePresetData.CharacterWeaponType}");
                 }
                 else
                 {
@@ -84,13 +88,28 @@ public class DataManager : MonoBehaviour
             }
         }
 
-        //TODO: Weapon, weapon 장착 애니메이션 따로 제작 및 추가 필요
-
-        for (int i = 0; i < playerController.EquipmentLibraryAsset.Length; i++)
+        //무기 스프라이트 변경 로직
+        for (int i = 0; i < (int)CharacterAnimationType.SIZE; i++)
         {
+            changeSprites[0] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/WEAPON/" +
+                                                         $"{(CharacterWeaponType)savePresetData.CharacterWeaponType}/" +
+                                                         $"{savePresetData.PresetNames[savePresetData.PresetNames.Count - 1]}/" +
+                                                         $"{(CharacterAnimationType)i}");
             
-        }
-        
-        
+            //현재 무기가 Wand일 경우 Short Sword 인덱스로, 그 외 자기 무기 인덱스 할당
+            int weaponIndex = (CharacterWeaponType)savePresetData.CharacterWeaponType switch
+            {
+                CharacterWeaponType.WAND => (int)CharacterWeaponType.SHORT_SWORD,
+                _ => savePresetData.CharacterWeaponType
+            };
+            
+            for (int j = 0; j < changeSprites[0].Length; j++)
+            {
+                playerController.EquipmentLibraryAsset[weaponIndex].AddCategoryLabel(changeSprites[0][j],
+                    ((CharacterAnimationType)i).ToString(),
+                    $"{(CharacterAnimationType)i + "_" + j}");
+                
+            } 
+        } 
     }
 }
