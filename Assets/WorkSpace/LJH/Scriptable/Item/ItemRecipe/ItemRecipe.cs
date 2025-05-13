@@ -20,7 +20,7 @@ public class ItemRecipe : ScriptableObject
 
     //Todo: 캐릭터 > 인벤토리에 재료 아이템 중 하나가 감지되면 해당 레시피 오픈
 
-    void FindIngredient()
+    public void FindIngredient()
     {
         isOpend = true;
     }

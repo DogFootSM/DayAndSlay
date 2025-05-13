@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public List<Item> ItemList = new List<Item>();
-
-
+    public List<ItemData> ItemList = new List<ItemData>();
 
 }
