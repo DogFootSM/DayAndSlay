@@ -6,21 +6,24 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.U2D.Animation;
+using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public string LastKey = "s";
+
+    [Header("무기 애니메이션 컨트롤러 컴포넌트")]
+    public Animator WeaponAnimator;
     
-    [Header("캐릭터 애니메이션 에셋 / 1.Hair, 2.Body, 3.Shirt")]
-    public SpriteLibraryAsset[] SpriteLibraryAsset;
- 
-    [Header("캐릭터 부위")]
-    public List<SpriteRenderer> PlayerSprites;
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
     public Animator BodyAnimator => bodyAnimator;
-    public Animator WeaponAnimator;
+    
+    public WaitCache WaitCache => waitCache;
+
+    [Inject] private WaitCache waitCache;
+    
     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
@@ -40,26 +43,31 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         Init();
-        characterStates[(int)curState].Enter(); 
+        characterStates[(int)curState].Enter();
     }
 
+    private void Start()
+    {
+        ProjectContext.Instance.Container.Inject(this);
+    }
+    
     private void Update()
     {
         KeyInput();
-        characterStates[(int)curState].Update(); 
+        characterStates[(int)curState].Update();
+        
     }
 
     private void FixedUpdate()
     {
         characterStates[(int)curState].FixedUpdate();
     }
-     
+
     private void Init()
     {
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
-        
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);

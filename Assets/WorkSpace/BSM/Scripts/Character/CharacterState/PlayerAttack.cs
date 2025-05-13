@@ -2,25 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Zenject;
 
 public class PlayerAttack : PlayerState
 {
     private int attackHash;
     private StringBuilder sb;
-    
-    public PlayerAttack(PlayerController playerController) : base(playerController){}
+
+    private Coroutine attackCo; 
+    public PlayerAttack(PlayerController playerController) : base(playerController)
+    {
+    }
 
     public override void Enter()
-    { 
+    {
         sb = new StringBuilder(playerController.LastKey);
-        
+
         //키 동시 여러개 입력 방지
         if (sb.Length > 1)
         {
-            sb.Remove(1, sb.Length - 1);   
+            sb.Remove(1, sb.Length - 1);
             playerController.LastKey = sb.ToString();
-        } 
-          
+        }
+
         attackHash = playerController.LastKey.ToLower() switch
         {
             UpDir => upAttackHash,
@@ -28,8 +32,27 @@ public class PlayerAttack : PlayerState
             LeftDir => leftAttackHash,
             RightDir => rightAttackHash
         };
-        
-        playerController.BodyAnimator.Play(attackHash);
+
+        attackCo = playerController.StartCoroutine(AttackExitRoutine());
+    }
+
+    public override void Exit()
+    {
+        if (attackCo != null)
+        {
+            playerController.StopCoroutine(attackCo);
+            attackCo = null;
+        }
     }
     
+    private IEnumerator AttackExitRoutine()
+    {
+        playerController.BodyAnimator.Play(attackHash);
+        playerController.WeaponAnimator.Play(attackHash); 
+        yield return playerController.WaitCache.GetWait(0.5f);
+    
+        playerController.ChangeState(CharacterStateType.IDLE);
+    }
+    
+
 }
