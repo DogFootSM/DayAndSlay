@@ -58,6 +58,17 @@ public class UI_WeaponForge : BaseUI
     }
 
 
+    public void ItemCreate()
+    {
+        //Todo : 아이템 생성돼서 인벤토리 넣어짐
+    }
+
+    public void CloseForgeUI()
+    {
+        gameObject.SetActive(false);
+    }
+
+
     void Init()
     {
         typeButtons.Add(GetUI<Button>("TypeButton1"));
@@ -76,5 +87,8 @@ public class UI_WeaponForge : BaseUI
         typeButtons[1].onClick.AddListener(() => { ItemButtonClick(spearName); ItemButtonSOInsert(spearRecipes); });
         typeButtons[2].onClick.AddListener(() => { ItemButtonClick(bowName); ItemButtonSOInsert(bowRecipes); });
         typeButtons[3].onClick.AddListener(() => { ItemButtonClick(wandName); ItemButtonSOInsert(wandRecipes); });
+
+        //okayButton.onClick.AddListener() => ItemCreate();
+        cancelButton.onClick.AddListener(CloseForgeUI);
     }
 }

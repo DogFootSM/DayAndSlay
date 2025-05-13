@@ -27,7 +27,7 @@ public class NPC : MonoBehaviour
             return;
         }
 
-        ItemListSetting(itemManager.ItemList);
+        //ItemListSetting(itemManager.ItemList);
         PickItem();
         GoStore();
     }
@@ -38,7 +38,7 @@ public class NPC : MonoBehaviour
     /// <param name="itemList"></param>
     private void ItemListSetting(List<Item> itemList)
     {
-        wantItemList = new List<Item>(itemList);
+        wantItemList = new List<Item>();
     }
 
 

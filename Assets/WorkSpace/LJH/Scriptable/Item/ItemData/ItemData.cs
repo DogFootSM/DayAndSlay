@@ -38,6 +38,8 @@ public struct ItemStruct
 [CreateAssetMenu (fileName = "itemData", menuName = "Scriptable Object / itemData")]
 public class ItemData : ScriptableObject
 {
+    public Sprite ItemImage;
+
     [Header("아이템 데이터 분류값")]
     public int ItemId;
     public bool isWeapon;
