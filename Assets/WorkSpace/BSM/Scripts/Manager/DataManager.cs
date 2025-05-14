@@ -15,8 +15,8 @@ public class DataManager : MonoBehaviour
     /// 저장 경로 지정
     /// </summary>
     private void SetSavePath()
-    {
-        path = Path.Combine(Application.dataPath, "presetData.json");
+    { 
+        path = Path.Join(Application.dataPath, "/StreamingAssets/presetData.json"); 
     }
 
     /// <summary>
