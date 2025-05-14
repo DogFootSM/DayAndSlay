@@ -17,6 +17,7 @@ public class NewGameStart : BaseUI
     [Inject] private DataManager dataManager; 
     private Button createButton;
     private CharacterWeaponType curWeaponType; 
+     
     
     protected void Start()
     {
