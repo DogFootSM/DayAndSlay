@@ -21,7 +21,7 @@ public class CharacterAnimatorController : MonoBehaviour
     
     [Header("무기 애니메이터 리스트")]     //TODO: BOW, SPEAR 애니메이터 추가 필요
     [SerializeField] private List<Animator> WeaponAnimators;
- 
+  
     /// <summary>
     /// 무기 별 애니메이터 교체
     /// </summary>
