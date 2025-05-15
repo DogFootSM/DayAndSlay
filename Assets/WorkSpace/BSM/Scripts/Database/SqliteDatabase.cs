@@ -104,31 +104,43 @@ public class SqliteDatabase
     }
 
     /// <summary>
-    /// DB 컬럼 가져오기
+    /// 조건에 해당하는 컬럼 조회
     /// </summary>
     /// <param name="column">가져올 컬럼명</param>
     /// <param name="where">wher절 조건</param>
     /// <param name="whereValue">조건의 값</param>
     /// <typeparam name="T">여러 타입으로 조회</typeparam>
     /// <returns></returns>
-    public IDataReader ReadTable<T>(string column, string where = "", T whereValue = default(T))
+    public IDataReader ReadTable<T>(string column, string where, T whereValue)
     {
         using (dbCommand = dbConnection.CreateCommand())
         {
-            string query = $"SELECT {column} FROM Character ";
-
-            if (!string.IsNullOrEmpty(where))
-            {
-                query += $"WHERE {where} = @value";
-                
-                dbCommand.Parameters.Clear();
-                dbCommand.Parameters.Add(new SqliteParameter("@value", whereValue));
-            }
-
-            dbCommand.CommandText = query; 
+            string query = $"SELECT {column} FROM Character WHERE {where} = @value"; 
+            dbCommand.CommandText = query;  
+            dbCommand.Parameters.Clear();
+            dbCommand.Parameters.Add(new SqliteParameter("@value", whereValue));
             dbDataReader = dbCommand.ExecuteReader();
         }
 
         return dbDataReader;
     }
+    
+    /// <summary>
+    /// 해당 컬럼 전체 조회
+    /// </summary>
+    /// <param name="column">조회할 컬럼명</param>
+    /// <returns></returns>
+    public IDataReader ReadTable(string column)
+    {
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = $"SELECT {column} FROM Character";
+            dbCommand.CommandText = query;
+            
+            dbDataReader = dbCommand.ExecuteReader();
+        }
+
+        return dbDataReader;
+    }
+    
 }
