@@ -14,11 +14,24 @@ public class TestDFS : MonoBehaviour
     [SerializeField] private LineRenderer mainRouteLineRenderer;
     [SerializeField] private LineRenderer sideRouteLineRenderer;
 
+    /// <summary>
+    /// 방문한 방 HashSet
+    /// </summary>
     private HashSet<Grid> visitedRoom = new HashSet<Grid>();
+
+    /// <summary>
+    /// 보스방 까지의 경로 List
+    /// </summary>
     private List<Grid> route = new List<Grid>();
+    
     private Dictionary<int, List<Grid>> graph = new Dictionary<int, List<Grid>>();
     private List<(Grid, Grid)> extraConnectionsList = new List<(Grid, Grid)> ();
 
+    //사이드 루트 담아주는 List
+    private List<Grid> sideRoomList = new List<Grid> ();
+
+    //사이드 루트 경로
+    private List<Grid> sideRoute = new List<Grid> ();
     private void Start()
     {
         if (roomList.Count <= bossRoomIndex)
@@ -29,34 +42,42 @@ public class TestDFS : MonoBehaviour
 
         GraphModel();
 
-        if (!RootMake(0))
+        if (!RouteMake(0))
         {
             Debug.LogError("보스방에 도달하지 못했습니다.");
             return;
         }
 
-        AddExtraConnections();
+        SideRouteMake();
+        //AddExtraConnections();
         DrawRouteLines();
     }
 
     /// <summary>
     /// DFS로 보스방까지의 경로를 생성한다 (재귀 + 백트래킹)
     /// </summary>
-    private bool RootMake(int curRoomIndex)
+    private bool RouteMake(int curRoomIndex)
     {
+        //현재 방을 current에 넣어줌
         Grid current = roomList[curRoomIndex];
+        //방문한 방 목록에 current 를 넣어줌
         visitedRoom.Add(current);
+        //경로 목록에 current를 넣어줌
         route.Add(current);
 
+        //보스방에 도착한 경우 DFS알고리즘 끝냄
         if (curRoomIndex == bossRoomIndex)
         {
             Debug.Log("보스방 도착");
             return true;
         }
 
+        //현재 방에 인접한 방들을 neighbors에 넣어줌
         List<Grid> neighbors = graph[curRoomIndex];
+        //방문하지 않은 방 목록 생성
         List<int> unvisitedIndices = new List<int>();
 
+        //현재 방에 인접한 방 중 방문하지 않은 방을 방문하지 않은 방 목록에 넣어줌
         foreach (Grid neighbor in neighbors)
         {
             int index = roomList.IndexOf(neighbor);
@@ -64,58 +85,28 @@ public class TestDFS : MonoBehaviour
                 unvisitedIndices.Add(index);
         }
 
+        //방문하지 않은 방 목록을 섞어줌
         Shuffle(unvisitedIndices);
 
+        //방문하지 않은 방 목록마다 RootMake 재귀
         foreach (int nextIndex in unvisitedIndices)
         {
-            if (RootMake(nextIndex))
+            if (RouteMake(nextIndex))
                 return true;
         }
 
+        // 조건이 맞지 않았다면 방문한 방 목록, 경로에서 현재 방을 제거하고 false로 리턴(백트래킹)
         visitedRoom.Remove(current);
         route.Remove(current);
         return false;
     }
 
-    /// <summary>
-    /// 사이드 루트 추가 (보스방 제외, 상하좌우만 연결 허용)
-    /// </summary>
-    private void AddExtraConnections()
+    private void SideRouteMake()
     {
-        int count = 0;
-        int maxAttempts = 1000;
-        int attempts = 0;
 
-        while (count < extraConnections && attempts < maxAttempts)
-        {
-            attempts++;
-
-            int a = Random.Range(0, roomList.Count);
-            int b = Random.Range(0, roomList.Count);
-
-            if (a == b || a == bossRoomIndex || b == bossRoomIndex)
-                continue;
-
-            if (!IsAdjacentInGrid(a, b))
-                continue;
-
-            Grid roomA = roomList[a];
-            Grid roomB = roomList[b];
-
-            if (!graph[a].Contains(roomB))
-            {
-                graph[a].Add(roomB);
-                graph[b].Add(roomA);
-                extraConnectionsList.Add((roomA, roomB));
-                Debug.Log($"사이드 루트 연결: {a} ↔ {b}");
-                count++;
-            }
-        }
-
-        if (attempts >= maxAttempts)
-            Debug.LogWarning("사이드 루트 추가 시도 제한 도달");
     }
 
+   
     /// <summary>
     /// 각 방을 기준으로 상하좌우 이웃 연결 그래프 생성
     /// </summary>
@@ -125,7 +116,6 @@ public class TestDFS : MonoBehaviour
         {
             graph[i] = new List<Grid>();
 
-            // 상하좌우 인접 인덱스 계산
             int up = i - gridWidth;
             int down = i + gridWidth;
             int left = (i % gridWidth != 0) ? i - 1 : -1;
@@ -144,21 +134,7 @@ public class TestDFS : MonoBehaviour
             graph[from].Add(roomList[to]);
     }
 
-    /// <summary>
-    /// 두 인덱스가 상하좌우 인접한지 확인
-    /// </summary>
-    private bool IsAdjacentInGrid(int a, int b)
-    {
-        // 좌우
-        if (Mathf.Abs(a - b) == 1 && a / gridWidth == b / gridWidth)
-            return true;
 
-        // 상하
-        if (Mathf.Abs(a - b) == gridWidth)
-            return true;
-
-        return false;
-    }
 
     /// <summary>
     /// DFS 경로 + 사이드 루트 경로 라인 렌더링
@@ -182,7 +158,7 @@ public class TestDFS : MonoBehaviour
     }
 
     /// <summary>
-    /// 리스트 셔플 (Fisher-Yates)
+    /// 리스트 셔플
     /// </summary>
     private void Shuffle(List<int> list)
     {
