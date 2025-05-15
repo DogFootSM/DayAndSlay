@@ -7,14 +7,12 @@ using Zenject;
 public class ProjectInstaller : MonoInstaller
 {
     public DataManager DataManager;
-    public WaitCache WaitCache;
-    public CreateSqliteTable CreateSqliteTable;
-    
+    public WaitCache WaitCache;  
     
     public override void InstallBindings()
     {
         Container.Bind<DataManager>().FromInstance(DataManager);
         Container.Bind<WaitCache>().FromInstance(WaitCache);
-        Container.Bind<CreateSqliteTable>().FromInstance(CreateSqliteTable);
+        Container.BindInterfacesAndSelfTo<SqlManager>().AsSingle().NonLazy();
     }
 }
