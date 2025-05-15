@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
@@ -7,8 +8,8 @@ using Zenject;
 public class StartInstaller : MonoInstaller
 {
     public CanvasManager UICanvasManager;
-    
-    private SqliteDatabase database;
+    [Inject]
+    SqlManager sqlManager;
     
     public override void InstallBindings()
     {
@@ -20,7 +21,7 @@ public class StartInstaller : MonoInstaller
     /// </summary>
     public override void Start()
     {
-        database.OpenDatabase();
-        database.CreateTable();
+        Debug.Log("sql 호출");
+        sqlManager.ReadDataColumn<int>("slot_id");
     }
 }
