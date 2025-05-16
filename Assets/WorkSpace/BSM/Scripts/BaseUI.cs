@@ -8,7 +8,7 @@ public class BaseUI : MonoBehaviour
     private Dictionary<string, GameObject> goDict;
     private Dictionary<(string, System.Type), Component> compDict;
 
-    private void Awake() => Bind();
+    protected void Awake() => Bind();
 
     private void Bind()
     {

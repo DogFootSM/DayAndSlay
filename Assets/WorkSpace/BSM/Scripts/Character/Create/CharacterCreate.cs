@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
-public class NewGameStart : BaseUI
+public class CharacterCreate : BaseUI
 {
     //TODO: 추후 씬 변경 예정
     [SerializeField] private SceneReference inGameScene;

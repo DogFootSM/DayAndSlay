@@ -10,7 +10,7 @@ using Zenject;
 
 public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    public ButtonType ButtonType;
+    [FormerlySerializedAs("ButtonType")] public MenuType menuType;
 
     private Image buttonBackgroundImage;
     private TextMeshProUGUI buttonText;
@@ -43,7 +43,7 @@ public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
         //TODO: 버튼 클릭 애니메이션으로 변경
         ButtonBackgroundColorChange(1f, 1f, 1f);
         ButtonTextAlphaChange(1f);
-        canvasManager.ChangeCanvas(ButtonType);
+        canvasManager.ChangeCanvas(menuType);
     }
     
     /// <summary>

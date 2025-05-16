@@ -7,17 +7,49 @@ using Zenject;
 
 public class SqlManager : IInitializable
 {
+    public readonly string[] ColumnNames = new[]
+    {
+        "is_create",
+        "hair_sprite",
+        "body_sprite",
+        "shirt_sprite",
+        "weapon_sprite",
+        "last_played_time",
+        "weapon_type",
+        "remaining_days",
+        "strength",
+        "agility",
+        "intelligence",
+        "objective_item"
+    };
+
+    public readonly string[] DefaultValue = new[]
+    {
+        "0",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "none"
+    };
+    
     private SqliteDatabase sqlDatabase;
-  
+
     /// <summary>
     /// 게임 시작 시 테이블 생성
     /// </summary>
     public void Initialize()
     {
-        sqlDatabase = new SqliteDatabase(); 
-        sqlDatabase.CreateTable(); 
+        sqlDatabase = new SqliteDatabase();
+        sqlDatabase.CreateTable();
     }
-    
+
     /// <summary>
     /// 조건 컬럼 데이터 반환
     /// </summary>
@@ -30,5 +62,16 @@ public class SqlManager : IInitializable
     {
         return sqlDatabase.ReadTable(columnName, where, whereValue, operation);
     }
-    
+
+    /// <summary>
+    /// 컬럼 업데이트
+    /// </summary>
+    /// <param name="columnName">업데이트 할 컬럼</param>
+    /// <param name="columnValue">업데이트 값</param>
+    /// <param name="condition">업데이트 조건</param>
+    /// <param name="conditionValue">업데이트 조건 값</param>
+    public void UpdateDataColumn(string[] columnName, string[] columnValue, string condition, string conditionValue)
+    {
+        sqlDatabase.UpdateTable(columnName, columnValue, condition, conditionValue);
+    }
 }

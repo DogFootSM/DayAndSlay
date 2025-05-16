@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public enum ButtonType
+public enum MenuType
 {
-    NEWSTART, CONTINUEWSTART, ENVIRONMENT, EXIT
+    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT
 }
 
 //캐릭터 상태 전환에 사용할 타입
