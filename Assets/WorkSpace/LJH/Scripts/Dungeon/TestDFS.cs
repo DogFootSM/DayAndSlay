@@ -49,19 +49,24 @@ public class TestDFS : MonoBehaviour
             return;
         }
 
-        Debug.Log("메인 루트:");
-        foreach (var room in route)
-        {
-            Debug.Log(room.name); // 또는 roomList.IndexOf(room)
-        }
+        // 메인루트 확인용 디버그 로그 
+        //int mainI = 0;
+        //Debug.Log("메인 루트:");
+        //foreach (var room in route)
+        //{
+        //    Debug.Log($"메인 루트 {mainI} : {room.name}");
+        //    mainI++;
+        //}
 
         SideRouteMake();
 
         // 사이드 루트 확인
         Debug.Log("사이드 루트:");
+        int sideI = 0;
         foreach (var room in sideRoute)
         {
-            Debug.Log(room.name); // 또는 roomList.IndexOf(room)
+            Debug.Log($"사이드 루트 {sideI} : {room.name}");
+            sideI++;
         }
 
         DrawRouteLines();
@@ -138,6 +143,8 @@ public class TestDFS : MonoBehaviour
         }
 
         //방문하지 않은 방중에 첫번째 방과 그래프 연결된 방 중 하나를 50퍼 확률로 루트에 넣어줘야함
+        //roomDict 비지티드 룸이 아닌거중에
+
 
         if (sideRoute.Count == 0)
         {
@@ -153,7 +160,8 @@ public class TestDFS : MonoBehaviour
                         return;
                     }
 
-                    Grid randGrid = graph[graphKey][Random.Range(0, graph[graphKey].Count)];
+
+                    Grid randGrid = RandomGridSelector(graphKey);
 
                     Debug.Log($"첫번째 사이드 루트 그리드의 이름 {randGrid.name}");
 
@@ -166,11 +174,38 @@ public class TestDFS : MonoBehaviour
                     visitedRoom.Add(sideRoomList[i]);
 
 
+                    randGrid = RandomGridSelector(graphKey);
+
+                    Debug.Log($"세번째 사이드 루트 그리드의 이름 {sideRoomList[i].name}");
+
+                    sideRoute.Add(randGrid);
+                    visitedRoom.Add(randGrid);
+
                 }
             }
         }
+    }
 
+    private Grid RandomGridSelector(int graphKey)
+    {
+        Grid randGrid = graph[graphKey][Random.Range(0, graph[graphKey].Count)];
 
+        int attempt = 0;
+
+        while (!visitedRoom.Contains(randGrid) && attempt < 10)
+        {
+            //Todo : vistedRoom 중에서만 걸려야함 랜드그리드는
+            randGrid = graph[graphKey][Random.Range(0, graph[graphKey].Count)];
+            attempt++;
+        }
+
+        if (attempt >= 10)
+        {
+            Debug.LogError("무한루프 걸려버림");
+            return null;
+        }
+
+        return randGrid;
     }
 
 
@@ -193,10 +228,6 @@ public class TestDFS : MonoBehaviour
             TryAddNeighbor(i, left);
             TryAddNeighbor(i, right);
 
-            for (int j = 0; j < graph[i].Count; j++)
-            {
-                Debug.Log($"{i}번 그래프 : {graph[i][j]}");
-            }
         }
     }
 
@@ -239,4 +270,5 @@ public class TestDFS : MonoBehaviour
             (list[i], list[rand]) = (list[rand], list[i]);
         }
     }
+
 }
