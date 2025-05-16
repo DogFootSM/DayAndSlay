@@ -10,7 +10,8 @@ using Zenject;
 
 public class CharacterSlot : BaseUI
 {
-    [FormerlySerializedAs("slotIndex")] [HideInInspector] public int slotId;
+    [HideInInspector] public int slotId;
+    [SerializeField] private List<Image> characterSlotImages;
     
     [Inject] private SqlManager sqlManager;
     [Inject] private CanvasManager canvasManager;
@@ -49,6 +50,24 @@ public class CharacterSlot : BaseUI
         {
             isCreate = dataReader.GetInt32(0); 
         }
+        
+        dataReader = sqlManager.ReadDataColumn(new []
+        {
+            "hair_sprite",
+            "body_sprite",
+            "shirt_sprite",
+            "weapon_sprite"
+        }, new string[]{"slot_id"}, new string[]{$"{slotId}"},null);
+
+        while (dataReader.Read())
+        {
+            for (int i = 0; i < dataReader.FieldCount; i++)
+            {
+                characterSlotImages[i].sprite =
+                    Resources.Load<Sprite>($"Preset/{(CharacterPresetType)i}/{dataReader.GetString(i)}"); 
+            } 
+        }
+        
     }
     
     /// <summary>
