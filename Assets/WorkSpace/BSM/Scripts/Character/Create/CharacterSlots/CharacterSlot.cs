@@ -4,28 +4,30 @@ using System.Collections.Generic;
 using System.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
 public class CharacterSlot : BaseUI
 {
-    [HideInInspector] public int slotIndex;
+    [FormerlySerializedAs("slotIndex")] [HideInInspector] public int slotId;
     
     [Inject] private SqlManager sqlManager;
     [Inject] private CanvasManager canvasManager;
+    [Inject] private DataManager dataManager;
     private GameObject selectPanelObj;
     private GameObject emptyText;
     private Button selectButton;
     private Button deleteButton;
     private IDataReader dataReader;
-    
+    private CharacterSlotController characterSlotController;
  
     private int isCreate;
  
     private void Start()
     {
         Bind();
-        Init(); 
+        SelectSlotData(); 
         ButtonAddListener(); 
         CheckCharacterSlot();
     }
@@ -37,11 +39,11 @@ public class CharacterSlot : BaseUI
     }
 
     /// <summary>
-    /// 캐릭터 슬롯 패널 초기화
+    /// 캐릭터 슬롯 패널 검색
     /// </summary>
-    private void Init()
+    public void SelectSlotData()
     {         
-        dataReader = sqlManager.ReadDataColumn(new []{"is_create"} ,new string[]{"slot_id"}, new string[]{$"{slotIndex}"},null);
+        dataReader = sqlManager.ReadDataColumn(new []{"is_create"} ,new string[]{"slot_id"}, new string[]{$"{slotId}"},null);
         
         while (dataReader.Read())
         {
@@ -55,6 +57,7 @@ public class CharacterSlot : BaseUI
     private void Bind()
     {
         selectButton = GetComponent<Button>();
+        characterSlotController = GetComponentInParent<CharacterSlotController>();
         
         selectPanelObj = GetUI("CharacterSelectPanel");
         emptyText = GetUI("EmptyText");
@@ -67,7 +70,7 @@ public class CharacterSlot : BaseUI
     private void ButtonAddListener()
     {
         selectButton.onClick.AddListener(CharacterSlotSelect);
-        deleteButton.onClick.AddListener(CharacterDelete);
+        deleteButton.onClick.AddListener(DeleteCheck);
     }
     
     /// <summary>
@@ -77,6 +80,7 @@ public class CharacterSlot : BaseUI
     {
         if (isCreate == 0)
         {
+            dataManager.SlotId = slotId;
             canvasManager.ChangeCanvas(MenuType.CHARACTER_CREATE);
         }
         else
@@ -84,11 +88,13 @@ public class CharacterSlot : BaseUI
             Debug.Log("해당 캐릭터 데이터 로드");
         }
     }
-
-    private void CharacterDelete()
+    
+    /// <summary>
+    /// 삭제 진행 확인
+    /// </summary>
+    private void DeleteCheck()
     { 
-        sqlManager.UpdateDataColumn(sqlManager.ColumnNames, sqlManager.DefaultValue, "slot_id", $"{slotIndex}");
-      
+        characterSlotController.DeleteSlot(slotId); 
     }
     
 }

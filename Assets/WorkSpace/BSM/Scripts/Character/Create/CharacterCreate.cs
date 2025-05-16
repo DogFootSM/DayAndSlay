@@ -47,10 +47,11 @@ public class CharacterCreate : BaseUI
     /// </summary>
     private void PlayerCreate()
     {
-        //TODO: Slot을 선택했을 때 json 저장하는 느낌으로
         //현재 프리셋, 무기 타입 저장
         dataManager.SavePresetData(presets, (int)curWeaponType); 
-
+        dataManager.CreateDataUpdate();
+        
+        
         //TODO: 씬 이동이 아닌 Slot 선택 화면 띄우기
         SceneManager.LoadScene(inGameScene.Name);
     }

@@ -7,38 +7,6 @@ using Zenject;
 
 public class SqlManager : IInitializable
 {
-    public readonly string[] ColumnNames = new[]
-    {
-        "is_create",
-        "hair_sprite",
-        "body_sprite",
-        "shirt_sprite",
-        "weapon_sprite",
-        "last_played_time",
-        "weapon_type",
-        "remaining_days",
-        "strength",
-        "agility",
-        "intelligence",
-        "objective_item"
-    };
-
-    public readonly string[] DefaultValue = new[]
-    {
-        "0",
-        "x",
-        "x",
-        "x",
-        "x",
-        "x",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "none"
-    };
-    
     private SqliteDatabase sqlDatabase;
 
     /// <summary>

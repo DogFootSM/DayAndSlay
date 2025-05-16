@@ -11,7 +11,7 @@ public class ProjectInstaller : MonoInstaller
     
     public override void InstallBindings()
     {
-        Container.Bind<DataManager>().FromInstance(DataManager);
+        Container.Bind<DataManager>().FromComponentInNewPrefab(DataManager).AsSingle().NonLazy();
         Container.Bind<WaitCache>().FromInstance(WaitCache);
         Container.BindInterfacesAndSelfTo<SqlManager>().AsSingle().NonLazy();
     }
