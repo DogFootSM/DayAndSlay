@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TestDFS : MonoBehaviour
@@ -48,8 +49,21 @@ public class TestDFS : MonoBehaviour
             return;
         }
 
+        Debug.Log("메인 루트:");
+        foreach (var room in route)
+        {
+            Debug.Log(room.name); // 또는 roomList.IndexOf(room)
+        }
+
         SideRouteMake();
-        //AddExtraConnections();
+
+        // 사이드 루트 확인
+        Debug.Log("사이드 루트:");
+        foreach (var room in sideRoute)
+        {
+            Debug.Log(room.name); // 또는 roomList.IndexOf(room)
+        }
+
         DrawRouteLines();
     }
 
@@ -103,10 +117,63 @@ public class TestDFS : MonoBehaviour
 
     private void SideRouteMake()
     {
+        sideRoomList = roomList;
+
+        Dictionary<Grid, int> roomDict = new Dictionary<Grid, int>();
+
+        for (int i = 0; i < sideRoomList.Count; i++)
+        {
+            roomDict.Add(sideRoomList[i], i);
+        }
+
+
+        // 메인 루트에 포함된 방은 제거
+        for (int i = sideRoomList.Count - 1; i >= 0; i--)
+        {
+            if (route.Contains(sideRoomList[i]))
+            {
+                roomDict.Remove(sideRoomList[i]); // Index 접근 필요 없음
+                sideRoomList.RemoveAt(i);
+            }
+        }
+
+        //방문하지 않은 방중에 첫번째 방과 그래프 연결된 방 중 하나를 50퍼 확률로 루트에 넣어줘야함
+
+        if (sideRoute.Count == 0)
+        {
+            for (int i = 0; i < sideRoomList.Count; i++)
+            {
+                if (Random.Range(0, 2) == 1)
+                {
+                    int graphKey = roomDict[sideRoomList[i]];
+
+                    if (graph[graphKey].Count == 0)
+                    {
+                        Debug.Log("에러 : 그래프의 내용물이 비어있습니다.");
+                        return;
+                    }
+
+                    Grid randGrid = graph[graphKey][Random.Range(0, graph[graphKey].Count)];
+
+                    Debug.Log($"첫번째 사이드 루트 그리드의 이름 {randGrid.name}");
+
+                    sideRoute.Add(randGrid);
+                    visitedRoom.Add(randGrid);
+
+                    Debug.Log($"두번째 사이드 루트 그리드의 이름 {sideRoomList[i].name}");
+
+                    sideRoute.Add(sideRoomList[i]);
+                    visitedRoom.Add(sideRoomList[i]);
+
+
+                }
+            }
+        }
+
 
     }
 
-   
+
     /// <summary>
     /// 각 방을 기준으로 상하좌우 이웃 연결 그래프 생성
     /// </summary>
@@ -125,6 +192,11 @@ public class TestDFS : MonoBehaviour
             TryAddNeighbor(i, down);
             TryAddNeighbor(i, left);
             TryAddNeighbor(i, right);
+
+            for (int j = 0; j < graph[i].Count; j++)
+            {
+                Debug.Log($"{i}번 그래프 : {graph[i][j]}");
+            }
         }
     }
 
@@ -141,19 +213,18 @@ public class TestDFS : MonoBehaviour
     /// </summary>
     private void DrawRouteLines()
     {
+        // 메인 루트 그리기
         mainRouteLineRenderer.positionCount = route.Count;
         for (int i = 0; i < route.Count; i++)
         {
             mainRouteLineRenderer.SetPosition(i, route[i].transform.position);
         }
 
-        sideRouteLineRenderer.positionCount = extraConnectionsList.Count * 2;
-        int idx = 0;
-        foreach (var pair in extraConnectionsList)
+        // 사이드 루트 그리기 (중간 연결)
+        sideRouteLineRenderer.positionCount = sideRoute.Count;
+        for (int i = 0; i < sideRoute.Count; i++)
         {
-            sideRouteLineRenderer.SetPosition(idx, pair.Item1.transform.position);
-            sideRouteLineRenderer.SetPosition(idx + 1, pair.Item2.transform.position);
-            idx += 2;
+            sideRouteLineRenderer.SetPosition(i, sideRoute[i].transform.position);
         }
     }
 
