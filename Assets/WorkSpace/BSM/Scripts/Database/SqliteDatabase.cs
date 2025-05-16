@@ -64,6 +64,7 @@ public class SqliteDatabase
                                 shirt_sprite        TEXT NOT NULL DEFAULT 'none', 
                                 weapon_sprite       TEXT NOT NULL DEFAULT 'none',
                                 last_played_time    TEXT NOT NULL DEFAULT 'none',
+                                weapon_type         INTEGER NOT NULL DEFAULT 0,
                                 remaining_days      INTEGER NOT NULL DEFAULT 150,
                                 strength            INTEGER NOT NULL DEFAULT 0,
                                 agility             INTEGER NOT NULL DEFAULT 0,
@@ -104,43 +105,66 @@ public class SqliteDatabase
     }
 
     /// <summary>
-    /// 조건에 해당하는 컬럼 조회
+    /// 단일, 다중 컬럼 조회
     /// </summary>
     /// <param name="column">가져올 컬럼명</param>
-    /// <param name="where">wher절 조건</param>
+    /// <param name="condition">where절 조건</param>
     /// <param name="whereValue">조건의 값</param>
+    /// <param name="operation">조건 연산 기호</param>
     /// <typeparam name="T">여러 타입으로 조회</typeparam>
     /// <returns></returns>
-    public IDataReader ReadTable<T>(string column, string where, T whereValue)
+    public IDataReader ReadTable(string[] column, string[] condition, string[] whereValue, string[] operation)
     {
-        using (dbCommand = dbConnection.CreateCommand())
-        {
-            string query = $"SELECT {column} FROM Character WHERE {where} = @value"; 
-            dbCommand.CommandText = query;  
-            dbCommand.Parameters.Clear();
-            dbCommand.Parameters.Add(new SqliteParameter("@value", whereValue));
-            dbDataReader = dbCommand.ExecuteReader();
-        }
+        condition ??= Array.Empty<string>();
+        whereValue ??= Array.Empty<string>();
+        operation ??= Array.Empty<string>();
 
-        return dbDataReader;
-    }
-    
-    /// <summary>
-    /// 해당 컬럼 전체 조회
-    /// </summary>
-    /// <param name="column">조회할 컬럼명</param>
-    /// <returns></returns>
-    public IDataReader ReadTable(string column)
-    {
+        if (condition.Length > 0 && (condition.Length != whereValue.Length || condition.Length - 1 != operation.Length))
+        {
+            throw new ArgumentException("DB 조회 조건이 잘못 됐음");
+        }
+        
         using (dbCommand = dbConnection.CreateCommand())
         {
-            string query = $"SELECT {column} FROM Character";
-            dbCommand.CommandText = query;
+            string query = "SELECT ";
             
+            //컬럼의 개수만큼 추가
+            for (int i = 0; i < column.Length; i++)
+            {
+                query += $"{column[i]}";
+                
+                //뒤에 컬럼이 존재한다면 , 추가
+                if (i < column.Length - 1)
+                {
+                    query += ",";
+                } 
+            }
+        
+            query += " FROM Character";
+
+            //조건이 있을 경우에만 WHERE절 추가
+            if (condition.Length > 0)
+            {
+                query += " WHERE ";
+            }
+
+            for (int j = 0; j < condition.Length; j++)
+            {
+                //WHERE절 조건 추가
+                query += $"{condition[j]} = " + $"@value{j}";
+    
+                if(j < condition.Length -1 && j < operation.Length)
+                {
+                    query += $" {operation[j]} ";
+                }  
+                
+                dbCommand.Parameters.Add(new SqliteParameter($"@value{j}", whereValue[j]));
+            } 
+
+            dbCommand.CommandText = query;    
             dbDataReader = dbCommand.ExecuteReader();
         }
 
         return dbDataReader;
     }
-    
 }

@@ -7,49 +7,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class CharacterSlot : BaseUI
+public class CharacterSlot : MonoBehaviour
 {
-    [Inject] private SqlManager sqlManager;
+    public int slotIndex;
 
-    private IDataReader dataReader;
-    
-    private Button characterSelectButton; 
-    private GameObject characterSelectPanel;
-    private GameObject emptyText;
-    
-    private List<int> slots = new List<int>(3);
+    [Inject] private SqlManager sqlManager;
     
     private void Start()
     {
-        Bind();
-        MakeCharacterSlotCheck(); 
-    }
+        IDataReader reader = sqlManager.ReadDataColumn(new []{"slot_id"} ,new []{"is_create"}, null,null);
 
-    private void Bind()
-    {
-        characterSelectButton = GetComponent<Button>();
-        characterSelectPanel = GetUI("CharacterSelectPanel");
-        emptyText = GetUI("EmptyText"); 
-    }
-    
-    /// <summary>
-    /// 캐릭터 슬롯 데이터 존재 여부 확인
-    /// </summary>
-    private void MakeCharacterSlotCheck()
-    {
-        dataReader = sqlManager.ReadDataColumn("is_create");
-
-        while (dataReader.Read())
+        while (reader.Read())
         {
-            slots.Add(dataReader.GetInt32(0));
+            Debug.Log($"{slotIndex} : {reader.GetInt32(0)}");
         }
-
-        for (int i = 0; i < slots.Count; i++)
-        {
-            characterSelectPanel.SetActive(slots[i] == 1); 
-            emptyText.SetActive(slots[i] == 0); 
-        }
+        
     }
-    
-    
 }

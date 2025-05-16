@@ -8,7 +8,6 @@ using Zenject;
 public class SqlManager : IInitializable
 {
     private SqliteDatabase sqlDatabase;
-    private IDataReader dataReader;
   
     /// <summary>
     /// 게임 시작 시 테이블 생성
@@ -27,21 +26,9 @@ public class SqlManager : IInitializable
     /// <param name="whereValue"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public IDataReader ReadDataColumn<T>(string columnName, string where, T whereValue)
+    public IDataReader ReadDataColumn(string[] columnName, string[] where, string[] whereValue, string[] operation)
     {
-        
-        return dataReader = sqlDatabase.ReadTable(columnName, where, whereValue);
+        return sqlDatabase.ReadTable(columnName, where, whereValue, operation);
     }
-    
-    /// <summary>
-    /// 전체 컬럼 데이터 반환
-    /// </summary>
-    /// <param name="column"></param>
-    /// <returns></returns>
-    public IDataReader ReadDataColumn(string column)
-    {
-        return dataReader = sqlDatabase.ReadTable(column); 
-    }
-    
     
 }
