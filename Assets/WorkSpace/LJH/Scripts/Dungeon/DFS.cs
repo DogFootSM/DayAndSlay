@@ -1,90 +1,89 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DFS : MonoBehaviour
 {
-    /// <summary>
-    /// 던전을 구성할 방 프리팹 리스트 (Grid는 각 방의 위치 및 정보)
-    /// </summary>
+    [Header("던전 방 데이터")]
     [SerializeField] private List<Grid> roomList = new List<Grid>();
+    [SerializeField] private int bossRoomIndex = 3;
+    [SerializeField] private int gridWidth = 4; // 4x3 그리드 기준
+
+    [Header("시각화")]
+    [SerializeField] private LineRenderer mainRouteLineRenderer;
+    [SerializeField] private LineRenderer sideRouteLineRenderer;
+
 
     /// <summary>
-    /// DFS로 방문한 방들을 저장하는 해시셋 (중복 방지)
+    /// 방문한 방 HashSet
     /// </summary>
     private HashSet<Grid> visitedRoom = new HashSet<Grid>();
 
     /// <summary>
-    /// DFS로 순차 방문한 방들을 저장하는 리스트 (경로 시각화용)
+    /// 보스방 까지의 경로 List
     /// </summary>
     private List<Grid> route = new List<Grid>();
-
-    /// <summary>
-    /// 각 방 인덱스에 연결된 이웃 방 목록 (그래프 구조)
-    /// </summary>
+    
     private Dictionary<int, List<Grid>> graph = new Dictionary<int, List<Grid>>();
 
-    /// <summary>
-    /// DFS 경로를 라인으로 표시할 라인렌더러
-    /// </summary>
-    [SerializeField] private LineRenderer lineRenderer;
-
-    /// <summary>
-    /// 사이드 루트를 시각화할 라인렌더러 (색상 다르게 표현)
-    /// </summary>
-    [SerializeField] private LineRenderer sideLineRenderer;
-
-    /// <summary>
-    /// 도달해야 할 보스방 인덱스
-    /// </summary>
-    [SerializeField] private int bossRoomIndex = 3;
-
-    /// <summary>
-    /// DFS 루트 외에 추가로 연결할 사이드 루트 개수
-    /// </summary>
-    [SerializeField] private int extraConnections = 3;
-
-    /// <summary>
-    /// 연결된 사이드 루트 저장용 리스트 (쌍으로 저장)
-    /// </summary>
-    private List<(Grid, Grid)> extraConnectionsList = new List<(Grid, Grid)>();
-
+    //사이드 루트 경로
+    private List<Grid> sideRoute = new List<Grid> ();
     private void Start()
     {
-        GraphModel();
-
-        if (!RootMake(0))
+        if (roomList.Count <= bossRoomIndex)
         {
-            Debug.LogError("보스방에 도달하지 못했습니다.");
+            Debug.LogError("roomList에 충분한 방이 없습니다.");
+            return;
         }
 
-        AddExtraConnections();
-        DrawRouteLine();
+        GraphModel();
+
+        if (!RouteMake(0))
+        {
+            Debug.LogError("보스방에 도달하지 못했습니다.");
+            return;
+        }
+
+        SideRouteMake();
+
+        // 사이드 루트 확인
+        Debug.Log("사이드 루트:");
+        int sideI = 0;
+        foreach (var room in sideRoute)
+        {
+            Debug.Log($"사이드 루트 {sideI} : {room.name}");
+            sideI++;
+        }
+
+        DrawRouteLines();
     }
 
-
-
     /// <summary>
-    /// DFS 기반으로 보스방까지 경로를 재귀적으로 생성
+    /// DFS로 보스방까지의 경로를 생성한다 (재귀 + 백트래킹)
     /// </summary>
-    /// <summary>
-    /// DFS를 통해 보스방까지 도달하는 경로를 생성하며, 성공 시 true 반환
-    /// </summary>
-    bool RootMake(int curRoomIndex)
+    private bool RouteMake(int curRoomIndex)
     {
+        //현재 방을 current에 넣어줌
         Grid current = roomList[curRoomIndex];
+        //방문한 방 목록에 current 를 넣어줌
         visitedRoom.Add(current);
+        //경로 목록에 current를 넣어줌
         route.Add(current);
 
+        //보스방에 도착한 경우 DFS알고리즘 끝냄
         if (curRoomIndex == bossRoomIndex)
         {
             Debug.Log("보스방 도착");
-            return true; // 도착 성공
+            return true;
         }
 
+        //현재 방에 인접한 방들을 neighbors에 넣어줌
         List<Grid> neighbors = graph[curRoomIndex];
+        //방문하지 않은 방 목록 생성
         List<int> unvisitedIndices = new List<int>();
 
+        //현재 방에 인접한 방 중 방문하지 않은 방을 방문하지 않은 방 목록에 넣어줌
         foreach (Grid neighbor in neighbors)
         {
             int index = roomList.IndexOf(neighbor);
@@ -92,121 +91,152 @@ public class DFS : MonoBehaviour
                 unvisitedIndices.Add(index);
         }
 
-        // 랜덤한 순서로 시도
+        //방문하지 않은 방 목록을 섞어줌
         Shuffle(unvisitedIndices);
 
+        //방문하지 않은 방 목록마다 RootMake 재귀
         foreach (int nextIndex in unvisitedIndices)
         {
-            if (RootMake(nextIndex)) // 재귀 성공 시 그대로 리턴
+            if (RouteMake(nextIndex))
                 return true;
         }
 
-        // 실패했으면 백트래킹
+        // 조건이 맞지 않았다면 방문한 방 목록, 경로에서 현재 방을 제거하고 false로 리턴(백트래킹)
         visitedRoom.Remove(current);
         route.Remove(current);
         return false;
     }
 
-    /// <summary>
-    /// 리스트의 순서를 랜덤하게 섞는다 (Fisher-Yates)
-    /// </summary>
-    void Shuffle(List<int> list)
+    private void SideRouteMake()
     {
-        for (int i = 0; i < list.Count; i++)
+        List<Grid> StartGrid = new List<Grid>();
+
+        foreach (Grid mainRoom in route)
         {
-            int rand = Random.Range(i, list.Count);
-            int temp = list[i];
-            list[i] = list[rand];
-            list[rand] = temp;
-        }
-    }
-
-    /// <summary>
-    /// 메인 루트 외에도 무작위로 방들 사이에 연결을 추가하여 던전을 복잡하게 만듦
-    /// </summary>
-    void AddExtraConnections()
-    {
-        int count = 0;
-        while (count < extraConnections)
-        {
-            int a = Random.Range(0, roomList.Count);
-            int b = Random.Range(0, roomList.Count);
-
-            if (a == b || a == bossRoomIndex || b == bossRoomIndex) continue;
-            if (!IsAdjacentInGrid(a, b)) continue; // 대각선 방지
-
-            Grid roomA = roomList[a];
-            Grid roomB = roomList[b];
-
-            if (!graph[a].Contains(roomB))
+            int index = roomList.IndexOf(mainRoom);
+            foreach (Grid neighbor in graph[index])
             {
-                graph[a].Add(roomB);
-                graph[b].Add(roomA);
-                extraConnectionsList.Add((roomA, roomB));
-                Debug.Log($"사이드 루트 연결: {a} ↔ {b}");
-                count++;
+                if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
+                {
+                    StartGrid.Add(mainRoom);
+                    break;
+                }
+            }
+        }
+
+        if (StartGrid.Count == 0)
+        {
+            Debug.LogWarning("사이드루트를 만들 수 있는 지점이 없습니다.");
+            return;
+        }
+
+        Grid entryPoint = StartGrid[Random.Range(0, StartGrid.Count)];
+        int entryIndex = roomList.IndexOf(entryPoint);
+
+        sideRoute.Add(entryPoint);
+
+        visitedRoom.Add(entryPoint);
+
+        HashSet<Grid> sideVisited = new HashSet<Grid>();
+
+        sideVisited.Add(entryPoint);
+
+        foreach (Grid neighbor in graph[entryIndex])
+        {
+            if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
+            {
+                SideRouteDFS(neighbor, sideVisited);
+                break;
             }
         }
     }
 
-    /// <summary>
-    /// 두 인덱스가 상하좌우 인접한지 확인 (4x3 그리드 기준)
-    /// </summary>
-    bool IsAdjacentInGrid(int a, int b)
+    private void SideRouteDFS(Grid current, HashSet<Grid> sideVisited)
     {
-        int width = 4; // 가로 너비 (고정값 or 변수로 바꿔도 됨)
+        sideRoute.Add(current);
+        sideVisited.Add(current);
+        visitedRoom.Add(current);
 
-        // 좌우
-        if (Mathf.Abs(a - b) == 1 && Mathf.Min(a, b) / width == Mathf.Max(a, b) / width)
-            return true;
-
-        // 상하
-        if (Mathf.Abs(a - b) == width)
-            return true;
-
-        return false;
+        int index = roomList.IndexOf(current);
+        foreach (Grid neighbor in graph[index])
+        {
+            if (!visitedRoom.Contains(neighbor) && !sideVisited.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
+            {
+                SideRouteDFS(neighbor, sideVisited);
+            }
+        }
     }
 
+
     /// <summary>
-    /// DFS로 탐색된 경로를 라인렌더러를 통해 시각적으로 표시
+    /// 각 방을 기준으로 상하좌우 이웃 연결 그래프 생성
     /// </summary>
-    void DrawRouteLine()
+    private void GraphModel()
     {
-        // 메인 루트
-        lineRenderer.positionCount = route.Count;
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            graph[i] = new List<Grid>();
+
+            int up = i - gridWidth;
+            int down = i + gridWidth;
+            int left = (i % gridWidth != 0) ? i - 1 : -1;
+            int right = (i % gridWidth != gridWidth - 1) ? i + 1 : -1;
+
+            TryAddNeighbor(i, up);
+            TryAddNeighbor(i, down);
+            TryAddNeighbor(i, left);
+            TryAddNeighbor(i, right);
+
+        }
+    }
+
+    private void TryAddNeighbor(int from, int to)
+    {
+        if (to >= 0 && to < roomList.Count)
+            graph[from].Add(roomList[to]);
+    }
+
+    private void DoorCreate()
+    {
+        Dictionary <Grid, List<GameObject>> doorDic = new Dictionary<Grid, List<GameObject>>();
+        //각자 문을 저장해야함
+        List <GameObject> doors = new List<GameObject>();
+        
+        doorDic.Add(route[0], doors);
+    }
+
+
+
+    /// <summary>
+    /// DFS 경로 + 사이드 루트 경로 라인 렌더링
+    /// </summary>
+    private void DrawRouteLines()
+    {
+        // 메인 루트 그리기
+        mainRouteLineRenderer.positionCount = route.Count;
         for (int i = 0; i < route.Count; i++)
         {
-            lineRenderer.SetPosition(i, route[i].transform.position);
+            mainRouteLineRenderer.SetPosition(i, route[i].transform.position);
         }
 
-        // 사이드 루트 라인 초기화
-        sideLineRenderer.positionCount = extraConnectionsList.Count * 2;
-
-        int idx = 0;
-        foreach (var pair in extraConnectionsList)
+        // 사이드 루트 그리기 (중간 연결)
+        sideRouteLineRenderer.positionCount = sideRoute.Count;
+        for (int i = 0; i < sideRoute.Count; i++)
         {
-            sideLineRenderer.SetPosition(idx, pair.Item1.transform.position);
-            sideLineRenderer.SetPosition(idx + 1, pair.Item2.transform.position);
-            idx += 2;
+            sideRouteLineRenderer.SetPosition(i, sideRoute[i].transform.position);
         }
     }
 
-    void GraphModel()
+    /// <summary>
+    /// 리스트 셔플
+    /// </summary>
+    private void Shuffle(List<int> list)
     {
-        graph[0] = new List<Grid> { roomList[1], roomList[4] };
-        graph[1] = new List<Grid> { roomList[0], roomList[2], roomList[5] };
-        graph[2] = new List<Grid> { roomList[1], roomList[3], roomList[6] };
-        graph[3] = new List<Grid> { roomList[2], roomList[7] };
-                            
-        graph[4] = new List<Grid> { roomList[0], roomList[5], roomList[8] };
-        graph[5] = new List<Grid> { roomList[1], roomList[4], roomList[6], roomList[9] };
-        graph[6] = new List<Grid> { roomList[2], roomList[5], roomList[7], roomList[10] };
-        graph[7] = new List<Grid> { roomList[3], roomList[6], roomList[11] };
-                            
-        graph[8] = new List<Grid> { roomList[4], roomList[9] };
-        graph[9] = new List<Grid> { roomList[5], roomList[8], roomList[10] };
-        graph[10] = new List<Grid> { roomList[6], roomList[9], roomList[11] };
-        graph[11] = new List<Grid> { roomList[7], roomList[10] };
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            (list[i], list[rand]) = (list[rand], list[i]);
+        }
     }
 
 }
