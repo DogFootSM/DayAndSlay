@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
@@ -12,6 +13,7 @@ public class CharacterSlotController : MonoBehaviour
     [SerializeField] private List<CharacterSlot> characterSlots;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button confirmButton;
+    [SerializeField] private SceneReference inGameScene;
     [Inject] private SqlManager sqlManager;
     
     public GameObject DeleteAlert;
@@ -56,13 +58,8 @@ public class CharacterSlotController : MonoBehaviour
             characterSlots[i].slotId = i + 1;
         }
         
-        cancelButton.onClick.AddListener(() => DeleteAlert.SetActive(false));
-        
-        confirmButton.onClick.AddListener(() =>
-        {
-            DeleteAlert.SetActive(false);
-            sqlManager.UpdateDataColumn(ColumnNames, DefaultValue, "slot_id", $"{DeleteSlotId}");
-        });
+        cancelButton.onClick.AddListener(() => DeleteAlert.SetActive(false)); 
+        confirmButton.onClick.AddListener(DeleteSlotConfirm);
     }
     
     /// <summary>
@@ -73,6 +70,27 @@ public class CharacterSlotController : MonoBehaviour
     {
         DeleteSlotId = slotId;
         DeleteAlert.SetActive(true);
-        characterSlots[DeleteSlotId].SelectSlotData();
-    } 
+    }
+
+    /// <summary>
+    /// 슬롯 삭제 완료
+    /// </summary>
+    private void DeleteSlotConfirm()
+    {
+        DeleteAlert.SetActive(false);
+        sqlManager.UpdateDataColumn(ColumnNames, DefaultValue, 
+            sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), 
+            $"{DeleteSlotId}");
+            
+        characterSlots[DeleteSlotId - 1].IsCreatedCharacter();
+    }
+    
+    /// <summary>
+    /// 슬롯 선택 시 게임 씬 이동
+    /// </summary>
+    public void LoadInGameScene()
+    {
+        SceneManager.LoadScene(inGameScene.Name);
+    }
+    
 }

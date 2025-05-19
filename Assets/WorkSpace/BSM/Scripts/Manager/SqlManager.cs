@@ -5,19 +5,39 @@ using System.Data;
 using UnityEngine;
 using Zenject;
 
+
 public class SqlManager : IInitializable
 {
     private SqliteDatabase sqlDatabase;
 
+    public Dictionary<CharacterDataColumns, string> CharacterDataColumns;
+    
     /// <summary>
     /// 게임 시작 시 테이블 생성
     /// </summary>
     public void Initialize()
     {
+        CharacterDataColumns = new Dictionary<CharacterDataColumns, string>();
         sqlDatabase = new SqliteDatabase();
-        sqlDatabase.CreateTable();
+        sqlDatabase.CreateTable(); 
     }
 
+    /// <summary>
+    /// 캐릭터 데이터 컬럼 반환
+    /// </summary>
+    /// <param name="columns">컬럼 키</param>
+    /// <returns></returns>
+    public string CharacterColumn(CharacterDataColumns columns)
+    {
+        if (!CharacterDataColumns.ContainsKey(columns))
+        {
+            CharacterDataColumns.TryAdd(columns, columns.ToString().ToLower());
+        }   
+        
+        return CharacterDataColumns[columns];
+    }
+    
+    
     /// <summary>
     /// 조건 컬럼 데이터 반환
     /// </summary>

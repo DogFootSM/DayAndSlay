@@ -8,7 +8,6 @@ using Zenject;
 
 public class CharacterCreate : BaseUI
 {
-    //TODO: 추후 씬 변경 예정
     [SerializeField] private SceneReference inGameScene;
     
     [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: WEAPON")]
@@ -50,9 +49,7 @@ public class CharacterCreate : BaseUI
         //현재 프리셋, 무기 타입 저장
         dataManager.SavePresetData(presets, (int)curWeaponType); 
         dataManager.CreateDataUpdate();
-        
-        
-        //TODO: 씬 이동이 아닌 Slot 선택 화면 띄우기
+
         SceneManager.LoadScene(inGameScene.Name);
     }
     

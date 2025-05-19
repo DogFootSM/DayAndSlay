@@ -37,13 +37,15 @@ public class DataManager : MonoBehaviour
 
         sqlManager.UpdateDataColumn(new[]
             {
-                "hair_sprite",
-                "body_sprite",
-                "shirt_sprite",
-                "weapon_sprite"
-            }, spriteColumns.ToArray(), "slot_id", $"{SlotId}");
+                sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+                sqlManager.CharacterColumn(CharacterDataColumns.BODY_SPRITE),
+                sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+                sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+            }, spriteColumns.ToArray(), sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
 
-        sqlManager.UpdateDataColumn(new[] { "weapon_type" }, new[] { $"{WeaponType}" }, "slot_id", $"{SlotId}");
+        sqlManager.UpdateDataColumn(new[] { sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_TYPE)}, new[] { $"{WeaponType}" }, 
+            sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), 
+            $"{SlotId}");
     }
 
 
@@ -55,11 +57,13 @@ public class DataManager : MonoBehaviour
     {
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
         {
-            "hair_sprite",
-            "body_sprite",
-            "shirt_sprite",
-            "weapon_sprite"
-        }, new[] {"slot_id"}, new [] {$"{SlotId}"}, null);
+            sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+            sqlManager.CharacterColumn(CharacterDataColumns.BODY_SPRITE),
+            sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+            sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+        }, new[] {sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+            new [] {$"{SlotId}"}, 
+            null);
         
         //Body Sprite 데이터 가져옴
         while (dataReader.Read())

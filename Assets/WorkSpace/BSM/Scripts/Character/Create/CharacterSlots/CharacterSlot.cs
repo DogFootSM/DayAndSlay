@@ -12,7 +12,7 @@ public class CharacterSlot : BaseUI
 {
     [HideInInspector] public int slotId;
     [SerializeField] private List<Image> characterSlotImages;
-    
+
     [Inject] private SqlManager sqlManager;
     [Inject] private CanvasManager canvasManager;
     [Inject] private DataManager dataManager;
@@ -22,54 +22,64 @@ public class CharacterSlot : BaseUI
     private Button deleteButton;
     private IDataReader dataReader;
     private CharacterSlotController characterSlotController;
- 
+
     private int isCreate;
- 
+
     private void Start()
     {
         Bind();
-        SelectSlotData(); 
+        IsCreatedCharacter();
+        LoadSlotData();
         ButtonAddListener(); 
-        CheckCharacterSlot();
     }
+  
+    /// <summary>
+    /// 캐릭터 생성 여부 확인
+    /// </summary>
+    public void IsCreatedCharacter()
+    {
+        dataReader = sqlManager.ReadDataColumn(new[]
+            {
+                sqlManager.CharacterColumn(CharacterDataColumns.IS_CREATE)
+            }, 
+            new string[] { sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID) },
+            new string[] { $"{slotId}" },
+            null);
 
-    private void CheckCharacterSlot()
-    { 
+        while (dataReader.Read())
+        {
+            isCreate = dataReader.GetInt32(0);
+        }
+        
         selectPanelObj.SetActive(isCreate != 0);
-        emptyText.SetActive(isCreate == 0);  
+        emptyText.SetActive(isCreate == 0);
     }
-
+    
     /// <summary>
     /// 캐릭터 슬롯 패널 검색
     /// </summary>
-    public void SelectSlotData()
-    {         
-        dataReader = sqlManager.ReadDataColumn(new []{"is_create"} ,new string[]{"slot_id"}, new string[]{$"{slotId}"},null);
-        
-        while (dataReader.Read())
+    private void LoadSlotData()
+    { 
+        dataReader = sqlManager.ReadDataColumn(new[]
         {
-            isCreate = dataReader.GetInt32(0); 
-        }
-        
-        dataReader = sqlManager.ReadDataColumn(new []
-        {
-            "hair_sprite",
-            "body_sprite",
-            "shirt_sprite",
-            "weapon_sprite"
-        }, new string[]{"slot_id"}, new string[]{$"{slotId}"},null);
+            sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+            sqlManager.CharacterColumn(CharacterDataColumns.BODY_SPRITE),
+            sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+            sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE)
+        }, new string[] { sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+            new string[] { $"{slotId}" }, 
+            null);
 
         while (dataReader.Read())
         {
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
                 characterSlotImages[i].sprite =
-                    Resources.Load<Sprite>($"Preset/{(CharacterPresetType)i}/{dataReader.GetString(i)}"); 
-            } 
+                    Resources.Load<Sprite>($"Preset/{(CharacterPresetType)i}/{dataReader.GetString(i)}");
+            }
         }
-        
     }
-    
+
     /// <summary>
     /// UI 요소 바인딩
     /// </summary>
@@ -77,7 +87,7 @@ public class CharacterSlot : BaseUI
     {
         selectButton = GetComponent<Button>();
         characterSlotController = GetComponentInParent<CharacterSlotController>();
-        
+
         selectPanelObj = GetUI("CharacterSelectPanel");
         emptyText = GetUI("EmptyText");
         deleteButton = GetUI<Button>("DeleteButton");
@@ -91,29 +101,29 @@ public class CharacterSlot : BaseUI
         selectButton.onClick.AddListener(CharacterSlotSelect);
         deleteButton.onClick.AddListener(DeleteCheck);
     }
-    
+
     /// <summary>
     /// 캐릭터 슬롯 선택 동작
     /// </summary>
     private void CharacterSlotSelect()
     {
+        dataManager.SlotId = slotId;
+
         if (isCreate == 0)
         {
-            dataManager.SlotId = slotId;
             canvasManager.ChangeCanvas(MenuType.CHARACTER_CREATE);
         }
         else
         {
-            Debug.Log("해당 캐릭터 데이터 로드");
+            characterSlotController.LoadInGameScene();
         }
     }
-    
+
     /// <summary>
     /// 삭제 진행 확인
     /// </summary>
     private void DeleteCheck()
-    { 
-        characterSlotController.DeleteSlot(slotId); 
+    {
+        characterSlotController.DeleteSlot(slotId);
     }
-    
 }
