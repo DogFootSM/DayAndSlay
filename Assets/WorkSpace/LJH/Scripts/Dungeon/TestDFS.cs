@@ -122,90 +122,63 @@ public class TestDFS : MonoBehaviour
 
     private void SideRouteMake()
     {
-        sideRoomList = roomList;
+        List<Grid> StartGrid = new List<Grid>();
 
-        Dictionary<Grid, int> roomDict = new Dictionary<Grid, int>();
-
-        for (int i = 0; i < sideRoomList.Count; i++)
+        foreach (Grid mainRoom in route)
         {
-            roomDict.Add(sideRoomList[i], i);
-        }
-
-
-        // 메인 루트에 포함된 방은 제거
-        for (int i = sideRoomList.Count - 1; i >= 0; i--)
-        {
-            if (route.Contains(sideRoomList[i]))
+            int index = roomList.IndexOf(mainRoom);
+            foreach (Grid neighbor in graph[index])
             {
-                roomDict.Remove(sideRoomList[i]); // Index 접근 필요 없음
-                sideRoomList.RemoveAt(i);
+                if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
+                {
+                    StartGrid.Add(mainRoom);
+                    break;
+                }
             }
         }
 
-        //방문하지 않은 방중에 첫번째 방과 그래프 연결된 방 중 하나를 50퍼 확률로 루트에 넣어줘야함
-        //roomDict 비지티드 룸이 아닌거중에
-
-
-        if (sideRoute.Count == 0)
+        if (StartGrid.Count == 0)
         {
-            for (int i = 0; i < sideRoomList.Count; i++)
+            Debug.LogWarning("사이드루트를 만들 수 있는 지점이 없습니다.");
+            return;
+        }
+
+        Grid entryPoint = StartGrid[Random.Range(0, StartGrid.Count)];
+        int entryIndex = roomList.IndexOf(entryPoint);
+
+        sideRoute.Add(entryPoint);
+
+        visitedRoom.Add(entryPoint);
+
+        HashSet<Grid> sideVisited = new HashSet<Grid>();
+
+        sideVisited.Add(entryPoint);
+
+        foreach (Grid neighbor in graph[entryIndex])
+        {
+            if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
             {
-                if (Random.Range(0, 2) == 1)
-                {
-                    int graphKey = roomDict[sideRoomList[i]];
-
-                    if (graph[graphKey].Count == 0)
-                    {
-                        Debug.Log("에러 : 그래프의 내용물이 비어있습니다.");
-                        return;
-                    }
-
-
-                    Grid randGrid = RandomGridSelector(graphKey);
-
-                    Debug.Log($"첫번째 사이드 루트 그리드의 이름 {randGrid.name}");
-
-                    sideRoute.Add(randGrid);
-                    visitedRoom.Add(randGrid);
-
-                    Debug.Log($"두번째 사이드 루트 그리드의 이름 {sideRoomList[i].name}");
-
-                    sideRoute.Add(sideRoomList[i]);
-                    visitedRoom.Add(sideRoomList[i]);
-
-
-                    randGrid = RandomGridSelector(graphKey);
-
-                    Debug.Log($"세번째 사이드 루트 그리드의 이름 {sideRoomList[i].name}");
-
-                    sideRoute.Add(randGrid);
-                    visitedRoom.Add(randGrid);
-
-                }
+                SideRouteDFS(neighbor, sideVisited);
+                break;
             }
         }
     }
 
-    private Grid RandomGridSelector(int graphKey)
+    private void SideRouteDFS(Grid current, HashSet<Grid> sideVisited)
     {
-        Grid randGrid = graph[graphKey][Random.Range(0, graph[graphKey].Count)];
+        sideRoute.Add(current);
+        sideVisited.Add(current);
+        visitedRoom.Add(current);
 
-        int attempt = 0;
-
-        while (!visitedRoom.Contains(randGrid) && attempt < 10)
+        int index = roomList.IndexOf(current);
+        foreach (Grid neighbor in graph[index])
         {
-            //Todo : vistedRoom 중에서만 걸려야함 랜드그리드는
-            randGrid = graph[graphKey][Random.Range(0, graph[graphKey].Count)];
-            attempt++;
+            if (!visitedRoom.Contains(neighbor) && !sideVisited.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
+            {
+                SideRouteDFS(neighbor, sideVisited);
+                break; // 한 줄기만 만들 거면 break 유지
+            }
         }
-
-        if (attempt >= 10)
-        {
-            Debug.LogError("무한루프 걸려버림");
-            return null;
-        }
-
-        return randGrid;
     }
 
 
@@ -235,6 +208,11 @@ public class TestDFS : MonoBehaviour
     {
         if (to >= 0 && to < roomList.Count)
             graph[from].Add(roomList[to]);
+    }
+
+    private void DoorCreate()
+    {
+
     }
 
 
