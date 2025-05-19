@@ -10,6 +10,8 @@ public class CanvasManager : MonoBehaviour
     private SerializedDictionary<MenuType, GameObject> canvasDict; 
     private GameObject curCanvas;
     
+    private Stack<GameObject> canvasStack = new Stack<GameObject>();
+    
     /// <summary>
     /// 캔버스 변경
     /// </summary>
@@ -26,9 +28,9 @@ public class CanvasManager : MonoBehaviour
 
 #endif
             return;
-        } 
+        }  
         
-        curCanvas = canvasDict[menuType];
+        canvasStack.Push(canvasDict[menuType]);
         
         canvasDict[menuType].SetActive(true);    
     }
@@ -37,8 +39,12 @@ public class CanvasManager : MonoBehaviour
     /// 캔버스 닫기
     /// </summary>
     public void CloseCanvas()
-    {
-        curCanvas.SetActive(false);
+    { 
+        if (canvasStack.Count > 0)
+        { 
+            curCanvas = canvasStack.Pop();
+            curCanvas.SetActive(false);
+        } 
     }
     
 }
