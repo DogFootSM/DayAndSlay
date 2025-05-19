@@ -8,6 +8,8 @@ public class PlayerState : PlayerStateMachine
     protected const string DownDir = "s";
     protected const string RightDir = "d";
     protected const string LeftDir = "a";
+
+    protected float attackSpeed;
     
     protected PlayerController playerController;
     
@@ -23,11 +25,10 @@ public class PlayerState : PlayerStateMachine
     protected int leftAttackHash = Animator.StringToHash("LeftAttack");
     protected int rightAttackHash = Animator.StringToHash("RightAttack"); 
     
-    
-    
-    
+    //Walk BlendTree
     protected int walkBlendTreeHash = Animator.StringToHash("WalkBlend");
     
+    //BlendTree X,Y 값
     protected int walkPosXHash = Animator.StringToHash("WalkPosX");
     protected int walkPosYHash = Animator.StringToHash("WalkPosY");
     
@@ -40,6 +41,8 @@ public class PlayerState : PlayerStateMachine
     public PlayerState(PlayerController playerController)
     {
         this.playerController = playerController;
+
+        attackSpeed = playerController.PlayerModel.AtkSpeed;
     }
      
 }

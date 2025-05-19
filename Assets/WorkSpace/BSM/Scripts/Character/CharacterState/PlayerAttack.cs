@@ -30,7 +30,8 @@ public class PlayerAttack : PlayerState
             UpDir => upAttackHash,
             DownDir => downAttackHash,
             LeftDir => leftAttackHash,
-            RightDir => rightAttackHash
+            RightDir => rightAttackHash,
+            _ => attackHash
         };
 
         attackCo = playerController.StartCoroutine(AttackExitRoutine());
@@ -45,11 +46,15 @@ public class PlayerAttack : PlayerState
         }
     }
     
+    /// <summary>
+    /// 공격 종료 코루틴
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator AttackExitRoutine()
     {
         playerController.BodyAnimator.Play(attackHash);
         playerController.WeaponAnimator.Play(attackHash); 
-        yield return playerController.WaitCache.GetWait(0.5f);
+        yield return playerController.WaitCache.GetWait(attackSpeed);
     
         playerController.ChangeState(CharacterStateType.IDLE);
     }
