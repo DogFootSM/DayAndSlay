@@ -6,8 +6,8 @@ using UnityEngine;
 public class ItemRecipe : ScriptableObject
 {
     public string itemName;
-    public detailType_Armor armorType;
-    public detailType_Weapon weaponType;
+    public DetailType_Armor armorType;
+    public DetailType_Weapon weaponType;
 
     [Header("제작 재료")]
     public Ingredient ingredients_1;

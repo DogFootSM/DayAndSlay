@@ -56,6 +56,8 @@ public class DFS : MonoBehaviour
             sideI++;
         }
 
+        DoorCreate();
+
         DrawRouteLines();
     }
 
@@ -198,11 +200,49 @@ public class DFS : MonoBehaviour
 
     private void DoorCreate()
     {
-        Dictionary <Grid, List<GameObject>> doorDic = new Dictionary<Grid, List<GameObject>>();
-        //각자 문을 저장해야함
-        List <GameObject> doors = new List<GameObject>();
-        
-        doorDic.Add(route[0], doors);
+        int endRoomIndex = route.Count - 1;
+
+        for (int i = 0; i <= endRoomIndex; i++)
+        {
+            int firstDoor = -1;
+            int secondDoor = -1;
+
+            //진행 방향의 문
+            if (i != endRoomIndex)
+            {
+                Vector2 dir = route[i + 1].transform.position - route[i].transform.position;
+
+                firstDoor = DeltaCalculator(dir);
+            }
+            //이전 방향의 문
+            //첫번째 방의 경우 이전 방향의 문이 없으므로 예외 처리
+            if (i != 0)
+            {
+                Vector2 dir2 = route[i -1].transform.position - route[i].transform.position;
+
+                secondDoor = DeltaCalculator(dir2);
+            }
+
+            //시작 방과 끝 방 에외 처리
+            if (firstDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(secondDoor);
+            else if (secondDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(firstDoor);
+            else route[i].GetComponent<Room>().ActivateTheDoor(firstDoor, secondDoor);
+        }
+    }
+
+    /// <summary>
+    /// dir, dir2 를 계산해주는 함수
+    /// </summary>
+    /// <param name="delta"></param>
+    /// <returns></returns>
+    private int DeltaCalculator(Vector2 delta)
+    {
+        if (delta.x > 0) return (int)Direction.East;
+        else if (delta.x < 0) return (int)Direction.West;
+        else if (delta.y > 0) return (int)Direction.North;
+        else if (delta.y < 0) return (int)Direction.South;
+
+        return -1;
     }
 
 

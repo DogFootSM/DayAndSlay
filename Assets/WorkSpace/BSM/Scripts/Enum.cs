@@ -56,3 +56,41 @@ public enum CharacterDataColumns
     WEAPON_TYPE, REMAINING_DAYS, STRENGTH, 
     AGILITY, INTELLIGENCE, OBJECTIVE_ITEM, SIZE
 }
+
+/// <summary>
+/// 무기 타입
+/// </summary>
+[Serializable]
+public enum DetailType_Weapon
+{
+    NotWeapon,
+    Sword,
+    bow,
+    Spear,
+    Wand
+}
+
+/// <summary>
+/// 방어구 타입
+/// </summary>
+[Serializable]
+public enum DetailType_Armor
+{
+    NotArmor,
+    helmet,
+    armor,
+    arm,
+    pants,
+    shoes,
+    accessery,
+    cloak
+}
+
+[Serializable]
+public enum Direction
+{
+    North,
+    East,
+    South,
+    West
+}
