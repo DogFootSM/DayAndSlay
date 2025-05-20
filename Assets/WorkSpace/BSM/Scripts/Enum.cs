@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public enum ButtonType
+public enum MenuType
 {
-    NEWSTART, CONTINUEWSTART, ENVIRONMENT, EXIT
+    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT
 }
 
 //캐릭터 상태 전환에 사용할 타입
@@ -43,4 +43,16 @@ public enum BodyPartsType
 {
     HAIR, BODY, SHIRT, SIZE
 }
- 
+
+
+/// <summary>
+/// 캐릭터 데이터 컬럼
+/// </summary>
+[Serializable]
+public enum CharacterDataColumns
+{
+    SLOT_ID, IS_CREATE, HAIR_SPRITE, BODY_SPRITE, 
+    SHIRT_SPRITE, WEAPON_SPRITE, LAST_PLAYED_TIME, 
+    WEAPON_TYPE, REMAINING_DAYS, STRENGTH, 
+    AGILITY, INTELLIGENCE, OBJECTIVE_ITEM, SIZE
+}

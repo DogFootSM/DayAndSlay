@@ -5,27 +5,61 @@ using System.Data;
 using UnityEngine;
 using Zenject;
 
+
 public class SqlManager : IInitializable
 {
-    public SqliteDatabase SqlDatabase;
-    public IDataReader DataReader;
+    private SqliteDatabase sqlDatabase;
+
+    public Dictionary<CharacterDataColumns, string> CharacterDataColumns;
     
+    /// <summary>
+    /// 게임 시작 시 테이블 생성
+    /// </summary>
     public void Initialize()
     {
-        Debug.Log("테이블 생성");
-        SqlDatabase = new SqliteDatabase(); 
-        SqlDatabase.CreateTable();
-        
+        CharacterDataColumns = new Dictionary<CharacterDataColumns, string>();
+        sqlDatabase = new SqliteDatabase();
+        sqlDatabase.CreateTable(); 
     }
 
-    public void ReadDataColumn<T>(string columnName, string where = "", T whereValue = default(T))
+    /// <summary>
+    /// 캐릭터 데이터 컬럼 반환
+    /// </summary>
+    /// <param name="columns">컬럼 키</param>
+    /// <returns></returns>
+    public string CharacterColumn(CharacterDataColumns columns)
     {
-        IDataReader reader = SqlDatabase.ReadTable(columnName, where, whereValue);
-        
-        while (reader.Read())
+        if (!CharacterDataColumns.ContainsKey(columns))
         {
-            Debug.Log(reader.GetString(0));
-        }
+            CharacterDataColumns.TryAdd(columns, columns.ToString().ToLower());
+        }   
+        
+        return CharacterDataColumns[columns];
     }
     
+    
+    /// <summary>
+    /// 조건 컬럼 데이터 반환
+    /// </summary>
+    /// <param name="columnName"></param>
+    /// <param name="where"></param>
+    /// <param name="whereValue"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public IDataReader ReadDataColumn(string[] columnName, string[] where, string[] whereValue, string[] operation)
+    {
+        return sqlDatabase.ReadTable(columnName, where, whereValue, operation);
+    }
+
+    /// <summary>
+    /// 컬럼 업데이트
+    /// </summary>
+    /// <param name="columnName">업데이트 할 컬럼</param>
+    /// <param name="columnValue">업데이트 값</param>
+    /// <param name="condition">업데이트 조건</param>
+    /// <param name="conditionValue">업데이트 조건 값</param>
+    public void UpdateDataColumn(string[] columnName, string[] columnValue, string condition, string conditionValue)
+    {
+        sqlDatabase.UpdateTable(columnName, columnValue, condition, conditionValue);
+    }
 }

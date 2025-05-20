@@ -28,7 +28,8 @@ public class PlayerIdle : PlayerState
             UpDir => upIdleHash,
             DownDir => downIdleHash,
             LeftDir => leftIdleHash,
-            RightDir => rightIdleHash
+            RightDir => rightIdleHash,
+            _ => playIdleHash
         };
          
         playerController.BodyAnimator.Play(playIdleHash); 

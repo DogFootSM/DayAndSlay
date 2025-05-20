@@ -10,7 +10,7 @@ public class SpritePreset : BaseUI
 {
     [SerializeField] private List<Sprite> spriteList;
     
-    public NewGameStart SelectPreset;
+    public CharacterCreate SelectPreset;
     
     [Header("현재 프리셋 부위")]
     public CharacterPresetType CurPresetType;

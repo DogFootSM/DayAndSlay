@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using Mono.Data.Sqlite;
+using Zenject;
 
 public class SqliteDatabase
 {
@@ -16,7 +18,7 @@ public class SqliteDatabase
     private IDataReader dbDataReader;
 
     private int slotCount = 3;
-
+ 
     public SqliteDatabase()
     {
         string path = Path.Join(Application.streamingAssetsPath, dbFileName);
@@ -64,6 +66,7 @@ public class SqliteDatabase
                                 shirt_sprite        TEXT NOT NULL DEFAULT 'none', 
                                 weapon_sprite       TEXT NOT NULL DEFAULT 'none',
                                 last_played_time    TEXT NOT NULL DEFAULT 'none',
+                                weapon_type         INTEGER NOT NULL DEFAULT 0,
                                 remaining_days      INTEGER NOT NULL DEFAULT 150,
                                 strength            INTEGER NOT NULL DEFAULT 0,
                                 agility             INTEGER NOT NULL DEFAULT 0,
@@ -97,35 +100,104 @@ public class SqliteDatabase
     }
 
     /// <summary>
-    /// 게임 저장 시 변경 내용 DB 업데이트
+    /// 컬럼 DB 업데이트
     /// </summary>
-    public void UpdateTable()
+    public void UpdateTable(string[] column, string[] columnValue, string condition, string conditionValue)
     {
-    }
+        condition ??= string.Empty;
+        conditionValue ??= string.Empty;
+        
+        if (column.Length == 0 || columnValue.Length == 0 || (column.Length != columnValue.Length))
+        {
+            throw new ArgumentException("Update 조건 오류");
+        }
 
-    /// <summary>
-    /// DB 컬럼 가져오기
-    /// </summary>
-    /// <param name="column">가져올 컬럼명</param>
-    /// <param name="where">wher절 조건</param>
-    /// <param name="whereValue">조건의 값</param>
-    /// <typeparam name="T">여러 타입으로 조회</typeparam>
-    /// <returns></returns>
-    public IDataReader ReadTable<T>(string column, string where = "", T whereValue = default(T))
-    {
+        string query = "UPDATE Character SET ";
+
         using (dbCommand = dbConnection.CreateCommand())
         {
-            string query = $"SELECT {column} FROM Character ";
-
-            if (!string.IsNullOrEmpty(where))
-            {
-                query += $"WHERE {where} = @value";
+            for (int i = 0; i < column.Length; i++)
+            { 
+                query += $"{column[i]} = @columnValue{i}"; 
+  
+                dbCommand.Parameters.Add(new SqliteParameter($"@columnValue{i}", columnValue[i]));
                 
-                dbCommand.Parameters.Clear();
-                dbCommand.Parameters.Add(new SqliteParameter("@value", whereValue));
+                if (i < column.Length - 1)
+                {
+                    query += ", ";
+                }
             }
 
-            dbCommand.CommandText = query; 
+            if (!string.IsNullOrEmpty(condition))
+            {
+                query += $" WHERE {condition} = @value";
+                dbCommand.Parameters.Add(new SqliteParameter("@value", conditionValue));
+            }
+ 
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery();
+        }
+    }
+ 
+    /// <summary>
+    /// 단일, 다중 컬럼 조회
+    /// </summary>
+    /// <param name="column">가져올 컬럼명</param>
+    /// <param name="condition">where절 조건</param>
+    /// <param name="conditionValue">조건의 값</param>
+    /// <param name="operation">조건 연산 기호</param>
+    /// <typeparam name="T">여러 타입으로 조회</typeparam>
+    /// <returns></returns>
+    public IDataReader ReadTable(string[] column, string[] condition, string[] conditionValue, string[] operation)
+    {
+        condition ??= Array.Empty<string>();
+        conditionValue ??= Array.Empty<string>();
+        operation ??= Array.Empty<string>();
+
+        if (condition.Length > 0
+            && (condition.Length != conditionValue.Length || condition.Length - 1 != operation.Length))
+        {
+            throw new ArgumentException("DB 조회 조건이 잘못 됐음");
+        }
+
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = "SELECT ";
+
+            //컬럼의 개수만큼 추가
+            for (int i = 0; i < column.Length; i++)
+            {
+                query += $"{column[i]}";
+
+                //뒤에 컬럼이 존재한다면 , 추가
+                if (i < column.Length - 1)
+                {
+                    query += ",";
+                }
+            }
+
+            query += " FROM Character";
+
+            //조건이 있을 경우에만 WHERE절 추가
+            if (condition.Length > 0)
+            {
+                query += " WHERE ";
+            }
+
+            for (int j = 0; j < condition.Length; j++)
+            {
+                //WHERE절 조건 추가
+                query += $"{condition[j]} = " + $"@value{j}";
+
+                if (j < condition.Length - 1 && j < operation.Length)
+                {
+                    query += $" {operation[j]} ";
+                }
+
+                dbCommand.Parameters.Add(new SqliteParameter($"@value{j}", conditionValue[j]));
+            }
+
+            dbCommand.CommandText = query;
             dbDataReader = dbCommand.ExecuteReader();
         }
 
