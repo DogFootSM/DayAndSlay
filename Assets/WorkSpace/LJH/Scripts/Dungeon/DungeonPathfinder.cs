@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DFS : MonoBehaviour
+public class DungeonPathfinder : MonoBehaviour
 {
     [Header("던전 방 데이터")]
     [SerializeField] private List<Grid> roomList = new List<Grid>();
@@ -24,11 +24,13 @@ public class DFS : MonoBehaviour
     /// 보스방 까지의 경로 List
     /// </summary>
     private List<Grid> route = new List<Grid>();
-    
+
     private Dictionary<int, List<Grid>> graph = new Dictionary<int, List<Grid>>();
 
     //사이드 루트 경로
-    private List<Grid> sideRoute = new List<Grid> ();
+    private List<Grid> sideRoute = new List<Grid>();
+
+    private Dictionary<Grid, int> roomDict = new Dictionary<Grid, int>();
     private void Start()
     {
         if (roomList.Count <= bossRoomIndex)
@@ -39,6 +41,11 @@ public class DFS : MonoBehaviour
 
         GraphModel();
 
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            roomDict[roomList[i]] = i;
+        }
+
         if (!RouteMake(0))
         {
             Debug.LogError("보스방에 도달하지 못했습니다.");
@@ -47,16 +54,8 @@ public class DFS : MonoBehaviour
 
         SideRouteMake();
 
-        // 사이드 루트 확인
-        Debug.Log("사이드 루트:");
-        int sideI = 0;
-        foreach (var room in sideRoute)
-        {
-            Debug.Log($"사이드 루트 {sideI} : {room.name}");
-            sideI++;
-        }
-
-        DoorCreate();
+        DoorCreate(route);
+        DoorCreate(sideRoute);
 
         DrawRouteLines();
     }
@@ -88,7 +87,7 @@ public class DFS : MonoBehaviour
         //현재 방에 인접한 방 중 방문하지 않은 방을 방문하지 않은 방 목록에 넣어줌
         foreach (Grid neighbor in neighbors)
         {
-            int index = roomList.IndexOf(neighbor);
+            int index = roomDict[neighbor];
             if (!visitedRoom.Contains(neighbor))
                 unvisitedIndices.Add(index);
         }
@@ -115,7 +114,10 @@ public class DFS : MonoBehaviour
 
         foreach (Grid mainRoom in route)
         {
-            int index = roomList.IndexOf(mainRoom);
+            // 보스방 제외
+            if (mainRoom == roomList[bossRoomIndex]) continue;
+
+            int index = roomDict[mainRoom];
             foreach (Grid neighbor in graph[index])
             {
                 if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
@@ -133,7 +135,7 @@ public class DFS : MonoBehaviour
         }
 
         Grid entryPoint = StartGrid[Random.Range(0, StartGrid.Count)];
-        int entryIndex = roomList.IndexOf(entryPoint);
+        int entryIndex = roomDict[entryPoint];
 
         sideRoute.Add(entryPoint);
 
@@ -159,10 +161,13 @@ public class DFS : MonoBehaviour
         sideVisited.Add(current);
         visitedRoom.Add(current);
 
-        int index = roomList.IndexOf(current);
+        int index = roomDict[current];
+
         foreach (Grid neighbor in graph[index])
         {
-            if (!visitedRoom.Contains(neighbor) && !sideVisited.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
+            if (!visitedRoom.Contains(neighbor) &&
+                !sideVisited.Contains(neighbor) &&
+                neighbor != roomList[bossRoomIndex])
             {
                 SideRouteDFS(neighbor, sideVisited);
             }
@@ -198,7 +203,7 @@ public class DFS : MonoBehaviour
             graph[from].Add(roomList[to]);
     }
 
-    private void DoorCreate()
+    private void DoorCreate(List<Grid> route)
     {
         int endRoomIndex = route.Count - 1;
 
@@ -218,7 +223,7 @@ public class DFS : MonoBehaviour
             //첫번째 방의 경우 이전 방향의 문이 없으므로 예외 처리
             if (i != 0)
             {
-                Vector2 dir2 = route[i -1].transform.position - route[i].transform.position;
+                Vector2 dir2 = route[i - 1].transform.position - route[i].transform.position;
 
                 secondDoor = DeltaCalculator(dir2);
             }
