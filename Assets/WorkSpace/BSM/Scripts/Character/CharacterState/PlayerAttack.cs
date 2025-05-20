@@ -52,6 +52,7 @@ public class PlayerAttack : PlayerState
     /// <returns></returns>
     private IEnumerator AttackExitRoutine()
     {
+        playerController.CurWeapon.Attack();
         playerController.BodyAnimator.Play(attackHash);
         playerController.WeaponAnimator.Play(attackHash); 
         yield return playerController.WaitCache.GetWait(attackSpeed);

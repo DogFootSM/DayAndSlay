@@ -32,7 +32,7 @@ public class CharacterSlot : BaseUI
         LoadSlotData();
         ButtonAddListener(); 
     }
-  
+ 
     /// <summary>
     /// 캐릭터 생성 여부 확인
     /// </summary>
