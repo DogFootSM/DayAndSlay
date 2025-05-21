@@ -232,6 +232,7 @@ public class DungeonPathfinder : MonoBehaviour
             if (firstDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(secondDoor);
             else if (secondDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(firstDoor);
             else route[i].GetComponent<Room>().ActivateTheDoor(firstDoor, secondDoor);
+
         }
     }
 
@@ -282,6 +283,11 @@ public class DungeonPathfinder : MonoBehaviour
             int rand = Random.Range(i, list.Count);
             (list[i], list[rand]) = (list[rand], list[i]);
         }
+    }
+
+    public List<Grid> GetRoomList()
+    {
+        return new List<Grid>(this.roomList);
     }
 
 }

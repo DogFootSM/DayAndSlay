@@ -7,6 +7,10 @@ public class Room : MonoBehaviour
 {
     [SerializeField] List<GameObject> doors;
 
+    public List<GameObject> GetDoorList()
+    {
+        return new(doors);
+    }
 
     /// <summary>
     /// 문열기 함수

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 336238572270368612}
   - component: {fileID: 4327878263369189179}
   - component: {fileID: 8604752358649562968}
+  - component: {fileID: 4317782011534761062}
   m_Layer: 0
   m_Name: East_Door
   m_TagString: Untagged
@@ -98,6 +99,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.44, z: 0.2}
   m_Center: {x: 0, y: -0.71, z: 0}
+--- !u!114 &4317782011534761062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873833229786526672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd708a8969bb644ca511451c0d43dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 6989950797168265008}
+  spawnerPos: {x: 0, y: 0}
 --- !u!1 &1720942982606357126
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +124,7 @@ GameObject:
   - component: {fileID: 7086232715559135583}
   - component: {fileID: 4136165079860267425}
   - component: {fileID: 4577138425737120831}
+  - component: {fileID: 349599655518211539}
   m_Layer: 0
   m_Name: North_Door
   m_TagString: Untagged
@@ -196,6 +212,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.44, z: 0.2}
   m_Center: {x: 0, y: -0.71, z: 0}
+--- !u!114 &349599655518211539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720942982606357126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd708a8969bb644ca511451c0d43dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 6989950797168265008}
+  spawnerPos: {x: 0, y: 0}
+--- !u!1 &2427115835021299604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6989950797168265008}
+  m_Layer: 0
+  m_Name: PlayerSpawnPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6989950797168265008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427115835021299604}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.5, y: -2, z: 0.018464588}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9196023732086548836}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7906512878869473137
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +268,7 @@ GameObject:
   - component: {fileID: 7503497150106304364}
   - component: {fileID: 4375768595711429075}
   - component: {fileID: 3497877057111633276}
+  - component: {fileID: 3724307337193343993}
   m_Layer: 0
   m_Name: South_Door
   m_TagString: Untagged
@@ -294,6 +356,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.44, z: 0.2}
   m_Center: {x: 0, y: -0.71, z: 0}
+--- !u!114 &3724307337193343993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7906512878869473137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd708a8969bb644ca511451c0d43dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 6989950797168265008}
+  spawnerPos: {x: 0, y: 0}
 --- !u!1 &8749192179230789563
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +381,7 @@ GameObject:
   - component: {fileID: 6753323602111553372}
   - component: {fileID: 3938791769186576327}
   - component: {fileID: 516047803431854276}
+  - component: {fileID: 2232138807244305214}
   m_Layer: 0
   m_Name: West_Door
   m_TagString: Untagged
@@ -392,6 +469,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.44, z: 0.2}
   m_Center: {x: 0, y: -0.71, z: 0}
+--- !u!114 &2232138807244305214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8749192179230789563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd708a8969bb644ca511451c0d43dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 6989950797168265008}
+  spawnerPos: {x: 0, y: 0}
 --- !u!1 &9196023731753418675
 GameObject:
   m_ObjectHideFlags: 0
@@ -7436,6 +7527,7 @@ Transform:
   - {fileID: 9196023731825431478}
   - {fileID: 9196023733516798167}
   - {fileID: 9196023733418952643}
+  - {fileID: 6989950797168265008}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
