@@ -6,32 +6,22 @@ using Zenject;
 
 public class PlayerAttack : PlayerState
 {
-    private int attackHash;
-    private StringBuilder sb;
+    private int attackHash; 
 
-    private Coroutine attackCo; 
+    private Coroutine attackCo;
+
     public PlayerAttack(PlayerController playerController) : base(playerController)
     {
     }
 
     public override void Enter()
     {
-        sb = new StringBuilder(playerController.LastKey);
-
-        //키 동시 여러개 입력 방지
-        if (sb.Length > 1)
+        attackHash = playerController.LastMoveKey switch
         {
-            sb.Remove(1, sb.Length - 1);
-            playerController.LastKey = sb.ToString();
-        }
-
-        attackHash = playerController.LastKey.ToLower() switch
-        {
-            UpDir => upAttackHash,
-            DownDir => downAttackHash,
-            LeftDir => leftAttackHash,
-            RightDir => rightAttackHash,
-            _ => attackHash
+            Direction.North => upAttackHash,
+            Direction.South => downAttackHash,
+            Direction.East => leftAttackHash,
+            Direction.West => rightAttackHash
         };
 
         attackCo = playerController.StartCoroutine(AttackExitRoutine());
@@ -45,7 +35,7 @@ public class PlayerAttack : PlayerState
             attackCo = null;
         }
     }
-    
+
     /// <summary>
     /// 공격 종료 코루틴
     /// </summary>
@@ -54,11 +44,9 @@ public class PlayerAttack : PlayerState
     {
         playerController.CurWeapon.Attack();
         playerController.BodyAnimator.Play(attackHash);
-        playerController.WeaponAnimator.Play(attackHash); 
+        playerController.WeaponAnimator.Play(attackHash);
         yield return playerController.WaitCache.GetWait(attackSpeed);
-    
+
         playerController.ChangeState(CharacterStateType.IDLE);
     }
-    
-
 }

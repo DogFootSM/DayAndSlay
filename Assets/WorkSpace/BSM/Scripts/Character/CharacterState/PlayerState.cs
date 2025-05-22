@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class PlayerState : PlayerStateMachine
 {
-    protected const string UpDir = "w";
-    protected const string DownDir = "s";
-    protected const string RightDir = "d";
-    protected const string LeftDir = "a";
-
     protected float attackSpeed;
     
     protected PlayerController playerController;
