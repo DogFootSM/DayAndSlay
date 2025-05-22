@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractionStore
 {
     private Animator animator;
 
@@ -19,6 +19,11 @@ public class Door : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         movePos = movePosTrans.position;
+    }
+
+    public void Interaction()
+    {
+        //Todo : 문 사용을 여기에 달아줘야함
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

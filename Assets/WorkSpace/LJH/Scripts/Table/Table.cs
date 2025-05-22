@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Table : MonoBehaviour
+public class Table : MonoBehaviour, IInteractionStore
 {
     //아이템 보유 여부
     private bool isHave;
 
     [SerializeField] Item item;
+
+
+    public void Interaction()
+    {
+        Debug.Log("테이블 사용");
+        //Todo: 테이블 사용
+    }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,4 +49,5 @@ public class Table : MonoBehaviour
     {
 
     }
+
 }

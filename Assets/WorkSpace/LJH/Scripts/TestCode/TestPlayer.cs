@@ -18,9 +18,27 @@ public class TestPlayer : MonoBehaviour
 
 
     [SerializeField] float moveSpeed;
+
+    GameObject interactObj;
+    Table table;
+
+    private void Start()
+    {
+        table = GetComponent<Table>();
+    }
     private void Update()
     {
         PlayerMove();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        interactObj = collision.gameObject;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        interactObj = null;
     }
 
     void RecipeOpen()
@@ -35,6 +53,17 @@ public class TestPlayer : MonoBehaviour
     void GetRecipe()
     {
         IngredientDic.Add(ingre, recipe);
+    }
+
+    void TakeInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (interactObj.GetComponent<Table>())
+            {
+
+            }
+        }
     }
 
 
