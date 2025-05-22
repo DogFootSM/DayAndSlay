@@ -7,7 +7,7 @@ public class Table : MonoBehaviour
     //아이템 보유 여부
     private bool isHave;
 
-    GameObject item;
+    [SerializeField] Item item;
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -21,11 +21,18 @@ public class Table : MonoBehaviour
         
     }
 
-    public void TakeItem(GameObject item)
+    /// <summary>
+    /// 플레이어가 아이템 집어넣을 때
+    /// </summary>
+    /// <param name="item"></param>
+    public void TakeItem(Item item)
     {
         this.item = item;
     }
 
+    /// <summary>
+    /// 플레이어가 아이템 꺼낼 때
+    /// </summary>
     public void GiveItem()
     {
         item = null;
