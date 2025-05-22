@@ -6,9 +6,6 @@ using UnityEngine.U2D.Animation;
 
 public class CharacterAnimatorController : MonoBehaviour
 {
-    //TODO: 이걸 캐릭터가 아닌 WeaponAnimatorController가 가지고 있게 변경할까
-    //TODO: BodyLibraryAsset은 여기서 유지하고?   
-    
     [Header("캐릭터 애니메이션 라이브러리")] [Tooltip("1. HAIR, 2. BODY, 3. SHIRT")]
     public SpriteLibraryAsset[] BodyLibraryAsset;
  

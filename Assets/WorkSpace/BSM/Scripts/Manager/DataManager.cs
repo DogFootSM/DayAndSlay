@@ -74,7 +74,10 @@ public class DataManager : MonoBehaviour
             } 
         }
          
-        dataReader = sqlManager.ReadDataColumn(new []{"weapon_type"}, new []{"slot_id"}, new [] {$"{SlotId}"}, null);
+        dataReader = sqlManager.ReadDataColumn(new []{sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_TYPE),}, 
+            new []{sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+            new [] {$"{SlotId}"}, 
+            null);
         
         //현재 무기 상태 데이터 가져옴
         while (dataReader.Read())
@@ -147,7 +150,10 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void CreateDataUpdate()
     {
-        sqlManager.UpdateDataColumn(new [] {"is_create"}, new [] {"1"}, "slot_id", $"{SlotId}");
+        sqlManager.UpdateDataColumn(new [] {sqlManager.CharacterColumn(CharacterDataColumns.IS_CREATE)},
+            new [] {"1"}, 
+            sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID),
+            $"{SlotId}");
     }
     
 }

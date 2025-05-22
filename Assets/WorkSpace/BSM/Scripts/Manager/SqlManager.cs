@@ -10,7 +10,7 @@ public class SqlManager : IInitializable
 {
     private SqliteDatabase sqlDatabase;
 
-    public Dictionary<CharacterDataColumns, string> CharacterDataColumns;
+    private Dictionary<CharacterDataColumns, string> CharacterDataColumns;
     
     /// <summary>
     /// 게임 시작 시 테이블 생성
