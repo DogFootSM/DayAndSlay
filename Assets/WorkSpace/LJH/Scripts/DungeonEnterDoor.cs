@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class DungeonDoor : MonoBehaviour
+public class DungeonEnterDoor : MonoBehaviour
 {
     [Inject(Id = "LoadingScene")]
     [Header("·Îµù ¾À")]

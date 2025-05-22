@@ -535,6 +535,7 @@ MonoBehaviour:
   - {fileID: 2206897382857518734, guid: c762e94741ccedf43b1178beb4f40188, type: 3}
   - {fileID: 1269701800412192224, guid: 73b1c20ee7239a341ba9455bee1e797c, type: 3}
   - {fileID: 1488993737496387518, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
+  dfs: {fileID: 1861027644}
 --- !u!1 &310596994
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +946,8 @@ GameObject:
   m_Component:
   - component: {fileID: 839018392}
   - component: {fileID: 839018391}
+  - component: {fileID: 839018393}
+  - component: {fileID: 839018394}
   m_Layer: 0
   m_Name: Square
   m_TagString: Player
@@ -1019,6 +1022,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &839018393
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839018390}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 2}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+  m_EdgeRadius: 0
+--- !u!50 &839018394
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839018390}
+  m_BodyType: 0
+  m_Simulated: 0
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &902402923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,6 +1988,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 873833229786526672, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327878263369189179, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327878263369189179, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327878263369189179, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8584906
+      objectReference: {fileID: 0}
     - target: {fileID: 9196023732086548834, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
       propertyPath: m_Name
       value: Grid 2
@@ -2000,6 +2066,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1720942982606357126, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136165079860267425, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136165079860267425, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136165079860267425, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9196023732086548834, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
       propertyPath: m_Name
       value: Grid 7
@@ -2699,7 +2781,7 @@ GameObject:
   - component: {fileID: 1861027643}
   - component: {fileID: 1861027644}
   m_Layer: 0
-  m_Name: DFS
+  m_Name: DungeonPathfinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
