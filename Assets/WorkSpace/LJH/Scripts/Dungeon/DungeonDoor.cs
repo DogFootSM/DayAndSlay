@@ -31,8 +31,10 @@ public class DungeonDoor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("일단 닿았음");
         if(collision.CompareTag("Player"))
         {
+            Debug.Log("플레이어 닿았음");
             collision.transform.position = spawnerPos;
         }
     }
