@@ -12,7 +12,7 @@ using Zenject;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
-    [NonSerialized] public string LastKey = "s";
+    [NonSerialized] public Direction LastMoveKey;
 
     [Header("무기 애니메이션 컨트롤러 컴포넌트")] public Animator WeaponAnimator;
 
@@ -40,12 +40,7 @@ public class PlayerController : MonoBehaviour
 
     private float posX;
     private float posY;
-
-    private const string MoveUp = "MoveUp";
-    private const string MoveDown = "MoveDown";
-    private const string MoveLeft = "MoveLeft";
-    private const string MoveRight = "MoveRight";
-
+    
     private void Awake()
     {
         Init();
@@ -125,27 +120,25 @@ public class PlayerController : MonoBehaviour
         {
             posX = 0;
         }
-
-        if (Input.GetButtonDown(MoveUp)
-            || Input.GetButtonDown(MoveDown)
-            || Input.GetButtonDown(MoveLeft)
-            || Input.GetButtonDown(MoveRight))
-        {
-            LastInputKeyCheck();
-        }
-
+ 
         moveDir = new Vector2(posX, posY);
+        
+        if (moveDir != Vector2.zero)
+        {
+            LastMoveInputKeyCheck();
+        }
     }
 
-    private void LastInputKeyCheck()
+    /// <summary>
+    /// 마지막 이동 키 입력 확인
+    /// </summary>
+    private void LastMoveInputKeyCheck()
     {
-        if (LastKey.Equals(Input.inputString)) return;
-
-        StringBuilder sb = new StringBuilder(LastKey);
-
-        sb.Replace(LastKey, Input.inputString);
-
-        LastKey = sb.ToString();
+        if (posY > 0) LastMoveKey = Direction.North;
+        else if(posY < 0) LastMoveKey = Direction.South;
+        else if(posX > 0) LastMoveKey = Direction.West;
+        else if(posX < 0) LastMoveKey = Direction.East;
+        
     }
 
 
