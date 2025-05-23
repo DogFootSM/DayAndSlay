@@ -29,6 +29,7 @@ public class TestPlayer : MonoBehaviour
     private void Update()
     {
         PlayerMove();
+        TakeInteraction();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -57,12 +58,11 @@ public class TestPlayer : MonoBehaviour
 
     void TakeInteraction()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) &&
+            interactObj != null &&
+            interactObj.TryGetComponent(out IInteractionStore interactable))
         {
-            if (interactObj.GetComponent<Table>())
-            {
-
-            }
+            interactable.Interaction();
         }
     }
 

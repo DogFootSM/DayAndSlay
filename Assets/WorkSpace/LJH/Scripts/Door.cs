@@ -11,9 +11,10 @@ public class Door : MonoBehaviour, IInteractionStore
     [Inject(Id = "LoadingScene")]
     [Header("로딩 씬")]
     private SceneReference loadingScene;
-    
+
     [SerializeField] private Transform movePosTrans;
     private Vector2 movePos;
+    private GameObject player;
 
     void Start()
     {
@@ -23,26 +24,23 @@ public class Door : MonoBehaviour, IInteractionStore
 
     public void Interaction()
     {
-        //Todo : 문 사용을 여기에 달아줘야함
+        animator.Play("DoorOpenAni");
+        SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
+        player.transform.position = movePos;
+
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        PlayerInteractionDoor(collision);
-
+        player = collision.gameObject;
     }
 
-    void PlayerInteractionDoor(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            animator.Play("DoorOpenAni");
-            SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
-            collision.gameObject.transform.position = movePos;
-        }
+        player = null;
     }
 
-    
+
 
 
 }
