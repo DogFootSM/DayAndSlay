@@ -6,5 +6,8 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     [NonSerialized] public int hp = 100;
- 
+    
+    
+    
+    
 }

@@ -32,7 +32,8 @@ public class AstarPath : MonoBehaviour
         Vector2Int.up,
         Vector2Int.down,
     };
-    
+
+    private Monster monster;
     
     private Dictionary<Vector2Int, Node> neighborsDict = new Dictionary<Vector2Int, Node>();
     private List<Node> openList = new List<Node>();
@@ -46,6 +47,8 @@ public class AstarPath : MonoBehaviour
 
     private void Awake()
     {
+        monster = GetComponentInParent<Monster>();
+        
         //현재 몬스터의 스폰 위치
         startPos = (Vector2Int)mapGrid.WorldToCell(transform.position);
         
@@ -203,13 +206,20 @@ public class AstarPath : MonoBehaviour
         }
         
         path.Reverse();
-        
+
+        //StartCoroutine(Move(path));
         for (int i = 0; i < path.Count - 1; i++)
         {
             Debug.Log(path[i]);
             Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
         }
     }
+
+    // private IEnumerator Move(List<Vector3> path)
+    // {
+    //      
+    //     
+    // }
     
     /// <summary>
     /// 거리 계산, 가로, 세로 이동
