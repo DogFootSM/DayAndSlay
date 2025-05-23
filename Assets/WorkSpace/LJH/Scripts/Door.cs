@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractionStore
 {
     private Animator animator;
 
     [Inject(Id = "LoadingScene")]
     [Header("·Îµù ¾À")]
     private SceneReference loadingScene;
-    
+
     [SerializeField] private Transform movePosTrans;
     private Vector2 movePos;
+    private GameObject player;
 
     void Start()
     {
@@ -21,23 +22,25 @@ public class Door : MonoBehaviour
         movePos = movePosTrans.position;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Interaction()
     {
-        PlayerInteractionDoor(collision);
+        animator.Play("DoorOpenAni");
+        SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
+        player.transform.position = movePos;
 
     }
 
-    void PlayerInteractionDoor(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            animator.Play("DoorOpenAni");
-            SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
-            collision.gameObject.transform.position = movePos;
-        }
+        player = collision.gameObject;
     }
 
-    
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        player = null;
+    }
+
+
 
 
 }

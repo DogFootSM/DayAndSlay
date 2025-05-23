@@ -11,7 +11,7 @@ public class NPC : MonoBehaviour
     ItemManager itemManager;
 
     private List<Item> wantItemList = new List<Item>();
-    private Item wantItem;
+    [SerializeField] private Item wantItem;
 
     private void Start()
     {
@@ -27,7 +27,9 @@ public class NPC : MonoBehaviour
             return;
         }
 
-        //ItemListSetting(itemManager.ItemList);
+        Debug.Log(itemManager.name);
+        Debug.Log(itemManager.ItemList);
+        ItemListSetting(itemManager.ItemList);
         PickItem();
         GoStore();
     }
@@ -38,7 +40,7 @@ public class NPC : MonoBehaviour
     /// <param name="itemList"></param>
     private void ItemListSetting(List<Item> itemList)
     {
-        wantItemList = new List<Item>();
+        wantItemList = itemList;
     }
 
 

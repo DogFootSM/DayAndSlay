@@ -11,6 +11,8 @@ enum DayAndNight
 
 public class NpcSpawner : MonoBehaviour
 {
+    [Inject]
+    DiContainer container;
     private Vector3 npcSpawnPos;
 
     [Header("NPC가 물건을 구매할 의향 있게 태어나는 확률 1 / npcBuyProbability")]
@@ -37,7 +39,7 @@ public class NpcSpawner : MonoBehaviour
             yield return delayTime;
 
             int npcIndex = Random.Range(0, npcPreset.Count);
-            npcList.Add(Instantiate(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity));
+            npcList.Add(container.InstantiatePrefabForComponent<NPC>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
             npcList[npcList.Count - 1].IsBuyer = Random.value < 1f / npcBuyProbability;
         }
     }

@@ -18,7 +18,6 @@ public class ItemButton : MonoBehaviour
     private void Start()
     {
         hider = transform.GetChild(1).gameObject;
-        Debug.Log(hider.name);
 
         //테스트 이후 다시 온이너블에서 제어
         HideCheck(isOpend);
