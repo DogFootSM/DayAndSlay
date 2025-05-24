@@ -20,7 +20,7 @@ public class TargetSensor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     { 
         if (((1 << other.gameObject.layer) & targetLayer) != 0)
-        { 
+        {  
             astar.DetectTarget(transform.position, other.gameObject.transform.position);
         }
     }

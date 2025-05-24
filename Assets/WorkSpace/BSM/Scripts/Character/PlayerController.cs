@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D characterRb;
     private Animator bodyAnimator;
     private Weapon weapon;
-    private IDataReader dataReader;
-
+    private IDataReader dataReader; 
+    
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
 
@@ -70,8 +70,8 @@ public class PlayerController : MonoBehaviour
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
-        weapon = GetComponentInChildren<Weapon>();
-
+        weapon = GetComponentInChildren<Weapon>(); 
+        
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);

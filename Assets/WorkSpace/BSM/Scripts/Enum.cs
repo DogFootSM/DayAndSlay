@@ -94,3 +94,9 @@ public enum Direction
     South,
     West
 }
+
+[Serializable]
+public enum MapType
+{
+    TOWN, DEONGEON
+}
