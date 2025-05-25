@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     
     [Inject] private MapManager mapManager;
-    [Inject] private DataManager dataManager;
+    [Inject] private DataManager dataManager;  
     private GameObject playerInstance;
     private CharacterAnimatorController characterAnimatorController;
 
@@ -30,8 +30,7 @@ public class PlayerSpawner : MonoBehaviour
     /// </summary>
     private void PlayerSpawn()
     {
-        playerInstance = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);
-
+        playerInstance = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);  
         characterAnimatorController = playerInstance.GetComponent<CharacterAnimatorController>();
         mapManager.ManChange(MapType.TOWN);
     }

@@ -17,8 +17,6 @@ public class CloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     
     private void Start()
     {
-        ProjectContext.Instance.Container.Inject(this);
-        
         closeButton = GetComponent<Button>();
         buttonBackgroundImage = GetComponent<Image>();
         closeButtonImage = transform.GetChild(0).GetComponent<Image>();

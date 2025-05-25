@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject slotParent;
+    
+    protected List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
-    // Update is called once per frame
-    void Update()
+    protected void Awake()
     {
+        GameObject slotInstance = Instantiate(slotParent, transform.GetChild(0).transform);
         
+        for (int i = 0; i < slotInstance.transform.childCount; i++)
+        {
+            inventorySlots.Add(slotInstance.transform.GetChild(i).GetComponentInChildren<InventorySlot>());
+        }
+         
     }
+    
 }

@@ -205,18 +205,19 @@ public class AstarPath : MonoBehaviour
         }
         
         path.Reverse();  
-        for (int i = 0; i < path.Count - 1; i++)
-        {
-            Debug.Log($"경로 :{path[i]} / 타겟 위치 :{targetPos}");
-            Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
-        }
+        
+        // for (int i = 0; i < path.Count - 1; i++)
+        // {
+        //     Debug.Log($"경로 :{path[i]} / 타겟 위치 :{targetPos}");
+        //     Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
+        // }
     } 
     
     /// <summary>
     /// 거리 계산, 가로, 세로 이동
     /// </summary>
-    /// <param name="beforePos"></param>
-    /// <param name="afterPos"></param>
+    /// <param name="x1">몬스터 좌표</param>
+    /// <param name="x2">캐릭터 좌표</param>
     /// <returns></returns>
     private int Heuristic(Vector2Int x1, Vector2Int x2)
     {

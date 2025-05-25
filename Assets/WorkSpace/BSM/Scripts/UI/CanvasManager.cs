@@ -7,26 +7,12 @@ using Zenject;
 
 public class CanvasManager : MonoBehaviour
 {
-    [SerializeField] private GameObject mainCanvas;
-    
     [SerializedDictionary("Canvas Type", "Canvas Object")] [SerializeField]
     private SerializedDictionary<CanvasType, GameObject> canvasDict; 
     private GameObject curCanvas;
     
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
-    private Dictionary<CanvasType, GameObject> menuDict = new Dictionary<CanvasType, GameObject>();
-    
-    private void Awake()
-    { 
-        Instantiate(mainCanvas);
-
-        for (int i = 0; i < canvasDict.Count; i++)
-        {
-            menuDict[(CanvasType)i] = Instantiate(canvasDict[(CanvasType)i]);
-        }
-        
-    }
-
+  
     /// <summary>
     /// 캔버스 변경
     /// </summary>
@@ -43,13 +29,13 @@ public class CanvasManager : MonoBehaviour
 
 #endif
             return;
-        }  
+        }
+          
+        canvasStack.Push(canvasDict[canvasType]);
         
-        canvasStack.Push(menuDict[canvasType]);
-        
-        menuDict[canvasType].SetActive(true);    
+        canvasDict[canvasType].SetActive(true);    
     }
-
+ 
     /// <summary>
     /// 캔버스 닫기
     /// </summary>

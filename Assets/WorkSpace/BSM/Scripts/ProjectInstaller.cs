@@ -9,14 +9,12 @@ public class ProjectInstaller : MonoInstaller
     public DataManager DataManager;
     public WaitCache WaitCache; 
     public MapManager MapManager;
-    public CanvasManager CanvasManager;
     
     public override void InstallBindings()
     {
         Container.Bind<DataManager>().FromComponentInNewPrefab(DataManager).AsSingle().NonLazy();
         Container.Bind<WaitCache>().FromInstance(WaitCache);
         Container.Bind<MapManager>().FromComponentInNewPrefab(MapManager).AsSingle().NonLazy();
-        Container.Bind<CanvasManager>().FromComponentInNewPrefab(CanvasManager).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SqlManager>().AsSingle().NonLazy();
     }
 }

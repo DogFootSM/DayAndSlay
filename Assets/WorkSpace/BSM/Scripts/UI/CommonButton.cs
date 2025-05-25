@@ -20,8 +20,6 @@ public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
 
     private void Start()
     {
-        ProjectContext.Instance.Container.Inject(this);
-        
         buttonBackgroundImage = GetComponent<Image>();
         transform.GetChild(0).TryGetComponent<TextMeshProUGUI>(out buttonText);
         buttonTextColor = buttonText.color;
