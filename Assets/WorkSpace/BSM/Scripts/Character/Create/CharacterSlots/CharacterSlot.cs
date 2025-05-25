@@ -111,7 +111,7 @@ public class CharacterSlot : BaseUI
 
         if (isCreate == 0)
         {
-            canvasManager.ChangeCanvas(MenuType.CHARACTER_CREATE);
+            canvasManager.ChangeCanvas(CanvasType.CHARACTER_CREATE);
         }
         else
         {

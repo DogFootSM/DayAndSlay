@@ -20,6 +20,8 @@ public class CharacterCreate : BaseUI
     
     protected void Start()
     {
+        ProjectContext.Instance.Container.Inject(this);
+        
         Bind();
         ButtonAddListener();
     }
