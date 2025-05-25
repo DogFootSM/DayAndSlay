@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -10,6 +11,8 @@ public class FollowCamera : MonoBehaviour
 {
     [Inject] private MapManager mapManager;
 
+    public UnityAction OnMapChanged;
+    
     private Vector3 characterPosition;
     private Camera mainCam;
     private Vector3 camOffset = new Vector3(0f, 0f, -10f);
@@ -25,13 +28,18 @@ public class FollowCamera : MonoBehaviour
     {
         mainCam = Camera.main;
         mainCam.orthographicSize = 3f;
+        ProjectContext.Instance.Container.Inject(this);
+        mapManager.FollowCamera = this;
+    }
+  
+    private void OnEnable()
+    {
+        OnMapChanged += MapBoundaryChange;
     }
 
-    private void Start()
+    private void OnDisable()
     {
-        ProjectContext.Instance.Container.Inject(this);
-        mapManager.ManChange(MapType.TOWN);
-        OnMapChange();
+        OnMapChanged -= MapBoundaryChange;
     }
 
     private void Update()
@@ -44,8 +52,11 @@ public class FollowCamera : MonoBehaviour
         FollowCharacter();
     }
 
-    private void OnMapChange()
-    {
+    /// <summary>
+    /// 맵 바운더리 변경
+    /// </summary>
+    private void MapBoundaryChange()
+    {  
         mapBoundaries = mapManager.GetMapBoundary();
         minX = mapBoundaries[0].x;
         minY = mapBoundaries[0].y;

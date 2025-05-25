@@ -12,8 +12,10 @@ public class MapManager : MonoBehaviour
     [SerializedDictionary("MapType","MapSize")] [SerializeField]
     private SerializedDictionary<MapType, List<Vector2>> mapLimitSizeDict = new SerializedDictionary<MapType, List<Vector2>>();
     
-    private MapType curMapType;
+    public FollowCamera FollowCamera;
     
+    private MapType curMapType;
+
     public List<Vector2> GetMapBoundary()
     { 
         return mapLimitSizeDict.GetValueOrDefault(curMapType); 
@@ -26,6 +28,7 @@ public class MapManager : MonoBehaviour
     public void ManChange(MapType mapType)
     {
         curMapType = mapType;
+        FollowCamera?.OnMapChanged?.Invoke(); 
     }
 
 
