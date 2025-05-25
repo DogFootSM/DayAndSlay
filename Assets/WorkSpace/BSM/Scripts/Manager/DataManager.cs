@@ -2,13 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
-using IInitializable = Unity.VisualScripting.IInitializable;
 
 public class DataManager : MonoBehaviour
 {

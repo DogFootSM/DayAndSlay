@@ -10,7 +10,6 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
 
     [Inject] private DataManager dataManager;
-
     private GameObject playerInstance;
     private CharacterAnimatorController characterAnimatorController;
 
