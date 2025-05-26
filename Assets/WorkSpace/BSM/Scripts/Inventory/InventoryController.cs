@@ -10,11 +10,9 @@ public class InventoryController : MonoBehaviour
 
     protected void Awake()
     {
-        GameObject slotInstance = Instantiate(slotParent, transform.GetChild(0).transform);
-        
-        for (int i = 0; i < slotInstance.transform.childCount; i++)
+        for (int i = 0; i < slotParent.transform.childCount; i++)
         {
-            inventorySlots.Add(slotInstance.transform.GetChild(i).GetComponentInChildren<InventorySlot>());
+            inventorySlots.Add(slotParent.transform.GetChild(i).GetComponentInChildren<InventorySlot>());
         }
          
     }
