@@ -10,7 +10,7 @@ using Zenject;
 
 public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    [FormerlySerializedAs("ButtonType")] public MenuType menuType;
+    [FormerlySerializedAs("menuType")] [FormerlySerializedAs("ButtonType")] public CanvasType canvasType;
 
     private Image buttonBackgroundImage;
     private TextMeshProUGUI buttonText;
@@ -18,10 +18,10 @@ public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
 
     [Inject] private CanvasManager canvasManager;
 
-    private void Awake()
+    private void Start()
     {
         buttonBackgroundImage = GetComponent<Image>();
-        buttonText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        transform.GetChild(0).TryGetComponent<TextMeshProUGUI>(out buttonText);
         buttonTextColor = buttonText.color;
     }
 
@@ -43,7 +43,7 @@ public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
         //TODO: 버튼 클릭 애니메이션으로 변경
         ButtonBackgroundColorChange(1f, 1f, 1f);
         ButtonTextAlphaChange(1f);
-        canvasManager.ChangeCanvas(menuType);
+        canvasManager.ChangeCanvas(canvasType);
     }
     
     /// <summary>
@@ -63,6 +63,8 @@ public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHa
     /// <param name="alpha">버튼 색상의 알파값</param>
     private void ButtonTextAlphaChange(float alpha)
     {
+        if (buttonText == null) return;
+        
         buttonText.color = new Color(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, alpha);
     }
     

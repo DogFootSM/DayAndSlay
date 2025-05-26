@@ -25,7 +25,7 @@ public class AstarPath : MonoBehaviour
     [SerializeField] private Tilemap mapTileMap;
     [SerializeField] private Tilemap obstacleTileMap;
      
-    private Vector2Int[] calculateNeighborsPos = new Vector2Int[]
+    private Vector2Int[] neighborsDirections = new Vector2Int[]
     {
         Vector2Int.left,
         Vector2Int.right,
@@ -38,16 +38,16 @@ public class AstarPath : MonoBehaviour
     private Dictionary<Vector2Int, Node> neighborsDict = new Dictionary<Vector2Int, Node>();
     private List<Node> openList = new List<Node>();
     private List<Node> closedList = new List<Node>();
+    private List<Vector3> path = new List<Vector3>();
     
     private Node startNode;
     private Node currentNode;
      
-    public Vector2Int startPos;
-    public Vector2Int targetPos;
-
+    private Vector2Int startPos;
+    private Vector2Int targetPos; 
     private void Awake()
     {
-        monster = GetComponentInParent<Monster>();
+        monster = GetComponentInParent<Monster>(); 
         
         //현재 몬스터의 스폰 위치
         startPos = (Vector2Int)mapGrid.WorldToCell(transform.position);
@@ -55,7 +55,7 @@ public class AstarPath : MonoBehaviour
         startNode = new Node();
         currentNode = new Node(); 
     }
-    
+ 
     /// <summary>
     /// Player 감지 시마다 시작 위치, 목표 위치 설정
     /// </summary>
@@ -66,10 +66,10 @@ public class AstarPath : MonoBehaviour
         this.startPos = (Vector2Int)mapGrid.WorldToCell(startPos);
         this.targetPos = (Vector2Int)mapGrid.WorldToCell(targetPos);
         Debug.Log("플레이어 감지, 플레이어 추적 시작");
-        
-        FindPath(this.startPos, this.targetPos);
-    }
 
+        FindPath(this.startPos, this.targetPos); 
+    } 
+    
     /// <summary>
     /// 경로 탐색
     /// </summary>
@@ -141,7 +141,7 @@ public class AstarPath : MonoBehaviour
     { 
         List<Node> neighbors = new List<Node>();
 
-        foreach (Vector2Int neighborPos in calculateNeighborsPos)
+        foreach (Vector2Int neighborPos in neighborsDirections)
         {
             //현재 노드의 주변 노드 위치 값
             Vector2Int nextPos = node.curPosition + neighborPos;
@@ -184,7 +184,7 @@ public class AstarPath : MonoBehaviour
         
         //장애물 위치인지?
         if (obstacleTileMap.HasTile((Vector3Int)nextPos)) return false;
-
+ 
         return true;
     } 
     
@@ -192,9 +192,8 @@ public class AstarPath : MonoBehaviour
     /// 캐릭터 추적
     /// </summary>
     private void Trace()
-    {
-        Debug.Log("추적");
-        List<Vector3> path = new List<Vector3>();
+    { 
+        path.Clear();
         
         Node curNode = currentNode;
         
@@ -205,27 +204,20 @@ public class AstarPath : MonoBehaviour
             curNode = curNode.parentNode;
         }
         
-        path.Reverse();
-
-        //StartCoroutine(Move(path));
-        for (int i = 0; i < path.Count - 1; i++)
-        {
-            Debug.Log(path[i]);
-            Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
-        }
-    }
-
-    // private IEnumerator Move(List<Vector3> path)
-    // {
-    //      
-    //     
-    // }
+        path.Reverse();  
+        
+        // for (int i = 0; i < path.Count - 1; i++)
+        // {
+        //     Debug.Log($"경로 :{path[i]} / 타겟 위치 :{targetPos}");
+        //     Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
+        // }
+    } 
     
     /// <summary>
     /// 거리 계산, 가로, 세로 이동
     /// </summary>
-    /// <param name="beforePos"></param>
-    /// <param name="afterPos"></param>
+    /// <param name="x1">몬스터 좌표</param>
+    /// <param name="x2">캐릭터 좌표</param>
     /// <returns></returns>
     private int Heuristic(Vector2Int x1, Vector2Int x2)
     {

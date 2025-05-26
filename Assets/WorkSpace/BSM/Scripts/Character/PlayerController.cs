@@ -25,17 +25,17 @@ public class PlayerController : MonoBehaviour
     [Inject] private WaitCache waitCache;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
-
+    
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
     private Animator bodyAnimator;
     private Weapon weapon;
-    private IDataReader dataReader;
-
+    private IDataReader dataReader; 
+    
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
-
+     
     private int curSlotId => dataManager.SlotId;
 
     private float posX;
@@ -70,8 +70,8 @@ public class PlayerController : MonoBehaviour
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
-        weapon = GetComponentInChildren<Weapon>();
-
+        weapon = GetComponentInChildren<Weapon>(); 
+        
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
@@ -127,6 +127,7 @@ public class PlayerController : MonoBehaviour
         {
             LastMoveInputKeyCheck();
         }
+ 
     }
 
     /// <summary>

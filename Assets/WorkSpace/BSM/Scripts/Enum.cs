@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public enum MenuType
+public enum CanvasType
 {
-    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT
+    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT, SIZE
 }
 
 //캐릭터 상태 전환에 사용할 타입
@@ -93,4 +93,10 @@ public enum Direction
     East,
     South,
     West
+}
+
+[Serializable]
+public enum MapType
+{
+    TOWN, DEONGEON
 }
