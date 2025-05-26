@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Table : MonoBehaviour, IInteractionStore
@@ -8,7 +9,15 @@ public class Table : MonoBehaviour, IInteractionStore
     private bool isHave;
 
     [SerializeField] Item item;
+    Sprite itemImage;
 
+    SpriteRenderer tableItem;
+
+
+    void Start()
+    {
+        tableItem = transform.GetChild(0).GetComponent<SpriteRenderer>();
+    }
 
     public void Interaction()
     {
@@ -35,6 +44,9 @@ public class Table : MonoBehaviour, IInteractionStore
     public void TakeItem(Item item)
     {
         this.item = item;
+        itemImage = item.GetComponent<Item>().itemData.ItemImage;
+        tableItem.sprite = itemImage;
+
     }
 
     /// <summary>
@@ -43,11 +55,9 @@ public class Table : MonoBehaviour, IInteractionStore
     public void GiveItem()
     {
         item = null;
+        itemImage = null;
+        tableItem.sprite = null;
     }
 
-    public void showItem()
-    {
-
-    }
 
 }
