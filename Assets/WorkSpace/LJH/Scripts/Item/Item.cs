@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] ItemData itemData;
+    [SerializeField] public ItemData itemData;
 
     [Header("아이템 데이터 분류값")]
     public int ItemId;
