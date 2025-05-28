@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class isPlayerNearNode : BTNode
+public class IsPlayerNearNode : BTNode
 {
     NodeState state;
 

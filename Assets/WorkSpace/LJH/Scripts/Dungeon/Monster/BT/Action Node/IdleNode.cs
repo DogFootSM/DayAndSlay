@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class IdleNode : BTNode
 {
+    private System.Action performIdle;
+
+    public IdleNode(System.Action performIdle)
+    {
+        this.performIdle = performIdle;
+    }
+
     public override NodeState Tick()
     {
-        //Todo : 내용 바꿔야함
+        performIdle?.Invoke();
         return NodeState.Success;
     }
 }

@@ -7,6 +7,8 @@ public class MonsterInstaller : MonoInstaller
 {
     [SerializeField] List<GameObject> monsters;
     [SerializeField] DungeonPathfinder dfs;
+    //[SerializeField] PlayerController player;
+    [SerializeField] TestPlayer player;
 
     public override void InstallBindings()
     {
@@ -18,6 +20,14 @@ public class MonsterInstaller : MonoInstaller
         Container
             .Bind<DungeonPathfinder>()
             .FromInstance(dfs);
+
+        //Container
+        //    .Bind<PlayerController>()
+        //    .FromInstance(player);
+
+        Container
+            .Bind<TestPlayer>()
+            .FromInstance(player);
     }
     
 }

@@ -7,8 +7,8 @@ using Zenject;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    [Inject]
-    private List<GameObject> monsters;
+    [Inject] private DiContainer container;
+    [Inject] private List<GameObject> monsters;
 
     [SerializeField] private List<GameObject> spawnerList = new List<GameObject>();
     [SerializeField] private List<GameObject> monsterList = new List<GameObject>();
@@ -46,7 +46,8 @@ public class MonsterSpawner : MonoBehaviour
     {
         for(int i = 0; i < spawnerList.Count; i++)
         {
-            monsterList.Add(Instantiate(monsters[Random.Range(0, monsters.Count)], spawnerList[i].transform.position, Quaternion.identity));
+            monsterList.Add(container.InstantiatePrefab
+                (monsters[Random.Range(0, monsters.Count)], spawnerList[i].transform.position, Quaternion.identity, null));
 
             //초기 생성시 플레이어가 없는 방에서는 몬스터 비활성화
             MonsterActiver();
