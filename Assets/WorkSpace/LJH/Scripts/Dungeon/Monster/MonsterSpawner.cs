@@ -46,6 +46,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         for(int i = 0; i < spawnerList.Count; i++)
         {
+            //젠젝트로 사용해야 하기에 컨테이너를 이용한 Instantiate 사용
             monsterList.Add(container.InstantiatePrefab
                 (monsters[Random.Range(0, monsters.Count)], spawnerList[i].transform.position, Quaternion.identity, null));
 

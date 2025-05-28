@@ -7,25 +7,24 @@ using Zenject;
 public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField]
-    MonsterData monsterData;
+    protected MonsterData monsterData;
     [Inject]
-    TestPlayer player;
+    protected TestPlayer player;
 
-    BehaviourTree tree;
+    protected BehaviourTree tree;
 
-    BTNode attack;
-    BTNode idle;
-    BTNode chase;
-    BTNode attackCheck;
+    protected BTNode attack;
+    protected BTNode idle;
+    protected BTNode chase;
+    protected BTNode attackCheck;
 
-    BTNode selector;
-    BTNode attackSequence;
+    protected BTNode selector;
+    protected BTNode attackSequence;
+
+    
 
     private void Start()
     {
-        if (player == null)
-            Debug.Log("플레이어 널임");
-
         attack = new AttackNode(this.Attack);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
@@ -48,24 +47,24 @@ public class GeneralMonsterAI : MonoBehaviour
         tree.Tick();
     }
 
-    void Idle()
+    public virtual void Idle()
     {
         //Todo : 몬스터 대기 상태
         Debug.Log("몬스터가 대기중입니다.");
     }
-    void Attack()
+    public virtual void Attack()
     {
         //Todo :몬스터 공격 구현해야함
         Debug.Log("몬스터가 공격합니다");
     }
 
-    void Move()
+    public virtual void Move()
     {
         //Todo : 몬스터 이동 구현해야함
         Debug.Log("몬스터가 이동합니다.");
     }
 
-    List<BTNode> RootSelector()
+    protected List<BTNode> RootSelector()
     {
         List<BTNode> nodes = new List<BTNode>();
        
@@ -76,7 +75,7 @@ public class GeneralMonsterAI : MonoBehaviour
         return nodes;
     }
 
-    List<BTNode> AttackSequence()
+    protected List<BTNode> AttackSequence()
     {
         //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
         List<BTNode> nodes = new List<BTNode>();

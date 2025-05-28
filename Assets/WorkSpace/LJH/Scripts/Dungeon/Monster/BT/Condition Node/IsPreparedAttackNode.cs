@@ -37,7 +37,7 @@ public class IsPreparedAttackNode : BTNode
         }
 
 
-        //아래 조건에 쿨다운 관련해서 추가하고싶음
+        //사거리 안에 들어왔을 때 && 쿨다운이 0일 때 공격
         if (distance <= range && currentCooldown <= 0f)
         {
             currentCooldown = cooldown;
