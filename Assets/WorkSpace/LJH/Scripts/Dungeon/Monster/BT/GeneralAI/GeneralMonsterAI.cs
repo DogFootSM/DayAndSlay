@@ -11,6 +11,8 @@ public class GeneralMonsterAI : MonoBehaviour
     [Inject]
     protected TestPlayer player;
 
+    protected GeneralAnimator animator;
+
     protected BehaviourTree tree;
 
     protected BTNode attack;
@@ -25,7 +27,9 @@ public class GeneralMonsterAI : MonoBehaviour
 
     private void Start()
     {
-        attack = new AttackNode(this.Attack);
+        animator = GetComponent<GeneralAnimator>();
+
+        attack = new AttackNode(this.Attack, GetComponent<Animator>(), "MonsterAttackLeft");
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
         attackCheck = new IsPreparedAttackNode
@@ -49,18 +53,15 @@ public class GeneralMonsterAI : MonoBehaviour
 
     public virtual void Idle()
     {
-        //Todo : 몬스터 대기 상태
         Debug.Log("몬스터가 대기중입니다.");
     }
     public virtual void Attack()
     {
-        //Todo :몬스터 공격 구현해야함
         Debug.Log("몬스터가 공격합니다");
     }
 
     public virtual void Move()
     {
-        //Todo : 몬스터 이동 구현해야함
         Debug.Log("몬스터가 이동합니다.");
     }
 
