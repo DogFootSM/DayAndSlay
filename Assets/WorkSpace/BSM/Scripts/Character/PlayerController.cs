@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveDir;
     [NonSerialized] public Direction LastMoveKey;
-
+    
     [Header("무기 애니메이션 컨트롤러 컴포넌트")] public Animator WeaponAnimator;
 
     public Rigidbody2D CharacterRb => characterRb;
@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D characterRb;
     private Animator bodyAnimator;
     private Weapon weapon;
-    private IDataReader dataReader; 
-    
+    private IDataReader dataReader;
+ 
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
      
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
         }
  
     }
-
+ 
     /// <summary>
     /// 마지막 이동 키 입력 확인
     /// </summary>

@@ -95,8 +95,22 @@ public enum Direction
     West
 }
 
+/// <summary>
+/// 현재 맵 타입
+/// 각 타입으로 맵 사이즈 가져옴 
+/// </summary>
 [Serializable]
 public enum MapType
 {
+    //TODO: 추후 내용 수정 필요
     TOWN, DEONGEON
+}
+
+/// <summary>
+/// 캐릭터 상호작용 시스템 창 타입
+/// </summary>
+[Serializable]
+public enum SystemType
+{
+    STATUS, INVENTORY, SKILL, RECIPE, SETTING, SIZE
 }
