@@ -61,11 +61,11 @@ public enum CharacterDataColumns
 /// 무기 타입
 /// </summary>
 [Serializable]
-public enum DetailType_Weapon
+public enum Type_Weapon
 {
     NotWeapon,
     Sword,
-    bow,
+    Bow,
     Spear,
     Wand
 }
@@ -74,29 +74,36 @@ public enum DetailType_Weapon
 /// 방어구 타입
 /// </summary>
 [Serializable]
-public enum DetailType_Armor
+public enum Type_Armor
 {
     NotArmor,
-    helmet,
-    armor,
-    arm,
-    pants,
-    shoes,
-    accessery,
-    cloak
+    Helmet,
+    Armor,
+    Arm,
+    Pants,
+    Shoes,
+    Accessery,
+    Cloak
 }
 
 [Serializable]
 public enum Direction
 {
-    North,
-    East,
-    South,
-    West
+    Up,
+    Right,
+    Down,
+    Left
 }
 
 [Serializable]
 public enum MapType
 {
     TOWN, DEONGEON
+}
+[Serializable]
+public enum NodeState
+{
+    Success,
+    Failure,
+    Running
 }

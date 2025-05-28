@@ -13,10 +13,10 @@ public class PlayerIdle : PlayerState
     { 
         playIdleHash = playerController.LastMoveKey switch
         {
-            Direction.North => upIdleHash,
-            Direction.South => downIdleHash,
-            Direction.East => leftIdleHash,
-            Direction.West => rightIdleHash
+            Direction.Up => upIdleHash,
+            Direction.Down => downIdleHash,
+            Direction.Right => leftIdleHash,
+            Direction.Left => rightIdleHash
         };
          
         playerController.BodyAnimator.Play(playIdleHash); 
