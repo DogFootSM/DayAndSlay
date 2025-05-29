@@ -21,13 +21,14 @@ public class ItemData : ScriptableObject
 {
     public Sprite ItemImage;
 
-    [Header("¾ÆÀÌÅÛ µ¥ÀÌÅÍ ºÐ·ù°ª")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð·ï¿½ï¿½ï¿½")]
     public int ItemId;
     public bool isWeapon;
+    public bool IsOverlaped;
     public Type_Weapon Detail_Weapon;
     public Type_Armor Detail_Armor;
 
-    [Header("¾ÆÀÌÅÛ Á¤º¸")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public string Name;
     public int Tier;
     public int Attack;
@@ -35,7 +36,7 @@ public class ItemData : ScriptableObject
 
     public int BuyPrice;
     public int SellPrice;
-
+    
 
     public ItemStruct GetItemData(ItemStruct itemStruct)
     {
