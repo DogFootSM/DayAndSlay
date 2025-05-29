@@ -6,7 +6,6 @@ public class Sequence : BTNode
 {
     List<BTNode> nodes = new List<BTNode>();
 
-
     public Sequence(List<BTNode> nodes)
     {
         this.nodes = nodes;

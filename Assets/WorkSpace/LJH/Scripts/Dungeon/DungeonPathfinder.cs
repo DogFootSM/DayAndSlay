@@ -243,10 +243,10 @@ public class DungeonPathfinder : MonoBehaviour
     /// <returns></returns>
     private int DeltaCalculator(Vector2 delta)
     {
-        if (delta.x > 0) return (int)Direction.East;
-        else if (delta.x < 0) return (int)Direction.West;
-        else if (delta.y > 0) return (int)Direction.North;
-        else if (delta.y < 0) return (int)Direction.South;
+        if (delta.x > 0) return (int)Direction.Right;
+        else if (delta.x < 0) return (int)Direction.Left;
+        else if (delta.y > 0) return (int)Direction.Up;
+        else if (delta.y < 0) return (int)Direction.Down;
 
         return -1;
     }

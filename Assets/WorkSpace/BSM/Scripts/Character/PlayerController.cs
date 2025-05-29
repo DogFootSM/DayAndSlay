@@ -135,10 +135,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void LastMoveInputKeyCheck()
     {
-        if (posY > 0) LastMoveKey = Direction.North;
-        else if(posY < 0) LastMoveKey = Direction.South;
-        else if(posX > 0) LastMoveKey = Direction.West;
-        else if(posX < 0) LastMoveKey = Direction.East;
+        if (posY > 0) LastMoveKey = Direction.Up;
+        else if(posY < 0) LastMoveKey = Direction.Down;
+        else if(posX > 0) LastMoveKey = Direction.Left;
+        else if(posX < 0) LastMoveKey = Direction.Right;
         
     }
 

@@ -536,6 +536,7 @@ MonoBehaviour:
   - {fileID: 1269701800412192224, guid: 73b1c20ee7239a341ba9455bee1e797c, type: 3}
   - {fileID: 1488993737496387518, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
   dfs: {fileID: 1861027644}
+  player: {fileID: 839018395}
 --- !u!1 &310596994
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,7 +951,7 @@ GameObject:
   - component: {fileID: 839018394}
   - component: {fileID: 839018395}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1082,6 +1083,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caea296579209cc4580cdd98508a7459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items: []
+  recipes: []
+  ingre: {fileID: 0}
+  recipe: {fileID: 0}
   moveSpeed: 5
 --- !u!1 &902402923
 GameObject:

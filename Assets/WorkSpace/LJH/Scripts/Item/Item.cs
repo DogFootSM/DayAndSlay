@@ -9,8 +9,8 @@ public class Item : MonoBehaviour
     [Header("아이템 데이터 분류값")]
     public int ItemId;
     public bool isWeapon;
-    public DetailType_Weapon detail_Weapon;
-    public DetailType_Armor detail_Armor;
+    public Type_Weapon detail_Weapon;
+    public Type_Armor detail_Armor;
 
     [Header("아이템 정보")]
     public string Name;
