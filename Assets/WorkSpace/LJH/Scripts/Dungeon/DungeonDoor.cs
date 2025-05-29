@@ -56,19 +56,19 @@ public class DungeonDoor : MonoBehaviour
             {
                 switch (dir)
                 {
-                    case Direction.North:
+                    case Direction.Up:
                         toGrid = roomList[index - verticalOffset];
                         break;
 
-                    case Direction.East:
+                    case Direction.Right:
                         toGrid = roomList[index + horizonOffset];
                         break;
 
-                    case Direction.South:
+                    case Direction.Down:
                         toGrid = roomList[index + verticalOffset];
                         break;
 
-                    case Direction.West:
+                    case Direction.Left:
                         toGrid = roomList[index - horizonOffset];
                         break;
                 }

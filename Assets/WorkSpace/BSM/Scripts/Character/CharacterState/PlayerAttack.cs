@@ -18,10 +18,10 @@ public class PlayerAttack : PlayerState
     {
         attackHash = playerController.LastMoveKey switch
         {
-            Direction.North => upAttackHash,
-            Direction.South => downAttackHash,
-            Direction.East => leftAttackHash,
-            Direction.West => rightAttackHash
+            Direction.Up => upAttackHash,
+            Direction.Down => downAttackHash,
+            Direction.Right => leftAttackHash,
+            Direction.Left => rightAttackHash
         };
 
         attackCo = playerController.StartCoroutine(AttackExitRoutine());

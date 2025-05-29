@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6297989645333955350}
   - component: {fileID: 7052912307474658341}
   - component: {fileID: 5739400906888177894}
+  - component: {fileID: 3849578778993348644}
+  - component: {fileID: 2575475074534013927}
   m_Layer: 0
   m_Name: Testgoblin
   m_TagString: Player
@@ -76,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 2016095769, guid: c1f027b8bb7319e409206374dd4d5da8, type: 3}
+  m_Sprite: {fileID: -182363389, guid: c1f027b8bb7319e409206374dd4d5da8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 83475cdbf27997845be108932039bdef, type: 3}
 --- !u!114 &7052912307474658341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +128,7 @@ Animator:
   m_GameObject: {fileID: 1488993737496387518}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 553d71e032110c54b85c269b14f1f50b, type: 2}
+  m_Controller: {fileID: 22100000, guid: f07ab198e3e24d349a0a7b2798678b3a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -137,3 +139,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3849578778993348644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b579d5da9517346bf807271d99247b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 6687d06aaa1e06340837018664a86c37, type: 2}
+--- !u!114 &2575475074534013927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f034d4e380a6644409a1912cb3ac0747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteLibraries:
+  - {fileID: 7108339969198208228, guid: 83475cdbf27997845be108932039bdef, type: 3}
+  - {fileID: 7108339969198208228, guid: a3cbc39d25238cf42b34d9ac0152594e, type: 3}
+  - {fileID: 7108339969198208228, guid: 787743c124123e14ca17e175b7bb628a, type: 3}
+  - {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}

@@ -15,6 +15,7 @@ public class Selector : BTNode
     {
         foreach (BTNode node in nodes)
         {
+            if (node == null) Debug.LogWarning("노드가 없음");
             NodeState result = node.Tick();
 
             if(result == NodeState.Success) return result;

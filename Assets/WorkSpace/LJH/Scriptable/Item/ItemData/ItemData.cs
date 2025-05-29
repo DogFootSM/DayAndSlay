@@ -5,8 +5,8 @@ using UnityEngine;
 public struct ItemStruct
 {
     public bool isWeapon;
-    public DetailType_Weapon DetailType_Weapon;
-    public DetailType_Armor DetailType_Armor;
+    public Type_Weapon DetailType_Weapon;
+    public Type_Armor DetailType_Armor;
 
     public string Name;
     public int Tier;
@@ -24,8 +24,8 @@ public class ItemData : ScriptableObject
     [Header("아이템 데이터 분류값")]
     public int ItemId;
     public bool isWeapon;
-    public DetailType_Weapon Detail_Weapon;
-    public DetailType_Armor Detail_Armor;
+    public Type_Weapon Detail_Weapon;
+    public Type_Armor Detail_Armor;
 
     [Header("아이템 정보")]
     public string Name;
@@ -58,7 +58,7 @@ public class ItemData : ScriptableObject
     
         weaponStruct.isWeapon = isWeapon;
         weaponStruct.DetailType_Weapon = Detail_Weapon;
-        weaponStruct.DetailType_Armor = DetailType_Armor.NotArmor;
+        weaponStruct.DetailType_Armor = Type_Armor.NotArmor;
 
         weaponStruct.Name = Name;
         weaponStruct.Tier = Tier;
@@ -75,7 +75,7 @@ public class ItemData : ScriptableObject
         ItemStruct armorStruct = new ItemStruct();
 
         armorStruct.isWeapon = isWeapon;
-        armorStruct.DetailType_Weapon = DetailType_Weapon.NotWeapon;
+        armorStruct.DetailType_Weapon = Type_Weapon.NotWeapon;
         armorStruct.DetailType_Armor = Detail_Armor;
 
         armorStruct.Name = Name;
