@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
-using Zenject.SpaceFighter;
 
 public class GeneralAnimator : MonoBehaviour
 {
