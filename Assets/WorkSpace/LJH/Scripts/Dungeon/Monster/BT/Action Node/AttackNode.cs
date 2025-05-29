@@ -1,49 +1,66 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackNode : BTNode
 {
-    private System.Action performAttack;
-    private Animator animator;
-    private string animeName;
-    private bool isPlayed = false;
+    private readonly System.Action performAttack;
+    private readonly Animator animator;
+    private readonly string animationStateName;
+    private readonly GeneralMonsterAI ai;
 
-    public AttackNode(System.Action performAttack, Animator animator, string animeName)
+    private bool hasStarted = false;
+    private bool waitingForStateEnter = false;
+
+    public AttackNode(System.Action performAttack, Animator animator, string animationStateName, GeneralMonsterAI ai)
     {
         this.performAttack = performAttack;
         this.animator = animator;
-        this.animeName = animeName;
+        this.animationStateName = animationStateName;
+        this.ai = ai;
     }
 
     public override NodeState Tick()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        int expectedHash = Animator.StringToHash("Base Layer.Monster Attack Left");
 
-        if (!isPlayed)
+        if (!hasStarted)
         {
-            Debug.Log("애니메이션 시작");
-            performAttack?.Invoke(); // animator.Play(animeName);
-            isPlayed = true;
+            Debug.Log("공격 명령 시작");
+            ai.isAttacking = true;
+            performAttack?.Invoke();
+            hasStarted = true;
+            waitingForStateEnter = true;
             return NodeState.Running;
         }
 
-        // 실제 애니메이션 상태 진입할 때까지 기다림
-        if (stateInfo.fullPathHash != expectedHash)
+        if (waitingForStateEnter)
         {
-            Debug.Log("아직 해당 상태로 진입 안됨");
-            return NodeState.Running;
+            if (!stateInfo.IsName(animationStateName))
+            {
+                Debug.Log("상태가 이미 바뀌어서 normalizedTime 못 보고 있음");
+            }
+
+            if (stateInfo.IsName(animationStateName))
+            {
+                Debug.Log("애니메이션 상태 진입 완료");
+                waitingForStateEnter = false;
+            }
+            else
+            {
+                Debug.Log("애니메이션 상태 진입 대기 중...");
+                return NodeState.Running;
+            }
         }
 
         if (stateInfo.normalizedTime >= 1f)
         {
             Debug.Log("애니메이션 완료");
-            isPlayed = false;
+            hasStarted = false;
+            ai.isAttacking = false;
             return NodeState.Success;
         }
 
-        Debug.Log($"진행 중: {stateInfo.normalizedTime}");
+        Debug.Log($"애니메이션 진행 중: {stateInfo.normalizedTime:F2}");
         return NodeState.Running;
     }
 }

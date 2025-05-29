@@ -12,6 +12,8 @@ public class GoblinAi : GeneralMonsterAI
 
     public override void Move()
     {
+        if (isAttacking) return;
+
         Debug.Log("고블린 이동");
         animator?.PlayMove();
     }

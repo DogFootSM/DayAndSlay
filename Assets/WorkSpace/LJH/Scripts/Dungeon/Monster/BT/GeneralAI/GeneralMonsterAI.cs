@@ -23,13 +23,15 @@ public class GeneralMonsterAI : MonoBehaviour
     protected BTNode selector;
     protected BTNode attackSequence;
 
-    
+    public bool isAttacking = false;
+
+
 
     private void Start()
     {
         animator = GetComponent<GeneralAnimator>();
 
-        attack = new AttackNode(this.Attack, GetComponent<Animator>(), "MonsterAttackLeft");
+        attack = new AttackNode(this.Attack, GetComponent<Animator>(), "MonsterAttackLeft", this);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
         attackCheck = new IsPreparedAttackNode
@@ -48,6 +50,7 @@ public class GeneralMonsterAI : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(isAttacking);
         tree.Tick();
     }
 

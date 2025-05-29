@@ -38,7 +38,7 @@ public class GeneralAnimator : MonoBehaviour
     public void PlayAttack() 
     {
         spriteLibrary.spriteLibraryAsset = spriteDict["Attack"];
-        animator.Play("Monster Attack Left");
+        animator.Play("MonsterAttackLeft");
         //animator.Play("MonsterAttackRight");
         //animator.Play("MonsterAttackUp");
         //animator.Play("MonsterAttackDown");
