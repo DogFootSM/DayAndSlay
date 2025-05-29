@@ -3,38 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI itemCountText;
+    [SerializeField] private Image itemImage;
     
     public Item CurSlotItem => curSlotItem;
     private Item curSlotItem;
-    
-    private Image itemImage;
      
+    public int ItemCount => itemCount;
     private int itemCount = 0;
-    private bool isDrag;
+    private Vector3 originScale = new Vector3(1f, 1f, 1f);
+    public Action OnResetScaleEvent;
+    public Action OnDragScaleEvent;
     
     private void Awake()
     {
-        Init();
-        CountTextActive();
+        CountTextActive(); 
     }
 
-    private void Init()
+    private void OnEnable()
     {
-        itemImage = transform.GetChild(1).GetComponent<Image>();
-
-        if (curSlotItem == null)
-        {
-            itemImage.color = Color.black;
-        }
-        
-        itemCountText = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        OnResetScaleEvent += ScaleReset;
+        OnDragScaleEvent += DragScale;
     }
-    
+
+    private void OnDisable()
+    {
+        OnResetScaleEvent -= ScaleReset;
+        OnDragScaleEvent -= DragScale;
+    }
+
     /// <summary>
     /// 슬롯 아이템 추가
     /// </summary>
@@ -55,6 +58,23 @@ public class InventorySlot : MonoBehaviour
     private void CountTextActive()
     { 
         itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.itemData.IsOverlaped);
+    }
+
+    /// <summary>
+    /// 아이템 이미지 크기 원상복구
+    /// </summary>
+    private void ScaleReset()
+    {
+        //TODO: 아이템 드래그 시 어떻게 할지?
+        itemImage.rectTransform.localScale = originScale;
+    }
+
+    /// <summary>
+    /// 아이템 드래그 시 크기 조정
+    /// </summary>
+    private void DragScale()
+    {
+        itemImage.rectTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
     }
     
 }

@@ -19,7 +19,11 @@ public class ItemGrab : MonoBehaviour
         if (((1 << other.gameObject.layer) & itemLayerMask) != 0)
         {
             Item grabItem = other.GetComponent<Item>();
-            inventoryInteraction.AddItemToInventory(grabItem);             
+
+            if (grabItem != null)
+            { 
+                inventoryInteraction.AddItemToInventory(grabItem);   
+            } 
         }
     } 
 }
