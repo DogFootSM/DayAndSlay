@@ -4,7 +4,6 @@ using UnityEngine;
 public class AttackNode : BTNode
 {
     private readonly System.Action performAttack;
-    private readonly GeneralMonsterAI ai;
 
     public AttackNode(System.Action performAttack)
     {

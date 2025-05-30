@@ -17,9 +17,11 @@ public class GeneralMonsterAI : MonoBehaviour
     protected BTNode idle;
     protected BTNode chase;
     protected BTNode attackCheck;
+    protected BTNode chaseCheck;
 
     protected BTNode selector;
     protected BTNode attackSequence;
+    protected BTNode chaseSequence;
 
     protected MonsterStateMachine stateMachine;
 
@@ -29,12 +31,13 @@ public class GeneralMonsterAI : MonoBehaviour
         attack = new AttackNode(this.Attack);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
-        attackCheck = new IsPreparedAttackNode
-            (gameObject.transform, player.transform, monsterData.range, monsterData.cooldown);
+        attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.range, monsterData.cooldown);
+        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, 5f);
+
 
         //예시 용
         attackSequence = new Sequence(AttackSequence());
-
+        chaseSequence = new Sequence(ChaseSequence());
 
 
         selector = new Selector(RootSelector());
@@ -73,8 +76,18 @@ public class GeneralMonsterAI : MonoBehaviour
         List<BTNode> nodes = new List<BTNode>();
        
         nodes.Add(attackSequence);
-        nodes.Add(chase);
+        nodes.Add(chaseSequence);
         nodes.Add(idle);
+
+        return nodes;
+    }
+
+    protected List<BTNode> ChaseSequence()
+    {
+        //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
+        List<BTNode> nodes = new List<BTNode>();
+        nodes.Add(chaseCheck);
+        nodes.Add(chase);
 
         return nodes;
     }

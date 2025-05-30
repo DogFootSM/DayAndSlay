@@ -22,26 +22,8 @@ public class GeneralAnimator : MonoBehaviour
 
         stateMachine = new MonsterStateMachine(this);
 
-        stateMachine.ChangeState(new MonsterMoveState());
+        stateMachine.ChangeState(new MonsterIdleState());
 
-    }
-
-    private void Update()
-    {
-        Change();
-    }
-
-    private void Change()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            stateMachine.ChangeState(new MonsterAttackState());
-        }
-
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            stateMachine.ChangeState(new MonsterMoveState());
-        }
     }
 
     public void PlayIdle() 
