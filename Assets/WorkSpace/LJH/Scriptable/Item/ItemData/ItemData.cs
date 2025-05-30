@@ -36,7 +36,9 @@ public class ItemData : ScriptableObject
 
     public int BuyPrice;
     public int SellPrice;
-    
+
+    public string ItemDescA;
+    public string ItemDescB;
 
     public ItemStruct GetItemData(ItemStruct itemStruct)
     {
