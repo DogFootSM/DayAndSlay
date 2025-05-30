@@ -21,6 +21,7 @@ public class GeneralMonsterAI : MonoBehaviour
     protected BTNode selector;
     protected BTNode attackSequence;
 
+    protected MonsterStateMachine stateMachine;
 
 
     private void Start()
@@ -38,6 +39,12 @@ public class GeneralMonsterAI : MonoBehaviour
 
         selector = new Selector(RootSelector());
         tree = new BehaviourTree(selector);
+
+        stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
+        if(stateMachine == null)
+        {
+            Debug.Log("스테이트 머신 생성안됨");
+        }
     }
 
 
