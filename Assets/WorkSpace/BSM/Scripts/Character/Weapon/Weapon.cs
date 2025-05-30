@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject directionObject;
+    [SerializeField] private GameObject playerObject;
     
     public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
     public UnityAction<Vector2> OnDirectionChanged; 
@@ -16,6 +17,7 @@ public class Weapon : MonoBehaviour
 
     private Vector2 curDirection;
 
+    public float tempRange;
     private void Awake()
     {
         curDirection = Vector2.down;
@@ -32,12 +34,7 @@ public class Weapon : MonoBehaviour
         OnWeaponTypeChanged -= GetCurrentWeaponType;
         OnDirectionChanged -= ChangedMoveDirection;
     }
-
-    private void Update()
-    {
-        Debug.DrawRay(directionObject.transform.position, curDirection * 5f, Color.red);
-    }
-
+  
     /// <summary>
     /// 무기 타입 변경에 따른 무기 핸들러 변경
     /// </summary>
@@ -57,7 +54,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Attack()
     {
-        attackHandler.Attack();
+        attackHandler.Attack(curDirection, playerObject.transform.position);
     }
-    
+
+    private void OnDrawGizmos()
+    {  
+        attackHandler.DrawGizmos(); 
+    }
 }
