@@ -13,15 +13,52 @@ public class GeneralAnimator : MonoBehaviour
     [SerializeField]
     protected SerializedDictionary<string, SpriteLibraryAsset> spriteDict = new SerializedDictionary<string, SpriteLibraryAsset>();
 
+    MonsterStateMachine stateMachine;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         spriteLibrary = GetComponent<SpriteLibrary>();
 
+        stateMachine = new MonsterStateMachine(this);
+
+        stateMachine.ChangeState(new MonsterMoveState());
+
+    }
+
+    private void Update()
+    {
+        Change();
+    }
+
+    private void Change()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            stateMachine.ChangeState(new MonsterAttackState());
+        }
+
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            stateMachine.ChangeState(new MonsterMoveState());
+        }
     }
 
     public void PlayIdle() 
     {
+        if(spriteLibrary == null)
+        {
+            Debug.Log("스프라이트 라이브러리가 널임");
+        }
+        if (spriteLibrary.spriteLibraryAsset == null)
+        {
+            Debug.Log("스프라이트 라이브러리의 애셋이 널임");
+        }
+        if (spriteDict["Move"] == null)
+        {
+            Debug.Log("스프라이트 딕셔너리또는 무브가가 널임");
+        }
+        spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
         animator.Play("MonsterIdle");
     }
     public void PlayMove() 
@@ -53,5 +90,5 @@ public class GeneralAnimator : MonoBehaviour
         spriteLibrary.spriteLibraryAsset = spriteDict["Die"];
         animator.Play("MonsterDie");
     }
-
+    
 }
