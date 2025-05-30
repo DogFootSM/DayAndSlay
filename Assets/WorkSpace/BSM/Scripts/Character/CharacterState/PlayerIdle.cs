@@ -16,7 +16,8 @@ public class PlayerIdle : PlayerState
             Direction.Up => upIdleHash,
             Direction.Down => downIdleHash,
             Direction.Right => leftIdleHash,
-            Direction.Left => rightIdleHash
+            Direction.Left => rightIdleHash,
+            _ => downIdleHash
         };
          
         playerController.BodyAnimator.Play(playIdleHash); 

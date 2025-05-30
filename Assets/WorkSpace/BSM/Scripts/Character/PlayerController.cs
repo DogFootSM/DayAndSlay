@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
     public Animator BodyAnimator => bodyAnimator;
-    public Weapon CurWeapon => weapon;
+    public Weapon CurWeapon => curWeapon;
     public WaitCache WaitCache => waitCache;
 
     [Inject] private WaitCache waitCache;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
     private Animator bodyAnimator;
-    private Weapon weapon;
+    private Weapon curWeapon;
     private IDataReader dataReader;
  
     private CharacterWeaponType curWeaponType;
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         KeyInput();
-        characterStates[(int)curState].Update(); 
+        characterStates[(int)curState].Update();  
     }
 
     private void FixedUpdate()
@@ -67,10 +67,12 @@ public class PlayerController : MonoBehaviour
 
     private void Init()
     {
+        LastMoveKey = Direction.Down;
+        
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
-        weapon = GetComponentInChildren<Weapon>(); 
+        curWeapon = GetComponentInChildren<Weapon>(); 
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ChangedWeaponType()
     {
-        weapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
+        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
     }
 
     /// <summary>
@@ -125,6 +127,7 @@ public class PlayerController : MonoBehaviour
         
         if (moveDir != Vector2.zero)
         {
+            curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
         }
  

@@ -6,19 +6,36 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] private GameObject directionObject;
+    
+    public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
+    public UnityAction<Vector2> OnDirectionChanged; 
+    
     private IAttackHandler attackHandler;
     private CharacterWeaponType curWeaponType;
 
-    public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
- 
+    private Vector2 curDirection;
+
+    private void Awake()
+    {
+        curDirection = Vector2.down;
+    }
+
     private void OnEnable()
     {
         OnWeaponTypeChanged += GetCurrentWeaponType;
+        OnDirectionChanged += ChangedMoveDirection;
     }
 
     private void OnDisable()
     {
         OnWeaponTypeChanged -= GetCurrentWeaponType;
+        OnDirectionChanged -= ChangedMoveDirection;
+    }
+
+    private void Update()
+    {
+        Debug.DrawRay(directionObject.transform.position, curDirection * 5f, Color.red);
     }
 
     /// <summary>
@@ -28,6 +45,11 @@ public class Weapon : MonoBehaviour
     private void GetCurrentWeaponType(CharacterWeaponType weaponType)
     {
         attackHandler = AttackHandlerFactory.ChangeAttackType(weaponType); 
+    }
+
+    private void ChangedMoveDirection(Vector2 direction)
+    {
+        curDirection = direction; 
     }
     
     /// <summary>
