@@ -11,19 +11,19 @@ public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
-    
+
     public Item CurSlotItem => curSlotItem;
-    private Item curSlotItem;
-     
+    public Item curSlotItem;
+
     public int ItemCount => itemCount;
     private int itemCount = 0;
     private Vector3 originScale = new Vector3(1f, 1f, 1f);
     public Action OnResetScaleEvent;
     public Action OnDragScaleEvent;
-    
+
     private void Awake()
     {
-        CountTextActive(); 
+        CountTextActive();
     }
 
     private void OnEnable()
@@ -44,19 +44,43 @@ public class InventorySlot : MonoBehaviour
     /// <param name="item">습득한 아이템</param>
     /// <param name="count">습득한 개수</param>
     public void AddItem(Item item, int count = 1)
-    {  
+    {
         curSlotItem = item;
         itemImage.sprite = item.itemData.ItemImage;
-        itemCount += count;
-        itemCountText.text = $"{itemCount}";
+        itemCount += count; 
         CountTextActive();
     }
- 
+
     /// <summary>
+    /// 아이템 교환
+    /// </summary>
+    /// <param name="item">슬롯에 변경할 아이템</param>
+    /// <param name="count">변경할 아이템 개수</param>
+    public void ChangeItem(Item item, int count)
+    {
+        curSlotItem = item;
+        itemImage.sprite = item.itemData.ItemImage;
+        itemCount = count; 
+        CountTextActive();
+    }
+     
+    /// <summary>
+    /// 슬롯 내 아이템 삭제
+    /// </summary>
+    public void RemoveItem()
+    {
+        curSlotItem = null;
+        itemImage.sprite = null;
+        itemCount = 0;
+        CountTextActive();
+    }
+
+/// <summary>
     /// 중복 아이템일 경우 개수 텍스트 활성화
     /// </summary>
     private void CountTextActive()
     { 
+        itemCountText.text = $"{itemCount}";
         itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.itemData.IsOverlaped);
     }
 

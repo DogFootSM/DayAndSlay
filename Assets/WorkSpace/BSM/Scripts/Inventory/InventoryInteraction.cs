@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -80,6 +81,25 @@ public class InventoryInteraction : InventoryController, IPointerUpHandler,IPoin
 
         OnInventorySlotMouseUp();
         //인벤토리 슬롯 교환 진행
+        inventoryRayCanvas.Raycast(eventData, results);
+
+        if (results.Count < 2) return;
+        
+        InventorySlot compareSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
+
+        if (compareSlot != null && compareSlot.CurSlotItem == null)
+        {
+            compareSlot.AddItem(detectedInventorySlot.CurSlotItem, detectedInventorySlot.ItemCount);
+            detectedInventorySlot.RemoveItem();
+        }
+        else if (compareSlot != null && compareSlot.CurSlotItem != null)
+        {
+            Item temp = detectedInventorySlot.CurSlotItem;
+            int tempCount = detectedInventorySlot.ItemCount;
+            
+            detectedInventorySlot.ChangeItem(compareSlot.CurSlotItem, compareSlot.ItemCount);
+            compareSlot.ChangeItem(temp, tempCount);
+        }
         
     }
 
