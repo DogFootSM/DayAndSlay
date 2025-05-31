@@ -76,8 +76,10 @@ public class CharacterSlotController : MonoBehaviour
     /// 슬롯 삭제 완료
     /// </summary>
     private void DeleteSlotConfirm()
-    {
+    { 
         DeleteAlert.SetActive(false);
+        
+        //TODO: DELETE TABLE로 변경하기
         sqlManager.UpdateDataColumn(ColumnNames, DefaultValue, 
             sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), 
             $"{DeleteSlotId}");

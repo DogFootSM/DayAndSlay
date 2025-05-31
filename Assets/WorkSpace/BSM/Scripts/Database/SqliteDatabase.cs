@@ -18,7 +18,7 @@ public class SqliteDatabase
     private IDataReader dbDataReader;
 
     private int slotCount = 3;
- 
+
     public SqliteDatabase()
     {
         string path = Path.Join(Application.streamingAssetsPath, dbFileName);
@@ -76,6 +76,27 @@ public class SqliteDatabase
 
             dbCommand.ExecuteNonQuery();
         }
+        
+        //보유 아이템 데이터 테이블 생성
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            //Sqlite는 기본적으로 외래키 설정이 Off로 되어 있음
+            dbCommand.CommandText = "PRAGMA foreign_keys = ON";
+            dbCommand.ExecuteNonQuery();
+            
+            dbCommand.CommandText = @"
+
+                                CREATE TABLE IF NOT EXISTS CharacterItem
+                                (
+                                    item_id         INTEGER NOT NULL,
+                                    slot_id         INTEGER NOT NULL,
+                                    item_amount      INTEGER NOT NULL,
+                                    inventory_slot_id INTEGER NOT NULL,
+                                    PRIMARY KEY(slot_id, item_id)
+                                    FOREIGN KEY (slot_id) REFERENCES Character (slot_id) ON DELETE CASCADE
+                                )";
+            dbCommand.ExecuteNonQuery();
+        }
 
         //테이블 초기 컬럼값 삽입
         using (dbCommand = dbConnection.CreateCommand())
@@ -100,13 +121,13 @@ public class SqliteDatabase
     }
 
     /// <summary>
-    /// 컬럼 DB 업데이트
+    /// 캐릭터 컬럼 DB 업데이트
     /// </summary>
-    public void UpdateTable(string[] column, string[] columnValue, string condition, string conditionValue)
+    public void CharacterUpdateTable(string[] column, string[] columnValue, string condition, string conditionValue)
     {
         condition ??= string.Empty;
         conditionValue ??= string.Empty;
-        
+
         if (column.Length == 0 || columnValue.Length == 0 || (column.Length != columnValue.Length))
         {
             throw new ArgumentException("Update 조건 오류");
@@ -117,11 +138,11 @@ public class SqliteDatabase
         using (dbCommand = dbConnection.CreateCommand())
         {
             for (int i = 0; i < column.Length; i++)
-            { 
-                query += $"{column[i]} = @columnValue{i}"; 
-  
+            {
+                query += $"{column[i]} = @columnValue{i}";
+
                 dbCommand.Parameters.Add(new SqliteParameter($"@columnValue{i}", columnValue[i]));
-                
+
                 if (i < column.Length - 1)
                 {
                     query += ", ";
@@ -133,14 +154,14 @@ public class SqliteDatabase
                 query += $" WHERE {condition} = @value";
                 dbCommand.Parameters.Add(new SqliteParameter("@value", conditionValue));
             }
- 
+
             dbCommand.CommandText = query;
             dbCommand.ExecuteNonQuery();
         }
     }
- 
+
     /// <summary>
-    /// 단일, 다중 컬럼 조회
+    /// 캐릭터 테이블 단일, 다중 컬럼 조회
     /// </summary>
     /// <param name="column">가져올 컬럼명</param>
     /// <param name="condition">where절 조건</param>
@@ -148,7 +169,7 @@ public class SqliteDatabase
     /// <param name="operation">조건 연산 기호</param>
     /// <typeparam name="T">여러 타입으로 조회</typeparam>
     /// <returns></returns>
-    public IDataReader ReadTable(string[] column, string[] condition, string[] conditionValue, string[] operation)
+    public IDataReader CharacterReadTable(string[] column, string[] condition, string[] conditionValue, string[] operation)
     {
         condition ??= Array.Empty<string>();
         conditionValue ??= Array.Empty<string>();
@@ -203,4 +224,76 @@ public class SqliteDatabase
 
         return dbDataReader;
     }
+
+    public void CharacterDeleteTable(string[] condition)
+    {
+        condition ??= Array.Empty<string>();
+
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = "DELETE FROM Character ";
+
+            for (int i = 0; i < condition.Length; i++)
+            {
+                
+            }
+            
+        }
+        
+    }
+    
+    /// <summary>
+    /// 아이템 데이터 Update Or Insert
+    /// </summary>
+    /// <param name="column">변경할 컬럼명</param>
+    /// <param name="columnValue">변경할 컬럼 값</param>
+    public void ItemUpsertTable(string[] column, string[] columnValue)
+    {
+        column ??= Array.Empty<string>();
+        columnValue ??= Array.Empty<string>();
+        
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = "INSERT INTO CharacterItem (";
+
+            for (int i = 0; i < column.Length; i++)
+            {
+                query += $"{column[i]}";
+
+                if (i < column.Length - 1)
+                {
+                    query += ", ";
+                } 
+            }
+
+            query += ") VALUES (";
+            
+            Debug.Log(columnValue.Length);
+            
+            for (int i = 0; i < columnValue.Length; i++)
+            {
+                query += $"@value{i}";
+                
+                dbCommand.Parameters.Add(new SqliteParameter($"@value{i}", columnValue[i]));
+
+                if (i < columnValue.Length - 1)
+                {
+                    query += ", ";
+                } 
+            }
+            
+            query += ") ON CONFLICT(slot_id, item_id) DO UPDATE SET item_amount = excluded.item_amount";
+            
+            Debug.Log(query);
+            
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery();
+        }
+    }
+
+    public void ItemDeleteTable()
+    {
+        
+    }
+    
 }

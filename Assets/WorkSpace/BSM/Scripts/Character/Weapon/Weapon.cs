@@ -16,8 +16,7 @@ public class Weapon : MonoBehaviour
     private CharacterWeaponType curWeaponType;
 
     private Vector2 curDirection;
-
-    public float tempRange;
+ 
     private void Awake()
     {
         curDirection = Vector2.down;

@@ -24,13 +24,13 @@ public class DataManager : MonoBehaviour
     /// </summary>
     /// <param name="presets"></param>
     public void SavePresetData(List<Image> presets, int WeaponType)
-    {
+    { 
         for (int i = 0; i < presets.Count; i++)
         {
             //착용 에셋명 저장
             spriteColumns.Add(presets[i].sprite.name);
         }
-
+        
         sqlManager.UpdateDataColumn(new[]
             {
                 sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
@@ -38,10 +38,16 @@ public class DataManager : MonoBehaviour
                 sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
                 sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
             }, spriteColumns.ToArray(), sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
-
+        
         sqlManager.UpdateDataColumn(new[] { sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_TYPE)}, new[] { $"{WeaponType}" }, 
             sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), 
             $"{SlotId}");
+        
+        //TODO: 아이템 ID 양식 정립되면 수정하기.
+        sqlManager.UpsertItemDataColumn(
+            new []{"item_id", "slot_id", "item_amount", "inventory_slot_id"},
+            new String[]{$"{curWeapon + 100}", $"{SlotId}", "1", "0"}
+            );
     }
 
 
@@ -50,7 +56,7 @@ public class DataManager : MonoBehaviour
     /// </summary>
     /// <param name="characterAnimatorController">현재 캐릭터</param>
     public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
-    {
+    { 
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
         {
             sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
@@ -103,7 +109,7 @@ public class DataManager : MonoBehaviour
                                                                  $"{((BodyPartsType)i)}/" +
                                                                  $"{spriteNames[i]}/{(CharacterAnimationType)j}");
                 }
-
+        
                 //찾아온 애셋의 개수만큼 반복
                 for (int k = 0; k < changeSprites[i].Length; k++)
                 {
@@ -113,8 +119,8 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-
-
+        
+        
         //현재 무기가 Wand일 경우 Short Sword 인덱스로, 그 외 자기 무기 인덱스 할당
         weaponIndex = (CharacterWeaponType)curWeapon switch
         {
@@ -129,7 +135,7 @@ public class DataManager : MonoBehaviour
                                                          $"{(CharacterWeaponType)curWeapon}/" +
                                                          $"{spriteNames[spriteNames.Count - 1]}/" +
                                                          $"{(CharacterAnimationType)i}");
-  
+        
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
                 characterAnimatorController.EquipmentLibraryAsset[weaponIndex].AddCategoryLabel(changeSprites[0][j],
@@ -137,7 +143,7 @@ public class DataManager : MonoBehaviour
                     $"{(CharacterAnimationType)i + "_" + j}");
             }
         }
-
+        
         characterAnimatorController.WeaponAnimatorChange(weaponIndex);
     }
 
