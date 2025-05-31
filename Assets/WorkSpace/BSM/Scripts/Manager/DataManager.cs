@@ -30,6 +30,10 @@ public class DataManager : MonoBehaviour
             //착용 에셋명 저장
             spriteColumns.Add(presets[i].sprite.name);
         }
+           
+        sqlManager.CharacterInsertTable(
+            new[]{sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)},
+            new []{$"{SlotId}"});
         
         sqlManager.UpdateDataColumn(new[]
             {

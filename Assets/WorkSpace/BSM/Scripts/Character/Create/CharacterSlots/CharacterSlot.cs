@@ -46,11 +46,14 @@ public class CharacterSlot : BaseUI
             new string[] { $"{slotId}" },
             null);
 
+        isCreate = 0;
+        
+        //캐릭터가 생성되어 있다면 1로 변경
         while (dataReader.Read())
         {
-            isCreate = dataReader.GetInt32(0);
+            isCreate = dataReader.GetInt32(0); 
         }
-        
+         
         selectPanelObj.SetActive(isCreate != 0);
         emptyText.SetActive(isCreate == 0);
     }

@@ -97,29 +97,55 @@ public class SqliteDatabase
                                 )";
             dbCommand.ExecuteNonQuery();
         }
-
-        //테이블 초기 컬럼값 삽입
+    }
+    
+    
+    /// <summary>
+    /// 캐릭터 테이블 데이터 삽입
+    /// </summary>
+    /// <param name="column">삽입할 컬러명</param>
+    /// <param name="columnValue">삽입할 컬럼 값</param>
+    public void CharacterInsertTable(string[] column, string[] columnValue)
+    {
+        column ??= Array.Empty<string>();
+        columnValue ??= Array.Empty<string>();
+        
         using (dbCommand = dbConnection.CreateCommand())
         {
-            dbCommand.CommandText = "SELECT COUNT(*) FROM Character";
-            long count = (long)dbCommand.ExecuteScalar();
+            string query = "INSERT INTO Character (";
 
-            if (count != 0) return;
-
-            for (int i = 0; i < slotCount; i++)
+            for (int i = 0; i < columnValue.Length; i++)
             {
-                using (dbCommand = dbConnection.CreateCommand())
-                {
-                    dbCommand.CommandText = @"INSERT INTO Character (slot_id)
-                                        VALUES (@slot_id)";
-                    dbCommand.Parameters.Clear();
-                    dbCommand.Parameters.Add(new SqliteParameter("@slot_id", i + 1));
-                    dbCommand.ExecuteNonQuery();
-                }
-            }
-        }
-    }
+                query += column[i];
 
+                if (i < columnValue.Length - 1)
+                {
+                    query += ", ";
+                } 
+            }
+
+            query += ") VALUES (";
+
+            for (int i = 0; i < columnValue.Length; i++)
+            {
+                query += $"@slot_id{i}";
+                dbCommand.Parameters.Clear();
+                dbCommand.Parameters.Add(new SqliteParameter($"@slot_id{i}", columnValue[i]));
+
+                if (i < columnValue.Length - 1)
+                {
+                    query += ", ";
+                } 
+            }
+            
+            query += ")";
+            
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery(); 
+        }
+        
+    }
+    
     /// <summary>
     /// 캐릭터 컬럼 DB 업데이트
     /// </summary>
@@ -167,7 +193,6 @@ public class SqliteDatabase
     /// <param name="condition">where절 조건</param>
     /// <param name="conditionValue">조건의 값</param>
     /// <param name="operation">조건 연산 기호</param>
-    /// <typeparam name="T">여러 타입으로 조회</typeparam>
     /// <returns></returns>
     public IDataReader CharacterReadTable(string[] column, string[] condition, string[] conditionValue, string[] operation)
     {
@@ -225,21 +250,25 @@ public class SqliteDatabase
         return dbDataReader;
     }
 
-    public void CharacterDeleteTable(string[] condition)
-    {
-        condition ??= Array.Empty<string>();
-
+    /// <summary>
+    /// 캐릭터 DB 행 삭제
+    /// </summary>
+    /// <param name="condition">삭제할 행 조건</param>
+    /// <param name="conditionValue">삭제할 조건의 값</param>
+    public void CharacterDeleteTable(string condition, string conditionValue)
+    { 
+        condition ??= string.Empty;
+        conditionValue ??= string.Empty;
+        
         using (dbCommand = dbConnection.CreateCommand())
         {
-            string query = "DELETE FROM Character ";
-
-            for (int i = 0; i < condition.Length; i++)
-            {
+            string query = $"DELETE FROM Character WHERE {condition} = @value";
                 
-            }
+            dbCommand.Parameters.Add(new SqliteParameter($"@value", conditionValue));
             
-        }
-        
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery(); 
+        } 
     }
     
     /// <summary>

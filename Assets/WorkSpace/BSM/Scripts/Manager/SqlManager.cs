@@ -19,7 +19,7 @@ public class SqlManager : IInitializable
     {
         CharacterDataColumns = new Dictionary<CharacterDataColumns, string>();
         sqlDatabase = new SqliteDatabase();
-        sqlDatabase.DropTable(); 
+        sqlDatabase.CreateTable(); 
     }
 
     /// <summary>
@@ -35,6 +35,16 @@ public class SqlManager : IInitializable
         }   
         
         return CharacterDataColumns[columns];
+    }
+    
+    /// <summary>
+    /// 캐릭터 데이터 컬럼 추가
+    /// </summary>
+    /// <param name="column">추가할 컬럼명</param>
+    /// <param name="columnValue">추가할 컬럼 값</param>
+    public void CharacterInsertTable(string[] column, string[] columnValue)
+    {
+        sqlDatabase.CharacterInsertTable(column, columnValue);
     }
     
     
@@ -63,6 +73,16 @@ public class SqlManager : IInitializable
         sqlDatabase.CharacterUpdateTable(columnName, columnValue, condition, conditionValue);
     }
 
+    /// <summary>
+    /// 캐릭터 DB 행 삭제
+    /// </summary>
+    /// <param name="condition">삭제할 행 조건</param>
+    /// <param name="conditionValue">삭제할 행 조건의 값</param>
+    public void DeleteDataColumn(string condition, string conditionValue)
+    {
+        sqlDatabase.CharacterDeleteTable(condition, conditionValue);
+    }
+    
     /// <summary>
     /// 아이템 컬럼 삽입 or 업데이트
     /// </summary>
