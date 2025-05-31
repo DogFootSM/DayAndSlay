@@ -46,8 +46,9 @@ public class CharacterSlotController : MonoBehaviour
     private void DeleteSlotConfirm()
     {
         DeleteAlert.SetActive(false);
+        
         //해당 Slot_id 컬럼 삭제
-        sqlManager.DeleteDataColumn(sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID),
+        sqlManager.DeleteDataColumn(sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{DeleteSlotId}");
 
         characterSlots[DeleteSlotId - 1].IsCreatedCharacter();

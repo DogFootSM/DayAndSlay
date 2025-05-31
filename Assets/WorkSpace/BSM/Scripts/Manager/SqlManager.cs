@@ -11,6 +11,7 @@ public class SqlManager : IInitializable
     private SqliteDatabase sqlDatabase;
 
     private Dictionary<CharacterDataColumns, string> CharacterDataColumns;
+    private Dictionary<CharacterItemDataColumns, string> CharacterItemDataColumns;
     
     /// <summary>
     /// 게임 시작 시 테이블 생성
@@ -18,6 +19,7 @@ public class SqlManager : IInitializable
     public void Initialize()
     {
         CharacterDataColumns = new Dictionary<CharacterDataColumns, string>();
+        CharacterItemDataColumns = new Dictionary<CharacterItemDataColumns, string>();
         sqlDatabase = new SqliteDatabase();
         sqlDatabase.CreateTable(); 
     }
@@ -27,7 +29,7 @@ public class SqlManager : IInitializable
     /// </summary>
     /// <param name="columns">컬럼 키</param>
     /// <returns></returns>
-    public string CharacterColumn(CharacterDataColumns columns)
+    public string GetCharacterColumn(CharacterDataColumns columns)
     {
         if (!CharacterDataColumns.ContainsKey(columns))
         {
@@ -35,6 +37,21 @@ public class SqlManager : IInitializable
         }   
         
         return CharacterDataColumns[columns];
+    }
+    
+    /// <summary>
+    /// 캐릭터 소유 아이템 데이터 컬럼 반환
+    /// </summary>
+    /// <param name="columns">컬럼 키</param>
+    /// <returns></returns>
+    public string GetCharacterItemColumn(CharacterItemDataColumns columns)
+    {
+        if (!CharacterItemDataColumns.ContainsKey(columns))
+        {
+            CharacterItemDataColumns.TryAdd(columns, columns.ToString().ToLower());
+        }
+        
+        return CharacterItemDataColumns[columns];
     }
     
     /// <summary>

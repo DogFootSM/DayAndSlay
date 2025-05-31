@@ -40,9 +40,9 @@ public class CharacterSlot : BaseUI
     {
         dataReader = sqlManager.ReadDataColumn(new[]
             {
-                sqlManager.CharacterColumn(CharacterDataColumns.IS_CREATE)
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS_CREATE)
             }, 
-            new string[] { sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID) },
+            new string[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new string[] { $"{slotId}" },
             null);
 
@@ -65,11 +65,11 @@ public class CharacterSlot : BaseUI
     { 
         dataReader = sqlManager.ReadDataColumn(new[]
         {
-            sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
-            sqlManager.CharacterColumn(CharacterDataColumns.BODY_SPRITE),
-            sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
-            sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE)
-        }, new string[] { sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+            sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE)
+        }, new string[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
             new string[] { $"{slotId}" }, 
             null);
 

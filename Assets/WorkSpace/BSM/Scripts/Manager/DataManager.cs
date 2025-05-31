@@ -32,25 +32,36 @@ public class DataManager : MonoBehaviour
         }
            
         sqlManager.CharacterInsertTable(
-            new[]{sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)},
+            new[]{sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)},
             new []{$"{SlotId}"});
         
         sqlManager.UpdateDataColumn(new[]
             {
-                sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
-                sqlManager.CharacterColumn(CharacterDataColumns.BODY_SPRITE),
-                sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
-                sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
-            }, spriteColumns.ToArray(), sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
+                sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+            }, spriteColumns.ToArray(), sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
         
-        sqlManager.UpdateDataColumn(new[] { sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_TYPE)}, new[] { $"{WeaponType}" }, 
-            sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), 
+        sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE)}, new[] { $"{WeaponType}" }, 
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), 
             $"{SlotId}");
         
         //TODO: 아이템 ID 양식 정립되면 수정하기.
         sqlManager.UpsertItemDataColumn(
-            new []{"item_id", "slot_id", "item_amount", "inventory_slot_id"},
-            new String[]{$"{curWeapon + 100}", $"{SlotId}", "1", "0"}
+            new []
+            {
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_ID), 
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.SLOT_ID), 
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_AMOUNT), 
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.INVENTORY_SLOT_ID),
+            },
+            new []
+            {
+                $"{curWeapon + 100}", 
+                $"{SlotId}", 
+                "1", 
+                "0"}
             );
     }
 
@@ -63,11 +74,11 @@ public class DataManager : MonoBehaviour
     { 
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
         {
-            sqlManager.CharacterColumn(CharacterDataColumns.HAIR_SPRITE),
-            sqlManager.CharacterColumn(CharacterDataColumns.BODY_SPRITE),
-            sqlManager.CharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
-            sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
-        }, new[] {sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+            sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+        }, new[] {sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
             new [] {$"{SlotId}"}, 
             null);
         
@@ -80,8 +91,8 @@ public class DataManager : MonoBehaviour
             } 
         }
          
-        dataReader = sqlManager.ReadDataColumn(new []{sqlManager.CharacterColumn(CharacterDataColumns.WEAPON_TYPE),}, 
-            new []{sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+        dataReader = sqlManager.ReadDataColumn(new []{sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),}, 
+            new []{sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
             new [] {$"{SlotId}"}, 
             null);
         
@@ -156,9 +167,9 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void CreateDataUpdate()
     {
-        sqlManager.UpdateDataColumn(new [] {sqlManager.CharacterColumn(CharacterDataColumns.IS_CREATE)},
+        sqlManager.UpdateDataColumn(new [] {sqlManager.GetCharacterColumn(CharacterDataColumns.IS_CREATE)},
             new [] {"1"}, 
-            sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID),
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
     }
     

@@ -57,6 +57,12 @@ public enum CharacterDataColumns
     AGILITY, INTELLIGENCE, OBJECTIVE_ITEM, SIZE
 }
 
+[Serializable]
+public enum CharacterItemDataColumns
+{
+    ITEM_ID, SLOT_ID, ITEM_AMOUNT,INVENTORY_SLOT_ID
+}
+
 /// <summary>
 /// 무기 타입
 /// </summary>
