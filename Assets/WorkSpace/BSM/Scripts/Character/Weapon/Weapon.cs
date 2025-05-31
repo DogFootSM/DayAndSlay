@@ -50,11 +50,11 @@ public class Weapon : MonoBehaviour
     }
     
     /// <summary>
-    /// 무기 핸들러의 공격 호출
+    /// 무기 핸들러의 기본 공격 호출
     /// </summary>
-    public void Attack()
+    public void NormalAttack()
     {
-        attackHandler.Attack(curDirection, playerObject.transform.position);
+        attackHandler.NormalAttack(curDirection, playerObject.transform.position);
     }
 
     private void OnDrawGizmos()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +22,8 @@ public class PlayerAttack : PlayerState
             Direction.Up => upAttackHash,
             Direction.Down => downAttackHash,
             Direction.Right => leftAttackHash,
-            Direction.Left => rightAttackHash
+            Direction.Left => rightAttackHash,
+            _ => throw new ArgumentNullException("잘못된 입력")
         };
 
         attackCo = playerController.StartCoroutine(AttackExitRoutine());
@@ -42,7 +44,7 @@ public class PlayerAttack : PlayerState
     /// <returns></returns>
     private IEnumerator AttackExitRoutine()
     {
-        playerController.CurWeapon.Attack();
+        playerController.CurWeapon.NormalAttack();
         playerController.BodyAnimator.Play(attackHash);
         playerController.WeaponAnimator.Play(attackHash);
         yield return playerController.WaitCache.GetWait(attackSpeed);
