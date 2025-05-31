@@ -10,6 +10,8 @@ public class MeleeAttackHandler : IAttackHandler
     private Vector2 overlapSize;
 
     private LayerMask monsterLayer;
+    private Monster targetMonster;
+    private float distance;
     
     public MeleeAttackHandler()
     {
@@ -17,7 +19,11 @@ public class MeleeAttackHandler : IAttackHandler
         monsterLayer = LayerMask.GetMask("Monster"); 
     }
     
-    
+    /// <summary>
+    /// 캐릭터 기본 근거리 공격
+    /// </summary>
+    /// <param name="direction">공격 방향</param>
+    /// <param name="position">캐릭터 위치</param>
     public void NormalAttack(Vector2 direction, Vector2 position)
     {
         //테스트용 pos,dir 코드
@@ -34,19 +40,49 @@ public class MeleeAttackHandler : IAttackHandler
             overlapSize = new Vector2(1f, 2f);
         }
 
-        Collider2D col = Physics2D.OverlapBox(position + (direction.normalized * 1f), overlapSize, 0f,monsterLayer);
-
-        if (col == null) return;
-
-        Monster monster = col.GetComponent<Monster>();
-
-        if (monster != null)
+        Collider2D[] monsterColliders = Physics2D.OverlapBoxAll(position + (direction.normalized * 1f), overlapSize, 0f,monsterLayer);
+        
+        if (monsterColliders.Length < 1) return;
+        
+        //감지된 몬스터가 1마리일 경우 바로 타겟 설정
+        if (monsterColliders.Length == 1)
+        {
+            targetMonster = monsterColliders[0].GetComponent<Monster>();
+        }
+        else
+        {
+            TargetMonsterSwitch(position, monsterColliders);
+        }
+         
+        
+        if (targetMonster != null)
         {
             //TODO: 몬스터 데미지는 캐릭터의 기본 공격력 + 무기 데미지 계산해서 데미지를 주면 될듯?
-            monster.TakeDamage(5);
+            targetMonster.TakeDamage(5);
         } 
     }
 
+    /// <summary>
+    /// 몬스터 타겟 변경
+    /// </summary>
+    /// <param name="position">현재 캐릭터 위치</param>
+    /// <param name="colliders">공격 범위 내 감지된 몬스터</param>
+    private void TargetMonsterSwitch(Vector2 position ,Collider2D[] colliders)
+    {
+        distance = 9999f;
+        
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            float compareDistance = Vector2.Distance(position, colliders[i].transform.position);
+                
+            if (distance > compareDistance)
+            {
+                distance = compareDistance;
+                targetMonster = colliders[i].gameObject.GetComponent<Monster>();
+            } 
+        }
+    }
+    
     public void DrawGizmos()
     {
         Vector3 gizmoPos = pos + (dir.normalized * 1f); 
