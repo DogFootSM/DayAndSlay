@@ -6,13 +6,13 @@ public class Item : MonoBehaviour
 {
     [SerializeField] public ItemData itemData;
 
-    [Header("¾ÆÀÌÅÛ µ¥ÀÌÅÍ ºÐ·ù°ª")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð·ï¿½ï¿½ï¿½")]
     public int ItemId;
     public bool isWeapon;
     public Type_Weapon detail_Weapon;
     public Type_Armor detail_Armor;
 
-    [Header("¾ÆÀÌÅÛ Á¤º¸")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public string Name;
     public int Tier;
     public int attack;
@@ -29,7 +29,8 @@ public class Item : MonoBehaviour
     }
 
     void Init()
-    {
+    { 
+        itemData = BSM_ItemManager.ItemManager.instance.GetItemData(ItemId);
         itemStruct = itemData.GetItemData(itemStruct);
 
         isWeapon = itemStruct.isWeapon;
@@ -44,6 +45,6 @@ public class Item : MonoBehaviour
         buyPrice = itemStruct.BuyPrice;
         sellPrice = itemStruct.SellPrice;
         
-        gameObject.name = Name;
+        gameObject.name = Name; 
     }
 }
