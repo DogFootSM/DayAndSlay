@@ -22,7 +22,8 @@ public class ItemGrab : MonoBehaviour
 
             if (grabItem != null)
             { 
-                inventoryInteraction.AddItemToInventory(grabItem);   
+                //드랍된 아이템의 ItemData 추가
+                inventoryInteraction.AddItemToInventory(grabItem.itemData);   
             } 
         }
     } 

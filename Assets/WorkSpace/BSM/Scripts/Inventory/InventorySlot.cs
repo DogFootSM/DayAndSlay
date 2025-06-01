@@ -12,8 +12,8 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
 
-    public Item CurSlotItem => curSlotItem;
-    public Item curSlotItem;
+    public ItemData CurSlotItem => curSlotItem;
+    public ItemData curSlotItem;
 
     public int ItemCount => itemCount;
     private int itemCount = 0;
@@ -43,10 +43,10 @@ public class InventorySlot : MonoBehaviour
     /// </summary>
     /// <param name="item">습득한 아이템</param>
     /// <param name="count">습득한 개수</param>
-    public void AddItem(Item item, int count = 1)
+    public void AddItem(ItemData item, int count = 1)
     {
         curSlotItem = item;
-        itemImage.sprite = item.itemData.ItemImage;
+        itemImage.sprite = item.ItemImage;
         itemCount += count;
         CountTextActive();
     }
@@ -56,10 +56,10 @@ public class InventorySlot : MonoBehaviour
     /// </summary>
     /// <param name="item">슬롯에 변경할 아이템</param>
     /// <param name="count">변경할 아이템 개수</param>
-    public void ChangeItem(Item item, int count)
+    public void ChangeItem(ItemData item, int count)
     {
         curSlotItem = item;
-        itemImage.sprite = item.itemData.ItemImage;
+        itemImage.sprite = item.ItemImage;
         itemCount = count;
         CountTextActive();
     }
@@ -81,7 +81,7 @@ public class InventorySlot : MonoBehaviour
     private void CountTextActive()
     {
         itemCountText.text = $"{itemCount}";
-        itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.itemData.IsOverlaped);
+        itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.IsOverlaped);
     }
 
     /// <summary>

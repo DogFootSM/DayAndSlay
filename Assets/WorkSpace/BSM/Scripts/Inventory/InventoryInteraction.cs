@@ -48,15 +48,15 @@ public class InventoryInteraction :
     /// 아이템 습득 후 인벤토리에 저장
     /// </summary>
     /// <param name="collectedItem">습득 아이템 객체</param>
-    public void AddItemToInventory(Item collectedItem)
+    public void AddItemToInventory(ItemData collectedItem)
     { 
-        if (ownedItemSet.Contains(collectedItem.itemData.ItemId)
-            && collectedItem.itemData.IsOverlaped)
+        if (ownedItemSet.Contains(collectedItem.ItemId)
+            && collectedItem.IsOverlaped)
         {
             for (int i = 0; i < inventorySlots.Count; i++)
             {
                 //아이템 id가 같은것을 슬롯에서 찾으면 아이템 슬롯에 추가
-                if (inventorySlots[i].CurSlotItem.itemData.ItemId == collectedItem.itemData.ItemId)
+                if (inventorySlots[i].CurSlotItem.ItemId == collectedItem.ItemId)
                 {
                     inventorySlots[i].AddItem(collectedItem); 
                     //TODO: 아이템 습득 애니메이션 재생
@@ -70,7 +70,7 @@ public class InventoryInteraction :
         if (emptySlots != null)
         {
             emptySlots.AddItem(collectedItem);
-            ownedItemSet.Add(collectedItem.itemData.ItemId);
+            ownedItemSet.Add(collectedItem.ItemId);
             //TODO: 아이템 습득 애니메이션 재생
             return;
         }
@@ -133,7 +133,7 @@ public class InventoryInteraction :
         }
         else if (compareSlot != null && compareSlot.CurSlotItem != null)
         {
-            Item temp = detectedInventorySlot.CurSlotItem;
+            ItemData temp = detectedInventorySlot.CurSlotItem;
             int tempCount = detectedInventorySlot.ItemCount;
             
             //이동 슬롯과 기존 슬롯의 내용 교환
@@ -158,9 +158,9 @@ public class InventoryInteraction :
         
         if (DetectedInventorySlotItem()) return;
 
-        detailItemImage.sprite = detectedInventorySlot.CurSlotItem.itemData.ItemImage;
-        detailItemDescA.text = detectedInventorySlot.CurSlotItem.itemData.ItemDescA;
-        detailItemDescB.text = detectedInventorySlot.CurSlotItem.itemData.ItemDescB; 
+        detailItemImage.sprite = detectedInventorySlot.CurSlotItem.ItemImage;
+        detailItemDescA.text = detectedInventorySlot.CurSlotItem.ItemDescA;
+        detailItemDescB.text = detectedInventorySlot.CurSlotItem.ItemDescB; 
     }
     
     /// <summary>
@@ -171,7 +171,7 @@ public class InventoryInteraction :
         //드래그에 사용할 이미지 위치 슬롯 아이템 이미지 위치로 변경
         dragItemImage.transform.position = detectedInventorySlot.transform.position; 
         dragItemImage.gameObject.SetActive(true);
-        dragItemImage.sprite = detectedInventorySlot.CurSlotItem.itemData.ItemImage;
+        dragItemImage.sprite = detectedInventorySlot.CurSlotItem.ItemImage;
         detectedInventorySlot.OnDragScaleEvent?.Invoke();
     }
 

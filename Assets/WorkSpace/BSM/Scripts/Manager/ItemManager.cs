@@ -9,6 +9,7 @@ namespace BSM_ItemManager
     public class ItemManager : MonoBehaviour
     {
         [SerializeField] private List<ItemData> items;
+        [SerializeField] private Item itemPrefab;
         public static ItemManager instance;
 
         private Dictionary<int, ItemData> itemDict;
@@ -28,7 +29,7 @@ namespace BSM_ItemManager
 
             Init();
         }
-
+ 
         private void Init()
         {
             itemDict = new Dictionary<int, ItemData>(items.Count << 2);
@@ -38,12 +39,12 @@ namespace BSM_ItemManager
             {
                 if (!itemDict.ContainsKey(items[i].ItemId))
                 {
-                    itemDict[items[i].ItemId] = items[i];
+                    itemDict[items[i].ItemId] = items[i]; 
                 } 
             }
-            
-            //아이템 풀에 아이템들 추가
-            itemPools = transform.GetComponentsInChildren<Item>().ToList(); 
+        
+            //TODO: 추후 아이템 드랍 시 아이템 풀링 사용하기
+            itemPools = transform.GetComponentsInChildren<Item>().ToList();
         }
         
         /// <summary>

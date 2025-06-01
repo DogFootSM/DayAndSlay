@@ -65,11 +65,15 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < itemDatas.Count; i++)
         {  
             inventorySlots[itemDatas[i].inventorySlotId].AddItem(
-                itemManager.GetPoolItem(itemDatas[i].itemId),
+                itemManager.GetItemData(itemDatas[i].itemId),
                 itemDatas[i].itemAmount);
         }
     }
 
+    /// <summary>
+    /// 아이템 데이터 반환
+    /// </summary>
+    /// <returns>현재 보유중인 아이템 데이터</returns>
     protected List<BSM_ItemData> GetItemId()
     {
         return itemDatas;
