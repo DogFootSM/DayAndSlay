@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public enum CanvasType
 {
-    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT, SIZE
+    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT, LOADING, SIZE
 }
 
 //캐릭터 상태 전환에 사용할 타입

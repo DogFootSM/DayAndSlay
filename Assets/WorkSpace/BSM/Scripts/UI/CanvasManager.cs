@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class CanvasManager : MonoBehaviour
@@ -35,7 +36,17 @@ public class CanvasManager : MonoBehaviour
         
         canvasDict[canvasType].SetActive(true);    
     }
- 
+    
+    /// <summary>
+    /// 로딩 캔버스 활성화
+    /// </summary>
+    /// <param name="scene">이동할 씬</param>
+    public void OnActiveLoadingCanvas(SceneReference scene)
+    {
+        canvasDict[CanvasType.LOADING].SetActive(true);
+        Loading.LoadScene(scene); 
+    }
+    
     /// <summary>
     /// 캔버스 닫기
     /// </summary>

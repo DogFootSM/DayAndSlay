@@ -17,8 +17,6 @@ public class SqliteDatabase
 
     private IDataReader dbDataReader;
 
-    private int slotCount = 3;
-
     public SqliteDatabase()
     {
         string path = Path.Join(Application.streamingAssetsPath, dbFileName);
@@ -54,6 +52,7 @@ public class SqliteDatabase
     public void CreateTable()
     {
         //using 문으로 자동 dispose 하도록 설정
+        //캐릭터 테이블 생성
         using (dbCommand = dbConnection.CreateCommand())
         {
             dbCommand.CommandText = @"
@@ -113,9 +112,9 @@ public class SqliteDatabase
         using (dbCommand = dbConnection.CreateCommand())
         {
             string query = "INSERT INTO Character (";
-
+            
             for (int i = 0; i < columnValue.Length; i++)
-            {
+            { 
                 query += column[i];
 
                 if (i < columnValue.Length - 1)
@@ -295,9 +294,7 @@ public class SqliteDatabase
                 } 
             }
 
-            query += ") VALUES (";
-            
-            Debug.Log(columnValue.Length);
+            query += ") VALUES ("; 
             
             for (int i = 0; i < columnValue.Length; i++)
             {
@@ -312,14 +309,19 @@ public class SqliteDatabase
             }
             
             query += ") ON CONFLICT(slot_id, item_id) DO UPDATE SET item_amount = excluded.item_amount";
-            
-            Debug.Log(query);
-            
+ 
             dbCommand.CommandText = query;
             dbCommand.ExecuteNonQuery();
         }
     }
 
+    /// <summary>
+    /// 아이템 데이터 테이블 조회
+    /// </summary>
+    /// <param name="condition">조회할 조건</param>
+    /// <param name="conditionValue">조회할 조건의 값</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public IDataReader ItemReadTable(string condition, string conditionValue)
     {
         if (condition == null || conditionValue == null)

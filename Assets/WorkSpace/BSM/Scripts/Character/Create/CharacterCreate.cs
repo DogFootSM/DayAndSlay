@@ -9,11 +9,12 @@ using Zenject;
 public class CharacterCreate : BaseUI
 {
     [SerializeField] private SceneReference inGameScene;
-    
+    [SerializeField] private CanvasManager canvasManager;
     [Header("0: HAIR, 1: BODY, 2: SHIRT, 3: WEAPON")]
     [SerializeField] private List<Image> presets;
 
-    [Inject] private DataManager dataManager; 
+    [Inject] private DataManager dataManager;
+   
     private Button createButton;
     private CharacterWeaponType curWeaponType; 
      
@@ -51,8 +52,7 @@ public class CharacterCreate : BaseUI
         //현재 프리셋, 무기 타입 저장
         dataManager.SavePresetData(presets, (int)curWeaponType); 
         dataManager.CreateDataUpdate();
-        
-        SceneManager.LoadScene(inGameScene.Name);
+        canvasManager.OnActiveLoadingCanvas(inGameScene); 
     }
     
     /// <summary>

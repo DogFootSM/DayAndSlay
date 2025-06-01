@@ -10,8 +10,7 @@ using Zenject;
 
 public class CommonButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    [FormerlySerializedAs("menuType")] [FormerlySerializedAs("ButtonType")] public CanvasType canvasType;
-
+    public CanvasType canvasType;
     private Image buttonBackgroundImage;
     private TextMeshProUGUI buttonText;
     private Color buttonTextColor;

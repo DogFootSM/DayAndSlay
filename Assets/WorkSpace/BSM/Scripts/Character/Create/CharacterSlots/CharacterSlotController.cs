@@ -15,10 +15,10 @@ public class CharacterSlotController : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button confirmButton;
     [SerializeField] private SceneReference inGameScene;
-
+    [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameObject DeleteAlert;
     [SerializeField] private int DeleteSlotId;
-
+    
     protected void Awake()
     {
         for (int i = 0; i < transform.childCount - 1; i++)
@@ -59,6 +59,6 @@ public class CharacterSlotController : MonoBehaviour
     /// </summary>
     public void LoadInGameScene()
     {
-        SceneManager.LoadScene(inGameScene.Name);
+        canvasManager.OnActiveLoadingCanvas(inGameScene); 
     }
 }
