@@ -47,7 +47,7 @@ public class InventorySlot : MonoBehaviour
     {
         curSlotItem = item;
         itemImage.sprite = item.itemData.ItemImage;
-        itemCount += count; 
+        itemCount += count;
         CountTextActive();
     }
 
@@ -60,10 +60,10 @@ public class InventorySlot : MonoBehaviour
     {
         curSlotItem = item;
         itemImage.sprite = item.itemData.ItemImage;
-        itemCount = count; 
+        itemCount = count;
         CountTextActive();
     }
-     
+
     /// <summary>
     /// 슬롯 내 아이템 삭제
     /// </summary>
@@ -75,11 +75,11 @@ public class InventorySlot : MonoBehaviour
         CountTextActive();
     }
 
-/// <summary>
+    /// <summary>
     /// 중복 아이템일 경우 개수 텍스트 활성화
     /// </summary>
     private void CountTextActive()
-    { 
+    {
         itemCountText.text = $"{itemCount}";
         itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.itemData.IsOverlaped);
     }
@@ -100,5 +100,4 @@ public class InventorySlot : MonoBehaviour
     {
         itemImage.rectTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
     }
-    
 }

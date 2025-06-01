@@ -25,21 +25,38 @@ public class InventoryInteraction :
     
     private InventorySlot detectedInventorySlot;
     private bool DetectedInventorySlotItem() => detectedInventorySlot.CurSlotItem == null;
-  
+    
+    new void Awake()
+    {
+        base.Awake();
+        SetSlotItemData();
+        SetOwnedItemSet(); 
+    }
+
+    /// <summary>
+    /// 아이템 ID HashSet 설정
+    /// </summary>
+    private void SetOwnedItemSet()
+    {
+        for (int i = 0; i < GetItemId().Count; i++)
+        {
+            ownedItemSet.Add(GetItemId()[i].itemId); 
+        } 
+    }
+    
     /// <summary>
     /// 아이템 습득 후 인벤토리에 저장
     /// </summary>
-    /// <param name="collectedItem"></param>
+    /// <param name="collectedItem">습득 아이템 객체</param>
     public void AddItemToInventory(Item collectedItem)
-    {
+    { 
         if (ownedItemSet.Contains(collectedItem.itemData.ItemId)
             && collectedItem.itemData.IsOverlaped)
         {
             for (int i = 0; i < inventorySlots.Count; i++)
             {
-                if (inventorySlots[i].CurSlotItem != null
-                    && inventorySlots[i].CurSlotItem.itemData.IsOverlaped
-                    && inventorySlots[i].CurSlotItem.itemData.ItemId == collectedItem.itemData.ItemId)
+                //아이템 id가 같은것을 슬롯에서 찾으면 아이템 슬롯에 추가
+                if (inventorySlots[i].CurSlotItem.itemData.ItemId == collectedItem.itemData.ItemId)
                 {
                     inventorySlots[i].AddItem(collectedItem); 
                     //TODO: 아이템 습득 애니메이션 재생
@@ -58,10 +75,15 @@ public class InventoryInteraction :
             return;
         }
         
+        //TODO: 빈 슬롯에 대한 안내 방법 추가
         Debug.Log("빈 슬롯이 없습니다.");
         
     }
     
+    /// <summary>
+    /// 아이템 슬롯 드래그 동작
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {  
         if (DetectedInventorySlotItem()) return;
@@ -70,6 +92,9 @@ public class InventoryInteraction :
         dragItemImage.transform.position = eventData.position;
     }
 
+    /// <summary>
+    /// 아이템 슬롯 마우스 눌렀을 때 동작
+    /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -83,6 +108,10 @@ public class InventoryInteraction :
 
     }
 
+    /// <summary>
+    /// 아이템 슬롯 마우스 뗐을 때 동작
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
         if (DetectedInventorySlotItem()) return;
@@ -113,7 +142,11 @@ public class InventoryInteraction :
         }
         
     }
-
+    
+    /// <summary>
+    /// 아이템 슬롯 클릭했을 때 동작
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         results.Clear();
@@ -156,6 +189,7 @@ public class InventoryInteraction :
     /// </summary>
     private void SetSlotItemDetail()
     {
+        //TODO: 추후 오브젝트들 lIST에 담아서 순회하는 방식으로 On,Off 하기
         detailItemImage.gameObject.SetActive(!DetectedInventorySlotItem());
         detailItemDescA.gameObject.SetActive(!DetectedInventorySlotItem());
         detailItemDescB.gameObject.SetActive(!DetectedInventorySlotItem());
