@@ -320,6 +320,29 @@ public class SqliteDatabase
         }
     }
 
+    public IDataReader ItemReadTable(string condition, string conditionValue)
+    {
+        if (condition == null || conditionValue == null)
+        {
+            throw new ArgumentException("아이템 데이터 읽어오기 실패"); 
+        }
+         
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = "SELECT * FROM CharacterItem WHERE ";
+
+            query += $"{condition} = @value";
+
+            dbCommand.Parameters.Add(new SqliteParameter("@value", conditionValue));
+            
+            dbCommand.CommandText = query;
+            dbDataReader = dbCommand.ExecuteReader();
+        }
+
+        return dbDataReader;
+    }
+    
+    
     public void ItemDeleteTable()
     {
         

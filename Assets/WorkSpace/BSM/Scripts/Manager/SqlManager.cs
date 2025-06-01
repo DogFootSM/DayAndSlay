@@ -109,5 +109,16 @@ public class SqlManager : IInitializable
     {
         sqlDatabase.ItemUpsertTable(columnName, columnValue);
     }
+
+    /// <summary>
+    /// 아이템 데이터 테이블 조회
+    /// </summary>
+    /// <param name="condition">조회 조건</param>
+    /// <param name="conditionValue">조회 조건 값</param>
+    /// <returns></returns>
+    public IDataReader ReadItemDataColumn(string condition, string conditionValue)
+    {
+        return sqlDatabase.ItemReadTable(condition, conditionValue);
+    }
     
 }

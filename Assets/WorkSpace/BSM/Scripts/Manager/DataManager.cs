@@ -46,7 +46,15 @@ public class DataManager : MonoBehaviour
         sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE)}, new[] { $"{WeaponType}" }, 
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), 
             $"{SlotId}");
-        
+
+        StartItemDataInsert();
+    }
+
+    /// <summary>
+    /// 초기 캐릭터 생성 시 아이템 지급
+    /// </summary>
+    private void StartItemDataInsert()
+    {
         //TODO: 아이템 ID 양식 정립되면 수정하기.
         sqlManager.UpsertItemDataColumn(
             new []
@@ -58,13 +66,13 @@ public class DataManager : MonoBehaviour
             },
             new []
             {
-                $"{curWeapon + 100}", 
-                $"{SlotId}", 
-                "1", 
-                "0"}
-            );
+                $"{curWeapon + 100}",       //지급할 Item_id
+                $"{SlotId}",                //해당 캐릭터 slotId
+                "1",                        //지급할 개수
+                "0"}                        //인벤토리 슬롯의 위치
+        );
     }
-
+    
 
     /// <summary>
     /// 캐릭터 데이터 로드
