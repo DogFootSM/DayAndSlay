@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEngine;
 using Zenject;
 
+[RequireComponent(typeof(GeneralMonsterMethod))]
 public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField]
@@ -25,8 +26,7 @@ public class GeneralMonsterAI : MonoBehaviour
 
     protected MonsterStateMachine stateMachine;
 
-    public bool isAction = false;
-
+    protected GeneralMonsterMethod method;
 
     private void Start()
     {
@@ -47,8 +47,6 @@ public class GeneralMonsterAI : MonoBehaviour
 
         stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
     }
-
-
 
     private void Update()
     {

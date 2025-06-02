@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5739400906888177894}
   - component: {fileID: 3849578778993348644}
   - component: {fileID: 2575475074534013927}
+  - component: {fileID: 729123636436155563}
   m_Layer: 0
   m_Name: Testgoblin
   m_TagString: Player
@@ -152,7 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: 6687d06aaa1e06340837018664a86c37, type: 2}
-  isAction: 0
 --- !u!114 &2575475074534013927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,14 +175,15 @@ MonoBehaviour:
       Value: {fileID: 7108339969198208228, guid: 787743c124123e14ca17e175b7bb628a, type: 3}
     - Key: Move
       Value: {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}
-  isAction: 0
-  move:
-    _serializedList:
-    - Key: 3
-      Value: MonsterMoveLeft
-    - Key: 1
-      Value: MonsterMoveRight
-    - Key: 0
-      Value: MonsterMoveUp
-    - Key: 2
-      Value: MonsterMoveDown
+--- !u!114 &729123636436155563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
