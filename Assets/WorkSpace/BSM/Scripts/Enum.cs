@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public enum CanvasType
 {
-    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT, SIZE
+    GAMESTART, CHARACTER_CREATE, ENVIRONMENT, EXIT, LOADING, SIZE
 }
 
 //캐릭터 상태 전환에 사용할 타입
@@ -55,6 +55,12 @@ public enum CharacterDataColumns
     SHIRT_SPRITE, WEAPON_SPRITE, LAST_PLAYED_TIME, 
     WEAPON_TYPE, REMAINING_DAYS, STRENGTH, 
     AGILITY, INTELLIGENCE, OBJECTIVE_ITEM, SIZE
+}
+
+[Serializable]
+public enum CharacterItemDataColumns
+{
+    ITEM_ID, SLOT_ID, ITEM_AMOUNT,INVENTORY_SLOT_ID
 }
 
 /// <summary>

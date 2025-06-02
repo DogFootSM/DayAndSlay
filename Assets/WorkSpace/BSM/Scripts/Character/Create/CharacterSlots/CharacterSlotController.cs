@@ -10,58 +10,26 @@ using Zenject;
 
 public class CharacterSlotController : MonoBehaviour
 {
+    [Inject] private SqlManager sqlManager;
     [SerializeField] private List<CharacterSlot> characterSlots;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button confirmButton;
     [SerializeField] private SceneReference inGameScene;
-    [Inject] private SqlManager sqlManager;
-    
-    public GameObject DeleteAlert;
-    public int DeleteSlotId;
-    
-    private readonly string[] ColumnNames = new[]
-    {
-        "is_create",
-        "hair_sprite",
-        "body_sprite",
-        "shirt_sprite",
-        "weapon_sprite",
-        "last_played_time",
-        "weapon_type",
-        "remaining_days",
-        "strength",
-        "agility",
-        "intelligence",
-        "objective_item"
-    };
-
-    private readonly string[] DefaultValue = new[]
-    {
-        "0",
-        "none",
-        "none",
-        "none",
-        "none",
-        "none",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "none"
-    };
+    [SerializeField] private CanvasManager canvasManager;
+    [SerializeField] private GameObject DeleteAlert;
+    [SerializeField] private int DeleteSlotId;
     
     protected void Awake()
     {
-        for (int i = 0; i < transform.childCount -1; i++)
+        for (int i = 0; i < transform.childCount - 1; i++)
         {
             characterSlots[i].slotId = i + 1;
         }
-        
-        cancelButton.onClick.AddListener(() => DeleteAlert.SetActive(false)); 
+
+        cancelButton.onClick.AddListener(() => DeleteAlert.SetActive(false));
         confirmButton.onClick.AddListener(DeleteSlotConfirm);
     }
-    
+
     /// <summary>
     /// 삭제 얼럿 활성화
     /// </summary>
@@ -78,19 +46,19 @@ public class CharacterSlotController : MonoBehaviour
     private void DeleteSlotConfirm()
     {
         DeleteAlert.SetActive(false);
-        sqlManager.UpdateDataColumn(ColumnNames, DefaultValue, 
-            sqlManager.CharacterColumn(CharacterDataColumns.SLOT_ID), 
+        
+        //해당 Slot_id 컬럼 삭제
+        sqlManager.DeleteDataColumn(sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{DeleteSlotId}");
-            
+
         characterSlots[DeleteSlotId - 1].IsCreatedCharacter();
     }
-    
+
     /// <summary>
     /// 슬롯 선택 시 게임 씬 이동
     /// </summary>
     public void LoadInGameScene()
     {
-        SceneManager.LoadScene(inGameScene.Name);
+        canvasManager.OnActiveLoadingCanvas(inGameScene); 
     }
-    
 }

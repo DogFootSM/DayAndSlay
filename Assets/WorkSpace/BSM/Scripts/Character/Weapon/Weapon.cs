@@ -6,21 +6,34 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] private GameObject directionObject;
+    [SerializeField] private GameObject playerObject;
+    
+    public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
+    public UnityAction<Vector2> OnDirectionChanged; 
+    
     private IAttackHandler attackHandler;
     private CharacterWeaponType curWeaponType;
 
-    public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
+    private Vector2 curDirection;
  
+    private void Awake()
+    {
+        curDirection = Vector2.down;
+    }
+
     private void OnEnable()
     {
         OnWeaponTypeChanged += GetCurrentWeaponType;
+        OnDirectionChanged += ChangedMoveDirection;
     }
 
     private void OnDisable()
     {
         OnWeaponTypeChanged -= GetCurrentWeaponType;
+        OnDirectionChanged -= ChangedMoveDirection;
     }
-
+  
     /// <summary>
     /// 무기 타입 변경에 따른 무기 핸들러 변경
     /// </summary>
@@ -29,13 +42,22 @@ public class Weapon : MonoBehaviour
     {
         attackHandler = AttackHandlerFactory.ChangeAttackType(weaponType); 
     }
-    
-    /// <summary>
-    /// 무기 핸들러의 공격 호출
-    /// </summary>
-    public void Attack()
+
+    private void ChangedMoveDirection(Vector2 direction)
     {
-        attackHandler.Attack();
+        curDirection = direction; 
     }
     
+    /// <summary>
+    /// 무기 핸들러의 기본 공격 호출
+    /// </summary>
+    public void NormalAttack()
+    {
+        attackHandler.NormalAttack(curDirection, playerObject.transform.position);
+    }
+
+    private void OnDrawGizmos()
+    {  
+        attackHandler.DrawGizmos(); 
+    }
 }
