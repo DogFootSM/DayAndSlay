@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: 6687d06aaa1e06340837018664a86c37, type: 2}
+  isAction: 0
 --- !u!114 &2575475074534013927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,3 +175,14 @@ MonoBehaviour:
       Value: {fileID: 7108339969198208228, guid: 787743c124123e14ca17e175b7bb628a, type: 3}
     - Key: Move
       Value: {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}
+  isAction: 0
+  move:
+    _serializedList:
+    - Key: 3
+      Value: MonsterMoveLeft
+    - Key: 1
+      Value: MonsterMoveRight
+    - Key: 0
+      Value: MonsterMoveUp
+    - Key: 2
+      Value: MonsterMoveDown
