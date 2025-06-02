@@ -6,13 +6,13 @@ public class Item : MonoBehaviour
 {
     [SerializeField] public ItemData itemData;
 
-    [Header("������ ������ �з���")]
+    [Header("아이템 정보 필드")]
     public int ItemId;
     public bool isWeapon;
     public Type_Weapon detail_Weapon;
     public Type_Armor detail_Armor;
 
-    [Header("������ ����")]
+    [Header("아이템 인게임 정보 필드")]
     public string Name;
     public int Tier;
     public int attack;
