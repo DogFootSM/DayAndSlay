@@ -28,18 +28,6 @@ public class GeneralAnimator : MonoBehaviour
 
     public void PlayIdle() 
     {
-        if(spriteLibrary == null)
-        {
-            Debug.Log("스프라이트 라이브러리가 널임");
-        }
-        if (spriteLibrary.spriteLibraryAsset == null)
-        {
-            Debug.Log("스프라이트 라이브러리의 애셋이 널임");
-        }
-        if (spriteDict["Move"] == null)
-        {
-            Debug.Log("스프라이트 딕셔너리또는 무브가가 널임");
-        }
         spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
         animator.Play("MonsterIdle");
     }

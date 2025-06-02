@@ -25,6 +25,8 @@ public class GeneralMonsterAI : MonoBehaviour
 
     protected MonsterStateMachine stateMachine;
 
+    public bool isAction = false;
+
 
     private void Start()
     {
@@ -44,10 +46,6 @@ public class GeneralMonsterAI : MonoBehaviour
         tree = new BehaviourTree(selector);
 
         stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
-        if(stateMachine == null)
-        {
-            Debug.Log("스테이트 머신 생성안됨");
-        }
     }
 
 
@@ -74,6 +72,7 @@ public class GeneralMonsterAI : MonoBehaviour
     protected List<BTNode> RootSelector()
     {
         List<BTNode> nodes = new List<BTNode>();
+        //Die를 맨 앞에 놔야함
        
         nodes.Add(attackSequence);
         nodes.Add(chaseSequence);
