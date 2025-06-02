@@ -12,10 +12,6 @@ public class IsPreparedAttackNode : BTNode
     private float cooldown;         // 공격 쿨다운
     private float currentCooldown; // 남은 쿨다운
 
-    private bool isAttacking = false;
-    private float attackDuration = 1.0f; // 공격 애니메이션 길이
-    private float attackTimer = 0f;
-
     /// <summary>
     /// 
     /// </summary>
@@ -38,23 +34,10 @@ public class IsPreparedAttackNode : BTNode
         if (currentCooldown > 0f)
             currentCooldown -= Time.deltaTime;
 
-        if (isAttacking)
-        {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer <= 0f)
-            {
-                isAttacking = false;
-                return NodeState.Failure;
-            }
-
-            return NodeState.Running;
-        }
 
         if (distance <= range && currentCooldown <= 0f)
         {
             currentCooldown = cooldown;
-            isAttacking = true;
-            attackTimer = attackDuration;
             return NodeState.Success;
         }
 

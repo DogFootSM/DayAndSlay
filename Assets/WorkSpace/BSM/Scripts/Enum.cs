@@ -92,6 +92,9 @@ public enum Type_Armor
     Cloak
 }
 
+/// <summary>
+/// 방향
+/// </summary>
 [Serializable]
 public enum Direction
 {
@@ -121,6 +124,9 @@ public enum SystemType
     STATUS, INVENTORY, SKILL, RECIPE, SETTING, SIZE
 }
 
+/// <summary>
+/// 노드가 반환하는 값을 정해줌
+/// </summary>
 [Serializable]
 public enum NodeState
 {
@@ -128,3 +134,16 @@ public enum NodeState
     Failure,
     Running
 }
+
+
+/// <summary>
+/// 몬스터 상태
+/// </summary>
+[Serializable]
+public enum M_State
+{
+    Attck,
+    Move,
+    Die
+}
+

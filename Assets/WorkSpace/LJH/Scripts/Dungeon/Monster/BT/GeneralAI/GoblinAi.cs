@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class GoblinAi : GeneralMonsterAI
 {
+
+    public override void Idle()
+    {
+        if (isAction) return;
+
+        Debug.Log("고블린 대기");
+        stateMachine.ChangeState(new MonsterIdleState());
+    }
     public override void Attack()
     {
+        if (isAction) return;
+
         Debug.Log("고블린 공격");
-        animator?.PlayAttack();
+        stateMachine.ChangeState(new MonsterAttackState());
     }
 
     public override void Move()
     {
-        if (isAttacking) return;
+        if (isAction) return;
 
         Debug.Log("고블린 이동");
-        animator?.PlayMove();
+        stateMachine.ChangeState(new MonsterMoveState());
     }
 }

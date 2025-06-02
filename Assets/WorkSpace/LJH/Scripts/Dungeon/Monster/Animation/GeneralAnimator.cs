@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,23 +8,27 @@ public class GeneralAnimator : MonoBehaviour
 {
     protected Animator animator;
     protected SpriteLibrary spriteLibrary;
-    [SerializeField] protected List<SpriteLibraryAsset> spriteLibraries;
-    protected Dictionary<string, SpriteLibraryAsset> spriteDict = new Dictionary<string, SpriteLibraryAsset>();
+
+    [SerializedDictionary("ActionName", "SpriteLibrary")]
+    [SerializeField]
+    protected SerializedDictionary<string, SpriteLibraryAsset> spriteDict = new SerializedDictionary<string, SpriteLibraryAsset>();
+
+    MonsterStateMachine stateMachine;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         spriteLibrary = GetComponent<SpriteLibrary>();
 
-        spriteDict.Add("Attack", spriteLibraries[0]);
-        spriteDict.Add("Die", spriteLibraries[1]);
-        spriteDict.Add("Hit", spriteLibraries[2]);
-        spriteDict.Add("Move", spriteLibraries[3]);
+        stateMachine = new MonsterStateMachine(this);
+
+        stateMachine.ChangeState(new MonsterIdleState());
 
     }
 
     public void PlayIdle() 
     {
+        spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
         animator.Play("MonsterIdle");
     }
     public void PlayMove() 
@@ -55,5 +60,5 @@ public class GeneralAnimator : MonoBehaviour
         spriteLibrary.spriteLibraryAsset = spriteDict["Die"];
         animator.Play("MonsterDie");
     }
-
+    
 }
