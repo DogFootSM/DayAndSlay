@@ -35,5 +35,9 @@ public class GeneralMonsterMethod : MonoBehaviour
 
         //드랍 아이템 위치 조정
         dropItem.transform.position = transform.position;
+
+        //아이템 먹고나면 리턴풀 해줘야함
+        // 어디서 처리?
+        //아이템 자체 처리가 좋은가?
     }
 }
