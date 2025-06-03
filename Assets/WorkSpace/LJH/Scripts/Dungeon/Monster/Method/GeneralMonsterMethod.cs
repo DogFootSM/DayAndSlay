@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class GeneralMonsterMethod : MonoBehaviour
 {
     MonsterData monsterData;
+    [Inject]
+    DungeonManager dungeonManager;
     public void Move()
     {
         //Todo : 몬스터가 캐릭터에게 이동해야 함
@@ -18,13 +21,19 @@ public class GeneralMonsterMethod : MonoBehaviour
     public void Die()
     {
         //Todo : 몬스터가 죽어야 함
+        DropItem();
     }
 
-    public void DropItem()
+    private void DropItem()
     {
-        //Todo : 몬스터가 아이템 드랍해야 함
-        Item dropItem = monsterData.dropTable[Random.Range(0, monsterData.dropTable.Count)];
+        //Todo : 확률에 따른 아이템 드랍 만들어야 함
+        ItemData dropItemData = monsterData.dropTable[Random.Range(0, monsterData.dropTable.Count)];
 
-        Instantiate(dropItem, transform.position, Quaternion.identity);
+        //풀에서 꺼내주고 
+        GameObject dropItem = dungeonManager.pool.GetPool();
+        dropItem.GetComponent<Item>().itemData = dropItemData;
+
+        //드랍 아이템 위치 조정
+        dropItem.transform.position = transform.position;
     }
 }

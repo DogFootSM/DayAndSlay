@@ -9,6 +9,9 @@ public class DropItemPool : MonoBehaviour
 
     int dropItemPoolSize = 12;
 
+
+
+
     /// <summary>
     /// 
     /// </summary>
