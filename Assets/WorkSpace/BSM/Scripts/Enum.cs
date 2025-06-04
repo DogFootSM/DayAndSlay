@@ -64,19 +64,6 @@ public enum CharacterItemDataColumns
 }
 
 /// <summary>
-/// 무기 타입
-/// </summary>
-[Serializable]
-public enum Type_Weapon
-{
-    NotWeapon,
-    Sword,
-    Bow,
-    Spear,
-    Wand
-}
-
-/// <summary>
 /// 아이템 파츠
 /// </summary>
 [Serializable]
@@ -118,21 +105,6 @@ public enum SubWeaponType
     Arrow,
     Emblem,
     Book,
-}
-/// <summary>
-/// 방어구 타입
-/// </summary>
-[Serializable]
-public enum Type_Armor
-{
-    NotArmor,
-    Helmet,
-    Armor,
-    Arm,
-    Pants,
-    Shoes,
-    Accessery,
-    Cloak
 }
 
 /// <summary>
