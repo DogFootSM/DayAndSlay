@@ -20,7 +20,7 @@ public class InventoryInteraction :
     [SerializeField] private TextMeshProUGUI detailItemDescA;
     [SerializeField] private TextMeshProUGUI detailItemDescB;
     [SerializeField] private Button equipButton;
-    
+  
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
     
@@ -32,6 +32,7 @@ public class InventoryInteraction :
         base.Awake();
         //SetSlotItemData();
         //SetOwnedItemSet(); 
+        //equipButton.onClick.AddListener(Equip);
     }
 
     private void Start()
@@ -39,8 +40,15 @@ public class InventoryInteraction :
         //TODO: 테스트용으로 Start에서 호출
         SetSlotItemData();
         SetOwnedItemSet(); 
+        equipButton.onClick.AddListener(Equip);
     }
 
+    private void Equip()
+    {
+        if (DetectedInventorySlotItem()) return;
+        //TODO: 아이템 장착 시 Equipment로 해당 아이템을 넘겨주고
+    }
+    
     /// <summary>
     /// 아이템 ID HashSet 설정
     /// </summary>
@@ -174,7 +182,12 @@ public class InventoryInteraction :
         detailItemImage.sprite = detectedInventorySlot.CurSlotItem.ItemImage;
         detailItemDescA.text = detectedInventorySlot.CurSlotItem.ItemDescA;
         detailItemDescB.text = detectedInventorySlot.CurSlotItem.ItemDescB;
+         
+        //사용 가능한 아이템이면 버튼 활성화
         equipButton.gameObject.SetActive(detectedInventorySlot.CurSlotItem.isWeapon);
+        
+        //TODO: 버튼 활성화 됐을 때, 이미 착용중인 아이템이면 클릭 불가하게
+        
     }
     
     /// <summary>
