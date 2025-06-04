@@ -11,6 +11,7 @@ using Zenject;
 [Serializable]
 public struct PlayerStats
 {
+    //TODO: 스탯 공식 수정 필요
     //레벨당 최대 경험치
     public int MaxExp => 100 + (int)(level * 10.5f);
     
@@ -46,15 +47,12 @@ public class PlayerModel : MonoBehaviour
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     private IDataReader dataReader;
-    
-    public StatusWindow StatusWindow => statusWindow;
-    
+
     //이동 속도
     private float moveSpeed = 3f;
     public float MoveSpeed {get => moveSpeed;}
     
     private PlayerStats playerStats;
-    public PlayerStats PlayerStats => playerStats;
     
     //공격 스피드
     private float atkSpeed = 0.5f;
@@ -71,10 +69,18 @@ public class PlayerModel : MonoBehaviour
     }
   
     private void Init()
+    { 
+        SetStatsData(); 
+    }
+
+    /// <summary>
+    /// DB에서 읽어온 캐릭터 데이터 설정
+    /// </summary>
+    private void SetStatsData()
     {
         playerStats = new PlayerStats();
         
-        //TODO: 테스트 용도로 슬롯ID 1으로 고정
+        //TODO: 테스트 용도로 슬롯ID 1으로 고정, 추후 제거하기
         slotId = 1;
         //slotId = dataManager.SlotId; 
         dataReader = sqlManager.ReadDataColumn(
@@ -100,9 +106,8 @@ public class PlayerModel : MonoBehaviour
             playerStats.agility = dataReader.GetInt32(4);
             playerStats.intelligence = dataReader.GetInt32(5);
         }
- 
     }
-
+    
     private void Start()
     {
         statusWindow.OnChangedAllStats?.Invoke(playerStats);

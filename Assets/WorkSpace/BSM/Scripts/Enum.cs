@@ -65,7 +65,7 @@ public enum CharacterDataColumns
 [Serializable]
 public enum CharacterItemDataColumns
 {
-    ITEM_ID, SLOT_ID, ITEM_AMOUNT,INVENTORY_SLOT_ID
+    ITEM_ID, SLOT_ID, ITEM_AMOUNT,INVENTORY_SLOT_ID, IS_EQUIPMENT
 }
 
 /// <summary>

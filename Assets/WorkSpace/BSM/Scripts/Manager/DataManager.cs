@@ -55,6 +55,7 @@ public class DataManager : MonoBehaviour
     /// </summary>
     private void StartItemDataInsert()
     {
+         
         //TODO: 아이템 ID 양식 정립되면 수정하기.
         sqlManager.UpsertItemDataColumn(
             new []
@@ -63,13 +64,16 @@ public class DataManager : MonoBehaviour
                 sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.SLOT_ID), 
                 sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_AMOUNT), 
                 sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.INVENTORY_SLOT_ID),
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.IS_EQUIPMENT),
             },
             new []
             {
                 $"{curWeapon + 100}",       //지급할 Item_id
                 $"{SlotId}",                //해당 캐릭터 slotId
                 "1",                        //지급할 개수
-                "0"}                        //인벤토리 슬롯의 위치
+                "0",                        //인벤토리 슬롯의 위치
+                "1"                         //장비 착용 여부
+            }                       
         );
     }
     
@@ -79,7 +83,11 @@ public class DataManager : MonoBehaviour
     /// </summary>
     /// <param name="characterAnimatorController">현재 캐릭터</param>
     public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
-    { 
+    {
+        
+        //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
+        SlotId = 1;
+        
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
         {
             sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),

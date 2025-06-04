@@ -17,6 +17,7 @@ namespace BSM_ITEM
         public int itemId;
         public int itemAmount;
         public int inventorySlotId;
+        public bool isEquipment;
     }
 }
  
@@ -57,6 +58,7 @@ public class InventoryController : MonoBehaviour
                 itemId = dataReader.GetInt32(0),
                 itemAmount = dataReader.GetInt32(2),
                 inventorySlotId = dataReader.GetInt32(3),
+                isEquipment = dataReader.GetBoolean(4),
             };
                 
             itemDatas.Add(data);
@@ -67,6 +69,9 @@ public class InventoryController : MonoBehaviour
             inventorySlots[itemDatas[i].inventorySlotId].AddItem(
                 itemManager.GetItemData(itemDatas[i].itemId),
                 itemDatas[i].itemAmount);
+            
+            //장비 착용 여부 설정
+            inventorySlots[itemDatas[i].inventorySlotId].IsEquipItem = itemDatas[i].isEquipment;
         }
     }
 

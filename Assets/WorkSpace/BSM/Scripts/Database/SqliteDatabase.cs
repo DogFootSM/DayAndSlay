@@ -90,10 +90,11 @@ public class SqliteDatabase
 
                                 CREATE TABLE IF NOT EXISTS CharacterItem
                                 (
-                                    item_id         INTEGER NOT NULL,
-                                    slot_id         INTEGER NOT NULL,
-                                    item_amount      INTEGER NOT NULL,
-                                    inventory_slot_id INTEGER NOT NULL,
+                                    item_id             INTEGER NOT NULL,
+                                    slot_id             INTEGER NOT NULL,
+                                    item_amount         INTEGER NOT NULL,
+                                    inventory_slot_id   INTEGER NOT NULL,
+                                    is_equipment        INTEGER NOT NULL DEFAULT 0,
                                     PRIMARY KEY(slot_id, item_id)
                                     FOREIGN KEY (slot_id) REFERENCES Character (slot_id) ON DELETE CASCADE
                                 )";
