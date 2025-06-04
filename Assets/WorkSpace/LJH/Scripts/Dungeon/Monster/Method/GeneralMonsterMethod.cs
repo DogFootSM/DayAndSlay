@@ -8,6 +8,16 @@ public class GeneralMonsterMethod : MonoBehaviour
     MonsterData monsterData;
     [Inject]
     DungeonManager dungeonManager;
+
+    [SerializeField] BoxCollider2D myCollider;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Player"))
+        {
+            Attack();
+        }
+    }
     public void Move()
     {
         //Todo : 몬스터가 캐릭터에게 이동해야 함
@@ -16,6 +26,18 @@ public class GeneralMonsterMethod : MonoBehaviour
     public void Attack()
     {
         //Todo : 몬스터가 공격해야 함
+        // 플레이어에게서 데미지 주는 함수 이용
+        Debug.Log("몬스터가 공격함");
+    }
+
+    public void BeforeAttack()
+    {
+        myCollider.enabled = true;
+    }
+
+    public void AfterAttack() 
+    {
+        myCollider.enabled = false;
     }
 
     public void Die()
