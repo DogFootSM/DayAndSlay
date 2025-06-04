@@ -21,7 +21,7 @@ public class SqlManager : IInitializable
         CharacterDataColumns = new Dictionary<CharacterDataColumns, string>();
         CharacterItemDataColumns = new Dictionary<CharacterItemDataColumns, string>();
         sqlDatabase = new SqliteDatabase();
-        sqlDatabase.CreateTable(); 
+        sqlDatabase.CreateTable();  
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class SqlManager : IInitializable
     /// <param name="conditionValue">조회 조건 값</param>
     /// <returns></returns>
     public IDataReader ReadItemDataColumn(string condition, string conditionValue)
-    {
+    { 
         return sqlDatabase.ItemReadTable(condition, conditionValue);
     }
     

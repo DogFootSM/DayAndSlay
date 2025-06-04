@@ -44,6 +44,11 @@ public enum BodyPartsType
     HAIR, BODY, SHIRT, SIZE
 }
 
+[Serializable]
+public enum CharacterStatsType
+{
+    STR, AGI, INT, CRI, SIZE
+}
 
 /// <summary>
 /// 캐릭터 데이터 컬럼
@@ -53,7 +58,7 @@ public enum CharacterDataColumns
 {
     SLOT_ID, IS_CREATE, HAIR_SPRITE, BODY_SPRITE, 
     SHIRT_SPRITE, WEAPON_SPRITE, LAST_PLAYED_TIME, 
-    WEAPON_TYPE, REMAINING_DAYS, STRENGTH, 
+    WEAPON_TYPE, REMAINING_DAYS, EXP, STATS_POINT, CHAR_LEVEL, STRENGTH, 
     AGILITY, INTELLIGENCE, OBJECTIVE_ITEM, SIZE
 }
 

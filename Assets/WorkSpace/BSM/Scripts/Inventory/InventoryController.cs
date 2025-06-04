@@ -47,7 +47,7 @@ public class InventoryController : MonoBehaviour
     /// 아이템 데이터 인벤토리 슬롯에 할당
     /// </summary>
     protected void SetSlotItemData()
-    {
+    { 
         dataReader = sqlManager.ReadItemDataColumn("slot_id", $"{dataManager.SlotId}");
  
         while (dataReader.Read())
@@ -75,7 +75,7 @@ public class InventoryController : MonoBehaviour
     /// </summary>
     /// <returns>현재 보유중인 아이템 데이터</returns>
     protected List<BSM_ItemData> GetItemId()
-    {
+    { 
         return itemDatas;
     } 
     
