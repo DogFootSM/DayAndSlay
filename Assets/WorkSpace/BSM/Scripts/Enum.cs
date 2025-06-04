@@ -77,6 +77,49 @@ public enum Type_Weapon
 }
 
 /// <summary>
+/// 아이템 파츠
+/// </summary>
+[Serializable]
+public enum Parts
+{
+    Weapon,
+    SubWeapon,
+    Helmet,
+    Armor,
+    Arm,
+    Pants,
+    Shoes,
+    Accessery,
+    Cloak
+}
+
+/// <summary>
+/// 메인 무기 타입
+/// </summary>
+[Serializable]
+public enum WeaponType
+{
+    LongSword,
+    ShortSword,
+    Bow,
+    Spear,
+    Wand,
+
+}
+
+/// <summary>
+/// 서브 무기 타입
+/// </summary>
+[Serializable]
+public enum SubWeaponType
+{
+    Gauntlet,
+    Shield,
+    Arrow,
+    Emblem,
+    Book,
+}
+/// <summary>
 /// 방어구 타입
 /// </summary>
 [Serializable]
@@ -114,6 +157,23 @@ public enum MapType
     //TODO: 추후 내용 수정 필요
     TOWN, DEONGEON
 }
+//인벤토리 슬롯
+//아이템 장착했을때
+//아이템 장착된거 표시하고 기존에 꺼를 장착 해제
+
+//void 장착()
+//{
+//if(아이템 있을경우)
+//{
+//해제
+//}
+//
+//}
+
+//void 해제()
+
+//<string, bool>
+//[helmet] != true;
 
 /// <summary>
 /// 캐릭터 상호작용 시스템 창 타입

@@ -21,14 +21,13 @@ public class ItemData : ScriptableObject
 {
     public Sprite ItemImage;
 
-    [Header("������ ������ �з���")]
     public int ItemId;
+    //Todo : isWeapon을 isEquipment로 변경해야함
     public bool isWeapon;
     public bool IsOverlaped;
     public Type_Weapon Detail_Weapon;
     public Type_Armor Detail_Armor;
 
-    [Header("������ ����")]
     public string Name;
     public int Tier;
     public int Attack;

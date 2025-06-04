@@ -18,6 +18,15 @@ public class GeneralMonsterMethod : MonoBehaviour
             Attack();
         }
     }
+
+    public void MonsterDataInit(MonsterData monsterData)
+    {
+        this.monsterData = monsterData;
+
+        if (this.monsterData == null)
+            Debug.Log("몬스터데이터 주입 안됨");
+    }
+
     public void Move()
     {
         //Todo : 몬스터가 캐릭터에게 이동해야 함
@@ -42,8 +51,10 @@ public class GeneralMonsterMethod : MonoBehaviour
 
     public void Die()
     {
-        //Todo : 몬스터가 죽어야 함
         DropItem();
+        //경험치 넘김
+        //몬스터 죽음
+
     }
 
     private void DropItem()
