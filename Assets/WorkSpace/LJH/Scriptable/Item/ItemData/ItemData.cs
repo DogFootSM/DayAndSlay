@@ -35,6 +35,7 @@ public class ItemData : ScriptableObject
 
     public string Name;
     public int Tier;
+    public int Hp;
     public int Attack;
     public int Deffence;
 
