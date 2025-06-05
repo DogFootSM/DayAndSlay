@@ -7,25 +7,37 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-
-public class InventorySlot : MonoBehaviour
+ 
+public class InventorySlot : MonoBehaviour 
 {
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
     [SerializeField] private GameObject equippedMark;
+  
     
     public ItemData CurSlotItem => curSlotItem;
     private ItemData curSlotItem;
 
-    public bool IsEquipItem;
+    private bool isEquip;
+
+    public bool IsEquip
+    {
+        get => isEquip;
+        set
+        {
+            isEquip = value;
+            equippedMark.SetActive(isEquip);
+        }
+    }
+    
     public int ItemCount => itemCount;
     private int itemCount = 0;
     private Vector3 originScale = new Vector3(1f, 1f, 1f);
     public Action OnResetScaleEvent;
     public Action OnDragScaleEvent;
-
+    
     private void Awake()
-    {
+    { 
         CountTextActive();
     }
 
@@ -60,14 +72,13 @@ public class InventorySlot : MonoBehaviour
     /// <param name="item">슬롯에 변경할 아이템</param>
     /// <param name="count">변경할 아이템 개수</param>
     /// <param name="isEquip">변경할 아이템의 착용 여부</param>
-    public void ChangeItem(ItemData item, int count, bool isEquip = false)
+    public void ChangeItem(ItemData item, int count)
     {
         curSlotItem = item;
         itemImage.sprite = item.ItemImage;
         itemCount = count;
-        IsEquipItem = isEquip; 
-        
         CountTextActive();
+
     }
 
     /// <summary>
@@ -79,6 +90,7 @@ public class InventorySlot : MonoBehaviour
         itemImage.sprite = null;
         itemCount = 0;
         CountTextActive();
+        
     } 
     
     /// <summary>
@@ -88,11 +100,8 @@ public class InventorySlot : MonoBehaviour
     {
         itemCountText.text = $"{itemCount}";
         itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.IsOverlaped);
-        
-        //착용 여부를 나타내는 라벨 오브젝트
-        equippedMark.SetActive(IsEquipItem);
     }
-
+    
     /// <summary>
     /// 아이템 이미지 크기 원상복구
     /// </summary>
@@ -109,4 +118,6 @@ public class InventorySlot : MonoBehaviour
     {
         itemImage.rectTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
     }
+
+    
 }

@@ -24,7 +24,7 @@ namespace BSM_ITEM
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] private GameObject slotParent;
-    [SerializeField] private Equipment equipment;
+    [SerializeField] protected Equipment equipment;
     
     [Inject] private DataManager dataManager;
     [Inject] private SqlManager sqlManager;
@@ -72,10 +72,11 @@ public class InventoryController : MonoBehaviour
                 itemDatas[i].itemAmount);
             
             //장비 착용 여부 설정
-            inventorySlots[itemDatas[i].inventorySlotId].IsEquipItem = itemDatas[i].isEquipment;
-        }
-        
-        //TODO: 아이템을 받아오면 EQUIPMENT의 착용중인 장비도 설정?
+            inventorySlots[itemDatas[i].inventorySlotId].IsEquip = itemDatas[i].isEquipment;
+          
+            //DB에서 받아온 아이템 정보로 착용 장비 설정
+            equipment.ChangeEquipment(inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem, inventorySlots[itemDatas[i].inventorySlotId]);
+        } 
     }
 
     /// <summary>
