@@ -213,6 +213,7 @@ public class InventoryInteraction :
         SetSlotItemDetail();
          
         //TODO: 착용중인 아이템 슬롯이라면 아이템 해제 버튼으로
+
         
         if (fromSlotItem) return; 
         detailItemImage.sprite = fromSlot.CurSlotItem.ItemImage;

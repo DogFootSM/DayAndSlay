@@ -75,28 +75,46 @@ public enum CharacterItemDataColumns
 [Serializable]
 public enum Parts
 {
-    Weapon,
-    SubWeapon,
-    Helmet,
-    Armor,
-    Arm,
-    Pants,
-    Shoes,
-    Accessery,
-    Cloak
+    WEAPON,
+    SUBWEAPON,
+    HELMET,
+    ARMOR,
+    ARM,
+    PANTS,
+    SHOES,
+    ACCESSORY,
+    CLOAK,
+    INGREDIANT,
+    RARE_INGREDIANT
 }
- 
+
+
+/// <summary>
+/// 메인 무기 타입
+/// </summary>
+[Serializable]
+public enum WeaponType
+{
+    BOW,
+    SHORT_SWORD,
+    SPEAR,
+    WAND,
+    LONG_SWORD,
+    NOT_WEAPON,
+}
+
 /// <summary>
 /// 서브 무기 타입
 /// </summary>
 [Serializable]
 public enum SubWeaponType
 {
-    Gauntlet,
-    Shield,
-    Arrow,
-    Emblem,
-    Book,
+    NOT_SUBWEAPON,
+    GAUNTLET,
+    SHIELD,
+    ARROW,
+    EMBLEM,
+    BOOK
 }
 
 /// <summary>
@@ -153,4 +171,14 @@ public enum M_State
     Move,
     Die
 }
+
+public enum ItemSet
+{
+    NOT_SET,
+    COSMOS,
+    NIGHTFANG,
+    DRAGONKNIGHT,
+
+}
+
 
