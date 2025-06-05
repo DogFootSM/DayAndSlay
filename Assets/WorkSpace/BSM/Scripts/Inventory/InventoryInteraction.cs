@@ -24,8 +24,8 @@ public class InventoryInteraction :
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
     
-    private InventorySlot detectedInventorySlot;
-    private bool detectedInventorySlotItem => detectedInventorySlot.CurSlotItem == null;
+    private InventorySlot fromSlot;
+    private bool fromSlotItem => fromSlot.CurSlotItem == null;
     
     new void Awake()
     {
@@ -46,7 +46,7 @@ public class InventoryInteraction :
     private void Equip()
     { 
         //TODO: 장착 버튼 클릭 시, 장착 버튼 상태 변경
-        equipment.ChangeEquipment(detectedInventorySlot.CurSlotItem, detectedInventorySlot);
+        equipment.ChangeEquipment(fromSlot.CurSlotItem, fromSlot);
     }
     
     /// <summary>
@@ -104,26 +104,10 @@ public class InventoryInteraction :
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {  
-        if (detectedInventorySlotItem) return;
+        if (fromSlotItem) return;
          
         //마우스가 이동하는 위치로 아이템 이미지 위치 변경
         dragItemImage.transform.position = eventData.position;
-    }
-
-    /// <summary>
-    /// 아이템 슬롯 마우스 눌렀을 때 동작
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        results.Clear();
-        inventoryRayCanvas.Raycast(eventData, results);
-        detectedInventorySlot = results[0].gameObject.GetComponentInParent<InventorySlot>();
-
-        if (detectedInventorySlotItem) return; 
-        
-        OnInventorySlotClick();
-
     }
 
     /// <summary>
@@ -132,7 +116,7 @@ public class InventoryInteraction :
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (detectedInventorySlotItem) return;
+        if (fromSlotItem) return;
 
         OnInventorySlotMouseUp();
         //인벤토리 슬롯 교환 진행
@@ -141,32 +125,68 @@ public class InventoryInteraction :
         if (results.Count < 2) return;
         
         //이동 슬롯
-        InventorySlot newSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
+        InventorySlot toSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
+        HandleSlotSwap(toSlot);
+        ApplyEquipState(toSlot);
+        ApplyEquipState(fromSlot); 
+    }
 
-        if (newSlot != null && newSlot.CurSlotItem == null)
+    /// <summary>
+    /// 인벤토리 슬롯 내 아이템 교환
+    /// </summary>
+    /// <param name="toSlot">2번째로 감지된 슬롯</param>
+    private void HandleSlotSwap(InventorySlot toSlot)
+    {
+        if (toSlot != null && toSlot.CurSlotItem == null)
         {
             //장비 착용 여부 교환
-            newSlot.IsEquip = detectedInventorySlot.IsEquip;
-            detectedInventorySlot.IsEquip = false;
+            toSlot.IsEquip = fromSlot.IsEquip;
+            fromSlot.IsEquip = false;
             
             //이동 슬롯에 아이템이 없을 경우 새 슬롯 아이템 이동 및 기존 슬롯 삭제
-            newSlot.AddItem(detectedInventorySlot.CurSlotItem, detectedInventorySlot.ItemCount);
-            detectedInventorySlot.RemoveItem();
+            toSlot.AddItem(fromSlot.CurSlotItem, fromSlot.ItemCount);
+            fromSlot.RemoveItem();
         }
-        else if (newSlot != null && newSlot.CurSlotItem != null)
+        else if (toSlot != null && toSlot.CurSlotItem != null)
         {
-            ItemData netData = detectedInventorySlot.CurSlotItem;
-            int netItemCount = detectedInventorySlot.ItemCount;
-            bool newEquip = detectedInventorySlot.IsEquip;
+            ItemData netData = fromSlot.CurSlotItem;
+            int netItemCount = fromSlot.ItemCount;
+            bool newEquip = fromSlot.IsEquip;
             
-            detectedInventorySlot.IsEquip = newSlot.IsEquip;
-            newSlot.IsEquip = newEquip;
+            fromSlot.IsEquip = toSlot.IsEquip;
+            toSlot.IsEquip = newEquip;
             
             //이동 슬롯과 기존 슬롯의 내용 교환
-            detectedInventorySlot.ChangeItem(newSlot.CurSlotItem, newSlot.ItemCount);
-            newSlot.ChangeItem(netData, netItemCount);
-        } 
+            fromSlot.ChangeItem(toSlot.CurSlotItem, toSlot.ItemCount);
+            toSlot.ChangeItem(netData, netItemCount);
+        }
     }
+
+    /// <summary>
+    /// 교환 슬롯의 장착 아이템 변경
+    /// </summary>
+    /// <param name="toSlot">장착 아이템을 확인할 슬롯</param>
+    private void ApplyEquipState(InventorySlot toSlot)
+    {
+        equipment.ChangeEquipment(toSlot.CurSlotItem, toSlot);
+    }
+     
+    /// <summary>
+    /// 아이템 슬롯 마우스 눌렀을 때 동작
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        results.Clear();
+        inventoryRayCanvas.Raycast(eventData, results);
+        fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>();
+        
+        if (fromSlotItem) return; 
+        
+        OnInventorySlotClick();
+
+    }
+
     
     /// <summary>
     /// 아이템 슬롯 클릭했을 때 동작
@@ -178,21 +198,15 @@ public class InventoryInteraction :
         
         inventoryRayCanvas.Raycast(eventData, results);
 
-        detectedInventorySlot = results[0].gameObject.GetComponentInParent<InventorySlot>(); 
+        fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>(); 
         SetSlotItemDetail();
-        
-        //사용 가능한 아이템이면 버튼 활성화
-        equipButton.gameObject.SetActive(!detectedInventorySlotItem && detectedInventorySlot.CurSlotItem.isWeapon);
-        
+         
         //TODO: 착용중인 아이템 슬롯이라면 아이템 해제 버튼으로
         
-        if (detectedInventorySlotItem) return;
-
-        detailItemImage.sprite = detectedInventorySlot.CurSlotItem.ItemImage;
-        detailItemDescA.text = detectedInventorySlot.CurSlotItem.ItemDescA;
-        detailItemDescB.text = detectedInventorySlot.CurSlotItem.ItemDescB;
-         
-
+        if (fromSlotItem) return; 
+        detailItemImage.sprite = fromSlot.CurSlotItem.ItemImage;
+        detailItemDescA.text = fromSlot.CurSlotItem.ItemDescA;
+        detailItemDescB.text = fromSlot.CurSlotItem.ItemDescB; 
     }
     
     /// <summary>
@@ -201,10 +215,10 @@ public class InventoryInteraction :
     private void OnInventorySlotClick()
     {
         //드래그에 사용할 이미지 위치 슬롯 아이템 이미지 위치로 변경
-        dragItemImage.transform.position = detectedInventorySlot.transform.position; 
+        dragItemImage.transform.position = fromSlot.transform.position; 
         dragItemImage.gameObject.SetActive(true);
-        dragItemImage.sprite = detectedInventorySlot.CurSlotItem.ItemImage;
-        detectedInventorySlot.OnDragScaleEvent?.Invoke();
+        dragItemImage.sprite = fromSlot.CurSlotItem.ItemImage;
+        fromSlot.OnDragScaleEvent?.Invoke();
     }
 
     /// <summary>
@@ -213,7 +227,7 @@ public class InventoryInteraction :
     private void OnInventorySlotMouseUp()
     {
         dragItemImage.gameObject.SetActive(false);
-        detectedInventorySlot.OnResetScaleEvent?.Invoke();
+        fromSlot.OnResetScaleEvent?.Invoke();
     }
 
     /// <summary>
@@ -221,10 +235,12 @@ public class InventoryInteraction :
     /// </summary>
     private void SetSlotItemDetail()
     {
-        //TODO: 추후 오브젝트들 lIST에 담아서 순회하는 방식으로 On,Off 하기
-        detailItemImage.gameObject.SetActive(!detectedInventorySlotItem);
-        detailItemDescA.gameObject.SetActive(!detectedInventorySlotItem);
-        detailItemDescB.gameObject.SetActive(!detectedInventorySlotItem);
+        //사용 가능한 아이템이면 버튼 활성화
+        equipButton.gameObject.SetActive(!fromSlotItem && fromSlot.CurSlotItem.isWeapon);
+        
+        detailItemImage.gameObject.SetActive(!fromSlotItem);
+        detailItemDescA.gameObject.SetActive(!fromSlotItem);
+        detailItemDescB.gameObject.SetActive(!fromSlotItem);
     }
     
 }

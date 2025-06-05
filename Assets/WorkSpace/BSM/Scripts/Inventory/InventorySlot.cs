@@ -16,7 +16,7 @@ public class InventorySlot : MonoBehaviour
   
     
     public ItemData CurSlotItem => curSlotItem;
-    public ItemData curSlotItem;
+    private ItemData curSlotItem;
 
     private bool isEquip;
 

@@ -12,23 +12,26 @@ public class EquipmentSlot
 
 public class Equipment : MonoBehaviour
 {
-    private Dictionary<Parts, EquipmentSlot> equipSlotDict = new ();
-
+    private Dictionary<Parts, EquipmentSlot> equipSlotDict = new();
+ 
     public void ChangeEquipment(ItemData itemData, InventorySlot inventorySlot)
     {
-        if (equipSlotDict.TryGetValue(itemData.parts, out EquipmentSlot equipSlot))
-        { 
-            equipSlot.inventorySlot.IsEquip = false; 
+        Parts key = itemData.parts;
+
+        if (equipSlotDict.TryGetValue(key, out EquipmentSlot equipSlot))
+        {
+            equipSlot.inventorySlot.IsEquip = false;
         }
 
-        EquipmentSlot newEquipmentSlot = new EquipmentSlot()
+        EquipmentSlot equipmentSlot = new EquipmentSlot()
         {
             itemData = itemData,
-            inventorySlot = inventorySlot
+            inventorySlot = inventorySlot,
         };
-        
+
         inventorySlot.IsEquip = true;
         
-        equipSlotDict[itemData.parts] = newEquipmentSlot; 
+        equipSlotDict[key] = equipmentSlot;
+        
     } 
 }
