@@ -6,20 +6,22 @@ public class Item : MonoBehaviour
 {
     [SerializeField] public ItemData itemData;
 
-    [Header("������ ������ �з���")]
+    [Header("아이템 정보 필드")]
     public int ItemId;
-    public bool isWeapon;
-    public Type_Weapon detail_Weapon;
-    public Type_Armor detail_Armor;
+    public bool IsWeapon;
 
-    [Header("������ ����")]
+    public Parts Parts;
+    public WeaponType WeaponType;
+    public SubWeaponType SubWeaponType;
+
+    [Header("아이템 인게임 정보 필드")]
     public string Name;
     public int Tier;
-    public int attack;
-    public int deffence;
+    public int Attack;
+    public int Deffence;
 
-    public int buyPrice;
-    public int sellPrice;
+    public int BuyPrice;
+    public int SellPrice;
 
     ItemStruct itemStruct;
 
@@ -31,19 +33,20 @@ public class Item : MonoBehaviour
     void Init()
     { 
         itemData = BSM_ItemManager.ItemManager.instance.GetItemData(ItemId);
-        itemStruct = itemData.GetItemData(itemStruct);
+        itemStruct = itemData.GetItemData();
 
-        isWeapon = itemStruct.isWeapon;
-        detail_Weapon = itemStruct.DetailType_Weapon;
-        detail_Armor = itemStruct.DetailType_Armor;
-        
+        IsWeapon = itemStruct.isWeapon;
+        Parts = itemStruct.parts;
+        WeaponType = itemStruct.weaponType; ;
+        SubWeaponType = itemStruct.subWeaponType;
+
         Name = itemStruct.Name;
         Tier = itemStruct.Tier;
-        attack = itemStruct.Attack;
-        deffence = itemStruct.Deffence;
+        Attack = itemStruct.Attack;
+        Deffence = itemStruct.Deffence;
         
-        buyPrice = itemStruct.BuyPrice;
-        sellPrice = itemStruct.SellPrice;
+        BuyPrice = itemStruct.BuyPrice;
+        SellPrice = itemStruct.SellPrice;
         
         gameObject.name = Name; 
     }

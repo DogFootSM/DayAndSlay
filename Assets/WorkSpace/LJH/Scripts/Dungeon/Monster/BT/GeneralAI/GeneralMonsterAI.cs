@@ -4,10 +4,12 @@ using System.Threading;
 using UnityEngine;
 using Zenject;
 
+[RequireComponent(typeof(GeneralMonsterMethod))]
+[RequireComponent(typeof(GeneralAnimator))]
 public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField]
-    protected MonsterData monsterData;
+    public MonsterData monsterData;
     [Inject]
     protected TestPlayer player;
 
@@ -25,30 +27,13 @@ public class GeneralMonsterAI : MonoBehaviour
 
     protected MonsterStateMachine stateMachine;
 
-    public bool isAction = false;
-
+    protected GeneralMonsterMethod method;
 
     private void Start()
     {
-        attack = new AttackNode(this.Attack);
-        idle = new IdleNode(this.Idle);
-        chase = new ChaseNode(this.Move);
-        attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.range, monsterData.cooldown);
-        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, 5f);
-
-
-        //예시 용
-        attackSequence = new Sequence(AttackSequence());
-        chaseSequence = new Sequence(ChaseSequence());
-
-
-        selector = new Selector(RootSelector());
-        tree = new BehaviourTree(selector);
-
-        stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
+        NodeInit();
+        ExternalInit();
     }
-
-
 
     private void Update()
     {
@@ -99,6 +84,32 @@ public class GeneralMonsterAI : MonoBehaviour
         nodes.Add(attack);
 
         return nodes;
+    }
+
+
+    void NodeInit()
+    {
+        attack = new AttackNode(this.Attack);
+        idle = new IdleNode(this.Idle);
+        chase = new ChaseNode(this.Move);
+        attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.range, monsterData.cooldown);
+        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, 5f);
+
+
+        //예시 용
+        attackSequence = new Sequence(AttackSequence());
+        chaseSequence = new Sequence(ChaseSequence());
+
+
+        selector = new Selector(RootSelector());
+        tree = new BehaviourTree(selector);
+    }
+
+    void ExternalInit()
+    {
+        stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
+        method = GetComponent<GeneralMonsterMethod>();
+        method.MonsterDataInit(monsterData);
     }
 
 }

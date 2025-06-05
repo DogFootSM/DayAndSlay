@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class OrcAi : GeneralMonsterAI
 {
+
+    public override void Idle()
+    {
+        stateMachine.ChangeState(new MonsterIdleState());
+    }
     public override void Attack()
     {
-        Debug.Log("오크 공격");
+        stateMachine.ChangeState(new MonsterAttackState());
+    }
+
+    public override void Move()
+    {
+        stateMachine.ChangeState(new MonsterMoveState());
     }
 }

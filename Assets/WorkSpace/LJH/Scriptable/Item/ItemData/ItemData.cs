@@ -5,8 +5,10 @@ using UnityEngine;
 public struct ItemStruct
 {
     public bool isWeapon;
-    public Type_Weapon DetailType_Weapon;
-    public Type_Armor DetailType_Armor;
+
+    public Parts parts;
+    public WeaponType weaponType;
+    public SubWeaponType subWeaponType;
 
     public string Name;
     public int Tier;
@@ -21,14 +23,16 @@ public class ItemData : ScriptableObject
 {
     public Sprite ItemImage;
 
-    [Header("������ ������ �з���")]
     public int ItemId;
+    //Todo : isWeapon을 isEquipment로 변경해야함
     public bool isWeapon;
     public bool IsOverlaped;
-    public Type_Weapon Detail_Weapon;
-    public Type_Armor Detail_Armor;
 
-    [Header("������ ����")]
+    public Parts parts;
+    public WeaponType weaponType;
+    public SubWeaponType subWeaponType;
+
+
     public string Name;
     public int Tier;
     public int Attack;
@@ -40,28 +44,16 @@ public class ItemData : ScriptableObject
     public string ItemDescA;
     public string ItemDescB;
 
-    public ItemStruct GetItemData(ItemStruct itemStruct)
-    {
-        return itemStruct = ThisItemIsWeapon(isWeapon);
-    }
-
-    ItemStruct ThisItemIsWeapon(bool isWeapon)
-    {
-        if(!isWeapon)
-        {
-            return GetArmorData();
-        }
     
-        return GetWeaponData();
-    }
-    
-    ItemStruct GetWeaponData()
+    public ItemStruct GetItemData()
     {
         ItemStruct weaponStruct = new ItemStruct();
     
         weaponStruct.isWeapon = isWeapon;
-        weaponStruct.DetailType_Weapon = Detail_Weapon;
-        weaponStruct.DetailType_Armor = Type_Armor.NotArmor;
+
+        weaponStruct.parts = parts;
+        weaponStruct.weaponType = weaponType; ;
+        weaponStruct.subWeaponType = subWeaponType;
 
         weaponStruct.Name = Name;
         weaponStruct.Tier = Tier;
@@ -73,22 +65,5 @@ public class ItemData : ScriptableObject
         return weaponStruct;
     }
     
-    ItemStruct GetArmorData()
-    {
-        ItemStruct armorStruct = new ItemStruct();
-
-        armorStruct.isWeapon = isWeapon;
-        armorStruct.DetailType_Weapon = Type_Weapon.NotWeapon;
-        armorStruct.DetailType_Armor = Detail_Armor;
-
-        armorStruct.Name = Name;
-        armorStruct.Tier = Tier;
-        armorStruct.Deffence = Deffence;
-    
-        armorStruct.BuyPrice = BuyPrice;
-        armorStruct.SellPrice = SellPrice;
-    
-        return armorStruct;
-    }
 
 }

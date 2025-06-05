@@ -9,6 +9,7 @@ public class MonsterInstaller : MonoInstaller
     [SerializeField] DungeonPathfinder dfs;
     //[SerializeField] PlayerController player;
     [SerializeField] TestPlayer player;
+    [SerializeField] DungeonManager dungeonManager;
 
     public override void InstallBindings()
     {
@@ -28,6 +29,10 @@ public class MonsterInstaller : MonoInstaller
         Container
             .Bind<TestPlayer>()
             .FromInstance(player);
+
+        Container
+            .Bind<DungeonManager>()
+            .FromInstance(dungeonManager);
     }
     
 }

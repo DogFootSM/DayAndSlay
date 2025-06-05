@@ -9,9 +9,9 @@ public class MonsterData : ScriptableObject
     public int id;
     public int hp;
     public int attack;
-    public int range;
+    public float range;
     public float cooldown;
 
     //추후 아이템 클래스 생성시 그것으로 교체
-    public List<GameObject> dropTable;
+    public List<ItemData> dropTable;
 }

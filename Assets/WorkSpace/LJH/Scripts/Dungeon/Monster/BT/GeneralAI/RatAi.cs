@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class RatAi : GeneralMonsterAI
 {
+    public override void Idle()
+    {
+        stateMachine.ChangeState(new MonsterIdleState());
+    }
     public override void Attack()
     {
-        Debug.Log("Áã °ø°Ý");
+        stateMachine.ChangeState(new MonsterAttackState());
+    }
+
+    public override void Move()
+    {
+        stateMachine.ChangeState(new MonsterMoveState());
     }
 }
