@@ -41,9 +41,9 @@ public class ItemParser
 
             Debug.Log($"[라인 {i}] 필드 수: {values.Length} / 내용: {line}");
 
-            if (values.Length < 13)
+            if (values.Length < 18)
             {
-                Debug.LogWarning($"라인 {i} 필드 부족: {values.Length}개 (필요: 13개)");
+                Debug.LogWarning($"라인 {i} 필드 부족: {values.Length}개 (필요: 18개)");
                 continue;
             }
 
@@ -52,18 +52,23 @@ public class ItemParser
                 ItemData item = ScriptableObject.CreateInstance<ItemData>();
 
                 item.ItemId = int.Parse(values[0]);
-                item.isWeapon = bool.Parse(values[1]);
+                item.IsEquipment = bool.Parse(values[1]);
                 item.IsOverlaped = bool.Parse(values[2]);
-                item.parts = (Parts)System.Enum.Parse(typeof(Parts), values[3]);
-                item.weaponType = (WeaponType)System.Enum.Parse(typeof(WeaponType), values[4]);
-                item.subWeaponType = (SubWeaponType)System.Enum.Parse(typeof(SubWeaponType), values[5]);
-                item.Tier = int.Parse(values[6]);
-                item.Name = values[7];
-                item.Hp = int.Parse(values[8]);
-                item.Attack = int.Parse(values[9]);
-                item.Deffence = int.Parse(values[10]);
-                item.SellPrice = int.Parse(values[11]);
-                item.ItemDescA = values[12];
+                item.Parts = (Parts)System.Enum.Parse(typeof(Parts), values[3]);
+                item.ItemSet = (ItemSet)System.Enum.Parse(typeof(ItemSet), values[4]);
+                item.WeaponType = (WeaponType)System.Enum.Parse(typeof(WeaponType), values[5]);
+                item.SubWeaponType = (SubWeaponType)System.Enum.Parse(typeof(SubWeaponType), values[6]);
+                item.Tier = int.Parse(values[7]);
+                item.Name = values[8];
+                item.Strength = int.Parse(values[9]);
+                item.Agility = int.Parse(values[10]);
+                item.Intelligence = int.Parse(values[11]);
+                item.Critical = float.Parse(values[12]);
+                item.Hp = int.Parse(values[13]);
+                item.Attack = int.Parse(values[14]);
+                item.Defence = int.Parse(values[15]);
+                item.SellPrice = int.Parse(values[16]);
+                item.ItemDescA = values[17];
 
                 string assetPath = $"{assetFolder}/{item.Tier}T_{item.Name}.asset";
                 Debug.Log($"ScriptableObject 생성 → {assetPath}");

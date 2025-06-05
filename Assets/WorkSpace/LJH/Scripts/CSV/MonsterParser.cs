@@ -66,7 +66,7 @@ public class MonsterCsvImporter
                                 continue;
                             }
 
-                            float rate = itemData.parts switch
+                            float rate = itemData.Parts switch
                             {
                                 Parts.RARE_INGREDIANT => 10f,
                                 Parts.INGREDIANT => 30f,

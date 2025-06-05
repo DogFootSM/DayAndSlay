@@ -187,3 +187,13 @@ public enum M_State
     Die
 }
 
+public enum ItemSet
+{
+    NOT_SET,
+    COSMOS,
+    NIGHTFANG,
+    DRAGONKNIGHT,
+
+}
+
+

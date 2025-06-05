@@ -183,7 +183,7 @@ public class InventoryInteraction :
         detailItemDescB.text = detectedInventorySlot.CurSlotItem.ItemDescB;
          
         //사용 가능한 아이템이면 버튼 활성화
-        equipButton.gameObject.SetActive(detectedInventorySlot.CurSlotItem.isWeapon);
+        equipButton.gameObject.SetActive(detectedInventorySlot.CurSlotItem.IsEquipment);
         
         //TODO: 버튼 활성화 됐을 때, 이미 착용중인 아이템이면 클릭 불가하게
         
