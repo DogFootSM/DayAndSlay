@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-public class CsvParser
+public class ItemParser
 {
     [MenuItem("Tools/Import CSV/Item Data")]
     public static void ImportItemData()

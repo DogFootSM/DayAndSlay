@@ -532,12 +532,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsters:
+  - {fileID: 7913998146556878464, guid: 440ad5537a6f7884eabc8001053672cf, type: 3}
   - {fileID: 1488993737496387518, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
-  - {fileID: 1488993737496387518, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
-  - {fileID: 1488993737496387518, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
+  - {fileID: 1188161495205834605, guid: bb62a9e20a6656d4aae5af55ce348613, type: 3}
+  - {fileID: 2206897382857518734, guid: c762e94741ccedf43b1178beb4f40188, type: 3}
+  - {fileID: 1269701800412192224, guid: 73b1c20ee7239a341ba9455bee1e797c, type: 3}
+  - {fileID: 6718412542748530395, guid: b0fc7e29e81d37347a4bd340b2647711, type: 3}
+  - {fileID: 9110040514710003671, guid: 909cd202ba5f797448e083872106465c, type: 3}
+  - {fileID: 4179380448030190885, guid: 719b8fd0f138e5943b4753e114f039ea, type: 3}
   dfs: {fileID: 1861027644}
   player: {fileID: 839018395}
-  dungeonManager: {fileID: 0}
+  dungeonManager: {fileID: 910339918}
 --- !u!1 &310596994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,6 +1239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 910339917}
   - component: {fileID: 910339916}
+  - component: {fileID: 910339918}
   m_Layer: 0
   m_Name: DungeonManager
   m_TagString: Untagged
@@ -1269,6 +1275,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &910339918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910339915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afa6ef590d8c3e47b790a27649ba5c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool: {fileID: 910339916}
 --- !u!1 &918499874
 GameObject:
   m_ObjectHideFlags: 0
