@@ -30,7 +30,9 @@ public class RangeAttackHandler : IAttackHandler
         Debug.Log("나는 원거리 공격!");
 
         Collider2D[] monsterCol = Physics2D.OverlapCircleAll(position + (direction.normalized * 3f), 3f, monsterLayer);
- 
+        
+        //TODO: 활 공격 범위도 좌,우, 위, 아래로
+        
         if (monsterCol.Length < 1) return;
           
         if (targetMonster == null)

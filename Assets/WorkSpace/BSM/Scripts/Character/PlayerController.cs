@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     [Inject] private WaitCache waitCache;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
+
+    [SerializeField] private GameObject shieldObject;
     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
@@ -94,7 +96,7 @@ public class PlayerController : MonoBehaviour
         {
             curWeaponType = (CharacterWeaponType)dataReader.GetInt32(0);
         }
- 
+        
     }
     
     /// <summary>
@@ -103,6 +105,7 @@ public class PlayerController : MonoBehaviour
     private void ChangedWeaponType()
     {
         curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
+        shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
     }
 
     /// <summary>
@@ -144,8 +147,7 @@ public class PlayerController : MonoBehaviour
         else if(posX < 0) LastMoveKey = Direction.Right;
         
     }
-
-
+ 
     /// <summary>
     /// 캐릭터 상태 변경
     /// </summary>
@@ -155,5 +157,14 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)curState].Exit();
         curState = newState;
         characterStates[(int)curState].Enter();
+    }
+
+    /// <summary>
+    /// 경험치를 model에게 넘겨줌
+    /// </summary>
+    /// <param name="exp">몬스터에게 받을 경험치</param>
+    public void GrantExperience(int exp)
+    {
+        playerModel.GainExperience(exp);
     }
 }

@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
-
+    [SerializeField] private GameObject equippedMark;
+    
     public ItemData CurSlotItem => curSlotItem;
-    public ItemData curSlotItem;
+    private ItemData curSlotItem;
 
+    public bool IsEquipItem;
     public int ItemCount => itemCount;
     private int itemCount = 0;
     private Vector3 originScale = new Vector3(1f, 1f, 1f);
@@ -56,11 +59,14 @@ public class InventorySlot : MonoBehaviour
     /// </summary>
     /// <param name="item">슬롯에 변경할 아이템</param>
     /// <param name="count">변경할 아이템 개수</param>
-    public void ChangeItem(ItemData item, int count)
+    /// <param name="isEquip">변경할 아이템의 착용 여부</param>
+    public void ChangeItem(ItemData item, int count, bool isEquip = false)
     {
         curSlotItem = item;
         itemImage.sprite = item.ItemImage;
         itemCount = count;
+        IsEquipItem = isEquip; 
+        
         CountTextActive();
     }
 
@@ -73,8 +79,8 @@ public class InventorySlot : MonoBehaviour
         itemImage.sprite = null;
         itemCount = 0;
         CountTextActive();
-    }
-
+    } 
+    
     /// <summary>
     /// 중복 아이템일 경우 개수 텍스트 활성화
     /// </summary>
@@ -82,6 +88,9 @@ public class InventorySlot : MonoBehaviour
     {
         itemCountText.text = $"{itemCount}";
         itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.IsOverlaped);
+        
+        //착용 여부를 나타내는 라벨 오브젝트
+        equippedMark.SetActive(IsEquipItem);
     }
 
     /// <summary>

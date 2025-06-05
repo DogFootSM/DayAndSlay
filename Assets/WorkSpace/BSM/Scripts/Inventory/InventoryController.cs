@@ -17,12 +17,14 @@ namespace BSM_ITEM
         public int itemId;
         public int itemAmount;
         public int inventorySlotId;
+        public bool isEquipment;
     }
 }
  
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] private GameObject slotParent;
+    [SerializeField] private Equipment equipment;
     
     [Inject] private DataManager dataManager;
     [Inject] private SqlManager sqlManager;
@@ -47,7 +49,7 @@ public class InventoryController : MonoBehaviour
     /// 아이템 데이터 인벤토리 슬롯에 할당
     /// </summary>
     protected void SetSlotItemData()
-    {
+    { 
         dataReader = sqlManager.ReadItemDataColumn("slot_id", $"{dataManager.SlotId}");
  
         while (dataReader.Read())
@@ -57,6 +59,7 @@ public class InventoryController : MonoBehaviour
                 itemId = dataReader.GetInt32(0),
                 itemAmount = dataReader.GetInt32(2),
                 inventorySlotId = dataReader.GetInt32(3),
+                isEquipment = dataReader.GetBoolean(4),
             };
                 
             itemDatas.Add(data);
@@ -67,7 +70,12 @@ public class InventoryController : MonoBehaviour
             inventorySlots[itemDatas[i].inventorySlotId].AddItem(
                 itemManager.GetItemData(itemDatas[i].itemId),
                 itemDatas[i].itemAmount);
+            
+            //장비 착용 여부 설정
+            inventorySlots[itemDatas[i].inventorySlotId].IsEquipItem = itemDatas[i].isEquipment;
         }
+        
+        //TODO: 아이템을 받아오면 EQUIPMENT의 착용중인 장비도 설정?
     }
 
     /// <summary>
@@ -75,7 +83,7 @@ public class InventoryController : MonoBehaviour
     /// </summary>
     /// <returns>현재 보유중인 아이템 데이터</returns>
     protected List<BSM_ItemData> GetItemId()
-    {
+    { 
         return itemDatas;
     } 
     

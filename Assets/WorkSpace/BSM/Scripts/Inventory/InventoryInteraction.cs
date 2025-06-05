@@ -19,7 +19,8 @@ public class InventoryInteraction :
     [SerializeField] private Image detailItemImage;
     [SerializeField] private TextMeshProUGUI detailItemDescA;
     [SerializeField] private TextMeshProUGUI detailItemDescB;
-    
+    [SerializeField] private Button equipButton;
+  
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
     
@@ -29,10 +30,24 @@ public class InventoryInteraction :
     new void Awake()
     {
         base.Awake();
-        SetSlotItemData();
-        SetOwnedItemSet(); 
+        //SetSlotItemData();
+        //SetOwnedItemSet(); 
+        //equipButton.onClick.AddListener(Equip);
     }
 
+    private void Start()
+    {
+        //TODO: 테스트용으로 Start에서 호출
+        SetSlotItemData();
+        SetOwnedItemSet(); 
+        equipButton.onClick.AddListener(Equip);
+    }
+
+    private void Equip()
+    { 
+        //TODO: 아이템 장착 시 Equipment로 해당 아이템을 넘겨주고
+    }
+    
     /// <summary>
     /// 아이템 ID HashSet 설정
     /// </summary>
@@ -127,6 +142,10 @@ public class InventoryInteraction :
 
         if (compareSlot != null && compareSlot.CurSlotItem == null)
         {
+            //장비 착용 여부 교환
+            compareSlot.IsEquipItem = detectedInventorySlot.IsEquipItem;
+            detectedInventorySlot.IsEquipItem = false;
+            
             //이동 슬롯에 아이템이 없을 경우 새 슬롯 아이템 이동 및 기존 슬롯 삭제
             compareSlot.AddItem(detectedInventorySlot.CurSlotItem, detectedInventorySlot.ItemCount);
             detectedInventorySlot.RemoveItem();
@@ -135,10 +154,11 @@ public class InventoryInteraction :
         {
             ItemData temp = detectedInventorySlot.CurSlotItem;
             int tempCount = detectedInventorySlot.ItemCount;
+            bool tempIsEquip = detectedInventorySlot.IsEquipItem;
             
             //이동 슬롯과 기존 슬롯의 내용 교환
-            detectedInventorySlot.ChangeItem(compareSlot.CurSlotItem, compareSlot.ItemCount);
-            compareSlot.ChangeItem(temp, tempCount);
+            detectedInventorySlot.ChangeItem(compareSlot.CurSlotItem, compareSlot.ItemCount, compareSlot.IsEquipItem);
+            compareSlot.ChangeItem(temp, tempCount, tempIsEquip);
         }
         
     }
@@ -160,7 +180,13 @@ public class InventoryInteraction :
 
         detailItemImage.sprite = detectedInventorySlot.CurSlotItem.ItemImage;
         detailItemDescA.text = detectedInventorySlot.CurSlotItem.ItemDescA;
-        detailItemDescB.text = detectedInventorySlot.CurSlotItem.ItemDescB; 
+        detailItemDescB.text = detectedInventorySlot.CurSlotItem.ItemDescB;
+         
+        //사용 가능한 아이템이면 버튼 활성화
+        equipButton.gameObject.SetActive(detectedInventorySlot.CurSlotItem.isWeapon);
+        
+        //TODO: 버튼 활성화 됐을 때, 이미 착용중인 아이템이면 클릭 불가하게
+        
     }
     
     /// <summary>

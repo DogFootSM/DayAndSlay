@@ -40,7 +40,7 @@ public class SqliteDatabase
         //TODO: 테이블 생성 완료되면 삭제할 것
         using (dbCommand = dbConnection.CreateCommand())
         {
-            dbCommand.CommandText = @"DROP TABLE IF EXISTS Character";
+            dbCommand.CommandText = @"DROP TABLE IF EXISTS CharacterItem";
             dbCommand.ExecuteNonQuery();
         }
     }
@@ -67,9 +67,12 @@ public class SqliteDatabase
                                 last_played_time    TEXT NOT NULL DEFAULT 'none',
                                 weapon_type         INTEGER NOT NULL DEFAULT 0,
                                 remaining_days      INTEGER NOT NULL DEFAULT 150,
-                                strength            INTEGER NOT NULL DEFAULT 0,
-                                agility             INTEGER NOT NULL DEFAULT 0,
-                                intelligence        INTEGER NOT NULL DEFAULT 0,
+                                exp                 INTEGER NOT NULL DEFAULT 0,
+                                stats_point         INTEGER NOT NULL DEFAULT 0,
+                                char_level          INTEGER NOT NULL DEFAULT 1,
+                                strength            INTEGER NOT NULL DEFAULT 5,
+                                agility             INTEGER NOT NULL DEFAULT 4,
+                                intelligence        INTEGER NOT NULL DEFAULT 3,
                                 objective_item      INTEGER NOT NULL DEFAULT 'none'
                                 )";
 
@@ -87,10 +90,11 @@ public class SqliteDatabase
 
                                 CREATE TABLE IF NOT EXISTS CharacterItem
                                 (
-                                    item_id         INTEGER NOT NULL,
-                                    slot_id         INTEGER NOT NULL,
-                                    item_amount      INTEGER NOT NULL,
-                                    inventory_slot_id INTEGER NOT NULL,
+                                    item_id             INTEGER NOT NULL,
+                                    slot_id             INTEGER NOT NULL,
+                                    item_amount         INTEGER NOT NULL,
+                                    inventory_slot_id   INTEGER NOT NULL,
+                                    is_equipment        INTEGER NOT NULL DEFAULT 0,
                                     PRIMARY KEY(slot_id, item_id)
                                     FOREIGN KEY (slot_id) REFERENCES Character (slot_id) ON DELETE CASCADE
                                 )";
