@@ -10,7 +10,7 @@ public class Equipment : MonoBehaviour
     
     public void ChangeEquipment(ItemData itemData, InventorySlot inventorySlot)
     {
-        Parts key = itemData.parts;
+        Parts key = itemData.Parts;
 
         if (equipSlotDict.TryGetValue(key, out EquipmentSlot equipSlot))
         {

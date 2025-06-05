@@ -2,22 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct ItemStruct
-{
-    public bool isWeapon;
 
-    public Parts parts;
-    public CharacterWeaponType weaponType;
-    public SubWeaponType subWeaponType;
-
-    public string Name;
-    public int Tier;
-    public int Attack;
-    public int Deffence;
-
-    public int BuyPrice;
-    public int SellPrice;
-}
 [CreateAssetMenu (fileName = "itemData", menuName = "Scriptable Object / itemData")]
 public class ItemData : ScriptableObject
 {
@@ -53,25 +38,6 @@ public class ItemData : ScriptableObject
     public string ItemDescB;
 
     
-    public ItemStruct GetItemData()
-    {
-        ItemStruct weaponStruct = new ItemStruct();
-    
-        weaponStruct.isWeapon = IsEquipment;
-
-        weaponStruct.parts = Parts;
-        weaponStruct.weaponType = WeaponType; ;
-        weaponStruct.subWeaponType = SubWeaponType;
-
-        weaponStruct.Name = Name;
-        weaponStruct.Tier = Tier;
-        weaponStruct.Attack = Attack;
-    
-        weaponStruct.BuyPrice = BuyPrice;
-        weaponStruct.SellPrice = SellPrice;
-    
-        return weaponStruct;
-    }
     
 
 }

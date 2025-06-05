@@ -248,7 +248,7 @@ public class InventoryInteraction :
     private void SetSlotItemDetail()
     {
         //사용 가능한 아이템이면 버튼 활성화
-        equipButton.gameObject.SetActive(!fromSlotItem && fromSlot.CurSlotItem.isWeapon);
+        equipButton.gameObject.SetActive(!fromSlotItem && fromSlot.CurSlotItem.IsEquipment);
         
         detailItemImage.gameObject.SetActive(!fromSlotItem);
         detailItemDescA.gameObject.SetActive(!fromSlotItem);
