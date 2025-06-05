@@ -146,8 +146,8 @@ public class InventoryInteraction :
         if (newSlot != null && newSlot.CurSlotItem == null)
         {
             //장비 착용 여부 교환
-            newSlot.IsEquipItem = detectedInventorySlot.IsEquipItem;
-            detectedInventorySlot.IsEquipItem = false;
+            newSlot.IsEquip = detectedInventorySlot.IsEquip;
+            detectedInventorySlot.IsEquip = false;
             
             //이동 슬롯에 아이템이 없을 경우 새 슬롯 아이템 이동 및 기존 슬롯 삭제
             newSlot.AddItem(detectedInventorySlot.CurSlotItem, detectedInventorySlot.ItemCount);
@@ -155,16 +155,16 @@ public class InventoryInteraction :
         }
         else if (newSlot != null && newSlot.CurSlotItem != null)
         {
-            ItemData temp = detectedInventorySlot.CurSlotItem;
-            int tempCount = detectedInventorySlot.ItemCount;
-            bool tempIsEquip = detectedInventorySlot.IsEquipItem;
+            ItemData netData = detectedInventorySlot.CurSlotItem;
+            int netItemCount = detectedInventorySlot.ItemCount;
+            bool newEquip = detectedInventorySlot.IsEquip;
             
-            detectedInventorySlot.IsEquipItem = newSlot.IsEquipItem;
-            newSlot.IsEquipItem = tempIsEquip;
+            detectedInventorySlot.IsEquip = newSlot.IsEquip;
+            newSlot.IsEquip = newEquip;
             
             //이동 슬롯과 기존 슬롯의 내용 교환
             detectedInventorySlot.ChangeItem(newSlot.CurSlotItem, newSlot.ItemCount);
-            newSlot.ChangeItem(temp, tempCount);
+            newSlot.ChangeItem(netData, netItemCount);
         } 
     }
     

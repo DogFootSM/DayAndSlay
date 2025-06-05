@@ -72,7 +72,7 @@ public class InventoryController : MonoBehaviour
                 itemDatas[i].itemAmount);
             
             //장비 착용 여부 설정
-            inventorySlots[itemDatas[i].inventorySlotId].IsEquipItem = itemDatas[i].isEquipment;
+            inventorySlots[itemDatas[i].inventorySlotId].IsEquip = itemDatas[i].isEquipment;
           
             //DB에서 받아온 아이템 정보로 착용 장비 설정
             equipment.ChangeEquipment(inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem, inventorySlots[itemDatas[i].inventorySlotId]);

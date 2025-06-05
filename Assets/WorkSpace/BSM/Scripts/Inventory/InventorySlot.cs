@@ -18,15 +18,15 @@ public class InventorySlot : MonoBehaviour
     public ItemData CurSlotItem => curSlotItem;
     public ItemData curSlotItem;
 
-    private bool isEquipItem;
+    private bool isEquip;
 
-    public bool IsEquipItem
+    public bool IsEquip
     {
-        get => isEquipItem;
+        get => isEquip;
         set
         {
-            isEquipItem = value;
-            equippedMark.SetActive(isEquipItem);
+            isEquip = value;
+            equippedMark.SetActive(isEquip);
         }
     }
     

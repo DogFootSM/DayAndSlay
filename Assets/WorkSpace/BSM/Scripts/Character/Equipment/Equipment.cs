@@ -18,7 +18,7 @@ public class Equipment : MonoBehaviour
     {
         if (equipSlotDict.TryGetValue(itemData.parts, out EquipmentSlot equipSlot))
         { 
-            equipSlot.inventorySlot.IsEquipItem = false; 
+            equipSlot.inventorySlot.IsEquip = false; 
         }
 
         EquipmentSlot newEquipmentSlot = new EquipmentSlot()
@@ -27,7 +27,7 @@ public class Equipment : MonoBehaviour
             inventorySlot = inventorySlot
         };
         
-        inventorySlot.IsEquipItem = true;
+        inventorySlot.IsEquip = true;
         
         equipSlotDict[itemData.parts] = newEquipmentSlot; 
     } 
