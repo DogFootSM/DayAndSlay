@@ -126,9 +126,20 @@ public class InventoryInteraction :
         
         //이동 슬롯
         InventorySlot toSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
+
         HandleSlotSwap(toSlot);
-        ApplyEquipState(toSlot);
-        ApplyEquipState(fromSlot); 
+        
+        //이동 슬롯의 아이템이 장착 상태
+        if (toSlot.IsEquip)
+        {
+            ApplyEquipState(toSlot);
+        }
+        
+        //이전 슬롯이 아이템을 갖고 있고, 장착 상태
+        if (fromSlot.CurSlotItem != null && fromSlot.IsEquip)
+        {
+            ApplyEquipState(fromSlot);  
+        }
     }
 
     /// <summary>
@@ -167,7 +178,7 @@ public class InventoryInteraction :
     /// </summary>
     /// <param name="toSlot">장착 아이템을 확인할 슬롯</param>
     private void ApplyEquipState(InventorySlot toSlot)
-    {
+    {  
         equipment.ChangeEquipment(toSlot.CurSlotItem, toSlot);
     }
      

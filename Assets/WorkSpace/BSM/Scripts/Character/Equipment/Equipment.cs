@@ -2,18 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-public class EquipmentSlot
-{
-    public ItemData itemData;
-    public InventorySlot inventorySlot;
-}
-
+ 
 public class Equipment : MonoBehaviour
 {
+    [SerializeField] private PlayerModel playerModel;
     private Dictionary<Parts, EquipmentSlot> equipSlotDict = new();
- 
+    
     public void ChangeEquipment(ItemData itemData, InventorySlot inventorySlot)
     {
         Parts key = itemData.parts;

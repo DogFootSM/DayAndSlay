@@ -142,6 +142,11 @@ public class PlayerModel : MonoBehaviour
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
+
+    public void ApplyEquipmentStats(EquipmentSlot equipSlot)
+    { 
+          
+    }
     
     /// <summary>
     /// 스킬 포인트 사용 시 스탯 증가 기능
