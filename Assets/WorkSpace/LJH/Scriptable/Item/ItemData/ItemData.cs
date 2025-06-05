@@ -7,7 +7,7 @@ public struct ItemStruct
     public bool isWeapon;
 
     public Parts parts;
-    public WeaponType weaponType;
+    public CharacterWeaponType weaponType;
     public SubWeaponType subWeaponType;
 
     public string Name;
@@ -29,7 +29,7 @@ public class ItemData : ScriptableObject
     public bool IsOverlaped;
 
     public Parts parts;
-    public WeaponType weaponType;
+    public CharacterWeaponType weaponType;
     public SubWeaponType subWeaponType;
 
 

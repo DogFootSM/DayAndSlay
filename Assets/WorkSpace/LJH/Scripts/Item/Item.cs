@@ -11,7 +11,7 @@ public class Item : MonoBehaviour
     public bool IsWeapon;
 
     public Parts Parts;
-    public WeaponType WeaponType;
+    public CharacterWeaponType WeaponType;
     public SubWeaponType SubWeaponType;
 
     [Header("아이템 인게임 정보 필드")]

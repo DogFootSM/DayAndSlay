@@ -7,12 +7,13 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-
-public class InventorySlot : MonoBehaviour
+ 
+public class InventorySlot : MonoBehaviour 
 {
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
     [SerializeField] private GameObject equippedMark;
+  
     
     public ItemData CurSlotItem => curSlotItem;
     private ItemData curSlotItem;
@@ -109,4 +110,6 @@ public class InventorySlot : MonoBehaviour
     {
         itemImage.rectTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
     }
+
+    
 }
