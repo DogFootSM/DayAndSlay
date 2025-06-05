@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems; 
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
-    [SerializeField] private GameObject equipmentLabelText;
+    [SerializeField] private GameObject equippedMark;
     
     public ItemData CurSlotItem => curSlotItem;
     private ItemData curSlotItem;
@@ -30,7 +32,7 @@ public class InventorySlot : MonoBehaviour
     private void OnEnable()
     {
         OnResetScaleEvent += ScaleReset;
-        OnDragScaleEvent += DragScale; 
+        OnDragScaleEvent += DragScale;
     }
 
     private void OnDisable()
@@ -77,8 +79,8 @@ public class InventorySlot : MonoBehaviour
         itemImage.sprite = null;
         itemCount = 0;
         CountTextActive();
-    }
-
+    } 
+    
     /// <summary>
     /// 중복 아이템일 경우 개수 텍스트 활성화
     /// </summary>
@@ -88,7 +90,7 @@ public class InventorySlot : MonoBehaviour
         itemCountText.gameObject.SetActive(curSlotItem != null && curSlotItem.IsOverlaped);
         
         //착용 여부를 나타내는 라벨 오브젝트
-        equipmentLabelText.SetActive(IsEquipItem);
+        equippedMark.SetActive(IsEquipItem);
     }
 
     /// <summary>

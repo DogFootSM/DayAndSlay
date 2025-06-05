@@ -44,8 +44,7 @@ public class InventoryInteraction :
     }
 
     private void Equip()
-    {
-        if (DetectedInventorySlotItem()) return;
+    { 
         //TODO: 아이템 장착 시 Equipment로 해당 아이템을 넘겨주고
     }
     
