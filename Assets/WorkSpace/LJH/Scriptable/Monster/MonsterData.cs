@@ -2,16 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class DropItemEntry
+{
+    public int ItemId;
+    public float DropRate; // 0~100 중 확률
+}
+
 [CreateAssetMenu (fileName = "Monster Data", menuName = "Scriptable Object/Monster Data")]
 public class MonsterData : ScriptableObject
 {
-    public string monsterName;
-    public int id;
-    public int hp;
-    public int attack;
-    public float range;
-    public float cooldown;
+    public int Id;
+    public string Name;
+    public int Hp;
+    public int Attack;
+    public float AttackRange;
+    public float ChaseRange;
+    public float MoveSpeed;
+    public float AttackCooldown;
 
-    //추후 아이템 클래스 생성시 그것으로 교체
-    public List<ItemData> dropTable;
+    public List<DropItemEntry> DropTable = new();
 }

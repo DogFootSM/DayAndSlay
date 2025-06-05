@@ -24,19 +24,27 @@ public class ItemData : ScriptableObject
     public Sprite ItemImage;
 
     public int ItemId;
-    //Todo : isWeapon을 isEquipment로 변경해야함
-    public bool isWeapon;
+    public bool IsEquipment;
     public bool IsOverlaped;
 
-    public Parts parts;
-    public WeaponType weaponType;
-    public SubWeaponType subWeaponType;
-
+    public Parts Parts;
+    public WeaponType WeaponType;
+    public SubWeaponType SubWeaponType;
+    public ItemSet ItemSet;
 
     public string Name;
     public int Tier;
+
+    public int Strength;
+    public int Agility;
+    public int Intelligence;
+
+    public float Critical;
+
+
+    public int Hp;
     public int Attack;
-    public int Deffence;
+    public int Defence;
 
     public int BuyPrice;
     public int SellPrice;
@@ -49,11 +57,11 @@ public class ItemData : ScriptableObject
     {
         ItemStruct weaponStruct = new ItemStruct();
     
-        weaponStruct.isWeapon = isWeapon;
+        weaponStruct.isWeapon = IsEquipment;
 
-        weaponStruct.parts = parts;
-        weaponStruct.weaponType = weaponType; ;
-        weaponStruct.subWeaponType = subWeaponType;
+        weaponStruct.parts = Parts;
+        weaponStruct.weaponType = WeaponType; ;
+        weaponStruct.subWeaponType = SubWeaponType;
 
         weaponStruct.Name = Name;
         weaponStruct.Tier = Tier;
