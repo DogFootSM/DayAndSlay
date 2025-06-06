@@ -8,7 +8,7 @@ public class Equipment : MonoBehaviour
     [SerializeField] private PlayerModel playerModel;
     private Dictionary<Parts, EquipmentSlot> equipSlotDict = new();
     
-    public void ChangeEquipment(ItemData itemData, InventorySlot inventorySlot)
+    public void EquipItem(ItemData itemData, InventorySlot inventorySlot)
     {
         Parts key = itemData.Parts;
 
@@ -27,5 +27,28 @@ public class Equipment : MonoBehaviour
         
         equipSlotDict[key] = equipmentSlot;
         
-    } 
+    }
+
+    public void UnEquipItem(Parts key)
+    {
+        if (equipSlotDict.TryGetValue(key, out EquipmentSlot equipSlot))
+        {
+            equipSlot.inventorySlot.IsEquip = false; 
+            
+            equipSlotDict.Remove(key);
+        }
+         
+    }
+
+    private void Update()
+    {
+        if (equipSlotDict.ContainsKey(Parts.WEAPON))
+        {
+            Debug.Log($"현재 장착중인 아이템:{equipSlotDict[Parts.WEAPON].itemData.Name}");
+        }
+        else
+        {
+            Debug.Log("장착 아이템 없음");
+        }
+    }
 }

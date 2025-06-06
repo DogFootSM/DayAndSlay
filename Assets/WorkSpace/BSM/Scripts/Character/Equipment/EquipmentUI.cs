@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EquipmentUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializedDictionary("Parts Type", "Parts UI Object")] [SerializeField]
+    private SerializedDictionary<Parts, Image> partsUIDict;
+    
+    
+    
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
