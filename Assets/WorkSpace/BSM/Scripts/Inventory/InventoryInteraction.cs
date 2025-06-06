@@ -20,6 +20,7 @@ public class InventoryInteraction :
     [SerializeField] private TextMeshProUGUI detailItemDescA;
     [SerializeField] private TextMeshProUGUI detailItemDescB;
     [SerializeField] private Button equipButton;
+    [SerializeField] private TextMeshProUGUI equipStateButtonText;
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
@@ -43,10 +44,21 @@ public class InventoryInteraction :
         equipButton.onClick.AddListener(Equip);
     }
 
+    /// <summary>
+    /// 인벤토리 슬롯의 장비 아이템 장착, 장착 해제
+    /// </summary>
     private void Equip()
-    { 
-        //TODO: 장착 버튼 클릭 시, 장착 버튼 상태 변경
-        equipment.ChangeEquipment(fromSlot.CurSlotItem, fromSlot);
+    {
+        if (fromSlot.IsEquip)
+        {
+            equipment.UnEquipItem(fromSlot.CurSlotItem.Parts);
+        }
+        else
+        {
+            equipment.EquipItem(fromSlot.CurSlotItem, fromSlot);
+        }
+         
+        SetEquipStateButtonText(fromSlot.IsEquip);
     }
     
     /// <summary>
@@ -179,7 +191,7 @@ public class InventoryInteraction :
     /// <param name="toSlot">장착 아이템을 확인할 슬롯</param>
     private void ApplyEquipState(InventorySlot toSlot)
     {  
-        equipment.ChangeEquipment(toSlot.CurSlotItem, toSlot);
+        equipment.EquipItem(toSlot.CurSlotItem, toSlot);
     }
      
     /// <summary>
@@ -211,15 +223,23 @@ public class InventoryInteraction :
 
         fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>(); 
         SetSlotItemDetail();
-         
-        //TODO: 착용중인 아이템 슬롯이라면 아이템 해제 버튼으로
-
+        SetEquipStateButtonText(fromSlot.IsEquip);
         
         if (fromSlotItem) return; 
         detailItemImage.sprite = fromSlot.CurSlotItem.ItemImage;
         detailItemDescA.text = fromSlot.CurSlotItem.ItemDescA;
         detailItemDescB.text = fromSlot.CurSlotItem.ItemDescB; 
     }
+
+    /// <summary>
+    /// 아이템 장착 상태에 따른 장착 버튼 텍스트 변경
+    /// </summary>
+    /// <param name="isEquip">현재 슬롯이 보유중인 아이템의 장착 상태</param>
+    private void SetEquipStateButtonText(bool isEquip)
+    {
+        equipStateButtonText.text = isEquip ? "장착 해제" : "장착";
+    }
+    
     
     /// <summary>
     /// 인벤토리 클릭 동작
