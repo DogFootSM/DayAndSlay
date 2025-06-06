@@ -161,8 +161,7 @@ public class PlayerModel : MonoBehaviour
     /// </summary> 
     public void ApplyItemModifiers(ItemData equipItemData, bool isEquip = true)
     { 
-        int sign = isEquip ? 1 : -1;
-        Debug.Log(sign);
+        int sign = isEquip ? 1 : -1; 
         playerStats.AddStats(equipItemData, sign); 
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }

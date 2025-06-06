@@ -55,7 +55,7 @@ public class InventoryInteraction :
         }
         else
         {
-            equipment.EquipItem(fromSlot.CurSlotItem, fromSlot);
+            equipment.EquipItem(fromSlot.CurSlotItem, fromSlot, true);
         }
          
         SetEquipStateButtonText(fromSlot.IsEquip);
@@ -139,7 +139,7 @@ public class InventoryInteraction :
         //이동 슬롯
         InventorySlot toSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
 
-        HandleSlotSwap(toSlot);
+        HandleSlotSwap(toSlot); 
         
         //이동 슬롯의 아이템이 장착 상태
         if (toSlot.IsEquip)

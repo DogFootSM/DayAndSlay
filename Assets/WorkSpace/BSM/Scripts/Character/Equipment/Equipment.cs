@@ -15,14 +15,22 @@ public class Equipment : MonoBehaviour
     /// </summary>
     /// <param name="itemData">장착할 아이템 데이터</param>
     /// <param name="inventorySlot">장착 아이템을 가지고 있는 인벤토리 슬롯</param>
-    public void EquipItem(ItemData itemData, InventorySlot inventorySlot)
+    /// <param name="onClick">장착 버튼을 클릭했는지 여부</param>
+    public void EquipItem(ItemData itemData, InventorySlot inventorySlot, bool onClick = false)
     {
         Parts key = itemData.Parts;
-        
+         
         //이미 아이템이 장착되어 있을 경우 기존 아이템 장착 해제
         if (equipSlotDict.TryGetValue(key, out EquipmentSlot equipSlot))
         {
             equipSlot.inventorySlot.IsEquip = false;
+            
+            //다른 아이템 착용 시 이전 아이템 스탯 감소
+            if (onClick)
+            {
+                playerModel.ApplyItemModifiers(equipSlot.itemData, false);
+            }
+            
         }
 
         EquipmentSlot equipmentSlot = new EquipmentSlot()
@@ -38,7 +46,8 @@ public class Equipment : MonoBehaviour
         
         //장착 아이템으로 UI 이미지 변경
         equipmentUI.OnChangeEquipItem?.Invoke(equipSlotDict[key]);
-        
+
+        if (!onClick) return;
         //장착 아이템 효과 스탯 반영
         playerModel.ApplyItemModifiers(equipSlotDict[key].itemData);
     }
