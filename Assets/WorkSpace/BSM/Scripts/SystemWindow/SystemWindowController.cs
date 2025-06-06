@@ -22,7 +22,7 @@ public class SystemWindowController : MonoBehaviour
     /// 시스템 창 오픈
     /// </summary>
     /// <param name="systemType">시스템 창 종류</param>
-    private void OpenSystemWindow(SystemType systemType)
+    public void OpenSystemWindow(SystemType systemType)
     {
         GameObject openWindow = systemWindows[systemType];
         
