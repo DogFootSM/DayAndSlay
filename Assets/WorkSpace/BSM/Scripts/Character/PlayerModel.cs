@@ -9,9 +9,9 @@ using UnityEngine.Serialization;
 using Zenject;
  
 [Serializable]
-public struct PlayerStats
+public class PlayerStats
 {
-    //TODO: 스탯 공식 수정 필요
+    //TODO: 스탯 공식 수정 필요, Critical float 타입으로 변경
     //레벨당 최대 경험치
     public int MaxExp => 100 + (int)(level * 10.5f);
     
@@ -37,7 +37,20 @@ public struct PlayerStats
     
     //캐릭터 스킬 방어력
     public int SkillDefense =>  level * (int)((Health + intelligence) * 0.2f);
- 
+
+    /// <summary>
+    /// 아이템 수치에 따른 캐릭터 능력치 추가
+    /// </summary>
+    /// <param name="itemData">장착한 아이템 데이터</param>
+    /// <param name="sign">1일 경우 장착, -1일 경우 장착 해제로 능력치 보정</param>
+    public void AddStats(ItemData itemData, int sign)
+    {
+        strength += itemData.Strength * sign;
+        agility += itemData.Agility * sign;
+        intelligence += itemData.Intelligence * sign;
+        critical += (int)itemData.Critical * sign; 
+    }
+    
 }
 
 public class PlayerModel : MonoBehaviour
@@ -143,9 +156,15 @@ public class PlayerModel : MonoBehaviour
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
 
-    public void ApplyEquipmentStats(EquipmentSlot equipSlot)
+    /// <summary>
+    /// 아이템 장착 시 스탯 효과 보정
+    /// </summary> 
+    public void ApplyItemModifiers(ItemData equipItemData, bool isEquip = true)
     { 
-          
+        int sign = isEquip ? 1 : -1;
+        Debug.Log(sign);
+        playerStats.AddStats(equipItemData, sign); 
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     /// <summary>

@@ -38,6 +38,9 @@ public class Equipment : MonoBehaviour
         
         //장착 아이템으로 UI 이미지 변경
         equipmentUI.OnChangeEquipItem?.Invoke(equipSlotDict[key]);
+        
+        //장착 아이템 효과 스탯 반영
+        playerModel.ApplyItemModifiers(equipSlotDict[key].itemData);
     }
 
     /// <summary>
@@ -48,9 +51,9 @@ public class Equipment : MonoBehaviour
     {
         if (equipSlotDict.TryGetValue(key, out EquipmentSlot equipSlot))
         {
-            equipSlot.inventorySlot.IsEquip = false; 
-            
+            equipSlot.inventorySlot.IsEquip = false;  
             equipmentUI.OnChangeEquipItem?.Invoke(equipSlotDict[key]);
+            playerModel.ApplyItemModifiers(equipSlotDict[key].itemData, false);
             equipSlotDict.Remove(key);
         } 
     } 
