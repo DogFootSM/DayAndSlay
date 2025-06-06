@@ -13,8 +13,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemCountText;
     [SerializeField] private Image itemImage;
     [SerializeField] private GameObject equippedMark;
-  
-    
+   
     public ItemData CurSlotItem => curSlotItem;
     private ItemData curSlotItem;
 
@@ -70,8 +69,7 @@ public class InventorySlot : MonoBehaviour
     /// 아이템 교환
     /// </summary>
     /// <param name="item">슬롯에 변경할 아이템</param>
-    /// <param name="count">변경할 아이템 개수</param>
-    /// <param name="isEquip">변경할 아이템의 착용 여부</param>
+    /// <param name="count">변경할 아이템 개수</param> 
     public void ChangeItem(ItemData item, int count)
     {
         curSlotItem = item;
