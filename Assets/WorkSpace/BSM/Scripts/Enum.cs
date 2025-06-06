@@ -181,4 +181,19 @@ public enum ItemSet
 
 }
 
+/// <summary>
+/// 스킬 사용 타입
+/// </summary>
+[Serializable]
+public enum SkillType
+{
+    ACTIVE, PASSIVE
+}
 
+/// <summary>
+/// 스킬 해금 상태
+/// </summary>
+public enum SkillState
+{
+    LOCKED, UNLOCKED, COMPLETE
+}
