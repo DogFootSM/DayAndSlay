@@ -6,6 +6,7 @@ using UnityEngine;
 public class Equipment : MonoBehaviour
 {
     [SerializeField] private PlayerModel playerModel;
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private EquipmentUI equipmentUI;
     
     private Dictionary<Parts, EquipmentSlot> equipSlotDict = new();
@@ -50,6 +51,9 @@ public class Equipment : MonoBehaviour
         if (!onClick) return;
         //장착 아이템 효과 스탯 반영
         playerModel.ApplyItemModifiers(equipSlotDict[key].itemData);
+        
+        //새로 착용한 무기 타입을 캐릭터에게 전달
+        playerController.ChangedWeaponType((CharacterWeaponType)equipSlotDict[key].itemData.WeaponType);
     }
 
     /// <summary>

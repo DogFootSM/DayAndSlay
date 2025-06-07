@@ -2268,6 +2268,7 @@ GameObject:
   - component: {fileID: 5220869909514853681}
   - component: {fileID: 2814337487861411616}
   - component: {fileID: 2831406239841918859}
+  - component: {fileID: 3882897824588967222}
   m_Layer: 15
   m_Name: Player
   m_TagString: Untagged
@@ -2309,6 +2310,7 @@ MonoBehaviour:
   moveDir: {x: 0, y: 0}
   WeaponAnimator: {fileID: 1891904025710590697}
   shieldObject: {fileID: 8122371782863604379}
+  curSkillTree: {fileID: 3882897824588967222}
 --- !u!114 &1891904026602976498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2490,7 +2492,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 1891904026602976498}
+  playerController: {fileID: 1891904026602976499}
   equipmentUI: {fileID: 4267079456741019929}
+--- !u!114 &3882897824588967222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891904026602976503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e847d17a1106b24ca4df0eaa7498449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SkillDatas:
+  - {fileID: 11400000, guid: 653229c3320d1374b977fee36e4ee711, type: 2}
+  - {fileID: 11400000, guid: d8777d991401f604895eec8275db015a, type: 2}
+  - {fileID: 11400000, guid: 8f748fe4b9b52fd4cb6364cd84c499fb, type: 2}
+  - {fileID: 11400000, guid: 3cc66ba347620194abe70b417cd0fdd5, type: 2}
 --- !u!1 &1891904027062351247
 GameObject:
   m_ObjectHideFlags: 0
