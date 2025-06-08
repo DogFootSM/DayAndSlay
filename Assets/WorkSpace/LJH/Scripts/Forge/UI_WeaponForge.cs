@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UI_WeaponForge : BaseUI
 {
+    Animator animator;
+
     [SerializeField] private List<Button> typeButtons = new List<Button>();
     [SerializeField] private List<Button> itemButtons = new List<Button>();
 
@@ -96,6 +98,16 @@ public class UI_WeaponForge : BaseUI
         }
     }
 
+    public void PageFlipNext()
+    {
+        animator.Play("BookNextPage");
+    }
+
+    void PageFlipPrev()
+    {
+
+    }
+
 
     public void ItemCreate()
     {
@@ -110,6 +122,8 @@ public class UI_WeaponForge : BaseUI
 
     void Init()
     {
+        animator = GetComponent<Animator>();
+
         typeButtons.Add(GetUI<Button>("TypeButton1"));
         typeButtons.Add(GetUI<Button>("TypeButton2"));
         typeButtons.Add(GetUI<Button>("TypeButton3"));
@@ -122,10 +136,10 @@ public class UI_WeaponForge : BaseUI
         okayButton = GetUI<Button>("OkayButton");
         cancelButton = GetUI<Button>("CancelButton");
 
-        typeButtons[0].onClick.AddListener(() => { ItemButtonClick(swordName); ItemButtonSOInsert(swordRecipes); });
-        typeButtons[1].onClick.AddListener(() => { ItemButtonClick(spearName); ItemButtonSOInsert(spearRecipes); });
-        typeButtons[2].onClick.AddListener(() => { ItemButtonClick(bowName); ItemButtonSOInsert(bowRecipes); });
-        typeButtons[3].onClick.AddListener(() => { ItemButtonClick(wandName); ItemButtonSOInsert(wandRecipes); });
+        //typeButtons[0].onClick.AddListener(() => { ItemButtonClick(swordName); ItemButtonSOInsert(swordRecipes); });
+        //typeButtons[1].onClick.AddListener(() => { ItemButtonClick(spearName); ItemButtonSOInsert(spearRecipes); });
+        //typeButtons[2].onClick.AddListener(() => { ItemButtonClick(bowName); ItemButtonSOInsert(bowRecipes); });
+        //typeButtons[3].onClick.AddListener(() => { ItemButtonClick(wandName); ItemButtonSOInsert(wandRecipes); });
 
         //okayButton.onClick.AddListener() => ItemCreate();
         cancelButton.onClick.AddListener(CloseForgeUI);
