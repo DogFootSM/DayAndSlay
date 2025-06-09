@@ -52,7 +52,7 @@ public class Equipment : MonoBehaviour
         //장착 아이템 효과 스탯 반영
         playerModel.ApplyItemModifiers(equipSlotDict[key].itemData);
         
-        //새로 착용한 무기 타입을 캐릭터에게 전달
+        //새로 착용한 무기 타입을 캐릭터에게 전달 
         playerController.ChangedWeaponType((CharacterWeaponType)equipSlotDict[key].itemData.WeaponType);
     }
 
@@ -65,8 +65,9 @@ public class Equipment : MonoBehaviour
         if (equipSlotDict.TryGetValue(key, out EquipmentSlot equipSlot))
         {
             equipSlot.inventorySlot.IsEquip = false;  
-            equipmentUI.OnChangeEquipItem?.Invoke(equipSlotDict[key]);
+            equipmentUI.OnChangeEquipItem?.Invoke(equipSlotDict[key]); 
             playerModel.ApplyItemModifiers(equipSlotDict[key].itemData, false);
+            playerController.ChangedWeaponType((CharacterWeaponType)WeaponType.NOT_WEAPON);
             equipSlotDict.Remove(key);
         } 
     } 

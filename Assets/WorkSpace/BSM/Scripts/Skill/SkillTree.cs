@@ -8,25 +8,28 @@ using Zenject;
 
 public class SkillTree : MonoBehaviour
 {
+    [SerializeField] private SkillTreeUI skillTreeUI;
     [Inject] private SqlManager sqlManager;
 
     public UnityAction<int> OnChangedSkillPoint;
     public List<SkillData> SkillDatas = new List<SkillData>();
-    
+
     private List<SkillNode> allskillNodes = new();
-    
+
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();
     private WeaponType curWeapon;
 
     private int skillPoints;
-    
+
     private void Awake()
     {
+        Debug.Log("Tree 시작");
         ProjectContext.Instance.Container.Inject(this);
         InitializeSkillNodes();
         LinkPrerequisites();
-        CategorizeByWeapon(); 
+        CategorizeByWeapon();
+        SortSkillNodesByWeapon();
     }
 
     private void OnEnable()
@@ -38,15 +41,14 @@ public class SkillTree : MonoBehaviour
     {
         OnChangedSkillPoint -= IncreaseSkillPoints;
     }
-    
+
     /// <summary>
     /// 스킬 상태를 DB에서 가져와 설정
     /// </summary>
     private void InitializeSkillData()
     {
-        
     }
-    
+
     /// <summary>
     /// 각 스킬 노드 생성
     /// </summary>
@@ -55,7 +57,7 @@ public class SkillTree : MonoBehaviour
         foreach (SkillData data in SkillDatas)
         {
             //노드 생성 후 전체 스킬 노드 리스트에 추가
-            allskillNodes.Add(new SkillNode(data)); 
+            allskillNodes.Add(new SkillNode(data));
         }
     }
 
@@ -76,9 +78,23 @@ public class SkillTree : MonoBehaviour
                 if (prerequisiteNodeMap.TryGetValue(prerequisite, out SkillNode skillNode))
                 {
                     node.AddPrerequisiteSkillNode(skillNode);
-                } 
-            } 
+                }
+            }
         }
+    }
+
+    /// <summary>
+    /// 노드 내 데이터 오름차순 정렬
+    /// </summary>
+    private void SortSkillNodesByWeapon()
+    {
+        foreach (KeyValuePair<WeaponType, List<SkillNode>> node in weaponTypeNodes)
+        {
+            node.Value.Sort((x, y) => x.skillData.SkillId.CompareTo(y.skillData.SkillId));
+        }
+        
+        //스킬 UI에 노드 리스트 전달
+        skillTreeUI.InstantiateSkillSet(weaponTypeNodes);
     }
 
     /// <summary>
@@ -86,24 +102,27 @@ public class SkillTree : MonoBehaviour
     /// </summary>
     private void CategorizeByWeapon()
     {
-        foreach (SkillNode skillNode in allskillNodes )
+        foreach (SkillNode skillNode in allskillNodes)
         {
-            if (!weaponTypeNodes.ContainsKey(skillNode.skillData.RequiredWeapon))
+            WeaponType skillWeaponKey = skillNode.skillData.RequiredWeapon;
+
+            if (!weaponTypeNodes.ContainsKey(skillWeaponKey))
             {
-                weaponTypeNodes[skillNode.skillData.RequiredWeapon] = new List<SkillNode>();
+                weaponTypeNodes[skillWeaponKey] = new List<SkillNode>();
             }
-            
-            weaponTypeNodes[skillNode.skillData.RequiredWeapon].Add(skillNode); 
-        } 
+
+            weaponTypeNodes[skillWeaponKey].Add(skillNode);
+        }
     }
-    
+
     /// <summary>
     /// 무기에 따른 현재 무기 타입 변경
     /// </summary>
     /// <param name="weaponType">현재 무기 타입</param>
     public void ChangedWeaponType(WeaponType weaponType)
     {
-        curWeapon = weaponType; 
+        curWeapon = weaponType;
+        skillTreeUI.OnChangedSkillTab?.Invoke(curWeapon);
     }
 
     /// <summary>
@@ -114,6 +133,4 @@ public class SkillTree : MonoBehaviour
     {
         skillPoints += amount;
     }
-    
-    
 }

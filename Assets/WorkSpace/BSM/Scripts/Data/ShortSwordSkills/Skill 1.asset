@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b47c56a880b1794eba4a2fb48f18638, type: 3}
-  m_Name: Skill
+  m_Name: Skill 1
   m_EditorClassIdentifier: 
-  SkillId: "1_\uCC3D"
-  SkillName: "\uC784\uC2DC \uC2A4\uD0AC1"
-  SkillDescription: "\uD14C\uC2A4\uD2B8\uC6A9 \uC2A4\uD0AC\uC774\uB2E4."
-  SkillCooldown: 3.2
+  SkillId: "2_\uAC80"
+  SkillName: "2\uBC88"
+  SkillDescription: 4
+  SkillCooldown: 13.55
   SkillLevel: 0
-  SkillMaxLevel: 5
-  SkillDamage: 10
-  SkillIcon: {fileID: -786876338, guid: 9f8f1024f217a824ebb380eacd5e8950, type: 3}
-  RequiredWeapon: 2
+  SkillMaxLevel: 1
+  SkillDamage: 78
+  SkillIcon: {fileID: 1806766574, guid: 720ab3b8e142a754fbf27af76bd91764, type: 3}
+  RequiredWeapon: 1
   SkillType: 0
   SkillEffectPrefab: {fileID: 0}
-  prerequisiteSkillsId: []
+  prerequisiteSkillsId:
+  - "1_\uAC80"

@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name ="weaponType">변경할 무기 타입</param>
     public void ChangedWeaponType(CharacterWeaponType weaponType)
-    {
+    { 
         curWeaponType = weaponType;
         
         curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);

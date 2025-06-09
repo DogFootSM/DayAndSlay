@@ -12,7 +12,8 @@ public class SystemWindowController : MonoBehaviour
     [SerializeField] private GameObject parentCanvas;
 
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
-  
+    private SystemType currentSystemType;
+    
     private void Update()
     {
         InputSystemKey();
@@ -25,6 +26,7 @@ public class SystemWindowController : MonoBehaviour
     public void OpenSystemWindow(SystemType systemType)
     {
         GameObject openWindow = systemWindows[systemType];
+        currentSystemType = systemType;
         
         if (canvasStack.Count == 0)
         {
@@ -94,6 +96,10 @@ public class SystemWindowController : MonoBehaviour
             OpenSystemWindow(SystemType.INVENTORY);
         }
     }
-    
+
+    public SystemType GetSystemType()
+    {
+        return currentSystemType;
+    }
     
 }

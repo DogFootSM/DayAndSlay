@@ -55,8 +55,17 @@ public class PlayerStats
 
 public class PlayerModel : MonoBehaviour
 {
+    [Header("캐릭터 레벨업 시 스탯 포인트")]
+    public int IncreaseStatsPoint;
     
+    [Header("캐릭터 레벨업 시 스킬 포인트")]
+    public int IncreaseSkillPoints;
+    
+    [Header("캐릭터 상태창")]
     [SerializeField] private StatusWindow statusWindow;
+    
+    [Header("캐릭터 스킬")]
+    [SerializeField] private SkillTree skillTree;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     private IDataReader dataReader;
@@ -71,7 +80,7 @@ public class PlayerModel : MonoBehaviour
     private float atkSpeed = 0.5f;
     public float AtkSpeed {get => atkSpeed;}
      
-    public int IncreaseStatsPoint;
+   
     
     private int slotId;
      
@@ -152,6 +161,7 @@ public class PlayerModel : MonoBehaviour
         playerStats.level++;
         playerStats.statsPoints += IncreaseStatsPoint;  
         
+        skillTree.OnChangedSkillPoint?.Invoke(IncreaseSkillPoints);
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }

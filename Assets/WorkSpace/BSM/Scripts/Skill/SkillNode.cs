@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillNode
 {
@@ -8,8 +9,8 @@ public class SkillNode
     private List<SkillNode> prerequisiteSkillNode = new();
     private List<SkillNode> nextSkillNode = new();
 
-    private bool unLocked;
-
+    private bool unLocked; 
+     
     public SkillNode(SkillData skillData)
     {
         this.skillData = skillData;
@@ -23,5 +24,13 @@ public class SkillNode
     {
         prerequisiteSkillNode.Add(skillNode);
     }
- 
+
+    public void Test()
+    {
+        for (int i = 0; i < prerequisiteSkillNode.Count; i++)
+        {
+            Debug.Log(prerequisiteSkillNode[i].skillData.SkillId);
+        }
+    }
+    
 }
