@@ -21,7 +21,7 @@ public class UI_WeaponForge : BaseUI
     private SerializedDictionary<string, ItemData> subWeaponStorage;
 
     Dictionary<WeaponType, List<ItemData>> weaponDict = new Dictionary<WeaponType, List<ItemData>>();
-    Dictionary<WeaponType, List<ItemData>> subWeaponDict = new Dictionary<WeaponType, List<ItemData>>();
+    Dictionary<SubWeaponType, List<ItemData>> subWeaponDict = new Dictionary<SubWeaponType, List<ItemData>>();
 
 
     /// <summary>
@@ -37,6 +37,11 @@ public class UI_WeaponForge : BaseUI
 
     string[] weaponTypeArray = { "검", "창", "활", "지팡이" };
     string[] subWeaponTypeArray = { "방패", "엠블렘", "화살통", "마도서" };
+
+
+    List<ItemButtonWrapper> weaponButtonWrapper = new List<ItemButtonWrapper>();
+    List<ItemButtonWrapper> subWeaponButtonWrapper = new List<ItemButtonWrapper>();
+    bool isItWeapon = true;
 
 
     private void Start()
@@ -82,6 +87,60 @@ public class UI_WeaponForge : BaseUI
         }
     }
 
+    private void SetItemButton(SubWeaponType subWeaponType)
+    {
+        //선택한 타입버튼에 따라 아이템 버튼 설정
+        for (int i = 0; i < DICTSIZE; i++)
+        {
+            itemButtonDictList[i].GetComponent<ItemButton>().itemData = subWeaponDict[subWeaponType][i];
+            itemButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = subWeaponDict[subWeaponType][i].name;
+        }
+    }
+
+    private void TabButton(Button clickedButton)
+    {
+        if (clickedButton == tabButtonDictList["WeaponTab"])
+        {
+            isItWeapon = true;
+            SetTypeButton(weaponTypeArray);
+        }
+        else if (clickedButton == tabButtonDictList["SubWeaponTab"])
+        {
+            isItWeapon = false;
+            SetTypeButton(subWeaponTypeArray);
+        }
+    }
+
+    private void TypeButton(Button clickedButton)
+    {
+        if (isItWeapon)
+        {
+            foreach (ItemButtonWrapper itemButtonWrapper in weaponButtonWrapper)
+            {
+                if(clickedButton == itemButtonWrapper.button)
+                {
+                    SetItemButton(itemButtonWrapper.weaponType);
+                }
+            }
+        }
+
+        else
+        {
+            foreach (ItemButtonWrapper itemButtonWrapper in subWeaponButtonWrapper)
+            {
+                if (clickedButton == itemButtonWrapper.button)
+                {
+                    SetItemButton(itemButtonWrapper.subWeaponType);
+                }
+            }
+        }
+    }
+
+    private void ItemButton()
+    {
+
+    }
+
     /// <summary>
     /// 버튼 초기값 설정 (Sets initial button)
     /// </summary>
@@ -120,6 +179,22 @@ public class UI_WeaponForge : BaseUI
         DictMake(WeaponType.SPEAR);
         DictMake(WeaponType.BOW);
         DictMake(WeaponType.WAND);
+
+        weaponButtonWrapper = new List<ItemButtonWrapper>()
+            {
+                new ItemButtonWrapper(typeButtonDictList[0], WeaponType.SHORT_SWORD),
+                new ItemButtonWrapper(typeButtonDictList[1], WeaponType.SPEAR),
+                new ItemButtonWrapper(typeButtonDictList[2], WeaponType.BOW),
+                new ItemButtonWrapper(typeButtonDictList[3], WeaponType.WAND)
+            };
+
+        subWeaponButtonWrapper = new List<ItemButtonWrapper>()
+            {
+                new ItemButtonWrapper(typeButtonDictList[0], SubWeaponType.SHIELD),
+                new ItemButtonWrapper(typeButtonDictList[1], SubWeaponType.EMBLEM),
+                new ItemButtonWrapper(typeButtonDictList[2], SubWeaponType.ARROW),
+                new ItemButtonWrapper(typeButtonDictList[3], SubWeaponType.BOOK)
+            };
     }
 
     private void DictMake(WeaponType weaponType)
