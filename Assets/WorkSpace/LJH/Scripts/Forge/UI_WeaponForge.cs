@@ -12,33 +12,15 @@ public class UI_WeaponForge : BaseUI
     // 메인무기를 선택하면 타입에 메인무기 목록이 떠야함
     // 서브무기를 선택하면 타입에 서브무기 목록이 떠야함
 
-    private List<Button> tabButtonList = new List<Button>();
-    private List<Button> typeButtonList = new List<Button>();
-    private List<Button> itemButtonList = new List<Button>();
+    DictList<Button> tabButtonListDict = new DictList<Button>();
+    DictList<Button> typeButtonListDict = new DictList<Button>();
+    DictList<Button> itemButtonListDict = new DictList<Button>();
 
 
     private void Start()
     {
-        ButtonDictList<Button> buttonListDict = new ButtonDictList<Button>();
     }
 
 
 }
 
-public class ButtonDictList<Button>
-{
-    private List<Button> buttonList = new List<Button>();
-    private Dictionary<string, Button> buttonDict = new Dictionary<string, Button>();
-
-    public void Add(string key, Button value)
-    {
-        buttonList.Add(value);
-        buttonDict[key] = value;
-    }
-
-    public Button this[int index] => buttonList[index];
-
-    public Button this[string key] => buttonDict[key];
-
-    public int Count => buttonList.Count;
-}
