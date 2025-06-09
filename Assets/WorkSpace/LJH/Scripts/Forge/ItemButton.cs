@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemButton : MonoBehaviour
 {
+    public ItemData itemData;
     public ItemRecipe itemRecipe;
 
     private GameObject hider;
@@ -20,7 +21,7 @@ public class ItemButton : MonoBehaviour
         hider = transform.GetChild(1).gameObject;
 
         //테스트 이후 다시 온이너블에서 제어
-        HideCheck(isOpend);
+        //HideCheck(isOpend);
 
     }
     
