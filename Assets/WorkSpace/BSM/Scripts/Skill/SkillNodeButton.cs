@@ -32,8 +32,8 @@ public class SkillNodeButton : MonoBehaviour
     /// </summary>
     private void InvestSkillPoint()
     {
-        Debug.Log($"현재 스킬 :{CurSkillNode.skillData.SkillId}");
-        CurSkillNode.Test();
+        //TODO: SkillTree에서 스킬 포인트를 각 Node button에 이벤트로 전달해주는 형식? 스킬 포인트가 0이되면 모든 증가 버튼은 비활성화
+        CurSkillNode.ApplyPoint();
         
     }
     

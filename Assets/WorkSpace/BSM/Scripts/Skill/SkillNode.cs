@@ -25,8 +25,10 @@ public class SkillNode
         prerequisiteSkillNode.Add(skillNode);
     }
 
-    public void Test()
+    public void ApplyPoint()
     {
+        //TODO: 스킬 강화 로직 진행
+        
         for (int i = 0; i < prerequisiteSkillNode.Count; i++)
         {
             Debug.Log(prerequisiteSkillNode[i].skillData.SkillId);
