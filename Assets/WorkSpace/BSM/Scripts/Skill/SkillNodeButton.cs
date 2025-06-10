@@ -37,13 +37,11 @@ public class SkillNodeButton : MonoBehaviour
     }
     
     /// <summary>
-    /// 스킬 포인트 투자 후 스킬 강화
+    /// 스킬 포인트 투자 후 스킬 강화 진행
     /// </summary>
     private void InvestSkillPoint()
     {
-        //TODO: SkillTree에서 스킬 포인트를 각 Node button에 이벤트로 전달해주는 형식? 스킬 포인트가 0이되면 모든 증가 버튼은 비활성화
         CurSkillNode.ApplyPoint();
-        
     }
     
 }

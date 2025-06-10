@@ -8,15 +8,16 @@ public class SkillNode
     public SkillData skillData;  
     private List<SkillNode> prerequisiteSkillNode = new();
     private List<SkillNode> nextSkillNode = new();
-
+    private PlayerModel playerModel;
+    
     private int curSkillLevel = 0;
     private bool unLocked; 
     public bool UnLocked => unLocked;
     
-    public SkillNode(SkillData skillData)
+    public SkillNode(SkillData skillData, PlayerModel playerModel)
     {
         this.skillData = skillData;
-        
+        this.playerModel = playerModel;
         //선행 스킬이 없을 경우 잠금 해제
         unLocked = skillData.prerequisiteSkillsId.Count == 0;
     }
@@ -31,13 +32,13 @@ public class SkillNode
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
+    /// 스킬 강화
+    /// </summary> 
     public void ApplyPoint()
     {
         //TODO: 스킬 강화 로직 진행
-        
+        curSkillLevel++;
+        playerModel.CurSkillPoint--;  
     }
 
     /// <summary>
@@ -48,7 +49,7 @@ public class SkillNode
         foreach (SkillNode preNode in prerequisiteSkillNode)
         {
             unLocked = preNode.curSkillLevel > 0;
-        } 
+        }  
     }
     
 }

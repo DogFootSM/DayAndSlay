@@ -68,7 +68,7 @@ public class SkillTree : MonoBehaviour
         foreach (SkillData data in SkillDatas)
         {
             //노드 생성 후 전체 스킬 노드 리스트에 추가
-            allskillNodes.Add(new SkillNode(data));
+            allskillNodes.Add(new SkillNode(data, playerModel));
         }
     }
 
@@ -105,14 +105,14 @@ public class SkillTree : MonoBehaviour
         }
         
         //스킬 UI에 노드 리스트 전달
-        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes);
+        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes); 
         NotifySkillPointChanged();
     }
 
     /// <summary>
     /// 스킬트리 UI에 현재 모델이 보유중인 스킬 포인트를 알림
     /// </summary>
-    private void NotifySkillPointChanged()
+    public void NotifySkillPointChanged()
     { 
         skillTreeUI.UpdateAllNodeButtonsWithPoint(playerModel.CurSkillPoint);
     }

@@ -64,9 +64,9 @@ public class PlayerModel : MonoBehaviour
     
     [Header("캐릭터 상태창")]
     [SerializeField] private StatusWindow statusWindow;
-    
+     
     [Header("캐릭터 스킬")]
-    [SerializeField] private SkillTree skillTree;
+    [SerializeField] private SkillTree skillTree; 
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     private IDataReader dataReader;
@@ -81,7 +81,19 @@ public class PlayerModel : MonoBehaviour
     private float atkSpeed = 0.5f;
     public float AtkSpeed {get => atkSpeed;}
      
-    public int CurSkillPoint => playerStats.skillPoints;
+    public int CurSkillPoint
+    {
+        get => playerStats.skillPoints;
+        
+        set
+        {
+            playerStats.skillPoints -= value;
+            Debug.Log($"남은 스킬 포인트 :{playerStats.skillPoints}");
+            //스킬 포인트 변환시마다 스킬 레벨 증가 버튼 확인
+            skillTree.NotifySkillPointChanged();
+        }
+    }
+
     private int slotId;
      
     private void Awake()
@@ -137,7 +149,15 @@ public class PlayerModel : MonoBehaviour
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
     }
- 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            GainExperience(50);
+        }
+    }
+
     /// <summary>
     /// 경험치 획득 후 레벨업 가능 여부 판단
     /// </summary>
@@ -164,6 +184,7 @@ public class PlayerModel : MonoBehaviour
         playerStats.statsPoints += IncreaseStatsPoint;  
         playerStats.skillPoints += IncreaseSkillPoints;
         
+        skillTree.NotifySkillPointChanged();
         skillTree.OnChangedSkillPoint?.Invoke(IncreaseSkillPoints);
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
