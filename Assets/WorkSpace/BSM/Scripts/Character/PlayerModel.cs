@@ -87,8 +87,7 @@ public class PlayerModel : MonoBehaviour
         
         set
         {
-            playerStats.skillPoints -= value;
-            Debug.Log($"남은 스킬 포인트 :{playerStats.skillPoints}");
+            playerStats.skillPoints += value; 
             //스킬 포인트 변환시마다 스킬 레벨 증가 버튼 확인
             skillTree.NotifySkillPointChanged();
         }

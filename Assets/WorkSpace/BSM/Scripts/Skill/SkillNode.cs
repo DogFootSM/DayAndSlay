@@ -38,7 +38,7 @@ public class SkillNode
     {
         //TODO: 스킬 강화 로직 진행
         curSkillLevel++;
-        playerModel.CurSkillPoint--;  
+        playerModel.CurSkillPoint = -1;  
     }
 
     /// <summary>
