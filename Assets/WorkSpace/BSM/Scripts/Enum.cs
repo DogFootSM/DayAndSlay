@@ -100,7 +100,7 @@ public enum WeaponType
     SPEAR,
     WAND,
     LONG_SWORD,
-    NOT_WEAPON,
+    NOT_WEAPON
 }
 
 /// <summary>
@@ -109,12 +109,12 @@ public enum WeaponType
 [Serializable]
 public enum SubWeaponType
 {
-    NOT_SUBWEAPON,
     GAUNTLET,
     SHIELD,
     ARROW,
     EMBLEM,
-    BOOK
+    BOOK,
+    NOT_SUBWEAPON
 }
 
 /// <summary>
