@@ -1,12 +1,8 @@
 using AYellowpaper.SerializedCollections;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class UI_WeaponForge : BaseUI
 {
@@ -15,9 +11,11 @@ public class UI_WeaponForge : BaseUI
     // 메인무기를 선택하면 타입에 메인무기 목록이 떠야함
     // 서브무기를 선택하면 타입에 서브무기 목록이 떠야함
 
-    [SerializeField][SerializedDictionary]
+    [SerializeField]
+    [SerializedDictionary]
     private SerializedDictionary<string, ItemData> weaponStorage;
-    [SerializeField][SerializedDictionary]
+    [SerializeField]
+    [SerializedDictionary]
     private SerializedDictionary<string, ItemData> subWeaponStorage;
 
     Dictionary<WeaponType, List<ItemData>> weaponDict = new Dictionary<WeaponType, List<ItemData>>();
@@ -35,19 +33,24 @@ public class UI_WeaponForge : BaseUI
     private DictList<Button> itemButtonDictList = new DictList<Button>();
     private DictList<Button> setButtonDictList = new DictList<Button>();
 
-    string[] weaponTypeArray = { "검", "창", "활", "지팡이" };
+    string[] weaponTypeArray = { "검", "창", "활", "완드" };
     string[] subWeaponTypeArray = { "방패", "엠블렘", "화살통", "마도서" };
 
 
-    List<ItemButtonWrapper> weaponButtonWrapper = new List<ItemButtonWrapper>();
-    List<ItemButtonWrapper> subWeaponButtonWrapper = new List<ItemButtonWrapper>();
+    List<TypeButtonWrapper> weaponButtonWrappers = new List<TypeButtonWrapper>();
+    List<TypeButtonWrapper> subWeaponButtonWrappers = new List<TypeButtonWrapper>();
     bool isItWeapon = true;
 
+    List<ItemButtonWrapper> itemButtonWrappers = new List<ItemButtonWrapper>();
+
+    private DictList<TextMeshProUGUI> prevTextDictList = new DictList<TextMeshProUGUI>();
+    private Image prevItemImage;
 
     private void Start()
     {
         Init();
         ButtonInit();
+        WrapperInit();
     }
 
 
@@ -97,6 +100,11 @@ public class UI_WeaponForge : BaseUI
         }
     }
 
+    private void SetPreview()
+    {
+
+    }
+
     private void TabButton(Button clickedButton)
     {
         if (clickedButton == tabButtonDictList["WeaponTab"])
@@ -115,30 +123,45 @@ public class UI_WeaponForge : BaseUI
     {
         if (isItWeapon)
         {
-            foreach (ItemButtonWrapper itemButtonWrapper in weaponButtonWrapper)
+            foreach (TypeButtonWrapper typeButtonWrapper in weaponButtonWrappers)
             {
-                if(clickedButton == itemButtonWrapper.button)
+                if (clickedButton == typeButtonWrapper.button)
                 {
-                    SetItemButton(itemButtonWrapper.weaponType);
+                    SetItemButton(typeButtonWrapper.weaponType);
                 }
             }
         }
 
         else
         {
-            foreach (ItemButtonWrapper itemButtonWrapper in subWeaponButtonWrapper)
+            foreach (TypeButtonWrapper typeButtonWrapper in subWeaponButtonWrappers)
             {
-                if (clickedButton == itemButtonWrapper.button)
+                if (clickedButton == typeButtonWrapper.button)
                 {
-                    SetItemButton(itemButtonWrapper.subWeaponType);
+                    SetItemButton(typeButtonWrapper.subWeaponType);
                 }
             }
         }
     }
 
-    private void ItemButton()
+    private void ItemButton(Button clickedButton)
     {
+        foreach (ItemButtonWrapper itemButtonWrapper in itemButtonWrappers)
+        {
+            if (clickedButton == itemButtonWrapper.button)
+            {
+                prevItemImage.sprite = itemButtonWrappers[0].itemData.ItemImage;
 
+                prevTextDictList["PrevName"].text = itemButtonWrapper.itemData.Name;
+                prevTextDictList["ATK"].text = itemButtonWrapper.itemData.Attack.ToString();
+                prevTextDictList["DEF"].text = itemButtonWrapper.itemData.Defence.ToString();
+                prevTextDictList["HP"].text = itemButtonWrapper.itemData.Hp.ToString();
+                prevTextDictList["Ingrediant1"].text = itemButtonWrapper.itemData.Name;
+                prevTextDictList["Ingrediant2"].text = itemButtonWrapper.itemData.Name.ToString();
+                prevTextDictList["Ingrediant3"].text = itemButtonWrapper.itemData.Name.ToString();
+                prevTextDictList["Ingrediant4"].text = itemButtonWrapper.itemData.Name.ToString();
+            }
+        }
     }
 
     /// <summary>
@@ -153,7 +176,47 @@ public class UI_WeaponForge : BaseUI
     }
 
     /// <summary>
-    /// 리스트 설정 초기화 ( initial Button List)
+    /// 래퍼 클래스 초기화 (Wrapper Class Initialize)
+    /// </summary>
+    private void WrapperInit()
+    {
+        weaponButtonWrappers = new List<TypeButtonWrapper>()
+            {
+                new TypeButtonWrapper(typeButtonDictList[0], WeaponType.SHORT_SWORD),
+                new TypeButtonWrapper(typeButtonDictList[1], WeaponType.SPEAR),
+                new TypeButtonWrapper(typeButtonDictList[2], WeaponType.BOW),
+                new TypeButtonWrapper(typeButtonDictList[3], WeaponType.WAND)
+            };
+
+        subWeaponButtonWrappers = new List<TypeButtonWrapper>()
+            {
+                new TypeButtonWrapper(typeButtonDictList[0], SubWeaponType.SHIELD),
+                new TypeButtonWrapper(typeButtonDictList[1], SubWeaponType.EMBLEM),
+                new TypeButtonWrapper(typeButtonDictList[2], SubWeaponType.ARROW),
+                new TypeButtonWrapper(typeButtonDictList[3], SubWeaponType.BOOK)
+            };
+
+        for (int i = 0; i < weaponButtonWrappers.Count; i++)
+        {
+            Button _typeButtonW = weaponButtonWrappers[i].button;
+            _typeButtonW.onClick.AddListener(() => TypeButton(_typeButtonW));
+        }
+        for (int i = 0; i < subWeaponButtonWrappers.Count; i++)
+        {
+            Button _typeButtonS = subWeaponButtonWrappers[i].button;
+            _typeButtonS.onClick.AddListener(() => TypeButton(_typeButtonS));
+        }
+
+        for (int i = 0; i < DICTSIZE; i++)
+        {
+            itemButtonWrappers.Add(new ItemButtonWrapper(itemButtonDictList[i]));
+            Button _itemButton = itemButtonWrappers[i].button;
+            _itemButton.onClick.AddListener(() => ItemButton(_itemButton));
+        }
+    }
+
+    /// <summary>
+    /// 초기화 ( initial)
     /// </summary>
     private void Init()
     {
@@ -174,27 +237,25 @@ public class UI_WeaponForge : BaseUI
         setButtonDictList.Add("OkayButton", GetUI<Button>("OkayButton"));
         setButtonDictList.Add("CancelButton", GetUI<Button>("CancelButton"));
 
+        prevTextDictList.Add("PrevName", GetUI<TextMeshProUGUI>("ItemName"));
+        prevTextDictList.Add("ATK", GetUI<TextMeshProUGUI>("ATK"));
+        prevTextDictList.Add("DEF", GetUI<TextMeshProUGUI>("DEF"));
+        prevTextDictList.Add("HP", GetUI<TextMeshProUGUI>("HP"));
+        prevTextDictList.Add("Ingrediant1", GetUI<TextMeshProUGUI>("Ingrediant1"));
+        prevTextDictList.Add("Ingrediant2", GetUI<TextMeshProUGUI>("Ingrediant2"));
+        prevTextDictList.Add("Ingrediant3", GetUI<TextMeshProUGUI>("Ingrediant3"));
+        prevTextDictList.Add("Ingrediant4", GetUI<TextMeshProUGUI>("Ingrediant4"));
+
+        prevItemImage = GetUI<Image>("ItemImage");
+
+
         //WeaponType에 사용되지 않는 값이 있어 하드코딩으로 처리해둠
         DictMake(WeaponType.SHORT_SWORD);
         DictMake(WeaponType.SPEAR);
         DictMake(WeaponType.BOW);
         DictMake(WeaponType.WAND);
 
-        weaponButtonWrapper = new List<ItemButtonWrapper>()
-            {
-                new ItemButtonWrapper(typeButtonDictList[0], WeaponType.SHORT_SWORD),
-                new ItemButtonWrapper(typeButtonDictList[1], WeaponType.SPEAR),
-                new ItemButtonWrapper(typeButtonDictList[2], WeaponType.BOW),
-                new ItemButtonWrapper(typeButtonDictList[3], WeaponType.WAND)
-            };
 
-        subWeaponButtonWrapper = new List<ItemButtonWrapper>()
-            {
-                new ItemButtonWrapper(typeButtonDictList[0], SubWeaponType.SHIELD),
-                new ItemButtonWrapper(typeButtonDictList[1], SubWeaponType.EMBLEM),
-                new ItemButtonWrapper(typeButtonDictList[2], SubWeaponType.ARROW),
-                new ItemButtonWrapper(typeButtonDictList[3], SubWeaponType.BOOK)
-            };
     }
 
     private void DictMake(WeaponType weaponType)
