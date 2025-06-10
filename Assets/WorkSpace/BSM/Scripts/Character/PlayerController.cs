@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [Inject] private DataManager dataManager;
 
     [SerializeField] private GameObject shieldObject;
+    [SerializeField] private SkillTree curSkillTree;
     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         ProjectContext.Instance.Container.Inject(this);
         InitSlotData();
-        ChangedWeaponType();
+        ChangedWeaponType(curWeaponType);
     }
 
     private void Update()
@@ -102,9 +103,14 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 현재 무기 타입을 무기에 전달
     /// </summary>
-    private void ChangedWeaponType()
-    {
+    /// <param name ="weaponType">변경할 무기 타입</param>
+    public void ChangedWeaponType(CharacterWeaponType weaponType)
+    { 
+        curWeaponType = weaponType;
+        
         curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
+        
+        curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
         shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
     }
 

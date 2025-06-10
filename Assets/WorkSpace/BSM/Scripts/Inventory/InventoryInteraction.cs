@@ -21,12 +21,14 @@ public class InventoryInteraction :
     [SerializeField] private TextMeshProUGUI detailItemDescB;
     [SerializeField] private Button equipButton;
     [SerializeField] private TextMeshProUGUI equipStateButtonText;
+    [SerializeField] private SystemWindowController systemWindowController;
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
     
     private InventorySlot fromSlot;
-    private bool fromSlotItem => fromSlot.CurSlotItem == null;
+    private bool fromSlotItem => fromSlot != null && fromSlot.CurSlotItem == null;
+    private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY; 
     
     new void Awake()
     {
@@ -55,7 +57,7 @@ public class InventoryInteraction :
         }
         else
         {
-            equipment.EquipItem(fromSlot.CurSlotItem, fromSlot);
+            equipment.EquipItem(fromSlot.CurSlotItem, fromSlot, true);
         }
          
         SetEquipStateButtonText(fromSlot.IsEquip);
@@ -117,7 +119,8 @@ public class InventoryInteraction :
     public void OnDrag(PointerEventData eventData)
     {  
         if (fromSlotItem) return;
-         
+        if (closeInventory) return;
+        
         //마우스가 이동하는 위치로 아이템 이미지 위치 변경
         dragItemImage.transform.position = eventData.position;
     }
@@ -128,8 +131,9 @@ public class InventoryInteraction :
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (fromSlotItem) return;
-
+        if (fromSlotItem) return; 
+        if (closeInventory) return;
+        
         OnInventorySlotMouseUp();
         //인벤토리 슬롯 교환 진행
         inventoryRayCanvas.Raycast(eventData, results);
@@ -139,7 +143,7 @@ public class InventoryInteraction :
         //이동 슬롯
         InventorySlot toSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
 
-        HandleSlotSwap(toSlot);
+        HandleSlotSwap(toSlot); 
         
         //이동 슬롯의 아이템이 장착 상태
         if (toSlot.IsEquip)
@@ -199,7 +203,9 @@ public class InventoryInteraction :
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
-    {
+    { 
+        if (closeInventory) return;
+        
         results.Clear();
         inventoryRayCanvas.Raycast(eventData, results);
         fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>();
@@ -216,7 +222,9 @@ public class InventoryInteraction :
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
-    {
+    { 
+        if (closeInventory) return;
+        
         results.Clear();
         
         inventoryRayCanvas.Raycast(eventData, results);
