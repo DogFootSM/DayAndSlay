@@ -22,7 +22,8 @@ public class PlayerStats
     public int intelligence;        //캐릭터 지능 능력치
     public int critical;            //캐릭터 크리티컬 능력치
     public int statsPoints;         //캐릭터 보유 스탯 포인트
-
+    public int skillPoints;         //캐릭터 보유 스킬 포인트
+    
     //캐릭터 체력
     public int Health => level * (int)(strength * 0.2f);
     
@@ -80,8 +81,7 @@ public class PlayerModel : MonoBehaviour
     private float atkSpeed = 0.5f;
     public float AtkSpeed {get => atkSpeed;}
      
-   
-    
+    public int CurSkillPoint => playerStats.skillPoints;
     private int slotId;
      
     private void Awake()
@@ -113,7 +113,8 @@ public class PlayerModel : MonoBehaviour
                 sqlManager.GetCharacterColumn(CharacterDataColumns.CHAR_LEVEL), 
                 sqlManager.GetCharacterColumn(CharacterDataColumns.STRENGTH),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.AGILITY),
-                sqlManager.GetCharacterColumn(CharacterDataColumns.INTELLIGENCE)
+                sqlManager.GetCharacterColumn(CharacterDataColumns.INTELLIGENCE), 
+                sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT)
             },
             new[] {sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)},
             new []{$"{slotId}"},
@@ -127,6 +128,7 @@ public class PlayerModel : MonoBehaviour
             playerStats.strength = dataReader.GetInt32(3);
             playerStats.agility = dataReader.GetInt32(4);
             playerStats.intelligence = dataReader.GetInt32(5);
+            playerStats.intelligence = dataReader.GetInt32(6);
         }
     }
     
@@ -160,6 +162,7 @@ public class PlayerModel : MonoBehaviour
         playerStats.exp = remainExp;
         playerStats.level++;
         playerStats.statsPoints += IncreaseStatsPoint;  
+        playerStats.skillPoints += IncreaseSkillPoints;
         
         skillTree.OnChangedSkillPoint?.Invoke(IncreaseSkillPoints);
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);

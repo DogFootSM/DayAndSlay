@@ -6,9 +6,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
+public struct SkillDbData
+{
+    public string SkillId;
+    public int SkillLevel;
+    public bool IsUnLocked; 
+}
+
+
 public class SkillTree : MonoBehaviour
 {
     [SerializeField] private SkillTreeUI skillTreeUI;
+    [SerializeField] private PlayerModel playerModel;
     [Inject] private SqlManager sqlManager;
 
     public UnityAction<int> OnChangedSkillPoint;
@@ -20,11 +29,10 @@ public class SkillTree : MonoBehaviour
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();
     private WeaponType curWeapon;
 
-    private int skillPoints;
+    private int skillPoints;        
 
     private void Awake()
     {
-        Debug.Log("Tree 시작");
         ProjectContext.Instance.Container.Inject(this);
         InitializeSkillNodes();
         LinkPrerequisites();
@@ -47,6 +55,9 @@ public class SkillTree : MonoBehaviour
     /// </summary>
     private void InitializeSkillData()
     {
+        //현재 슬롯 아이디에 해당 하는 스킬 ID 기준으로 행을 뽑음
+        //allskillNodes 순회하면서 DB에서 뽑아온 ID에 해당하는 스킬 노드에 Data 셋
+        
     }
 
     /// <summary>
@@ -70,7 +81,7 @@ public class SkillTree : MonoBehaviour
         prerequisiteNodeMap = allskillNodes.ToDictionary(x => x.skillData.SkillId);
 
         foreach (SkillNode node in allskillNodes)
-        {
+        { 
             //해당 노드의 선행 스킬 리스트 이름 추출
             foreach (string prerequisite in node.skillData.prerequisiteSkillsId)
             {
@@ -94,9 +105,18 @@ public class SkillTree : MonoBehaviour
         }
         
         //스킬 UI에 노드 리스트 전달
-        skillTreeUI.InstantiateSkillSet(weaponTypeNodes);
+        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes);
+        NotifySkillPointChanged();
     }
 
+    /// <summary>
+    /// 스킬트리 UI에 현재 모델이 보유중인 스킬 포인트를 알림
+    /// </summary>
+    private void NotifySkillPointChanged()
+    { 
+        skillTreeUI.UpdateAllNodeButtonsWithPoint(playerModel.CurSkillPoint);
+    }
+    
     /// <summary>
     /// 무기 타입에 따른 노드 구분
     /// </summary>

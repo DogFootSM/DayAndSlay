@@ -69,6 +69,7 @@ public class SqliteDatabase
                                 remaining_days      INTEGER NOT NULL DEFAULT 150,
                                 exp                 INTEGER NOT NULL DEFAULT 0,
                                 stats_point         INTEGER NOT NULL DEFAULT 0,
+                                skill_point         INTEGER NOT NULL DEFAULT 0,
                                 char_level          INTEGER NOT NULL DEFAULT 1,
                                 strength            INTEGER NOT NULL DEFAULT 5,
                                 agility             INTEGER NOT NULL DEFAULT 4,
@@ -100,6 +101,26 @@ public class SqliteDatabase
                                 )";
             dbCommand.ExecuteNonQuery();
         }
+
+        //캐릭터 스킬 테이블 생성
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            dbCommand.CommandText = "PRAGMA foreign_keys = ON";
+            dbCommand.ExecuteNonQuery();
+            
+            dbCommand.CommandText = @"
+                                    CREATE TABLE IF NOT EXISTS CharacterSkill
+                                    (
+                                        slot_id         INTEGER NOT NULL,
+                                        skill_id        TEXT NOT NULL,
+                                        skill_level     INTEGER NOT NULL,
+                                        skill_unlocked  INTEGER NOT NULL, 
+                                        PRIMARY KEY (slot_id, skill_id)
+                                        FOREIGN KEY (slot_id) REFERENCES Character (slot_id) ON DELETE CASCADE
+                                    )";
+            dbCommand.ExecuteNonQuery();
+        }
+        
     }
     
     
