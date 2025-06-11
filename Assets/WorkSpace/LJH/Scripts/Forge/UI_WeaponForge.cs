@@ -17,6 +17,8 @@ public class UI_WeaponForge : BaseUI
     [SerializedDictionary]
     private SerializedDictionary<string, ItemData> subWeaponStorage;
 
+    //칼을 키로 쓰고 아이템을 밸류로 저장함
+    //헬멧을 키로 쓰고 아이템을 밸류로 저장함
     Dictionary<WeaponType, List<ItemData>> weaponDict = new Dictionary<WeaponType, List<ItemData>>();
     Dictionary<SubWeaponType, List<ItemData>> subWeaponDict = new Dictionary<SubWeaponType, List<ItemData>>();
 
@@ -40,7 +42,7 @@ public class UI_WeaponForge : BaseUI
 
     List<ButtonWrapper> weaponButtonWrappers = new List<ButtonWrapper>();
     List<ButtonWrapper> subWeaponButtonWrappers = new List<ButtonWrapper>();
-    bool isItWeapon = true;
+    EquipType equipType;
 
     List<ButtonWrapper> itemButtonWrappers = new List<ButtonWrapper>();
 
@@ -91,11 +93,11 @@ public class UI_WeaponForge : BaseUI
             int index = i;
             typeButtonDictList[i].onClick.RemoveAllListeners();
             typeButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = typeArray[i];
-            if (isItWeapon)
+            if (equipType == EquipType.WEAPON)
             {
                 typeButtonDictList[i].onClick.AddListener(() => TypeButton(weaponButtonWrappers[index].button));
             }
-            else
+            else if(equipType == EquipType.SUBWEAPON)
             {
                 typeButtonDictList[i].onClick.AddListener(() => TypeButton(subWeaponButtonWrappers[index].button));
             }
@@ -175,12 +177,12 @@ public class UI_WeaponForge : BaseUI
     {
         if (clickedButton == tabButtonDictList["WeaponTab"])
         {
-            isItWeapon = true;
+            equipType = EquipType.WEAPON;
             SetTypeButton(weaponTypeArray);
         }
         else if (clickedButton == tabButtonDictList["SubWeaponTab"])
         {
-            isItWeapon = false;
+            equipType = EquipType.SUBWEAPON;
             SetTypeButton(subWeaponTypeArray);
         }
     }
@@ -191,7 +193,7 @@ public class UI_WeaponForge : BaseUI
     /// <param name="clickedButton"></param>
     private void TypeButton(Button clickedButton)
     {
-        if (isItWeapon)
+        if (equipType == EquipType.WEAPON)
         {
             foreach (ButtonWrapper typeButtonWrapper in weaponButtonWrappers)
             {
@@ -202,7 +204,7 @@ public class UI_WeaponForge : BaseUI
             }
         }
 
-        else
+        else if(equipType == EquipType.SUBWEAPON)
         {
             foreach (ButtonWrapper typeButtonWrapper in subWeaponButtonWrappers)
             {
