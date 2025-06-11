@@ -173,7 +173,6 @@ public class UI_WeaponForge : BaseUI
     /// <param name="clickedButton"></param>
     private void TabButton(Button clickedButton)
     {
-        Debug.Log("탭 버튼 눌림");
         if (clickedButton == tabButtonDictList["WeaponTab"])
         {
             isItWeapon = true;
@@ -221,7 +220,6 @@ public class UI_WeaponForge : BaseUI
     /// <param name="clickedButton"></param>
     private void ItemButton(Button clickedButton)
     {
-        Debug.Log("아이템 버튼 눌림");
         foreach (ButtonWrapper itemButtonWrapper in itemButtonWrappers)
         {
             if (clickedButton == itemButtonWrapper.button)
