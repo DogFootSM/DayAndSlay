@@ -7,10 +7,8 @@ using UnityEngine.UI;
 
 public class UI_WeaponForge : BaseUI
 {
-    //타입 버튼을 누르면 해당 타입에 존재하는 아이템 갯수만큼 버튼이 생기고 버튼의 이름이 그것들로 채워져야함
-    //책 우측 탭을 선택하여 메인무기, 서브무기 변경 가능
-    // 메인무기를 선택하면 타입에 메인무기 목록이 떠야함
-    // 서브무기를 선택하면 타입에 서브무기 목록이 떠야함
+    //추후 리팩토링 필요
+    //현재 잘 돌아가긴 하나 손대야 할때 참담한 심정 느낄듯
 
     [SerializeField]
     [SerializedDictionary]
@@ -51,10 +49,15 @@ public class UI_WeaponForge : BaseUI
 
     private void Start()
     {
+        //초기 설정을 아예 제대로 잡아주는게 좋아보임
         Init();
         ButtonInit(weaponTypeArray);
-        WrapperInit();
+        TypeWrapperInit();
+        SetTypeButton(weaponTypeArray);
+        ItemButton(itemButtonDictList[0]);
     }
+
+
 
 
     /// <summary>
@@ -74,43 +77,103 @@ public class UI_WeaponForge : BaseUI
         }
     }
 
+    /// <summary>
+    /// 탭 버튼에서 실행, 타입 버튼의 이름과 가지고있는 버튼을 세팅해줌
+    /// </summary>
+    /// <param name="typeArray"></param>
     private void SetTypeButton(string[] typeArray)
     {
         ButtonInit(typeArray);
+
         //선택한 탭에 따라 타입 버튼명 변경 (무기 <=> 보조무기)
         for (int i = 0; i < weaponTypeArray.Length; i++)
         {
+            int index = i;
+            typeButtonDictList[i].onClick.RemoveAllListeners();
             typeButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = typeArray[i];
+            if (isItWeapon)
+            {
+                typeButtonDictList[i].onClick.AddListener(() => TypeButton(weaponButtonWrappers[index].button));
+            }
+            else
+            {
+                typeButtonDictList[i].onClick.AddListener(() => TypeButton(subWeaponButtonWrappers[index].button));
+            }
         }
     }
-
+    /// <summary>
+    /// 선택한 타입버튼에 따라 아이템 버튼 설정
+    /// </summary>
+    /// <param name="weaponType"></param>
     private void SetItemButton(WeaponType weaponType)
     {
-        //선택한 타입버튼에 따라 아이템 버튼 설정
         for (int i = 0; i < DICTSIZE; i++)
         {
-            itemButtonDictList[i].GetComponent<ItemButton>().itemData = weaponDict[weaponType][i];
-            itemButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = weaponDict[weaponType][i].name;
+            ItemData itemData = weaponDict[weaponType][i];
+
+            Button button = itemButtonDictList[i];
+            button.GetComponent<ItemButton>().itemData = itemData;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+
+            if (i < itemButtonWrappers.Count)
+            {
+                itemButtonWrappers[i].itemData = itemData;
+            }
+            else
+            {
+                itemButtonWrappers.Add(new ButtonWrapper("아이템버튼", button, itemData));
+            }
+
+        }
+
+        for (int i = 0; i < itemButtonDictList.Count; i++)
+        {
+            int index = i;
+            itemButtonDictList[i].onClick.RemoveAllListeners();
+            itemButtonDictList[i].onClick.AddListener(() => ItemButton(itemButtonWrappers[index].button));
         }
     }
 
+    /// <summary>
+    /// 선택한 타입버튼에 따라 아이템 버튼 설정
+    /// </summary>
+    /// <param name="subWeaponType"></param>
     private void SetItemButton(SubWeaponType subWeaponType)
     {
-        //선택한 타입버튼에 따라 아이템 버튼 설정
         for (int i = 0; i < DICTSIZE; i++)
         {
-            itemButtonDictList[i].GetComponent<ItemButton>().itemData = subWeaponDict[subWeaponType][i];
-            itemButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = subWeaponDict[subWeaponType][i].name;
+            ItemData itemData = subWeaponDict[subWeaponType][i];
+
+            Button button = itemButtonDictList[i];
+            button.GetComponent<ItemButton>().itemData = itemData;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+
+            if (i < itemButtonWrappers.Count)
+            {
+                itemButtonWrappers[i].itemData = itemData;
+            }
+            else
+            {
+                itemButtonWrappers.Add(new ButtonWrapper("아이템버튼", button, itemData));
+            }
+
+        }
+
+        for (int i = 0; i < itemButtonDictList.Count; i++)
+        {
+            int index = i;
+            itemButtonDictList[i].onClick.RemoveAllListeners();
+            itemButtonDictList[i].onClick.AddListener(() => ItemButton(itemButtonWrappers[index].button));
         }
     }
 
-    private void SetPreview()
-    {
-
-    }
-
+    /// <summary>
+    /// 탭 버튼 선택
+    /// </summary>
+    /// <param name="clickedButton"></param>
     private void TabButton(Button clickedButton)
     {
+        Debug.Log("탭 버튼 눌림");
         if (clickedButton == tabButtonDictList["WeaponTab"])
         {
             isItWeapon = true;
@@ -123,6 +186,10 @@ public class UI_WeaponForge : BaseUI
         }
     }
 
+    /// <summary>
+    /// 타입 버튼 선택
+    /// </summary>
+    /// <param name="clickedButton"></param>
     private void TypeButton(Button clickedButton)
     {
         if (isItWeapon)
@@ -148,8 +215,13 @@ public class UI_WeaponForge : BaseUI
         }
     }
 
+    /// <summary>
+    /// 아이템 버튼 선택
+    /// </summary>
+    /// <param name="clickedButton"></param>
     private void ItemButton(Button clickedButton)
     {
+        Debug.Log("아이템 버튼 눌림");
         foreach (ButtonWrapper itemButtonWrapper in itemButtonWrappers)
         {
             if (clickedButton == itemButtonWrapper.button)
@@ -189,42 +261,24 @@ public class UI_WeaponForge : BaseUI
     /// <summary>
     /// 래퍼 클래스 초기화 (Wrapper Class Initialize)
     /// </summary>
-    private void WrapperInit()
+    private void TypeWrapperInit()
     {
-        if (isItWeapon)
-        {
             weaponButtonWrappers = new List<ButtonWrapper>()
             {
-                new ButtonWrapper(typeButtonDictList[0], WeaponType.SHORT_SWORD),
-                new ButtonWrapper(typeButtonDictList[1], WeaponType.SPEAR),
-                new ButtonWrapper(typeButtonDictList[2], WeaponType.BOW),
-                new ButtonWrapper(typeButtonDictList[3], WeaponType.WAND)
+                new ButtonWrapper("검", typeButtonDictList[0], WeaponType.SHORT_SWORD),
+                new ButtonWrapper("창", typeButtonDictList[1], WeaponType.SPEAR),
+                new ButtonWrapper("활", typeButtonDictList[2], WeaponType.BOW),
+                new ButtonWrapper("완드", typeButtonDictList[3], WeaponType.WAND)
             };
 
-            for (int i = 0; i < weaponButtonWrappers.Count; i++)
-            {
-                Button _typeButtonW = weaponButtonWrappers[i].button;
-                _typeButtonW.onClick.AddListener(() => TypeButton(_typeButtonW));
-            }
 
-        }
-        else
-        {
             subWeaponButtonWrappers = new List<ButtonWrapper>()
             {
-                new ButtonWrapper(typeButtonDictList[0], SubWeaponType.SHIELD),
-                new ButtonWrapper(typeButtonDictList[1], SubWeaponType.EMBLEM),
-                new ButtonWrapper(typeButtonDictList[2], SubWeaponType.ARROW),
-                new ButtonWrapper(typeButtonDictList[3], SubWeaponType.BOOK)
+                new ButtonWrapper("방패", typeButtonDictList[0], SubWeaponType.SHIELD),
+                new ButtonWrapper("엠블렘", typeButtonDictList[1], SubWeaponType.EMBLEM),
+                new ButtonWrapper("화살통", typeButtonDictList[2], SubWeaponType.ARROW),
+                new ButtonWrapper("마도서", typeButtonDictList[3], SubWeaponType.BOOK)
             };
-            for (int i = 0; i < subWeaponButtonWrappers.Count; i++)
-            {
-                Button _typeButtonS = subWeaponButtonWrappers[i].button;
-                _typeButtonS.onClick.AddListener(() => TypeButton(_typeButtonS));
-            }
-        }
-        
-        WrapperMake(DICTSIZE, itemButtonWrappers, itemButtonDictList, ItemButton);
     }
 
     /// <summary>
@@ -245,6 +299,7 @@ public class UI_WeaponForge : BaseUI
         itemButtonDictList.Add("Item3", GetUI<Button>("Item3"));
         itemButtonDictList.Add("Item4", GetUI<Button>("Item4"));
         itemButtonDictList.Add("Item5", GetUI<Button>("Item5"));
+
 
         setButtonDictList.Add("OkayButton", GetUI<Button>("OkayButton"));
         setButtonDictList.Add("CancelButton", GetUI<Button>("CancelButton"));
@@ -281,7 +336,7 @@ public class UI_WeaponForge : BaseUI
     {
         for (int i = 0; i < size; i++)
         {
-            buttonWrappers.Add(new ButtonWrapper(dictList[i]));
+            buttonWrappers.Add(new ButtonWrapper("temp_name", dictList[i]));
             Button Bbutton = buttonWrappers[i].button;
             Bbutton.onClick.AddListener(() => action(Bbutton));
         }
