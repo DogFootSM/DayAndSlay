@@ -10,7 +10,7 @@ public class ButtonWrapper
     public Button button;
     public WeaponType weaponType;
     public SubWeaponType subWeaponType;
-    public Parts parts;
+    public ArmorType armorType;
     public ItemData itemData;
 
     public ButtonWrapper(string buttonName, Button button, WeaponType weaponType)
@@ -25,11 +25,11 @@ public class ButtonWrapper
         this.button = button;
         this.subWeaponType = subWeaponType;
     }
-    public ButtonWrapper(string buttonName, Button button, Parts parts)
+    public ButtonWrapper(string buttonName, Button button, ArmorType armorType)
     {
         this.buttonName = buttonName;
         this.button = button;
-        this.parts = parts;
+        this.armorType = armorType;
     }
     public ButtonWrapper(string buttonName, Button button, ItemData itemData)
     {
