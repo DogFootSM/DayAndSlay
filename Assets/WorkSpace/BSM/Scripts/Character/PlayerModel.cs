@@ -183,8 +183,7 @@ public class PlayerModel : MonoBehaviour
         playerStats.statsPoints += IncreaseStatsPoint;  
         playerStats.skillPoints += IncreaseSkillPoints;
         
-        skillTree.NotifySkillPointChanged();
-        skillTree.OnChangedSkillPoint?.Invoke(IncreaseSkillPoints);
+        skillTree.NotifySkillPointChanged(); 
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }

@@ -40,7 +40,13 @@ public class SqliteDatabase
         //TODO: 테이블 생성 완료되면 삭제할 것
         using (dbCommand = dbConnection.CreateCommand())
         {
+            dbCommand.CommandText = @"DROP TABLE IF EXISTS Character";
+            dbCommand.ExecuteNonQuery();
+            
             dbCommand.CommandText = @"DROP TABLE IF EXISTS CharacterItem";
+            dbCommand.ExecuteNonQuery();
+            
+            dbCommand.CommandText = @"DROP TABLE IF EXISTS CharacterSkill";
             dbCommand.ExecuteNonQuery();
         }
     }
@@ -369,10 +375,37 @@ public class SqliteDatabase
         return dbDataReader;
     }
     
-    
+    /// <summary>
+    /// 아이템 삭제 테이블
+    /// </summary>
     public void ItemDeleteTable()
     {
         
+    }
+
+    /// <summary>
+    /// 초기 캐릭터 생성 시 스킬 데이터 테이블 삽입
+    /// </summary>
+    /// <param name="slotID">현재 생성한 슬롯 ID</param> 
+    public void SkillInsertTable(string slotID)
+    {  
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            //SQL, 즉 c에서는 \ 이스케이프 문자로 쓰여 경로를 제대로 인식하지 못함
+            string path = Path.Combine(Application.streamingAssetsPath, "SkillConfig.db").Replace("\\", "/");
+            
+            dbCommand.CommandText = $"ATTACH DATABASE '{path}' AS SkillConfig";
+            dbCommand.ExecuteNonQuery();
+
+            string query = "INSERT INTO CharacterSkill (slot_id, skill_id, skill_level, skill_unlocked) " +
+                           "SELECT @slot, skill_id, skill_level, skill_unlocked " +
+                           "FROM SkillConfig.Skills";
+            
+            dbCommand.Parameters.Add(new SqliteParameter("@slot", slotID));
+            
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery();
+        } 
     }
     
 }
