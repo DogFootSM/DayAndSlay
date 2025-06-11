@@ -44,9 +44,9 @@ public class UI_ArmorForge : BaseUI
 
 
 
-    List<TypeButtonWrapper> partsButtonWrappers = new List<TypeButtonWrapper>();
+    List<ButtonWrapper> partsButtonWrappers = new List<ButtonWrapper>();
 
-    List<ItemButtonWrapper> itemButtonWrappers = new List<ItemButtonWrapper>();
+    List<ButtonWrapper> itemButtonWrappers = new List<ButtonWrapper>();
 
     private DictList<TextMeshProUGUI> prevTextDictList = new DictList<TextMeshProUGUI>();
     private Image prevItemImage;
@@ -123,7 +123,7 @@ public class UI_ArmorForge : BaseUI
     private void TypeButton(Button clickedButton)
     {
         //옷 부위 고르는 기능
-        foreach (TypeButtonWrapper typeButtonWrapper in partsButtonWrappers)
+        foreach (ButtonWrapper typeButtonWrapper in partsButtonWrappers)
         {
             if (clickedButton == typeButtonWrapper.button)
             {
@@ -135,7 +135,7 @@ public class UI_ArmorForge : BaseUI
 
     private void ItemButton(Button clickedButton)
     {
-        foreach (ItemButtonWrapper itemButtonWrapper in itemButtonWrappers)
+        foreach (ButtonWrapper itemButtonWrapper in itemButtonWrappers)
         {
             if (clickedButton == itemButtonWrapper.button)
             {
@@ -169,13 +169,13 @@ public class UI_ArmorForge : BaseUI
     /// </summary>
     private void WrapperInit()
     {
-        partsButtonWrappers = new List<TypeButtonWrapper>()
+        partsButtonWrappers = new List<ButtonWrapper>()
             {
-                new TypeButtonWrapper(typeButtonDictList[0], Parts.HELMET),
-                new TypeButtonWrapper(typeButtonDictList[1], Parts.ARMOR),
-                new TypeButtonWrapper(typeButtonDictList[2], Parts.PANTS),
-                new TypeButtonWrapper(typeButtonDictList[3], Parts.ARM),
-                new TypeButtonWrapper(typeButtonDictList[4], Parts.SHOES)
+                new ButtonWrapper(typeButtonDictList[0], Parts.HELMET),
+                new ButtonWrapper(typeButtonDictList[1], Parts.ARMOR),
+                new ButtonWrapper(typeButtonDictList[2], Parts.PANTS),
+                new ButtonWrapper(typeButtonDictList[3], Parts.ARM),
+                new ButtonWrapper(typeButtonDictList[4], Parts.SHOES)
             };
 
 
@@ -188,7 +188,7 @@ public class UI_ArmorForge : BaseUI
 
         for (int i = 0; i < DICTSIZE; i++)
         {
-            itemButtonWrappers.Add(new ItemButtonWrapper(itemButtonDictList[i]));
+            itemButtonWrappers.Add(new ButtonWrapper(itemButtonDictList[i]));
             Button _itemButton = itemButtonWrappers[i].button;
             _itemButton.onClick.AddListener(() => ItemButton(_itemButton));
         }
