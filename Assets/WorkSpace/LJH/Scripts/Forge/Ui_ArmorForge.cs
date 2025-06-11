@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UI_ArmorForge : BaseUI
 {
+    /*
     //타입 버튼을 누르면 해당 타입에 존재하는 아이템 갯수만큼 버튼이 생기고 버튼의 이름이 그것들로 채워져야함
     //책 우측 탭을 선택하여 메인무기, 서브무기 변경 가능
     // 메인무기를 선택하면 타입에 메인무기 목록이 떠야함
@@ -265,6 +266,6 @@ public class UI_ArmorForge : BaseUI
             armorList.Add(storage[$"{parts}{i}"]);
         }
         return armorList;
-    }
+    }*/
 }
 
