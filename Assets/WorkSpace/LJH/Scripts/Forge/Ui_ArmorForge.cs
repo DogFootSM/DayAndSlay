@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,11 +7,8 @@ using UnityEngine.UI;
 
 public class UI_ArmorForge : BaseUI
 {
-    /*
-    //타입 버튼을 누르면 해당 타입에 존재하는 아이템 갯수만큼 버튼이 생기고 버튼의 이름이 그것들로 채워져야함
-    //책 우측 탭을 선택하여 메인무기, 서브무기 변경 가능
-    // 메인무기를 선택하면 타입에 메인무기 목록이 떠야함
-    // 서브무기를 선택하면 타입에 서브무기 목록이 떠야함
+    //추후 리팩토링 필요
+    //현재 잘 돌아가긴 하나 손대야 할때 참담한 심정 느낄듯
 
     [SerializeField]
     [SerializedDictionary]
@@ -22,11 +20,9 @@ public class UI_ArmorForge : BaseUI
     [SerializedDictionary]
     private SerializedDictionary<string, ItemData> clothStorage;
 
-    Dictionary<Parts, List<ItemData>> plateDict = new Dictionary<Parts, List<ItemData>>();
-    Dictionary<Parts, List<ItemData>> leatherDict = new Dictionary<Parts, List<ItemData>>();
-    Dictionary<Parts, List<ItemData>> clothDict = new Dictionary<Parts, List<ItemData>>();
-
-
+    Dictionary<ArmorType, List<ItemData>> plateDict = new Dictionary<ArmorType, List<ItemData>>();
+    Dictionary<ArmorType, List<ItemData>> leatherDict = new Dictionary<ArmorType, List<ItemData>>();
+    Dictionary<ArmorType, List<ItemData>> clothDict = new Dictionary<ArmorType, List<ItemData>>();
 
 
     /// <summary>
@@ -40,12 +36,15 @@ public class UI_ArmorForge : BaseUI
     private DictList<Button> itemButtonDictList = new DictList<Button>();
     private DictList<Button> setButtonDictList = new DictList<Button>();
 
-    //타입
     string[] armorTypeArray = { "투구", "갑옷", "바지", "장갑", "신발" };
 
 
+    List<ButtonWrapper> buttonWrappers = new List<ButtonWrapper>();
 
-    List<ButtonWrapper> partsButtonWrappers = new List<ButtonWrapper>();
+    List<ButtonWrapper> plateButtonWrappers = new List<ButtonWrapper>();
+    List<ButtonWrapper> leatherButtonWrappers = new List<ButtonWrapper>();
+    List<ButtonWrapper> clothButtonWrappers = new List<ButtonWrapper>();
+    MaterialType materialType;
 
     List<ButtonWrapper> itemButtonWrappers = new List<ButtonWrapper>();
 
@@ -54,10 +53,21 @@ public class UI_ArmorForge : BaseUI
 
     private void Start()
     {
+        //초기 설정을 아예 제대로 잡아주는게 좋아보임
         Init();
         ButtonInit();
-        WrapperInit();
+        TypeWrapperInit();
+        DefaultSetting();
     }
+
+    public void DefaultSetting()
+    {
+        TabButton(tabButtonDictList[0]);
+        TypeButton(typeButtonDictList[0]);
+        ItemButton(itemButtonDictList[0]);
+    }
+
+
 
 
     /// <summary>
@@ -77,70 +87,186 @@ public class UI_ArmorForge : BaseUI
         }
     }
 
+    /// <summary>
+    /// 탭 버튼에서 실행, 타입 버튼의 이름과 가지고있는 버튼을 세팅해줌
+    /// </summary>
+    /// <param name="typeArray"></param>
     private void SetTypeButton(string[] typeArray)
     {
-        //선택한 탭에 따라 타입 버튼명 변경 (중갑 <=> 가죽 <=> 천)
+
+        //선택한 탭에 따라 타입 버튼명 변경 (무기 <=> 보조무기)
         for (int i = 0; i < armorTypeArray.Length; i++)
         {
+            int index = i;
+            typeButtonDictList[i].onClick.RemoveAllListeners();
             typeButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = typeArray[i];
-        }
-    }
-
-    private void SetItemButton(Parts parts)
-    {
-        //선택한 타입버튼에 따라 아이템 버튼 설정
-        for (int i = 0; i < DICTSIZE; i++)
-        {
-            itemButtonDictList[i].GetComponent<ItemButton>().itemData = plateDict[parts][i];
-            itemButtonDictList[i].GetComponentInChildren<TextMeshProUGUI>().text = plateDict[parts][i].name;
-        }
-    }
-
-
-    private void SetPreview()
-    {
-
-    }
-
-    private void TabButton(Button clickedButton)
-    {
-        //중갑, 가죽, 천 중에 고르는 기능
-        if (clickedButton == tabButtonDictList["Plate"])
-        {
-            SetTypeButton(armorTypeArray);
-        }
-        else if (clickedButton == tabButtonDictList["Leather"])
-        {
-            SetTypeButton(armorTypeArray);
-        }
-        else if (clickedButton == tabButtonDictList["Cloth"])
-        {
-            SetTypeButton(armorTypeArray);
-        }
-
-        WrapperInit();
-    }
-
-    private void TypeButton(Button clickedButton)
-    {
-        //옷 부위 고르는 기능
-        foreach (ButtonWrapper typeButtonWrapper in partsButtonWrappers)
-        {
-            if (clickedButton == typeButtonWrapper.button)
+            if (materialType == MaterialType.PLATE)
             {
-                SetItemButton(typeButtonWrapper.parts);
+                typeButtonDictList[i].onClick.AddListener(() => TypeButton(plateButtonWrappers[index].button));
+            }
+            else if (materialType == MaterialType.LEATHER)
+            {
+                typeButtonDictList[i].onClick.AddListener(() => TypeButton(leatherButtonWrappers[index].button));
+            }
+            else if (materialType == MaterialType.CLOTH)
+            {
+                typeButtonDictList[i].onClick.AddListener(() => TypeButton(clothButtonWrappers[index].button));
+            }
+        }
+    }
+    /// <summary>
+    /// 선택한 타입버튼에 따라 아이템 버튼 설정
+    /// </summary>
+    /// <param name="armorType"></param>
+    private void SetItemButton(ArmorType armorType)
+    {
+        if (materialType == MaterialType.PLATE)
+        {
+            for (int i = 0; i < DICTSIZE; i++)
+            {
+                ItemData itemData = plateDict[armorType][i];
+
+                Button button = itemButtonDictList[i];
+                button.GetComponent<ItemButton>().itemData = itemData;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+
+                if (i < itemButtonWrappers.Count)
+                {
+                    itemButtonWrappers[i].itemData = itemData;
+                }
+                else
+                {
+                    itemButtonWrappers.Add(new ButtonWrapper("아이템버튼", button, itemData));
+                }
+
             }
         }
 
+        else if (materialType == MaterialType.LEATHER)
+        {
+            for (int i = 0; i < DICTSIZE; i++)
+            {
+                ItemData itemData = leatherDict[armorType][i];
+
+                Button button = itemButtonDictList[i];
+                button.GetComponent<ItemButton>().itemData = itemData;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+
+                if (i < itemButtonWrappers.Count)
+                {
+                    itemButtonWrappers[i].itemData = itemData;
+                }
+                else
+                {
+                    itemButtonWrappers.Add(new ButtonWrapper("아이템버튼", button, itemData));
+                }
+
+            }
+        }
+        else if (materialType == MaterialType.CLOTH)
+        {
+            for (int i = 0; i < DICTSIZE; i++)
+            {
+                ItemData itemData = clothDict[armorType][i];
+
+                Button button = itemButtonDictList[i];
+                button.GetComponent<ItemButton>().itemData = itemData;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+
+                if (i < itemButtonWrappers.Count)
+                {
+                    itemButtonWrappers[i].itemData = itemData;
+                }
+                else
+                {
+                    itemButtonWrappers.Add(new ButtonWrapper("아이템버튼", button, itemData));
+                }
+
+            }
+        }
+
+        for (int i = 0; i < itemButtonDictList.Count; i++)
+        {
+            int index = i;
+            itemButtonDictList[i].onClick.RemoveAllListeners();
+            itemButtonDictList[i].onClick.AddListener(() => ItemButton(itemButtonWrappers[index].button));
+        }
     }
 
+    /// <summary>
+    /// 탭 버튼 선택
+    /// </summary>
+    /// <param name="clickedButton"></param>
+    private void TabButton(Button clickedButton)
+    {
+        if (clickedButton == tabButtonDictList["PlateTab"])
+        {
+            materialType = MaterialType.PLATE;
+            
+        }
+        else if (clickedButton == tabButtonDictList["LeatherTab"])
+        {
+            materialType = MaterialType.LEATHER;
+        }
+        else if (clickedButton == tabButtonDictList["ClothTab"])
+        {
+            materialType = MaterialType.CLOTH;
+        }
+        SetTypeButton(armorTypeArray);
+        TypeButton(typeButtonDictList[0]);
+    }
+
+    /// <summary>
+    /// 타입 버튼 선택
+    /// </summary>
+    /// <param name="clickedButton"></param>
+    private void TypeButton(Button clickedButton)
+    {
+        if (materialType == MaterialType.PLATE)
+        {
+            foreach (ButtonWrapper typeButtonWrapper in plateButtonWrappers)
+            {
+                if (clickedButton == typeButtonWrapper.button)
+                {
+                    SetItemButton(typeButtonWrapper.armorType);
+                }
+            }
+        }
+
+        else if (materialType == MaterialType.LEATHER)
+        {
+            foreach (ButtonWrapper typeButtonWrapper in leatherButtonWrappers)
+            {
+                if (clickedButton == typeButtonWrapper.button)
+                {
+                    SetItemButton(typeButtonWrapper.armorType);
+                }
+            }
+        }
+
+        else if (materialType == MaterialType.CLOTH)
+        {
+            foreach (ButtonWrapper typeButtonWrapper in clothButtonWrappers)
+            {
+                if (clickedButton == typeButtonWrapper.button)
+                {
+                    SetItemButton(typeButtonWrapper.armorType);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 아이템 버튼 선택
+    /// </summary>
+    /// <param name="clickedButton"></param>
     private void ItemButton(Button clickedButton)
     {
         foreach (ButtonWrapper itemButtonWrapper in itemButtonWrappers)
         {
             if (clickedButton == itemButtonWrapper.button)
             {
-                prevItemImage.sprite = itemButtonWrapper.itemData.ItemImage;
+                prevItemImage.sprite = itemButtonWrappers[0].itemData.ItemImage;
 
                 prevTextDictList["PrevName"].text = itemButtonWrapper.itemData.Name;
                 prevTextDictList["ATK"].text = itemButtonWrapper.itemData.Attack.ToString();
@@ -159,40 +285,30 @@ public class UI_ArmorForge : BaseUI
     /// </summary>
     private void ButtonInit()
     {
-        SetTypeButton(armorTypeArray);
-        SetItemButton(Parts.HELMET);
-
+        SetItemButton(ArmorType.HELMET);
         ButtonActivate(DICTSIZE);
     }
 
     /// <summary>
     /// 래퍼 클래스 초기화 (Wrapper Class Initialize)
     /// </summary>
-    private void WrapperInit()
+    private void TypeWrapperInit()
     {
-        partsButtonWrappers = new List<ButtonWrapper>()
+        plateButtonWrappers = CreateNewWrapper();
+        leatherButtonWrappers = CreateNewWrapper();
+        clothButtonWrappers = CreateNewWrapper();
+    }
+
+    List<ButtonWrapper> CreateNewWrapper()
+    {
+        return new List<ButtonWrapper>()
             {
-                new ButtonWrapper(typeButtonDictList[0], Parts.HELMET),
-                new ButtonWrapper(typeButtonDictList[1], Parts.ARMOR),
-                new ButtonWrapper(typeButtonDictList[2], Parts.PANTS),
-                new ButtonWrapper(typeButtonDictList[3], Parts.ARM),
-                new ButtonWrapper(typeButtonDictList[4], Parts.SHOES)
+                new ButtonWrapper("투구", typeButtonDictList[0], ArmorType.HELMET),
+                new ButtonWrapper("갑옷", typeButtonDictList[1], ArmorType.ARMOR),
+                new ButtonWrapper("바지", typeButtonDictList[2], ArmorType.PANTS),
+                new ButtonWrapper("장갑", typeButtonDictList[3], ArmorType.ARM),
+                new ButtonWrapper("신발", typeButtonDictList[4], ArmorType.SHOES),
             };
-
-
-        for (int i = 0; i < partsButtonWrappers.Count; i++)
-        {
-            Button _typeButtonHelmet = partsButtonWrappers[i].button;
-            _typeButtonHelmet.onClick.AddListener(() => TypeButton(_typeButtonHelmet));
-        }
-
-
-        for (int i = 0; i < DICTSIZE; i++)
-        {
-            itemButtonWrappers.Add(new ButtonWrapper(itemButtonDictList[i]));
-            Button _itemButton = itemButtonWrappers[i].button;
-            _itemButton.onClick.AddListener(() => ItemButton(_itemButton));
-        }
     }
 
     /// <summary>
@@ -216,6 +332,7 @@ public class UI_ArmorForge : BaseUI
         itemButtonDictList.Add("Item4", GetUI<Button>("Item4"));
         itemButtonDictList.Add("Item5", GetUI<Button>("Item5"));
 
+
         setButtonDictList.Add("OkayButton", GetUI<Button>("OkayButton"));
         setButtonDictList.Add("CancelButton", GetUI<Button>("CancelButton"));
 
@@ -230,42 +347,76 @@ public class UI_ArmorForge : BaseUI
 
         prevItemImage = GetUI<Image>("ItemImage");
 
+        WrapperMake(DICTSIZE, buttonWrappers, tabButtonDictList, TabButton);
 
-        //Parts에 사용되지 않는 값이 있어 하드코딩으로 처리해둠
-        DictMake(plateDict, Parts.HELMET, plateStorage);
-        DictMake(plateDict, Parts.ARMOR, plateStorage);
-        DictMake(plateDict, Parts.PANTS, plateStorage);
-        DictMake(plateDict, Parts.ARM, plateStorage);
-        DictMake(plateDict, Parts.SHOES, plateStorage);
-
-        DictMake(leatherDict, Parts.HELMET, leatherStorage);
-        DictMake(leatherDict, Parts.ARMOR, leatherStorage);
-        DictMake(leatherDict, Parts.PANTS, leatherStorage);
-        DictMake(leatherDict, Parts.ARM, leatherStorage);
-        DictMake(leatherDict, Parts.SHOES, leatherStorage);
-
-        DictMake(clothDict, Parts.HELMET, clothStorage);
-        DictMake(clothDict, Parts.ARMOR, clothStorage);
-        DictMake(clothDict, Parts.PANTS, clothStorage);
-        DictMake(clothDict, Parts.ARM, clothStorage);
-        DictMake(clothDict, Parts.SHOES, clothStorage);
+        DictMake();
 
     }
 
-    private void DictMake(Dictionary<Parts, List<ItemData>>dict, Parts parts, SerializedDictionary<string, ItemData>storage)
+    void WrapperMake(int size, List<ButtonWrapper> buttonWrappers, DictList<Button> dictList, Action<Button> action)
     {
-        dict[parts] = ListMake(storage, parts);
+        for (int i = 0; i < size; i++)
+        {
+            buttonWrappers.Add(new ButtonWrapper("temp_name", dictList[i]));
+            Button Bbutton = buttonWrappers[i].button;
+            Bbutton.onClick.AddListener(() => action(Bbutton));
+        }
     }
 
-    private List<ItemData> ListMake(SerializedDictionary<string, ItemData> storage, Parts parts)
+    private void DictMake()
     {
-        List<ItemData> armorList = new List<ItemData>();
+        plateDict[ArmorType.HELMET] = PlateListMake(ArmorType.HELMET);
+        plateDict[ArmorType.ARMOR] = PlateListMake(ArmorType.ARMOR);
+        plateDict[ArmorType.PANTS] = PlateListMake(ArmorType.PANTS);
+        plateDict[ArmorType.ARM] = PlateListMake(ArmorType.ARM);
+        plateDict[ArmorType.SHOES] = PlateListMake(ArmorType.SHOES);
+
+        leatherDict[ArmorType.HELMET] = LeatherListMake(ArmorType.HELMET);
+        leatherDict[ArmorType.ARMOR] = LeatherListMake(ArmorType.ARMOR);
+        leatherDict[ArmorType.PANTS] = LeatherListMake(ArmorType.PANTS);
+        leatherDict[ArmorType.ARM] = LeatherListMake(ArmorType.ARM);
+        leatherDict[ArmorType.SHOES] = LeatherListMake(ArmorType.SHOES);
+
+        clothDict[ArmorType.HELMET] = ClothListMake(ArmorType.HELMET);
+        clothDict[ArmorType.ARMOR] = ClothListMake(ArmorType.ARMOR);
+        clothDict[ArmorType.PANTS] = ClothListMake(ArmorType.PANTS);
+        clothDict[ArmorType.ARM] = ClothListMake(ArmorType.ARM);
+        clothDict[ArmorType.SHOES] = ClothListMake(ArmorType.SHOES);
+
+    }
+
+
+    private List<ItemData> PlateListMake(ArmorType armorType)
+    {
+        List<ItemData> plateArmorList = new List<ItemData>();
 
         for (int i = 1; i <= DICTSIZE; i++)
         {
-            armorList.Add(storage[$"{parts}{i}"]);
+            plateArmorList.Add(plateStorage[$"{armorType}{i}"]);
         }
-        return armorList;
-    }*/
+        return plateArmorList;
+    }
+
+    private List<ItemData> LeatherListMake(ArmorType armorType)
+    {
+        List<ItemData> leatherArmorList = new List<ItemData>();
+
+        for (int i = 1; i <= DICTSIZE; i++)
+        {
+            leatherArmorList.Add(leatherStorage[$"{armorType}{i}"]);
+        }
+        return leatherArmorList;
+    }
+
+    private List<ItemData> ClothListMake(ArmorType armorType)
+    {
+        List<ItemData> clothArmorList = new List<ItemData>();
+
+        for (int i = 1; i <= DICTSIZE; i++)
+        {
+            clothArmorList.Add(clothStorage[$"{armorType}{i}"]);
+        }
+        return clothArmorList;
+    }
 }
 
