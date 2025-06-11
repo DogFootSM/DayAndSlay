@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,9 +51,19 @@ public class SkillTree : MonoBehaviour
     /// </summary>
     private void InitializeSkillData()
     {
+        //IDataReader reader = sqlManager.ReadSkillDataColumn($"{dataManager.SlotId}");
+        //TODO: 테스트용 슬롯 아이디 1고정
+        IDataReader reader = sqlManager.ReadSkillDataColumn("1");
+
+        while (reader.Read())
+        {
+            Debug.Log(reader.GetString(0));
+        }
+        
+        
         //현재 슬롯 아이디에 해당 하는 스킬 ID 기준으로 행을 뽑음
         //prerequisiteNodeMap 순회하면서 DB에서 뽑아온 ID에 해당하는 스킬 노드에 Data 셋
-        Debug.Log(dataManager.SlotId);
+ 
     }
 
     /// <summary>

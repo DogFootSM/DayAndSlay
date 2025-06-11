@@ -146,5 +146,15 @@ public class SqlManager : IInitializable
     {
         sqlDatabase.SkillInsertTable(slotID);
     }
+
+    /// <summary>
+    /// 현재 슬롯의 캐릭터 스킬 데이터를 읽어옴
+    /// </summary>
+    /// <param name="slotID">현재 캐릭터 슬롯 ID</param>
+    /// <returns></returns>
+    public IDataReader ReadSkillDataColumn(string slotID)
+    {
+        return sqlDatabase.SkillReadTable(slotID);
+    }
     
 }

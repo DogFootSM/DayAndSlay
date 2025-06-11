@@ -407,5 +407,23 @@ public class SqliteDatabase
             dbCommand.ExecuteNonQuery();
         } 
     }
+
+    /// <summary>
+    /// 현재 슬롯의 캐릭터 스킬 데이터를 읽어옴
+    /// </summary>
+    /// <param name="slotID">현재 캐릭터 슬롯 ID</param>
+    public IDataReader SkillReadTable(string slotID)
+    {
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = $"SELECT skill_id, skill_level, skill_unlocked FROM CharacterSkill WHERE slot_id = @slot";
+            dbCommand.Parameters.Add(new SqliteParameter("@slot", slotID));
+            dbCommand.CommandText = query;
+
+            dbDataReader = dbCommand.ExecuteReader(); 
+        } 
+        
+        return dbDataReader;
+    }
     
 }
