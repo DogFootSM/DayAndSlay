@@ -207,13 +207,6 @@ public class UI_WeaponForge : BaseUI
                 _typeButtonW.onClick.AddListener(() => TypeButton(_typeButtonW));
             }
 
-            subWeaponButtonWrappers = new List<ButtonWrapper>()
-            {
-                new ButtonWrapper(typeButtonDictList[0], SubWeaponType.SHIELD),
-                new ButtonWrapper(typeButtonDictList[1], SubWeaponType.EMBLEM),
-                new ButtonWrapper(typeButtonDictList[2], SubWeaponType.ARROW),
-                new ButtonWrapper(typeButtonDictList[3], SubWeaponType.BOOK)
-            };
         }
         else
         {
@@ -230,12 +223,8 @@ public class UI_WeaponForge : BaseUI
                 _typeButtonS.onClick.AddListener(() => TypeButton(_typeButtonS));
             }
         }
-        for (int i = 0; i < DICTSIZE; i++)
-        {
-            itemButtonWrappers.Add(new ButtonWrapper(itemButtonDictList[i]));
-            Button _itemButton = itemButtonWrappers[i].button;
-            _itemButton.onClick.AddListener(() => ItemButton(_itemButton));
-        }
+        
+        WrapperMake(DICTSIZE, itemButtonWrappers, itemButtonDictList, ItemButton);
     }
 
     /// <summary>
@@ -271,13 +260,7 @@ public class UI_WeaponForge : BaseUI
 
         prevItemImage = GetUI<Image>("ItemImage");
 
-
-        for (int i = 0; i < 2; i++)
-        {
-            buttonWrappers.Add(new ButtonWrapper(tabButtonDictList[i]));
-            Button Bbutton = buttonWrappers[i].button;
-            Bbutton.onClick.AddListener(() => TabButton(Bbutton));
-        }
+        WrapperMake(2, buttonWrappers, tabButtonDictList, TabButton);
 
 
 
@@ -302,11 +285,6 @@ public class UI_WeaponForge : BaseUI
             Button Bbutton = buttonWrappers[i].button;
             Bbutton.onClick.AddListener(() => action(Bbutton));
         }
-    }
-
-    void TT(string text)
-    {
-        Debug.Log(text);
     }
 
     private void DictMake(WeaponType weaponType)
