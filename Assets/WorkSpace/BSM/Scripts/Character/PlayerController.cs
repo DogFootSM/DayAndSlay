@@ -91,7 +91,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void InitSlotData()
     {
-        Debug.Log($"cur:{curSlotId}");
         dataReader = sqlManager.ReadDataColumn(
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },

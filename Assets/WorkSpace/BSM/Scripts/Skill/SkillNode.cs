@@ -13,13 +13,12 @@ public class SkillNode
     private int curSkillLevel = 0;
     private bool unLocked; 
     public bool UnLocked => unLocked;
+    public int CurSkillLevel => curSkillLevel;
     
     public SkillNode(SkillData skillData, PlayerModel playerModel)
     {
         this.skillData = skillData;
         this.playerModel = playerModel;
-        //선행 스킬이 없을 경우 잠금 해제
-        unLocked = skillData.prerequisiteSkillsId.Count == 0;
     }
  
     /// <summary>
@@ -38,7 +37,7 @@ public class SkillNode
     {
         //TODO: 스킬 강화 로직 진행
         curSkillLevel++;
-        playerModel.CurSkillPoint = -1;  
+        playerModel.CurSkillPoint = -1;
     }
 
     /// <summary>
@@ -51,5 +50,17 @@ public class SkillNode
             unLocked = preNode.curSkillLevel > 0;
         }  
     }
+
+    /// <summary>
+    /// 현재 스킬의 레벨 및 해금 정보 불러오기
+    /// </summary>
+    /// <param name="skillLevel">저장된 스킬 레벨</param>
+    /// <param name="lockState">저장된 해금 상태</param>
+    public void LoadSkillFromDB(int skillLevel, bool lockState)
+    {
+        curSkillLevel = skillLevel;
+        unLocked = lockState;
+    }
+    
     
 }
