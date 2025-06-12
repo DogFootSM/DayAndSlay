@@ -13,6 +13,13 @@ public class DictList<T>
         buttonDict[key] = value;
     }
 
+    //리무브는 생각 좀 해봐야할듯
+    public void Remove(string key, T value)
+    {
+        buttonDict.Remove(key);
+        buttonList.Remove(value);
+    }
+
     public T this[int index] => buttonList[index];
 
     public T this[string key] => buttonDict[key];

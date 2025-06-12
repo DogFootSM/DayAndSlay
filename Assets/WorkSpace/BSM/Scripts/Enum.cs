@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -88,6 +89,15 @@ public enum Parts
     RARE_INGREDIANT
 }
 
+/// <summary>
+/// 공격 장비 타입
+/// </summary>
+[Serializable]
+public enum EquipType
+{
+    WEAPON,
+    SUBWEAPON,
+}
 
 /// <summary>
 /// 메인 무기 타입
@@ -95,12 +105,12 @@ public enum Parts
 [Serializable]
 public enum WeaponType
 {
-    BOW,
     SHORT_SWORD,
     SPEAR,
+    BOW,
     WAND,
+    NOT_WEAPON,
     LONG_SWORD,
-    NOT_WEAPON
 }
 
 /// <summary>
@@ -109,12 +119,36 @@ public enum WeaponType
 [Serializable]
 public enum SubWeaponType
 {
-    GAUNTLET,
     SHIELD,
-    ARROW,
     EMBLEM,
+    ARROW,
     BOOK,
-    NOT_SUBWEAPON
+    NOT_SUBWEAPON,
+    GAUNTLET,
+}
+
+/// <summary>
+/// 방어구 재질 타입
+/// </summary>
+[Serializable]
+public enum MaterialType
+{
+    PLATE,
+    LEATHER,
+    CLOTH,
+}
+
+/// <summary>
+/// 방어구 부위 타입
+/// </summary>
+[Serializable]
+public enum ArmorType
+{
+    HELMET,
+    ARMOR,
+    PANTS,
+    ARM,
+    SHOES,
 }
 
 /// <summary>

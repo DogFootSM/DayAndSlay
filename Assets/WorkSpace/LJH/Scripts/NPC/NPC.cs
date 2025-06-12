@@ -27,8 +27,6 @@ public class NPC : MonoBehaviour
             return;
         }
 
-        Debug.Log(itemManager.name);
-        Debug.Log(itemManager.ItemList);
         ItemListSetting(itemManager.ItemList);
         PickItem();
         GoStore();
@@ -57,12 +55,10 @@ public class NPC : MonoBehaviour
     void GoStore()
     {
         //Todo : 상점으로 이동하는 엔피씨
-        Debug.Log("아이템 구매할래");
     }
 
     void DontGoStore()
     {
         //Todo : 상점으로 가지 않는 엔피씨
-        Debug.Log("아이템 구매안할래");
     }
 }
