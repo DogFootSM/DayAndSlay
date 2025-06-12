@@ -49,6 +49,9 @@ public class SkillNodeButton : MonoBehaviour
         UpdateSkillLevelUI();
     }
 
+    /// <summary>
+    /// 현재 스킬 레벨에 따른 UI 정보 업데이트
+    /// </summary>
     private void UpdateSkillLevelUI()
     {
         if (CurSkillNode.CurSkillLevel < CurSkillNode.skillData.SkillMaxLevel)

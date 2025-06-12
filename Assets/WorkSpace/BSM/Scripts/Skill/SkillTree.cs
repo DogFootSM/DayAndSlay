@@ -7,14 +7,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-public struct SkillDbData
-{
-    public string SkillId;
-    public int SkillLevel;
-    public bool IsUnLocked; 
-}
-
-
 public class SkillTree : MonoBehaviour
 {
     [SerializeField] private SkillTreeUI skillTreeUI;
@@ -51,11 +43,11 @@ public class SkillTree : MonoBehaviour
 
         while (reader.Read())
         {
-            string skillId = reader.GetString(0);
-            
-            int skillLevel = reader.GetInt32(1);
-            bool unlocked = reader.GetBoolean(2);
+            string skillId = reader.GetString(0);           //현재 스킬 ID
+            int skillLevel = reader.GetInt32(1);            //현재 스킬 레벨
+            bool unlocked = reader.GetBoolean(2);           //현재 스킬 해금
 
+            //스킬 ID 키가 있을 경우 스킬 DB 정보 반영
             if (prerequisiteNodeMap.ContainsKey(skillId))
             {
                 prerequisiteNodeMap[skillId].LoadSkillFromDB(skillLevel, unlocked);
@@ -147,4 +139,5 @@ public class SkillTree : MonoBehaviour
         curWeapon = weaponType;
         skillTreeUI.OnChangedSkillTab?.Invoke(curWeapon);
     }
+
 }
