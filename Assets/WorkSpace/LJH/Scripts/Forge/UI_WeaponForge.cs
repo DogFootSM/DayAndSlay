@@ -9,6 +9,7 @@ public class UI_WeaponForge : BaseUI
 {
     //추후 리팩토링 필요
     //현재 잘 돌아가긴 하나 손대야 할때 참담한 심정 느낄듯
+    Animator animator;
 
     [SerializeField]
     [SerializedDictionary]
@@ -175,13 +176,16 @@ public class UI_WeaponForge : BaseUI
     /// <param name="clickedButton"></param>
     private void TabButton(Button clickedButton)
     {
+
         if (clickedButton == tabButtonDictList["WeaponTab"])
         {
+            animator.Play("BookNextPage");
             equipType = EquipType.WEAPON;
             SetTypeButton(weaponTypeArray);
         }
         else if (clickedButton == tabButtonDictList["SubWeaponTab"])
         {
+            animator.Play("BookNextPage");
             equipType = EquipType.SUBWEAPON;
             SetTypeButton(subWeaponTypeArray);
         }
@@ -329,6 +333,8 @@ public class UI_WeaponForge : BaseUI
         DictMake(SubWeaponType.EMBLEM);
         DictMake(SubWeaponType.ARROW);
         DictMake(SubWeaponType.BOOK);
+
+        animator = GetComponent<Animator>();
 
     }
 

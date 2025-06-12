@@ -9,6 +9,7 @@ public class UI_ArmorForge : BaseUI
 {
     //추후 리팩토링 필요
     //현재 잘 돌아가긴 하나 손대야 할때 참담한 심정 느낄듯
+    Animator animator;
 
     [SerializeField]
     [SerializedDictionary]
@@ -201,15 +202,18 @@ public class UI_ArmorForge : BaseUI
     {
         if (clickedButton == tabButtonDictList["PlateTab"])
         {
+            animator.Play("BookNextPage");
             materialType = MaterialType.PLATE;
             
         }
         else if (clickedButton == tabButtonDictList["LeatherTab"])
         {
+            animator.Play("BookNextPage");
             materialType = MaterialType.LEATHER;
         }
         else if (clickedButton == tabButtonDictList["ClothTab"])
         {
+            animator.Play("BookNextPage");
             materialType = MaterialType.CLOTH;
         }
         SetTypeButton(armorTypeArray);
@@ -350,6 +354,7 @@ public class UI_ArmorForge : BaseUI
         WrapperMake(DICTSIZE, buttonWrappers, tabButtonDictList, TabButton);
 
         DictMake();
+        animator = GetComponent<Animator>();
 
     }
 
@@ -365,23 +370,12 @@ public class UI_ArmorForge : BaseUI
 
     private void DictMake()
     {
-        plateDict[ArmorType.HELMET] = PlateListMake(ArmorType.HELMET);
-        plateDict[ArmorType.ARMOR] = PlateListMake(ArmorType.ARMOR);
-        plateDict[ArmorType.PANTS] = PlateListMake(ArmorType.PANTS);
-        plateDict[ArmorType.ARM] = PlateListMake(ArmorType.ARM);
-        plateDict[ArmorType.SHOES] = PlateListMake(ArmorType.SHOES);
-
-        leatherDict[ArmorType.HELMET] = LeatherListMake(ArmorType.HELMET);
-        leatherDict[ArmorType.ARMOR] = LeatherListMake(ArmorType.ARMOR);
-        leatherDict[ArmorType.PANTS] = LeatherListMake(ArmorType.PANTS);
-        leatherDict[ArmorType.ARM] = LeatherListMake(ArmorType.ARM);
-        leatherDict[ArmorType.SHOES] = LeatherListMake(ArmorType.SHOES);
-
-        clothDict[ArmorType.HELMET] = ClothListMake(ArmorType.HELMET);
-        clothDict[ArmorType.ARMOR] = ClothListMake(ArmorType.ARMOR);
-        clothDict[ArmorType.PANTS] = ClothListMake(ArmorType.PANTS);
-        clothDict[ArmorType.ARM] = ClothListMake(ArmorType.ARM);
-        clothDict[ArmorType.SHOES] = ClothListMake(ArmorType.SHOES);
+        for(int i = 0; i < (int)ArmorType.Size; i++)
+        {
+            plateDict[(ArmorType)i] = PlateListMake((ArmorType)i);
+            leatherDict[(ArmorType)i] = LeatherListMake((ArmorType)i);
+            clothDict[(ArmorType)i] = ClothListMake((ArmorType)i);
+        }
 
     }
 
