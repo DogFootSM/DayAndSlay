@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillSet : MonoBehaviour
+public class SkillSet : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Button increaseButton;
     [SerializeField] private Image skillIconImage;
     [SerializeField] private TextMeshProUGUI skillCurLevelText;
     [SerializeField] private TextMeshProUGUI skillMaxLevelText;
+    [SerializeField] private GraphicRaycaster skillRaycaster;
     
+    private List<RaycastResult> results = new List<RaycastResult>();
+    private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     public SkillNode CurSkillNode;
      
     private void Awake()
@@ -20,7 +24,12 @@ public class SkillSet : MonoBehaviour
         increaseButton.onClick.AddListener(InvestSkillPoint);
         InitSkill(); 
     }
- 
+
+    private void OnDisable()
+    {
+        quickSlotManager.CloseSkillPreview();
+    }
+
     /// <summary>
     /// 스킬 포인트 및 선행 스킬 잠금 해제에 따라 버튼 상호작용 T/F 적용
     /// </summary>
@@ -64,6 +73,10 @@ public class SkillSet : MonoBehaviour
             skillMaxLevelText.gameObject.SetActive(false);
         }
         
-    }
+    } 
     
+    public void OnPointerClick(PointerEventData eventData)
+    { 
+        quickSlotManager.NotifySkillPreview(CurSkillNode); 
+    }
 }

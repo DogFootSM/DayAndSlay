@@ -1,17 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class SkillTreeUI : MonoBehaviour
 {
     [SerializeField] private List<GameObject> skillTabs;
     [SerializeField] private GameObject skillSetPrefab;
-
+    
+    [Header("스킬 미리보기")]
+    [SerializeField] private GameObject previewTab;
+    [SerializeField] private TextMeshProUGUI previewSkillNameText;
+    [SerializeField] private TextMeshProUGUI previewSkillDescriptionText;
+    [SerializeField] private Image previewSkillIcon;
+    [SerializeField] private Button previewRegisterButton;
+    
+    
     private List<SkillSet> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;
-     
+
+    private SkillNode selectedSkillNode;
+    
     private void OnEnable()
     {
         OnChangedSkillTab += SwitchSkillTabByWeapon;
@@ -68,6 +80,29 @@ public class SkillTreeUI : MonoBehaviour
         {
             skillNodeButton.UpdateSkillButtonState(point);
         } 
+    }
+
+    /// <summary>
+    /// 선택한 스킬 미리보기 업데이트
+    /// </summary>
+    /// <param name="skillNode">현재 선택한 스킬 노드</param>
+    public void UpdateSkillPreview(SkillNode skillNode)
+    {  
+        if(!previewTab.activeSelf) previewTab.SetActive(true); 
+        
+        selectedSkillNode = skillNode;
+        previewSkillNameText.text = skillNode.skillData.SkillId;
+        previewSkillDescriptionText.text = skillNode.skillData.SkillDescription; 
+        previewSkillIcon.sprite = skillNode.skillData.SkillIcon; 
+    }
+
+    /// <summary>
+    /// 스킬 프리뷰 항목 초기화
+    /// </summary>
+    public void CloseSkillPreview()
+    {
+        previewTab.SetActive(false);
+        selectedSkillNode = null;
     }
     
 }
