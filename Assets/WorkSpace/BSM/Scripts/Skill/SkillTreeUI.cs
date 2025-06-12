@@ -9,7 +9,7 @@ public class SkillTreeUI : MonoBehaviour
     [SerializeField] private List<GameObject> skillTabs;
     [SerializeField] private GameObject skillSetPrefab;
 
-    private List<SkillNodeButton> skillNodeButtons = new();
+    private List<SkillSet> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;
      
     private void OnEnable()
@@ -51,9 +51,9 @@ public class SkillTreeUI : MonoBehaviour
             {
                 GameObject skillInstance = Instantiate(skillSetPrefab, skillTabs[i].transform.GetChild(0).GetChild(0).transform); 
                 
-                SkillNodeButton skillNodeButton = skillInstance.GetComponent<SkillNodeButton>();
-                skillNodeButton.CurSkillNode = skillNode[(WeaponType)i][j]; 
-                skillNodeButtons.Add(skillNodeButton);
+                SkillSet skillSet = skillInstance.GetComponent<SkillSet>();
+                skillSet.CurSkillNode = skillNode[(WeaponType)i][j]; 
+                skillNodeButtons.Add(skillSet);
             } 
         }  
     }
@@ -64,7 +64,7 @@ public class SkillTreeUI : MonoBehaviour
     /// <param name="point">현재 보유중인 스킬 포인트</param>
     public void UpdateAllNodeButtonsWithPoint(int point)
     { 
-        foreach (SkillNodeButton skillNodeButton in skillNodeButtons)
+        foreach (SkillSet skillNodeButton in skillNodeButtons)
         {
             skillNodeButton.UpdateSkillButtonState(point);
         } 

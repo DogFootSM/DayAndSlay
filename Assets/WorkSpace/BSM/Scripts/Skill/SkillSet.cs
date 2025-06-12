@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SkillNodeButton : MonoBehaviour
+public class SkillSet : MonoBehaviour
 {
     [SerializeField] private Button increaseButton;
     [SerializeField] private Image skillIconImage;
