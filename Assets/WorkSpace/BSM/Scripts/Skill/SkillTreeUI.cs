@@ -16,6 +16,7 @@ public class SkillTreeUI : MonoBehaviour
     [SerializeField] private GameObject previewTab;
     [SerializeField] private TextMeshProUGUI previewSkillNameText;
     [SerializeField] private TextMeshProUGUI previewSkillDescriptionText;
+    [SerializeField] private TextMeshProUGUI previewSkillPrerequisiteText;
     [SerializeField] private Image previewSkillIcon;
     [SerializeField] private Button previewRegisterButton;
     
@@ -101,7 +102,28 @@ public class SkillTreeUI : MonoBehaviour
         previewSkillNameText.text = skillNode.skillData.SkillId;
         previewSkillDescriptionText.text = skillNode.skillData.SkillDescription; 
         previewSkillIcon.sprite = skillNode.skillData.SkillIcon; 
-        previewRegisterButton.interactable = selectedSkillNode.CurSkillLevel > 0;
+        previewRegisterButton.interactable = selectedSkillNode.CurSkillLevel > 0; 
+        
+        int prerequisiteCount = selectedSkillNode.skillData.prerequisiteSkillsId.Count; 
+        
+        previewSkillPrerequisiteText.gameObject.SetActive(prerequisiteCount != 0);
+        
+        if (prerequisiteCount == 0) return;
+        
+        string prerequisite = "";
+        
+        for (int i = 0; i < selectedSkillNode.skillData.prerequisiteSkillsId.Count; i++)
+        {
+            prerequisite += selectedSkillNode.skillData.prerequisiteSkillsId[i];
+
+            if (i < prerequisiteCount - 1)
+            {
+                prerequisite += ", ";
+            } 
+        }
+
+        prerequisite += " 스킬의 선행 조건 달성이 필요합니다.";
+        previewSkillPrerequisiteText.text = prerequisite;
     }
 
     /// <summary>
