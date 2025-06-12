@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 
 public class SkillTreeUI : MonoBehaviour
 {
@@ -22,8 +23,14 @@ public class SkillTreeUI : MonoBehaviour
     private List<SkillSet> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;
 
+    private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private SkillNode selectedSkillNode;
-    
+
+    private void Awake()
+    {
+        previewRegisterButton.onClick.AddListener(() => quickSlotManager.SkillRegisterPanelOpen(selectedSkillNode));
+    }
+
     private void OnEnable()
     {
         OnChangedSkillTab += SwitchSkillTabByWeapon;
@@ -89,11 +96,12 @@ public class SkillTreeUI : MonoBehaviour
     public void UpdateSkillPreview(SkillNode skillNode)
     {  
         if(!previewTab.activeSelf) previewTab.SetActive(true); 
-        
+         
         selectedSkillNode = skillNode;
         previewSkillNameText.text = skillNode.skillData.SkillId;
         previewSkillDescriptionText.text = skillNode.skillData.SkillDescription; 
         previewSkillIcon.sprite = skillNode.skillData.SkillIcon; 
+        previewRegisterButton.interactable = selectedSkillNode.CurSkillLevel > 0;
     }
 
     /// <summary>

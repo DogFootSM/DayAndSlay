@@ -237,3 +237,9 @@ public enum SkillState
 {
     LOCKED, UNLOCKED, COMPLETE
 }
+
+[Serializable]
+public enum QuickSlotType
+{
+    Q, W, E, R,T, Y, A, S, D, F, G, H
+}
