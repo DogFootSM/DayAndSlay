@@ -57,7 +57,10 @@ public class SkillTree : MonoBehaviour
 
         while (reader.Read())
         {
-            Debug.Log(reader.GetString(0));
+            Debug.Log($"0 :{reader.GetString(0)}");
+            Debug.Log($"1 :{reader.GetInt32(1)}");
+            Debug.Log($"2 :{reader.GetBoolean(2)}");
+             
         }
         
         
