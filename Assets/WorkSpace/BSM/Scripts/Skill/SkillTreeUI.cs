@@ -9,13 +9,9 @@ public class SkillTreeUI : MonoBehaviour
     [SerializeField] private List<GameObject> skillTabs;
     [SerializeField] private GameObject skillSetPrefab;
 
+    private List<SkillNodeButton> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;
-    
-    private void Awake()
-    {
-        Debug.Log("UI 시작");
-    }
-
+     
     private void OnEnable()
     {
         OnChangedSkillTab += SwitchSkillTabByWeapon;
@@ -43,7 +39,7 @@ public class SkillTreeUI : MonoBehaviour
     /// 캐릭터 스킬 패널창 셋팅
     /// </summary>
     /// <param name="skillNode">각 스킬 데이터를 가지고 있는 스킬 노드 리스트</param>
-    public void InstantiateSkillSet(Dictionary<WeaponType, List<SkillNode>> skillNode)
+    public void InstantiateSkillPrefabs(Dictionary<WeaponType, List<SkillNode>> skillNode)
     {
         for (int i = 0; i < (int)CharacterWeaponType.SIZE; i++)
         {
@@ -57,10 +53,21 @@ public class SkillTreeUI : MonoBehaviour
                 
                 SkillNodeButton skillNodeButton = skillInstance.GetComponent<SkillNodeButton>();
                 skillNodeButton.CurSkillNode = skillNode[(WeaponType)i][j]; 
-            }
-            
-        }
-        
+                skillNodeButtons.Add(skillNodeButton);
+            } 
+        }  
+    }
+    
+    /// <summary>
+    /// 스킬 포인트에 따른 전체 노드 버튼 업데이트
+    /// </summary>
+    /// <param name="point">현재 보유중인 스킬 포인트</param>
+    public void UpdateAllNodeButtonsWithPoint(int point)
+    { 
+        foreach (SkillNodeButton skillNodeButton in skillNodeButtons)
+        {
+            skillNodeButton.UpdateSkillButtonState(point);
+        } 
     }
     
 }

@@ -46,12 +46,16 @@ public class PlayerController : MonoBehaviour
     
     private void Awake()
     {
-        Init();
+        // ProjectContext.Instance.Container.Inject(this);
+        Init(); 
+        // InitSlotData();
+        // ChangedWeaponType(curWeaponType);
         characterStates[(int)curState].Enter();
     }
 
     private void Start()
     {
+        //TODO: 테스트용
         ProjectContext.Instance.Container.Inject(this);
         InitSlotData();
         ChangedWeaponType(curWeaponType);
@@ -87,6 +91,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void InitSlotData()
     {
+        Debug.Log($"cur:{curSlotId}");
         dataReader = sqlManager.ReadDataColumn(
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
@@ -97,7 +102,7 @@ public class PlayerController : MonoBehaviour
         {
             curWeaponType = (CharacterWeaponType)dataReader.GetInt32(0);
         }
-        
+
     }
     
     /// <summary>

@@ -40,7 +40,13 @@ public class SqliteDatabase
         //TODO: 테이블 생성 완료되면 삭제할 것
         using (dbCommand = dbConnection.CreateCommand())
         {
+            dbCommand.CommandText = @"DROP TABLE IF EXISTS Character";
+            dbCommand.ExecuteNonQuery();
+            
             dbCommand.CommandText = @"DROP TABLE IF EXISTS CharacterItem";
+            dbCommand.ExecuteNonQuery();
+            
+            dbCommand.CommandText = @"DROP TABLE IF EXISTS CharacterSkill";
             dbCommand.ExecuteNonQuery();
         }
     }
@@ -69,6 +75,7 @@ public class SqliteDatabase
                                 remaining_days      INTEGER NOT NULL DEFAULT 150,
                                 exp                 INTEGER NOT NULL DEFAULT 0,
                                 stats_point         INTEGER NOT NULL DEFAULT 0,
+                                skill_point         INTEGER NOT NULL DEFAULT 0,
                                 char_level          INTEGER NOT NULL DEFAULT 1,
                                 strength            INTEGER NOT NULL DEFAULT 5,
                                 agility             INTEGER NOT NULL DEFAULT 4,
@@ -100,6 +107,26 @@ public class SqliteDatabase
                                 )";
             dbCommand.ExecuteNonQuery();
         }
+
+        //캐릭터 스킬 테이블 생성
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            dbCommand.CommandText = "PRAGMA foreign_keys = ON";
+            dbCommand.ExecuteNonQuery();
+            
+            dbCommand.CommandText = @"
+                                    CREATE TABLE IF NOT EXISTS CharacterSkill
+                                    (
+                                        slot_id         INTEGER NOT NULL,
+                                        skill_id        TEXT NOT NULL,
+                                        skill_level     INTEGER NOT NULL,
+                                        skill_unlocked  INTEGER NOT NULL, 
+                                        PRIMARY KEY (slot_id, skill_id)
+                                        FOREIGN KEY (slot_id) REFERENCES Character (slot_id) ON DELETE CASCADE
+                                    )";
+            dbCommand.ExecuteNonQuery();
+        }
+        
     }
     
     
@@ -348,10 +375,55 @@ public class SqliteDatabase
         return dbDataReader;
     }
     
-    
+    /// <summary>
+    /// 아이템 삭제 테이블
+    /// </summary>
     public void ItemDeleteTable()
     {
         
+    }
+
+    /// <summary>
+    /// 초기 캐릭터 생성 시 스킬 데이터 테이블 삽입
+    /// </summary>
+    /// <param name="slotID">현재 생성한 슬롯 ID</param> 
+    public void SkillInsertTable(string slotID)
+    {  
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            //SQL, 즉 c에서는 \ 이스케이프 문자로 쓰여 경로를 제대로 인식하지 못함
+            string path = Path.Combine(Application.streamingAssetsPath, "SkillConfig.db").Replace("\\", "/");
+            
+            dbCommand.CommandText = $"ATTACH DATABASE '{path}' AS SkillConfig";
+            dbCommand.ExecuteNonQuery();
+
+            string query = "INSERT INTO CharacterSkill (slot_id, skill_id, skill_level, skill_unlocked) " +
+                           "SELECT @slot, skill_id, skill_level, skill_unlocked " +
+                           "FROM SkillConfig.Skills";
+            
+            dbCommand.Parameters.Add(new SqliteParameter("@slot", slotID));
+            
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery();
+        } 
+    }
+
+    /// <summary>
+    /// 현재 슬롯의 캐릭터 스킬 데이터를 읽어옴
+    /// </summary>
+    /// <param name="slotID">현재 캐릭터 슬롯 ID</param>
+    public IDataReader SkillReadTable(string slotID)
+    {
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = $"SELECT skill_id, skill_level, skill_unlocked FROM CharacterSkill WHERE slot_id = @slot";
+            dbCommand.Parameters.Add(new SqliteParameter("@slot", slotID));
+            dbCommand.CommandText = query;
+
+            dbDataReader = dbCommand.ExecuteReader(); 
+        } 
+        
+        return dbDataReader;
     }
     
 }

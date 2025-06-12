@@ -1,17 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
+public struct SkillDbData
+{
+    public string SkillId;
+    public int SkillLevel;
+    public bool IsUnLocked; 
+}
+
+
 public class SkillTree : MonoBehaviour
 {
     [SerializeField] private SkillTreeUI skillTreeUI;
+    [SerializeField] private PlayerModel playerModel;
     [Inject] private SqlManager sqlManager;
-
-    public UnityAction<int> OnChangedSkillPoint;
+    [Inject] private DataManager dataManager;
+    
     public List<SkillData> SkillDatas = new List<SkillData>();
 
     private List<SkillNode> allskillNodes = new();
@@ -19,27 +29,21 @@ public class SkillTree : MonoBehaviour
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();
     private WeaponType curWeapon;
-
-    private int skillPoints;
-
+    
     private void Awake()
     {
-        Debug.Log("Tree 시작");
         ProjectContext.Instance.Container.Inject(this);
         InitializeSkillNodes();
         LinkPrerequisites();
+        //InitializeSkillData();
         CategorizeByWeapon();
         SortSkillNodesByWeapon();
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        OnChangedSkillPoint += IncreaseSkillPoints;
-    }
-
-    private void OnDisable()
-    {
-        OnChangedSkillPoint -= IncreaseSkillPoints;
+        //TODO: 테스트용 코드
+        InitializeSkillData();
     }
 
     /// <summary>
@@ -47,6 +51,19 @@ public class SkillTree : MonoBehaviour
     /// </summary>
     private void InitializeSkillData()
     {
+        //IDataReader reader = sqlManager.ReadSkillDataColumn($"{dataManager.SlotId}");
+        //TODO: 테스트용 슬롯 아이디 1고정
+        IDataReader reader = sqlManager.ReadSkillDataColumn("1");
+
+        while (reader.Read())
+        {
+            Debug.Log(reader.GetString(0));
+        }
+        
+        
+        //현재 슬롯 아이디에 해당 하는 스킬 ID 기준으로 행을 뽑음
+        //prerequisiteNodeMap 순회하면서 DB에서 뽑아온 ID에 해당하는 스킬 노드에 Data 셋
+ 
     }
 
     /// <summary>
@@ -57,7 +74,7 @@ public class SkillTree : MonoBehaviour
         foreach (SkillData data in SkillDatas)
         {
             //노드 생성 후 전체 스킬 노드 리스트에 추가
-            allskillNodes.Add(new SkillNode(data));
+            allskillNodes.Add(new SkillNode(data, playerModel));
         }
     }
 
@@ -70,7 +87,7 @@ public class SkillTree : MonoBehaviour
         prerequisiteNodeMap = allskillNodes.ToDictionary(x => x.skillData.SkillId);
 
         foreach (SkillNode node in allskillNodes)
-        {
+        { 
             //해당 노드의 선행 스킬 리스트 이름 추출
             foreach (string prerequisite in node.skillData.prerequisiteSkillsId)
             {
@@ -94,9 +111,18 @@ public class SkillTree : MonoBehaviour
         }
         
         //스킬 UI에 노드 리스트 전달
-        skillTreeUI.InstantiateSkillSet(weaponTypeNodes);
+        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes); 
+        NotifySkillPointChanged();
     }
 
+    /// <summary>
+    /// 스킬트리 UI에 현재 모델이 보유중인 스킬 포인트를 알림
+    /// </summary>
+    public void NotifySkillPointChanged()
+    { 
+        skillTreeUI.UpdateAllNodeButtonsWithPoint(playerModel.CurSkillPoint);
+    }
+    
     /// <summary>
     /// 무기 타입에 따른 노드 구분
     /// </summary>
@@ -123,14 +149,5 @@ public class SkillTree : MonoBehaviour
     {
         curWeapon = weaponType;
         skillTreeUI.OnChangedSkillTab?.Invoke(curWeapon);
-    }
-
-    /// <summary>
-    /// 레벨업 시 스킬 포인트 증가
-    /// </summary>
-    /// <param name="amount">증가할 포인트 양</param>
-    private void IncreaseSkillPoints(int amount)
-    {
-        skillPoints += amount;
     }
 }

@@ -2,22 +2,31 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SkillNodeButton : MonoBehaviour
 {
     [SerializeField] private Button increaseButton;
-    [SerializeField] private Button decreaseButton;
     [SerializeField] private Image skillIconImage;
-    
+     
     public SkillNode CurSkillNode;
-
+     
     private void Awake()
     {
         increaseButton.onClick.AddListener(InvestSkillPoint);
-        InitSkillIcon();
+        InitSkillIcon(); 
     }
-    
+ 
+    /// <summary>
+    /// 스킬 포인트 및 선행 스킬 잠금 해제에 따라 버튼 상호작용 T/F 적용
+    /// </summary>
+    /// <param name="point"></param>
+    public void UpdateSkillButtonState(int point)
+    { 
+        CurSkillNode.TryUnlockByPrerequisites();
+        increaseButton.interactable = point > 0 && CurSkillNode.UnLocked; 
+    }
     
     /// <summary>
     /// 스킬 아이콘 이미지 셋팅
@@ -28,13 +37,11 @@ public class SkillNodeButton : MonoBehaviour
     }
     
     /// <summary>
-    /// 스킬 포인트 투자 후 스킬 강화
+    /// 스킬 포인트 투자 후 스킬 강화 진행
     /// </summary>
     private void InvestSkillPoint()
     {
-        //TODO: SkillTree에서 스킬 포인트를 각 Node button에 이벤트로 전달해주는 형식? 스킬 포인트가 0이되면 모든 증가 버튼은 비활성화
         CurSkillNode.ApplyPoint();
-        
     }
     
 }

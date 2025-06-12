@@ -10,16 +10,18 @@ public class SqlManager : IInitializable
 {
     private SqliteDatabase sqlDatabase;
 
-    private Dictionary<CharacterDataColumns, string> CharacterDataColumns;
-    private Dictionary<CharacterItemDataColumns, string> CharacterItemDataColumns;
+    private Dictionary<CharacterDataColumns, string> _characterDataColumns;
+    private Dictionary<CharacterItemDataColumns, string> _characterItemDataColumns;
+    private Dictionary<CharacterSkillDataColumns, string> _characterSkillDataColumns;
+    
     
     /// <summary>
     /// 게임 시작 시 테이블 생성
     /// </summary>
     public void Initialize()
     {
-        CharacterDataColumns = new Dictionary<CharacterDataColumns, string>();
-        CharacterItemDataColumns = new Dictionary<CharacterItemDataColumns, string>();
+        _characterDataColumns = new Dictionary<CharacterDataColumns, string>();
+        _characterItemDataColumns = new Dictionary<CharacterItemDataColumns, string>();
         sqlDatabase = new SqliteDatabase();
         sqlDatabase.CreateTable();  
     }
@@ -31,12 +33,12 @@ public class SqlManager : IInitializable
     /// <returns></returns>
     public string GetCharacterColumn(CharacterDataColumns columns)
     {
-        if (!CharacterDataColumns.ContainsKey(columns))
+        if (!_characterDataColumns.ContainsKey(columns))
         {
-            CharacterDataColumns.TryAdd(columns, columns.ToString().ToLower());
+            _characterDataColumns.TryAdd(columns, columns.ToString().ToLower());
         }   
         
-        return CharacterDataColumns[columns];
+        return _characterDataColumns[columns];
     }
     
     /// <summary>
@@ -46,12 +48,27 @@ public class SqlManager : IInitializable
     /// <returns></returns>
     public string GetCharacterItemColumn(CharacterItemDataColumns columns)
     {
-        if (!CharacterItemDataColumns.ContainsKey(columns))
+        if (!_characterItemDataColumns.ContainsKey(columns))
         {
-            CharacterItemDataColumns.TryAdd(columns, columns.ToString().ToLower());
+            _characterItemDataColumns.TryAdd(columns, columns.ToString().ToLower());
         }
         
-        return CharacterItemDataColumns[columns];
+        return _characterItemDataColumns[columns];
+    }
+
+    /// <summary>
+    /// 캐릭터 스킬 데이터 컬럼 반환
+    /// </summary>
+    /// <param name="columns">컬럼 키</param>
+    /// <returns></returns>
+    public string GetCharacterSkillColumn(CharacterSkillDataColumns columns)
+    {
+        if (!_characterSkillDataColumns.ContainsKey(columns))
+        {
+            _characterSkillDataColumns.TryAdd(columns, columns.ToString().ToLower());
+        }
+        
+        return _characterSkillDataColumns[columns];
     }
     
     /// <summary>
@@ -119,6 +136,25 @@ public class SqlManager : IInitializable
     public IDataReader ReadItemDataColumn(string condition, string conditionValue)
     { 
         return sqlDatabase.ItemReadTable(condition, conditionValue);
+    }
+
+    /// <summary>
+    /// 캐릭터 생성 초기 스킬 데이터 삽입
+    /// </summary>
+    /// <param name="slotID">현재 캐릭터 슬롯 ID</param> 
+    public void InsertSkillDataColumn(string slotID)
+    {
+        sqlDatabase.SkillInsertTable(slotID);
+    }
+
+    /// <summary>
+    /// 현재 슬롯의 캐릭터 스킬 데이터를 읽어옴
+    /// </summary>
+    /// <param name="slotID">현재 캐릭터 슬롯 ID</param>
+    /// <returns></returns>
+    public IDataReader ReadSkillDataColumn(string slotID)
+    {
+        return sqlDatabase.SkillReadTable(slotID);
     }
     
 }

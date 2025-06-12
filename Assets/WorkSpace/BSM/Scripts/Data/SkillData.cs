@@ -14,7 +14,8 @@ public class SkillData : ScriptableObject
     public int SkillLevel; 
     public int SkillMaxLevel;
     public int SkillDamage;
-
+    public bool IsActive;
+    
     public Sprite SkillIcon;
     public WeaponType RequiredWeapon;
     public SkillType SkillType;

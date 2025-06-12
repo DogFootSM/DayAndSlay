@@ -24,17 +24,17 @@ public class DataManager : MonoBehaviour
     /// </summary>
     /// <param name="presets"></param>
     public void SavePresetData(List<Image> presets, int WeaponType)
-    { 
+    {
         for (int i = 0; i < presets.Count; i++)
         {
             //착용 에셋명 저장
             spriteColumns.Add(presets[i].sprite.name);
         }
-           
+
         sqlManager.CharacterInsertTable(
-            new[]{sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)},
-            new []{$"{SlotId}"});
-        
+            new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
+            new[] { $"{SlotId}" });
+
         sqlManager.UpdateDataColumn(new[]
             {
                 sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
@@ -42,12 +42,14 @@ public class DataManager : MonoBehaviour
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
             }, spriteColumns.ToArray(), sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
-        
-        sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE)}, new[] { $"{WeaponType}" }, 
-            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), 
+
+        sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
+            new[] { $"{WeaponType}" },
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
 
         StartItemDataInsert();
+        StartSkillDataInsert();
     }
 
     /// <summary>
@@ -55,28 +57,35 @@ public class DataManager : MonoBehaviour
     /// </summary>
     private void StartItemDataInsert()
     {
-         
         //TODO: 아이템 ID 양식 정립되면 수정하기.
         sqlManager.UpsertItemDataColumn(
-            new []
+            new[]
             {
-                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_ID), 
-                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.SLOT_ID), 
-                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_AMOUNT), 
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_ID),
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.SLOT_ID),
+                sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_AMOUNT),
                 sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.INVENTORY_SLOT_ID),
                 sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.IS_EQUIPMENT),
             },
-            new []
+            new[]
             {
-                $"{curWeapon + 100}",       //지급할 Item_id
-                $"{SlotId}",                //해당 캐릭터 slotId
-                "1",                        //지급할 개수
-                "0",                        //인벤토리 슬롯의 위치
-                "1"                         //장비 착용 여부
-            }                       
+                $"{curWeapon + 100}", //지급할 Item_id
+                $"{SlotId}", //해당 캐릭터 slotId
+                "1", //지급할 개수
+                "0", //인벤토리 슬롯의 위치
+                "1" //장비 착용 여부
+            }
         );
     }
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void StartSkillDataInsert()
+    {
+         sqlManager.InsertSkillDataColumn($"{SlotId}");
+    }
+
 
     /// <summary>
     /// 캐릭터 데이터 로드
@@ -84,40 +93,40 @@ public class DataManager : MonoBehaviour
     /// <param name="characterAnimatorController">현재 캐릭터</param>
     public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
     {
-        
         //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
         SlotId = 1;
-        
+
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
-        {
-            sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
-            sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
-            sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
-            sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
-        }, new[] {sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
-            new [] {$"{SlotId}"}, 
+            {
+                sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+            }, new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
+            new[] { $"{SlotId}" },
             null);
-        
+
         //Body Sprite 데이터 가져옴
         while (dataReader.Read())
         {
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
-                spriteNames.Add(dataReader.GetString(i)); 
-            } 
+                spriteNames.Add(dataReader.GetString(i));
+            }
         }
-         
-        dataReader = sqlManager.ReadDataColumn(new []{sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),}, 
-            new []{sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
-            new [] {$"{SlotId}"}, 
+
+        dataReader = sqlManager.ReadDataColumn(
+            new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE), },
+            new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
+            new[] { $"{SlotId}" },
             null);
-        
+
         //현재 무기 상태 데이터 가져옴
         while (dataReader.Read())
         {
             curWeapon = dataReader.GetInt32(0);
         }
-        
+
         //캐릭터 애니메이션 스프라이트 이미지 교체
         for (int i = 0; i < characterAnimatorController.BodyLibraryAsset.Length; i++)
         {
@@ -140,7 +149,7 @@ public class DataManager : MonoBehaviour
                                                                  $"{((BodyPartsType)i)}/" +
                                                                  $"{spriteNames[i]}/{(CharacterAnimationType)j}");
                 }
-        
+
                 //찾아온 애셋의 개수만큼 반복
                 for (int k = 0; k < changeSprites[i].Length; k++)
                 {
@@ -150,15 +159,15 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-        
-        
+
+
         //현재 무기가 Wand일 경우 Short Sword 인덱스로, 그 외 자기 무기 인덱스 할당
         weaponIndex = (CharacterWeaponType)curWeapon switch
         {
             CharacterWeaponType.WAND => (int)CharacterWeaponType.SHORT_SWORD,
             _ => curWeapon
-        }; 
-        
+        };
+
         //무기 스프라이트 변경
         for (int i = 0; i < (int)CharacterAnimationType.SIZE; i++)
         {
@@ -166,7 +175,7 @@ public class DataManager : MonoBehaviour
                                                          $"{(CharacterWeaponType)curWeapon}/" +
                                                          $"{spriteNames[spriteNames.Count - 1]}/" +
                                                          $"{(CharacterAnimationType)i}");
-        
+
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
                 characterAnimatorController.EquipmentLibraryAsset[weaponIndex].AddCategoryLabel(changeSprites[0][j],
@@ -174,7 +183,7 @@ public class DataManager : MonoBehaviour
                     $"{(CharacterAnimationType)i + "_" + j}");
             }
         }
-        
+
         characterAnimatorController.WeaponAnimatorChange(weaponIndex);
     }
 
@@ -183,10 +192,9 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void CreateDataUpdate()
     {
-        sqlManager.UpdateDataColumn(new [] {sqlManager.GetCharacterColumn(CharacterDataColumns.IS_CREATE)},
-            new [] {"1"}, 
+        sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.IS_CREATE) },
+            new[] { "1" },
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
     }
-    
 }
