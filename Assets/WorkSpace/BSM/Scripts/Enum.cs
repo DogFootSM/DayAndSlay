@@ -241,5 +241,5 @@ public enum SkillState
 [Serializable]
 public enum QuickSlotType
 {
-    Q, W, E, R,T, Y, A, S, D, F, G, H
+    Q, W, E, R,T, Y, A, S, D, F, G, H, NONE
 }

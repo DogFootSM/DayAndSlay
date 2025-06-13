@@ -14,11 +14,18 @@ public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
     public QuickSlotType QuickSlotType;
 
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
-    private SkillNode skillNode;
+    private SkillData skillData;
+
+    public SkillData SkillData
+    {
+        get => skillData;
+        set => skillData = value;
+    }
 
     private void Awake()
     {
         quickSlotName.text = $"{QuickSlotType}";
+        quickSlotManager.AddRegisterQuickSlotEntry(QuickSlotType, this);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -27,21 +34,25 @@ public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// 스킬 퀵슬롯 설정
+    /// 스킬 퀵슬롯 아이콘 이미지 설정
     /// </summary>
     private void PreviewRegisterSlot()
     {
-        skillNode = quickSlotManager.PreviewSkillRegister(this); 
-        skillImage.sprite = skillNode.skillData.SkillIcon;
+        skillData = quickSlotManager.PreviewSkillRegister(this);
+
+        skillImage.sprite = skillData.SkillIcon;
     }
-    
+
     /// <summary>
-    /// 스킬 퀵슬롯 해제
+    /// 스킬 퀵슬롯 아이콘 이미지 해제
     /// </summary>
     public void PreviewUnRegisterSlot()
     {
         skillImage.sprite = null;
-        skillNode = null;
     }
-    
+
+    public void UpdateRegisterSlot(Sprite newSprite)
+    {
+        skillImage.sprite = newSprite;
+    }
 }
