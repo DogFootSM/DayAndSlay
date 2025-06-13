@@ -370,11 +370,13 @@ public class UI_ArmorForge : BaseUI
 
     private void DictMake()
     {
+        Debug.Log("µÒ∆Æ∏ﬁ¿Ã≈©Ω««‡µ ");
         for(int i = 0; i < (int)ArmorType.Size; i++)
         {
             plateDict[(ArmorType)i] = PlateListMake((ArmorType)i);
             leatherDict[(ArmorType)i] = LeatherListMake((ArmorType)i);
             clothDict[(ArmorType)i] = ClothListMake((ArmorType)i);
+            Debug.Log(plateDict[(ArmorType)i]);
         }
 
     }

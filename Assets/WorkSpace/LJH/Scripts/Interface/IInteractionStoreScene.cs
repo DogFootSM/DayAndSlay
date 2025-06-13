@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInteractionStore
+public interface IInteractionStoreScene
 {
     void Interaction();
 }

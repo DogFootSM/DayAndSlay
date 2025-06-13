@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class ArmorForge : Forge, IInteractionStore
+public class ArmorForge : InteractableObj, IInteractionStoreScene
 {
     [Inject(Id = "ArmorForge")]
     GameObject forgeUi;
 
-    public void Interaction()
+    [Inject(Id = "PopUp")]
+    GameObject popUp;
+
+    public override void Interaction()
     {
+        popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
     }
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Interaction();
-        }
+        popUp.GetComponent<PopUp>().objName = "방어구 제작대";
+        popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 }

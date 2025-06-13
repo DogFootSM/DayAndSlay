@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class Door : MonoBehaviour, IInteractionStore
+public class Door : InteractableObj, IInteractionStoreScene
 {
     private Animator animator;
 
@@ -14,7 +14,10 @@ public class Door : MonoBehaviour, IInteractionStore
 
     [SerializeField] private Transform movePosTrans;
     private Vector2 movePos;
-    private GameObject player;
+    [SerializeField] private GameObject player;
+
+    [Inject(Id = "PopUp")]
+    GameObject popUp;
 
     void Start()
     {
@@ -22,22 +25,19 @@ public class Door : MonoBehaviour, IInteractionStore
         movePos = movePosTrans.position;
     }
 
-    public void Interaction()
+    public override void Interaction()
     {
+        Debug.Log("문열림 실행");
         animator.Play("DoorOpenAni");
         SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
         player.transform.position = movePos;
 
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    public override void UiOnOffMethod(Collision2D collision)
     {
-        player = collision.gameObject;
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        player = null;
+        popUp.GetComponent<PopUp>().objName = "문";
+        popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 
 

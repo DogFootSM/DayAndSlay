@@ -1,35 +1,33 @@
 using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TestPlayer : MonoBehaviour
 {
     public List<Item> items = new List<Item>();
-    [SerializeField] private List<ItemRecipe> recipes = new List<ItemRecipe>();
-
-    [SerializedDictionary]
-    public Dictionary<ItemRecipe, bool> recipeOpened = new Dictionary<ItemRecipe, bool>();
-    public Dictionary<Ingredient, ItemRecipe> IngredientDic = new Dictionary<Ingredient, ItemRecipe>();
-
-    public Ingredient ingre;
-    public ItemRecipe recipe;
 
 
     [SerializeField] float moveSpeed;
 
     GameObject interactObj;
-    Table table;
 
-    private void Start()
-    {
-        table = GetComponent<Table>();
-    }
+    Item haveItem;
+
+    // 인벤토리 테스트용 변수
+    [SerializeField]
+    List<ItemData> inventories = new List<ItemData>();
+
+    [SerializeField] public ItemData choiceItem;
+    
     private void Update()
     {
         PlayerMove();
         TakeInteraction();
+        //테스트코드
+        ItemPick();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,27 +40,32 @@ public class TestPlayer : MonoBehaviour
         interactObj = null;
     }
 
-    void RecipeOpen()
+    void ItemPick()
     {
-        //초기 값
-        for (int i = 0; i < recipes.Count; i++)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            recipeOpened.Add(recipes[i], false);
+            Debug.Log("초이스 아이템에 아이템 넣음");
+            choiceItem = inventories[0];
         }
     }
 
-    void GetRecipe()
-    {
-        IngredientDic.Add(ingre, recipe);
-    }
 
     void TakeInteraction()
     {
         if (Input.GetKeyDown(KeyCode.E) &&
             interactObj != null &&
-            interactObj.TryGetComponent(out IInteractionStore interactable))
+            interactObj.TryGetComponent(out IInteractionStoreScene interactable))
         {
-            interactable.Interaction();
+            switch (interactable)
+            {
+                case Table table:
+                    table.TakeItem(choiceItem);
+                    break;
+
+                default :
+                    interactable.Interaction();
+                    break;
+            }
         }
     }
 

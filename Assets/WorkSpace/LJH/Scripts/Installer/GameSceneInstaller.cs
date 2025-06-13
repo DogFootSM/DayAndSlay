@@ -19,6 +19,8 @@ public class GameSceneInstaller : MonoInstaller
 
     [SerializeField] ItemManager itemManager;
 
+    [SerializeField] GameObject popUp;
+
     public override void InstallBindings()
     {
         Container
@@ -48,5 +50,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<ItemManager>()
             .FromInstance(itemManager);
+
+        Container
+            .Bind<GameObject>().WithId("PopUp")
+            .FromInstance(popUp);
     }
 }
