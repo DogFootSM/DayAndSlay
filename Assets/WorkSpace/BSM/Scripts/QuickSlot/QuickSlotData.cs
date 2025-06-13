@@ -4,8 +4,8 @@ using UnityEngine;
 
 public static class QuickSlotData
 {
-    public static Dictionary<string, RegisterQuickSlot> RegisteredSkillMaps = new Dictionary<string, RegisterQuickSlot>();
-    public static Dictionary<QuickSlotType, RegisterQuickSlot> RegisterSlotsDict = new Dictionary<QuickSlotType, RegisterQuickSlot>();
+    public static Dictionary<string, QuickSlotRegisterSlotUI> RegisteredSkillMaps = new Dictionary<string, QuickSlotRegisterSlotUI>();
+    public static Dictionary<QuickSlotType, QuickSlotRegisterSlotUI> RegisterSlotsDict = new Dictionary<QuickSlotType, QuickSlotRegisterSlotUI>();
     public static Dictionary<QuickSlotType, QuickSlot> QuickSlotsDict = new Dictionary<QuickSlotType, QuickSlot>();
     
     /// <summary>
@@ -35,12 +35,12 @@ public static class QuickSlotData
     /// 스킬창 화면 퀵슬롯 등록
     /// </summary>
     /// <param name="quickSlotType"></param>
-    /// <param name="quickSlot"></param>
-    public static void AddRegisterQuickSlotEntry(QuickSlotType quickSlotType, RegisterQuickSlot quickSlot)
+    /// <param name="slotUI"></param>
+    public static void AddRegisterQuickSlotEntry(QuickSlotType quickSlotType, QuickSlotRegisterSlotUI slotUI)
     {
         if (!RegisterSlotsDict.ContainsKey(quickSlotType))
         {
-            RegisterSlotsDict.Add(quickSlotType, quickSlot);
+            RegisterSlotsDict.Add(quickSlotType, slotUI);
         }
         
     } 

@@ -12,7 +12,7 @@ public class QuickSlotSwap : MonoBehaviour
             nextQuickSlot.ApplySkillToMainQuickSlot(prevQuickSlot.CurrentSlotSkillNode);
             prevQuickSlot.UnassignExistingQuickSlotForSkill();
             
-            QuickSlotData.RegisterSlotsDict[nextQuickSlot.CurrentQuickSlotType].UpdateRegisterSlot(nextQuickSlot.CurrentSlotSkillNode.skillData);
+            QuickSlotData.RegisterSlotsDict[nextQuickSlot.CurrentQuickSlotType].UpdateRegisterSlotUI(nextQuickSlot.CurrentSlotSkillNode.skillData);
             QuickSlotData.RegisterSlotsDict[prevQuickSlot.CurrentQuickSlotType].PreviewUnRegisterSlot();
 
             QuickSlotData.UpdateSkillMaps(nextQuickSlot); 
@@ -36,7 +36,7 @@ public class QuickSlotSwap : MonoBehaviour
     private void UpdateSlotContents(SkillNode skillNode, QuickSlot quickSlot)
     {
         quickSlot.ApplySkillToMainQuickSlot(skillNode);
-        QuickSlotData.RegisterSlotsDict[quickSlot.CurrentQuickSlotType].UpdateRegisterSlot(quickSlot.CurrentSlotSkillNode.skillData);
+        QuickSlotData.RegisterSlotsDict[quickSlot.CurrentQuickSlotType].UpdateRegisterSlotUI(quickSlot.CurrentSlotSkillNode.skillData);
         QuickSlotData.UpdateSkillMaps(quickSlot);
     }
  

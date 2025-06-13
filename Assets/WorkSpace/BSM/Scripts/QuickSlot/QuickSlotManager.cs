@@ -53,11 +53,11 @@ public class QuickSlotManager : MonoBehaviour
     /// <summary>
     /// Quick Register에 현재 스킬창 스킬 등록을 진행
     /// </summary>
-    /// <param name="registerQuickSlot">등록한 퀵슬롯 타입</param>
+    /// <param name="quickSlotRegisterSlotUI">등록한 퀵슬롯 타입</param>
     /// <returns>퀵슬롯 UI에 사용할 스킬 노드 아이콘 이미지</returns>
-    public SkillData RegisterSkillToQuickSlot(RegisterQuickSlot registerQuickSlot)
+    public SkillData RegisterSkillToQuickSlot(QuickSlotRegisterSlotUI quickSlotRegisterSlotUI)
     {  
-        quickSlotRegister.ConfirmSkillRegister(registerQuickSlot); 
+        quickSlotRegister.ConfirmSkillRegister(quickSlotRegisterSlotUI); 
         return quickSlotRegister.SelectedSkillNode.skillData;
     }
  

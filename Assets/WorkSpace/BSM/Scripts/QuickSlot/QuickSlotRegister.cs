@@ -12,21 +12,21 @@ public class QuickSlotRegister : MonoBehaviour
     /// <summary>
     /// 퀵슬롯 스킬 등록 및 중복 스킬 제거
     /// </summary>
-    /// <param name="registerQuickSlot">등록한 퀵슬롯 타입</param>
+    /// <param name="quickSlotRegisterSlotUI">등록한 퀵슬롯 타입</param>
     /// <returns>퀵슬롯 UI에 사용할 스킬 노드 아이콘 이미지</returns>
-    public SkillData ConfirmSkillRegister(RegisterQuickSlot registerQuickSlot)
+    public SkillData ConfirmSkillRegister(QuickSlotRegisterSlotUI quickSlotRegisterSlotUI)
     {  
         //등록할 슬롯에 데이터가 존재하는지 확인
-        if (registerQuickSlot.SkillData != null)
+        if (quickSlotRegisterSlotUI.SkillData != null)
         { 
             //현재 슬롯의 데이터와 새로 선택한 스킬이 같은 스킬인지 비교
-            if (!registerQuickSlot.SkillData.Equals(selectedSkillNode.skillData))
+            if (!quickSlotRegisterSlotUI.SkillData.Equals(selectedSkillNode.skillData))
             { 
                 //기존 슬롯에 할당되어 있는 스킬 제거
-                string tempKey = registerQuickSlot.SkillData.SkillId;
+                string tempKey = quickSlotRegisterSlotUI.SkillData.SkillId;
                 
                QuickSlotData.RegisteredSkillMaps[tempKey].PreviewUnRegisterSlot(); 
-               QuickSlotData.QuickSlotsDict[registerQuickSlot.QuickSlotType].UnassignExistingQuickSlotForSkill(); 
+               QuickSlotData.QuickSlotsDict[quickSlotRegisterSlotUI.QuickSlotType].UnassignExistingQuickSlotForSkill(); 
                QuickSlotData.RegisteredSkillMaps.Remove(tempKey);
             } 
         }
@@ -35,13 +35,13 @@ public class QuickSlotRegister : MonoBehaviour
  
         UnassignDuplicateSkillSlot(key);
           
-        QuickSlotData.RegisteredSkillMaps[key] = registerQuickSlot;
+        QuickSlotData.RegisteredSkillMaps[key] = quickSlotRegisterSlotUI;
         quickSlotUIManager.OnRequestRegisterPanelToggle?.Invoke(false);
         
         //메인 화면의 퀵슬롯에 등록할 스킬 노드 전달
-        if (QuickSlotData.QuickSlotsDict.ContainsKey(registerQuickSlot.QuickSlotType))
+        if (QuickSlotData.QuickSlotsDict.ContainsKey(quickSlotRegisterSlotUI.QuickSlotType))
         {
-            QuickSlotData.QuickSlotsDict[registerQuickSlot.QuickSlotType].ApplySkillToMainQuickSlot(selectedSkillNode);
+            QuickSlotData.QuickSlotsDict[quickSlotRegisterSlotUI.QuickSlotType].ApplySkillToMainQuickSlot(selectedSkillNode);
         }
         
         return selectedSkillNode.skillData;

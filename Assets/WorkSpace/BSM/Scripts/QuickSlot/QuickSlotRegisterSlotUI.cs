@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
+public class QuickSlotRegisterSlotUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI quickSlotName;
     [SerializeField] private Image skillImage;
@@ -52,7 +52,11 @@ public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
         skillData = null;
     }
 
-    public void UpdateRegisterSlot(SkillData skillData)
+    /// <summary>
+    /// 스킬 등록할 슬롯 UI 업데이트
+    /// </summary>
+    /// <param name="skillData"></param>
+    public void UpdateRegisterSlotUI(SkillData skillData)
     {
         this.skillData = skillData;
         skillImage.sprite = this.skillData.SkillIcon;
