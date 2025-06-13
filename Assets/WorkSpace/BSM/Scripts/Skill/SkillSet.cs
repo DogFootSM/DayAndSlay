@@ -27,7 +27,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
 
     private void OnDisable()
     {
-        quickSlotManager.CloseSkillPreview();
+        quickSlotManager.ClosePreviewAndHideRegisterPanel();
     }
 
     /// <summary>
@@ -77,6 +77,6 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     { 
-        quickSlotManager.NotifySkillPreview(CurSkillNode); 
+        quickSlotManager.PreviewSkillInUI(CurSkillNode); 
     }
 }

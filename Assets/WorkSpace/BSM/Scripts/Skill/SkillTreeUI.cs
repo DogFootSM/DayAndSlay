@@ -29,7 +29,7 @@ public class SkillTreeUI : MonoBehaviour
 
     private void Awake()
     {
-        previewRegisterButton.onClick.AddListener(() => quickSlotManager.SkillRegisterPanelOpen(selectedSkillNode));
+        previewRegisterButton.onClick.AddListener(() => quickSlotManager.RequestSkillRegisterPanelOpen(selectedSkillNode));
     }
 
     private void OnEnable()

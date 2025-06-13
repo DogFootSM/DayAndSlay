@@ -25,7 +25,7 @@ public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         quickSlotName.text = $"{QuickSlotType}";
-        quickSlotManager.AddRegisterQuickSlotEntry(QuickSlotType, this);
+        QuickSlotData.AddRegisterQuickSlotEntry(QuickSlotType, this);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -38,7 +38,7 @@ public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void PreviewRegisterSlot()
     {
-        skillData = quickSlotManager.PreviewSkillRegister(this);
+        skillData = quickSlotManager.RegisterSkillToQuickSlot(this);
 
         skillImage.sprite = skillData.SkillIcon;
     }
@@ -49,10 +49,12 @@ public class RegisterQuickSlot : MonoBehaviour, IPointerClickHandler
     public void PreviewUnRegisterSlot()
     {
         skillImage.sprite = null;
+        skillData = null;
     }
 
-    public void UpdateRegisterSlot(Sprite newSprite)
+    public void UpdateRegisterSlot(SkillData skillData)
     {
-        skillImage.sprite = newSprite;
+        this.skillData = skillData;
+        skillImage.sprite = this.skillData.SkillIcon;
     }
 }

@@ -24,15 +24,22 @@ public class QuickSlot : MonoBehaviour
     private void Init()
     {
         slotTypeText.text = $"{quickSlotType}";  
-        quickSlotManager.AddQuickSlotEntry(quickSlotType, this);
+        QuickSlotData.AddQuickSlotEntry(quickSlotType, this);
     }
 
+    /// <summary>
+    /// 메인 퀵슬롯 설정
+    /// </summary>
+    /// <param name="skillNode"></param>
     public void ApplySkillToMainQuickSlot(SkillNode skillNode)
     {
         curSlotSkillNode = skillNode;
         skillIconImage.sprite = curSlotSkillNode.skillData.SkillIcon;
     }
 
+    /// <summary>
+    /// 메인 퀵슬롯 설정 해제
+    /// </summary>
     public void UnassignExistingQuickSlotForSkill()
     { 
         curSlotSkillNode = null;

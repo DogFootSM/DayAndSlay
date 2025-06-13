@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MainQuickSlotController : MonoBehaviour, IDragHandler, IDropHandler, IPointerDownHandler
+public class MainQuickSlotController : 
+    MonoBehaviour, 
+    IDragHandler, IDropHandler, IBeginDragHandler
 {
     [SerializeField] private GraphicRaycaster mainQuickSlotGraphicRaycaster;
     [SerializeField] private Image mouseFollowIcon;
@@ -26,21 +28,29 @@ public class MainQuickSlotController : MonoBehaviour, IDragHandler, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     { 
-        if (mouseFollowIcon.gameObject.activeSelf) MouseFollowIconActive(false);
+        if (mouseFollowIcon.gameObject.activeSelf) MouseFollowIconActive(false); 
         
-        mainQuickSlotGraphicRaycaster.Raycast(eventData, raycastResults);
-        nextQuickSlot = raycastResults[1].gameObject.GetComponentInParent<QuickSlot>();
+        mainQuickSlotGraphicRaycaster.Raycast(eventData, raycastResults); 
+        
+        foreach (RaycastResult raycastResult in raycastResults)
+        {
+            nextQuickSlot = raycastResult.gameObject.GetComponentInParent<QuickSlot>();
 
-        quickSlotManager.SwapQuickSlotContents(prevQuickSlot, nextQuickSlot); 
+            if (nextQuickSlot != null && nextQuickSlot != prevQuickSlot)
+            {
+                quickSlotManager.SwapSkillsInQuickSlots(prevQuickSlot, nextQuickSlot);
+                break;
+            } 
+        } 
     }
-
-    public void OnPointerDown(PointerEventData eventData)
+ 
+    public void OnBeginDrag(PointerEventData eventData)
     {
         raycastResults.Clear();
         mainQuickSlotGraphicRaycaster.Raycast(eventData, raycastResults);
         UpdatePrevSkillNode();
     }
-
+    
     /// <summary>
     /// 이동 전 슬롯의 스킬 노드 업데이트
     /// </summary>
@@ -55,10 +65,15 @@ public class MainQuickSlotController : MonoBehaviour, IDragHandler, IDropHandler
         }     
     }
 
+    /// <summary>
+    /// 드래그 스킬 아이콘 On, Off
+    /// </summary>
+    /// <param name="isActive">변경할 상태</param>
     private void MouseFollowIconActive(bool isActive)
     {
         mouseFollowIcon.gameObject.SetActive(isActive);
         
     }
+
 
 }

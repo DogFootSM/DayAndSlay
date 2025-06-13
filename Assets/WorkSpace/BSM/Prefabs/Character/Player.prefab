@@ -8361,6 +8361,9 @@ GameObject:
   - component: {fileID: 3807961088558742326}
   - component: {fileID: 8027754779118798500}
   - component: {fileID: 7701482441616913194}
+  - component: {fileID: 8821390699400689072}
+  - component: {fileID: 79204451382306512}
+  - component: {fileID: 8899358219524065494}
   m_Layer: 5
   m_Name: QuickSlotCanvas
   m_TagString: Untagged
@@ -8466,6 +8469,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainQuickSlotGraphicRaycaster: {fileID: 8027754779118798500}
   mouseFollowIcon: {fileID: 4656629311888075894}
+--- !u!114 &8821390699400689072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507616039492720816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe494dc96ad54b44a8368162bf44a1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registerPanel: {fileID: 8207948989961495385}
+  skillTreeUI: {fileID: 2276829925304993605}
+--- !u!114 &79204451382306512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507616039492720816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54bfbbae453f4946a6e58935f4f90bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quickSlotUIManager: {fileID: 8821390699400689072}
+--- !u!114 &8899358219524065494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507616039492720816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c33787f424617b48aba8e2c2a4aaaf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3512370643012350566
 GameObject:
   m_ObjectHideFlags: 0
@@ -20323,7 +20365,7 @@ GameObject:
   - component: {fileID: 5279637553331853945}
   - component: {fileID: 4267079456741019929}
   - component: {fileID: 2276829925304993605}
-  - component: {fileID: 4945015417586881503}
+  - component: {fileID: 3375672199839464244}
   m_Layer: 15
   m_Name: SystemWindowObject
   m_TagString: Untagged
@@ -20338,7 +20380,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9169298801888686656}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20457,7 +20499,7 @@ MonoBehaviour:
   previewSkillPrerequisiteText: {fileID: 5928959225743084002}
   previewSkillIcon: {fileID: 8744358210302374960}
   previewRegisterButton: {fileID: 7620293010244628683}
---- !u!114 &4945015417586881503
+--- !u!114 &3375672199839464244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20469,8 +20511,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5529b9e89cd8d194c8898128229be711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillTreeUI: {fileID: 2276829925304993605}
-  registerPanel: {fileID: 8207948989961495385}
+  quickSlotUIManager: {fileID: 8821390699400689072}
+  quickSlotSwap: {fileID: 8899358219524065494}
+  quickSlotRegister: {fileID: 79204451382306512}
 --- !u!1001 &245199854524192495
 PrefabInstance:
   m_ObjectHideFlags: 0
