@@ -155,6 +155,7 @@ public enum ArmorType
     PANTS,
     ARM,
     SHOES,
+    Size,
 }
 
 /// <summary>

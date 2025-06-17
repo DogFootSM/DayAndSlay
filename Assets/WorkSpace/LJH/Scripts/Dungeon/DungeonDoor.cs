@@ -19,7 +19,7 @@ public class DungeonDoor : MonoBehaviour
     Grid toGrid;
 
     //인덱스 이동용
-    int verticalOffset = 4;
+    int verticalOffset = 3;
     int horizonOffset = 1;
     int index;
 
