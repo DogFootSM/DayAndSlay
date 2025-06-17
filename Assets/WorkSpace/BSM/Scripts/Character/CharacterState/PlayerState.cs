@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerState : PlayerStateMachine
 {
+    protected static KeyCode skillKey;
     protected float attackSpeed;
-    
+     
     protected PlayerController playerController;
     
     //Body Idle Hash

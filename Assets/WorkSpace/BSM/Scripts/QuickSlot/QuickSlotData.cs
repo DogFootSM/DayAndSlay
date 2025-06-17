@@ -43,7 +43,24 @@ public static class QuickSlotData
             RegisterSlotsDict.Add(quickSlotType, slotUI);
         }
         
-    } 
-    
+    }
+
+    /// <summary>
+    /// 현재 퀵슬롯에 등록되어 있는 스킬 노드 반환
+    /// </summary>
+    /// <param name="quickSlotType">퀵 슬롯 타입</param>
+    /// <returns>사용한 퀵슬롯에 등록되어 있는 스킬 노드</returns>
+    public static SkillNode GetQuickSlotSkillData(QuickSlotType quickSlotType)
+    {
+        if (QuickSlotsDict.TryGetValue(quickSlotType, out QuickSlot quickSlot))
+        {
+            if (quickSlot.CurrentSlotSkillNode != null && quickSlot.CurrentSlotSkillNode.skillData != null)
+            { 
+                return quickSlot.CurrentSlotSkillNode;
+            }
+        }
+        
+        return null;
+    }
     
 }
