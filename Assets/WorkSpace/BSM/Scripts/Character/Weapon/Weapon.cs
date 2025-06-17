@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private GameObject directionObject;
     [SerializeField] private GameObject playerObject;
     
     public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
@@ -43,6 +42,10 @@ public class Weapon : MonoBehaviour
         attackHandler = AttackHandlerFactory.ChangeAttackType(weaponType); 
     }
 
+    /// <summary>
+    /// 스킬을 사용 시 타격될 방향 변경
+    /// </summary>
+    /// <param name="direction">스킬 사용 시 데미지를 줄 몬스터를 감지할 방향</param>
     private void ChangedMoveDirection(Vector2 direction)
     {
         curDirection = direction; 
@@ -58,6 +61,6 @@ public class Weapon : MonoBehaviour
 
     private void OnDrawGizmos()
     {  
-        //attackHandler.DrawGizmos(); 
+        attackHandler.DrawGizmos(); 
     }
 }

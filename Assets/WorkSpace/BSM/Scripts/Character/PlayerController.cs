@@ -144,10 +144,11 @@ public class PlayerController : MonoBehaviour
         
         if (moveDir != Vector2.zero)
         {
-            curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
+            curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
+            skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
         }
- 
+        
     }
  
     /// <summary>

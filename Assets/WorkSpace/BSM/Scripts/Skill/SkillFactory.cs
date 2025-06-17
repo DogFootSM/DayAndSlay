@@ -11,5 +11,5 @@ public abstract class SkillFactory
         this.skillNode = skillNode;
     }
 
-    public abstract void UseSkill();
+    public abstract void UseSkill(Vector2 direction, Vector2 playerPosition);
 }

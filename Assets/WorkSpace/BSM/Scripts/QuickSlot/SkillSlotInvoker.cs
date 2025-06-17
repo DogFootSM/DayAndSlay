@@ -2,11 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SkillSlotInvoker : MonoBehaviour
 {
     private SkillFactory slotSkill;
-      
+
+    private Vector2 curDirection;
+    public UnityAction<Vector2> OnDirectionChanged;
+
+    private void OnEnable()
+    {
+        OnDirectionChanged += ChangedDirection;
+    }
+
+    private void OnDisable()
+    {
+        OnDirectionChanged -= ChangedDirection;
+    }
+
+    /// <summary>
+    /// 스킬을 사용 시 타격될 방향 변경
+    /// </summary>
+    /// <param name="direction">스킬 사용 시 데미지를 줄 몬스터를 감지할 방향</param>
+    private void ChangedDirection(Vector2 direction)
+    {
+        curDirection = direction;
+    }
+  
     /// <summary>
     /// 스킬 팩토리에 스킬 노드 전달
     /// </summary>
@@ -19,7 +42,7 @@ public class SkillSlotInvoker : MonoBehaviour
         if (skillNode != null)
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-            slotSkill.UseSkill();
+            slotSkill.UseSkill(curDirection, transform.position);
             return skillNode.skillData.RecoveryTime;
         } 
         
