@@ -1,17 +1,37 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 
 public class SkillTreeUI : MonoBehaviour
 {
     [SerializeField] private List<GameObject> skillTabs;
     [SerializeField] private GameObject skillSetPrefab;
-
-    private List<SkillNodeButton> skillNodeButtons = new();
+    
+    [Header("스킬 미리보기")]
+    [SerializeField] private GameObject previewTab;
+    [SerializeField] private TextMeshProUGUI previewSkillNameText;
+    [SerializeField] private TextMeshProUGUI previewSkillDescriptionText;
+    [SerializeField] private TextMeshProUGUI previewSkillPrerequisiteText;
+    [SerializeField] private Image previewSkillIcon;
+    [SerializeField] private Button previewRegisterButton;
+    
+    
+    private List<SkillSet> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;
-     
+
+    private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
+    private SkillNode selectedSkillNode;
+
+    private void Awake()
+    {
+        previewRegisterButton.onClick.AddListener(() => quickSlotManager.RequestSkillRegisterPanelOpen(selectedSkillNode));
+    }
+
     private void OnEnable()
     {
         OnChangedSkillTab += SwitchSkillTabByWeapon;
@@ -51,9 +71,9 @@ public class SkillTreeUI : MonoBehaviour
             {
                 GameObject skillInstance = Instantiate(skillSetPrefab, skillTabs[i].transform.GetChild(0).GetChild(0).transform); 
                 
-                SkillNodeButton skillNodeButton = skillInstance.GetComponent<SkillNodeButton>();
-                skillNodeButton.CurSkillNode = skillNode[(WeaponType)i][j]; 
-                skillNodeButtons.Add(skillNodeButton);
+                SkillSet skillSet = skillInstance.GetComponent<SkillSet>();
+                skillSet.CurSkillNode = skillNode[(WeaponType)i][j]; 
+                skillNodeButtons.Add(skillSet);
             } 
         }  
     }
@@ -64,10 +84,55 @@ public class SkillTreeUI : MonoBehaviour
     /// <param name="point">현재 보유중인 스킬 포인트</param>
     public void UpdateAllNodeButtonsWithPoint(int point)
     { 
-        foreach (SkillNodeButton skillNodeButton in skillNodeButtons)
+        foreach (SkillSet skillNodeButton in skillNodeButtons)
         {
             skillNodeButton.UpdateSkillButtonState(point);
         } 
+    }
+
+    /// <summary>
+    /// 선택한 스킬 미리보기 업데이트
+    /// </summary>
+    /// <param name="skillNode">현재 선택한 스킬 노드</param>
+    public void UpdateSkillPreview(SkillNode skillNode)
+    {  
+        if(!previewTab.activeSelf) previewTab.SetActive(true); 
+         
+        selectedSkillNode = skillNode;
+        previewSkillNameText.text = skillNode.skillData.SkillId;
+        previewSkillDescriptionText.text = skillNode.skillData.SkillDescription; 
+        previewSkillIcon.sprite = skillNode.skillData.SkillIcon; 
+        previewRegisterButton.interactable = selectedSkillNode.CurSkillLevel > 0; 
+        
+        int prerequisiteCount = selectedSkillNode.skillData.prerequisiteSkillsId.Count; 
+        
+        previewSkillPrerequisiteText.gameObject.SetActive(prerequisiteCount != 0);
+        
+        if (prerequisiteCount == 0) return;
+        
+        string prerequisite = "";
+        
+        for (int i = 0; i < selectedSkillNode.skillData.prerequisiteSkillsId.Count; i++)
+        {
+            prerequisite += selectedSkillNode.skillData.prerequisiteSkillsId[i];
+
+            if (i < prerequisiteCount - 1)
+            {
+                prerequisite += ", ";
+            } 
+        }
+
+        prerequisite += " 스킬의 선행 조건 달성이 필요합니다.";
+        previewSkillPrerequisiteText.text = prerequisite;
+    }
+
+    /// <summary>
+    /// 스킬 프리뷰 항목 초기화
+    /// </summary>
+    public void CloseSkillPreview()
+    {
+        previewTab.SetActive(false);
+        selectedSkillNode = null;
     }
     
 }

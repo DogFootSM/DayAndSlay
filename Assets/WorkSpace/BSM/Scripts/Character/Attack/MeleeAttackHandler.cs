@@ -26,7 +26,7 @@ public class MeleeAttackHandler : IAttackHandler
     /// <param name="position">캐릭터 위치</param>
     public void NormalAttack(Vector2 direction, Vector2 position)
     {
-        //테스트용 pos,dir 코드
+        //기즈모 테스트용 pos,dir 코드
         pos = position;
         dir = direction;
 

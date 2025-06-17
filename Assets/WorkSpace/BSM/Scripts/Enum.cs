@@ -14,7 +14,7 @@ public enum CanvasType
 [Serializable]
 public enum CharacterStateType
 {
-    IDLE, WALK, ATTACK, SIZE
+    IDLE, WALK, ATTACK, SKILL, SIZE
 }
 
 //이어하기 캐릭터 스프라이트 데이터 저장할 타입
@@ -237,4 +237,10 @@ public enum SkillType
 public enum SkillState
 {
     LOCKED, UNLOCKED, COMPLETE
+}
+
+[Serializable]
+public enum QuickSlotType
+{
+    Q, W, E, R,T, Y, A, S, D, F, G, H, NONE
 }

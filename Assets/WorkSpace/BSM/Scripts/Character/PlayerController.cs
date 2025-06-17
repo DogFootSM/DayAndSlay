@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public Animator BodyAnimator => bodyAnimator;
     public Weapon CurWeapon => curWeapon;
     public WaitCache WaitCache => waitCache;
-
+    public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
+    
     [Inject] private WaitCache waitCache;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
@@ -35,7 +36,8 @@ public class PlayerController : MonoBehaviour
     private Animator bodyAnimator;
     private Weapon curWeapon;
     private IDataReader dataReader;
- 
+    private SkillSlotInvoker skillSlotInvoker; 
+    
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
      
@@ -80,10 +82,12 @@ public class PlayerController : MonoBehaviour
         characterRb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
         curWeapon = GetComponentInChildren<Weapon>(); 
+        skillSlotInvoker = GetComponent<SkillSlotInvoker>();
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
+        characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
     }
     
     /// <summary>
@@ -91,7 +95,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void InitSlotData()
     {
-        Debug.Log($"cur:{curSlotId}");
         dataReader = sqlManager.ReadDataColumn(
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
@@ -141,10 +144,11 @@ public class PlayerController : MonoBehaviour
         
         if (moveDir != Vector2.zero)
         {
-            curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
+            curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
+            skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
         }
- 
+        
     }
  
     /// <summary>
