@@ -10,7 +10,7 @@ public class SkillSlotInvoker : MonoBehaviour
 
     private Vector2 curDirection;
     public UnityAction<Vector2> OnDirectionChanged;
-
+    
     private void OnEnable()
     {
         OnDirectionChanged += ChangedDirection;
@@ -47,5 +47,13 @@ public class SkillSlotInvoker : MonoBehaviour
         } 
         
         return 0;
-    } 
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (slotSkill == null) return;
+        
+        //TODO: 스킬 기즈모 테스트용
+        slotSkill.Gizmos();
+    }
 }
