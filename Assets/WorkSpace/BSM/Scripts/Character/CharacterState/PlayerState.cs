@@ -4,9 +4,33 @@ using UnityEngine;
 
 public class PlayerState : PlayerStateMachine
 {
-    protected static KeyCode skillKey;
+    protected static KeyCode skillInputKey;
     protected float attackSpeed;
-     
+    
+    private KeyCode[] skillInputKeys = new KeyCode[]
+    {
+        KeyCode.Q,
+        KeyCode.W,
+        KeyCode.E,
+        KeyCode.R,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.F,
+    };
+
+    protected Dictionary<KeyCode, QuickSlotType> keyToQuickSlotMap = new Dictionary<KeyCode, QuickSlotType>()
+    {
+        { KeyCode.Q, QuickSlotType.Q},
+        { KeyCode.W, QuickSlotType.W},
+        { KeyCode.E, QuickSlotType.E},
+        { KeyCode.R, QuickSlotType.R},
+        { KeyCode.A, QuickSlotType.A},
+        { KeyCode.S, QuickSlotType.S},
+        { KeyCode.D, QuickSlotType.D},
+        { KeyCode.F, QuickSlotType.F}, 
+    };
+    
     protected PlayerController playerController;
     
     //Body Idle Hash
@@ -41,4 +65,22 @@ public class PlayerState : PlayerStateMachine
         attackSpeed = playerController.PlayerModel.AtkSpeed;
     }
      
+    /// <summary>
+    /// 스킬 키 입력 감지
+    /// </summary>
+    protected void CheckSkillKeyInput()
+    {
+        foreach (KeyCode keyCode in skillInputKeys)
+        {
+            if (Input.GetKeyDown(keyCode))
+            {
+                skillInputKey = keyCode;
+
+                if (QuickSlotData.IsSlotAssigned(keyToQuickSlotMap[skillInputKey]))
+                {
+                    playerController.ChangeState(CharacterStateType.SKILL);
+                } 
+            } 
+        } 
+    }
 }

@@ -62,5 +62,15 @@ public static class QuickSlotData
         
         return null;
     }
+
+    /// <summary>
+    /// 현재 퀵슬롯에 스킬이 할당되어 있는지 확인
+    /// </summary>
+    /// <param name="quickSlotType">퀵슬롯 타입</param>
+    /// <returns>True = 등록된 슬롯, False = 빈 슬롯으로 True일 때 스킬 상태로 전환</returns>
+    public static bool IsSlotAssigned(QuickSlotType quickSlotType)
+    {
+        return QuickSlotsDict[quickSlotType].CurrentSlotSkillNode != null;
+    }
     
 }

@@ -3,29 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSkill : PlayerState
-{
-    private QuickSlotType quickSlotType;
+{ 
     private Coroutine afterDelayCo;
     private float afterDelay;
     
     public PlayerSkill(PlayerController playerController) : base(playerController) {}
     
     public override void Enter()
-    {
-        quickSlotType = skillKey switch
-        {
-            KeyCode.Q => QuickSlotType.Q,
-            KeyCode.W => QuickSlotType.W,
-            KeyCode.E => QuickSlotType.E,
-            KeyCode.R => QuickSlotType.R,
-            KeyCode.A => QuickSlotType.A,
-            KeyCode.S => QuickSlotType.S,
-            KeyCode.D => QuickSlotType.D,
-            KeyCode.F => QuickSlotType.F,
-            _ => QuickSlotType.NONE
-        };
-
-        UseSkill(); 
+    {  
+        ExecuteSkillFromSlot(); 
     }
 
     public override void Exit()
@@ -42,9 +28,9 @@ public class PlayerSkill : PlayerState
     /// <summary>
     /// 스킬 사용
     /// </summary>
-    private void UseSkill()
+    private void ExecuteSkillFromSlot()
     {
-        afterDelay = playerController.SkillSlotInvoker.SkillInvoke(quickSlotType);
+        afterDelay = playerController.SkillSlotInvoker.InvokeSkillFromSlot(keyToQuickSlotMap[skillInputKey]);
 
         if (afterDelayCo == null)
         {

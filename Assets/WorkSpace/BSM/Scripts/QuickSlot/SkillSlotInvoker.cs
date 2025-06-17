@@ -12,20 +12,9 @@ public class SkillSlotInvoker : MonoBehaviour
     /// </summary>
     /// <param name="quickSlotType">사용할 스킬이 등록된 퀵 슬롯 타입</param>
     /// <returns>해당 스킬의 후딜레이 시간</returns>
-    public float SkillInvoke(QuickSlotType quickSlotType)
+    public float InvokeSkillFromSlot(QuickSlotType quickSlotType)
     {
-        SkillNode skillNode = quickSlotType switch
-        {
-            QuickSlotType.Q => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.Q),
-            QuickSlotType.W => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.W),
-            QuickSlotType.E => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.E),
-            QuickSlotType.R => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.R),
-            QuickSlotType.A => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.A),
-            QuickSlotType.S => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.S),
-            QuickSlotType.D => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.D),
-            QuickSlotType.F => QuickSlotData.GetQuickSlotSkillData(QuickSlotType.F),
-            _ => null
-        };
+        SkillNode skillNode = QuickSlotData.GetQuickSlotSkillData(quickSlotType);
 
         if (skillNode != null)
         {
@@ -35,6 +24,5 @@ public class SkillSlotInvoker : MonoBehaviour
         } 
         
         return 0;
-    }
-    
+    } 
 }
