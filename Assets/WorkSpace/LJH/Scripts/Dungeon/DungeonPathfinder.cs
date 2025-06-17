@@ -7,8 +7,8 @@ public class DungeonPathfinder : MonoBehaviour
 {
     [Header("던전 방 데이터")]
     [SerializeField] private List<Grid> roomList = new List<Grid>();
-    [SerializeField] private int bossRoomIndex = 3;
-    [SerializeField] private int gridWidth = 4; // 4x3 그리드 기준
+    [SerializeField] private int bossRoomIndex = 2;
+    [SerializeField] private int gridWidth = 3; // 4x3 그리드 기준
 
     [Header("시각화")]
     [SerializeField] private LineRenderer mainRouteLineRenderer;

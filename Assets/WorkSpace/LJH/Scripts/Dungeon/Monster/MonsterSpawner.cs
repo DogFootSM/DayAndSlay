@@ -21,16 +21,21 @@ public class MonsterSpawner : MonoBehaviour
     BoundsInt localBounds;
 
     [SerializeField] Tilemap floor;
+    List<Tile> tileList = new List<Tile>();
+    List<Vector3> posList = new List<Vector3>();
+
+    int mapSize = 20;
+
+    Dictionary<Direction, int> xPos = new Dictionary<Direction, int>();
+    Dictionary<Direction, int> yPos = new Dictionary<Direction, int>();
+
 
 
     void Start()
     {
-        //플레이어 참조용 테스트 코드
-        player = GameObject.FindWithTag("Player");
-        grid = GetComponentInParent<Grid>();
-        localBounds = floor.cellBounds;
+        Init();
 
-
+        MonsterSpawnPosSet();
         MonsterSpawn();
 
     }
@@ -38,9 +43,43 @@ public class MonsterSpawner : MonoBehaviour
     private void Update()
     {
         MonsterActiver();
+        
     }
 
+    bool CheckTile(Vector3Int pos)
+    {
+        if (floor.GetTile(pos) != null)
+        {
+            return true;
+        }
 
+        return false;
+    }
+
+    void MonsterSpawnPosSet()
+    {
+        foreach (GameObject spawner in spawnerList)
+        {
+            Vector3Int spawnPos;
+            do
+            {
+                int xPos = Random.Range(this.xPos[Direction.Left], this.xPos[Direction.Right]);
+                int yPos = Random.Range(this.yPos[Direction.Up], this.yPos[Direction.Down]);
+
+                spawnPos = new Vector3Int(xPos, yPos, 0);
+
+            } while (CheckTile(spawnPos) != true);
+
+            //do_While문 이용
+            //위치를 랜덤으로 뽑고
+            //위치가 바닥 타일맵에 일부라면
+            //스포너의 위치는 거기로 정해짐
+            //위치가 바닥 타일맵이 안깔린 곳이라면
+            //처음부터 반복
+
+            spawner.transform.position = spawnPos;
+        }
+    }
 
     void MonsterSpawn()
     {
@@ -75,4 +114,19 @@ public class MonsterSpawner : MonoBehaviour
         Vector3Int localCell = grid.WorldToCell(pos);
         return localBounds.Contains(localCell);
     }
+
+    void Init()
+    {
+        //플레이어 참조용 테스트 코드
+        player = GameObject.FindWithTag("Player");
+        grid = GetComponentInParent<Grid>();
+        localBounds = floor.cellBounds;
+
+        xPos[Direction.Right] = -mapSize;
+        xPos[Direction.Left] = mapSize;
+        yPos[Direction.Up] = mapSize;
+        yPos[Direction.Down] = -mapSize;
+
+    }
+
 }

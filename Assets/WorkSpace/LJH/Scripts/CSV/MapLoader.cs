@@ -41,7 +41,7 @@ public class MapLoader : MonoBehaviour
 
                 if (int.TryParse(cell, out int tileIndex) && tileIndex >= 0 && tileIndex < tileDictList.Count)
                 {
-                    Vector3Int pos = new Vector3Int(x, -y, 0); // y 뒤집는 건 유니티 기준
+                    Vector3Int pos = new Vector3Int(x - 20, -y + 20, 0); // y 뒤집는 건 유니티 기준
 
                     switch (tileIndex)
                     {
