@@ -27,12 +27,16 @@ public class InventoryInteraction :
     private List<RaycastResult> results = new List<RaycastResult>();
     
     private InventorySlot fromSlot;
+    private InventorySlot toSlot;
+    
     private bool fromSlotItem => fromSlot != null && fromSlot.CurSlotItem == null;
-    private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY; 
+    private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY;
+    private LayerMask dimedLayer;
     
     new void Awake()
     {
         base.Awake();
+        dimedLayer = LayerMask.GetMask("Dimed");
         //SetSlotItemData();
         //SetOwnedItemSet(); 
         //equipButton.onClick.AddListener(Equip);
@@ -141,7 +145,7 @@ public class InventoryInteraction :
         if (results.Count < 2) return;
         
         //이동 슬롯
-        InventorySlot toSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
+        toSlot = results[1].gameObject.GetComponentInParent<InventorySlot>();
 
         HandleSlotSwap(toSlot); 
         
@@ -208,8 +212,10 @@ public class InventoryInteraction :
         
         results.Clear();
         inventoryRayCanvas.Raycast(eventData, results);
-        fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>();
         
+        if (results.Count == 0) return;
+        
+        fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>(); 
         if (fromSlotItem) return; 
         
         OnInventorySlotClick();
@@ -228,7 +234,9 @@ public class InventoryInteraction :
         results.Clear();
         
         inventoryRayCanvas.Raycast(eventData, results);
-
+        
+        if(results.Count == 0) return;
+        
         fromSlot = results[0].gameObject.GetComponentInParent<InventorySlot>(); 
         SetSlotItemDetail();
         SetEquipStateButtonText(fromSlot.IsEquip);
@@ -267,7 +275,7 @@ public class InventoryInteraction :
     private void OnInventorySlotMouseUp()
     {
         dragItemImage.gameObject.SetActive(false);
-        fromSlot.OnResetScaleEvent?.Invoke();
+        fromSlot?.OnResetScaleEvent?.Invoke();
     }
 
     /// <summary>
