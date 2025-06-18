@@ -21,8 +21,6 @@ public class MonsterSpawner : MonoBehaviour
     BoundsInt localBounds;
 
     [SerializeField] Tilemap floor;
-    List<Tile> tileList = new List<Tile>();
-    List<Vector3> posList = new List<Vector3>();
 
     int mapSize = 20;
 
@@ -60,15 +58,17 @@ public class MonsterSpawner : MonoBehaviour
         foreach (GameObject spawner in spawnerList)
         {
             checkNum = 0;
-            Vector3Int spawnPos;
+            Vector3 spawnPos = Vector3.zero;
+            Vector3Int tilePos = Vector3Int.zero;
             do
             {
                 int xPos = Random.Range(this.xPos[Direction.Left], this.xPos[Direction.Right]) + (int)GetComponentInParent<Transform>().position.x;
                 int yPos = Random.Range(this.yPos[Direction.Up], this.yPos[Direction.Down]) + (int)GetComponentInParent<Transform>().position.y;
 
                 spawnPos = new Vector3Int(xPos, yPos, 0);
+                tilePos = floor.WorldToCell(spawnPos);
                 checkNum++;
-            } while (CheckTile(spawnPos) != true && checkNum < 30);
+            } while (!CheckTile(tilePos) && checkNum < 30);
 
             if (checkNum == 30)
             {
