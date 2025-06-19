@@ -265,3 +265,9 @@ public enum BGMSound
 {
     START_SCENE_BGM, TOWN_SCENE_BGM, DENGEON_1_BGM
 }
+
+[Serializable]
+public enum Setting
+{
+    AUDIO, VIDEO
+}

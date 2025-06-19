@@ -23,24 +23,29 @@ public class DataManager : MonoBehaviour
     private string path;
     private AudioSettings audioSettings;
     private SoundManager soundManager => SoundManager.Instance;
-    
-    private void Awake()
+ 
+    /// <summary>
+    /// Data Path 설정
+    /// </summary>
+    /// <param name="path"></param>
+    private void SetPath(string path)
     {
-        path = Path.Combine(Application.streamingAssetsPath, "AudioSetting.json"); 
-    } 
-
+        this.path = Path.Combine(Application.streamingAssetsPath, path);
+    }
     
     /// <summary>
     /// 소리 설정 Data Load
     /// </summary>
     public void LoadAudioData()
     {
-        audioSettings = new AudioSettings();
-        Debug.Log("데이터 로드");
+        SetPath("AudioSetting.json");
+            
+        audioSettings = new AudioSettings(); 
+        
         //해당 경로에 파일이 없을 경우 데이터 생성
         if (!File.Exists(path))
         {
-            SaveAudioData(); 
+            SaveAudioData(0.5f, 0.5f, 0.5f); 
         }
         
         string loadAudioData = File.ReadAllText(path);
@@ -51,18 +56,22 @@ public class DataManager : MonoBehaviour
         soundManager.SetBgmVolume(audioSettings.BgmVolume);
     }
 
-    public void SaveAudioData()
+    /// <summary>
+    /// 현재 설정되어 있는 Audio Volume 값 저장
+    /// </summary>
+    /// <param name="MasterVolume">전체 음량</param>
+    /// <param name="BgmVolume">배경음</param>
+    /// <param name="SfxVolume">효과음</param>
+    public void SaveAudioData(float MasterVolume, float BgmVolume, float SfxVolume)
     {
+        SetPath("AudioSetting.json");
+        
         audioSettings = new AudioSettings();
-
-        //오디오 데이터가 없을 경우 초기값 생성
-        if (!File.Exists(path))
-        {
-            audioSettings.MasterVolume = 0.5f;
-            audioSettings.BgmVolume = 0.5f;
-            audioSettings.SfxVolume = 0.5f;
-        }
-         
+ 
+        audioSettings.MasterVolume = MasterVolume;
+        audioSettings.BgmVolume = BgmVolume;
+        audioSettings.SfxVolume = SfxVolume;
+        
         string json = JsonUtility.ToJson(audioSettings);
         File.WriteAllText(path, json);
     }
