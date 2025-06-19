@@ -7,20 +7,20 @@ using Zenject;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    [Inject] private DiContainer container;
-    [Inject] private List<GameObject> monsters;
+    [Inject] protected DiContainer container;
+    [Inject] protected List<GameObject> monsters;
 
-    [SerializeField] private List<GameObject> spawnerList = new List<GameObject>();
-    [SerializeField] private List<GameObject> monsterList = new List<GameObject>();
+    [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
+    [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
 
 
     //플레이어 위치 체크 테스트용 변수
-    [SerializeField] GameObject player;
+    [SerializeField] private GameObject player;
 
     private Grid grid;
     BoundsInt localBounds;
 
-    [SerializeField] Tilemap floor;
+    [SerializeField] protected Tilemap floor;
 
     int mapSize = 20;
 
@@ -53,7 +53,7 @@ public class MonsterSpawner : MonoBehaviour
         return false;
     }
     int checkNum;
-    void MonsterSpawnPosSet()
+    virtual public void MonsterSpawnPosSet()
     {
         foreach (GameObject spawner in spawnerList)
         {
@@ -79,7 +79,7 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    void MonsterSpawn()
+    virtual public void MonsterSpawn()
     {
         for(int i = 0; i < spawnerList.Count; i++)
         {
