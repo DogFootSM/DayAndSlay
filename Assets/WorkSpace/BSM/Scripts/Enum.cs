@@ -239,8 +239,29 @@ public enum SkillState
     LOCKED, UNLOCKED, COMPLETE
 }
 
+/// <summary>
+/// 스킬이 장착되어 있는 퀵슬롯 키 타입
+/// </summary>
 [Serializable]
 public enum QuickSlotType
 {
-    Q, W, E, R,T, Y, A, S, D, F, G, H, NONE
+    Q, W, E, R, T, Y, A, S, D, F, G, H, NONE
+}
+
+/// <summary>
+/// 재생할 효과음 타입
+/// </summary>
+[Serializable]
+public enum SFXSound
+{
+   INVENTORY_DROP, GET_ITEM, UI_WINDOW_OPENED, UI_WINDOW_CLOSED, BUTTON_CLICKED, SHORT_SWORD_NORMAL_ATTACK
+}
+
+/// <summary>
+/// 재생할 배경음 타입
+/// </summary>
+[Serializable]
+public enum BGMSound
+{
+    START_SCENE_BGM, TOWN_SCENE_BGM, DENGEON_1_BGM
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -19,6 +20,53 @@ public class DataManager : MonoBehaviour
     private List<string> spriteColumns = new List<string>();
     private List<string> spriteNames = new List<string>();
 
+    private string path;
+    private AudioSettings audioSettings;
+    private SoundManager soundManager => SoundManager.Instance;
+    
+    private void Awake()
+    {
+        path = Path.Combine(Application.streamingAssetsPath, "AudioSetting.json"); 
+    } 
+
+    
+    /// <summary>
+    /// 소리 설정 Data Load
+    /// </summary>
+    public void LoadAudioData()
+    {
+        audioSettings = new AudioSettings();
+        Debug.Log("데이터 로드");
+        //해당 경로에 파일이 없을 경우 데이터 생성
+        if (!File.Exists(path))
+        {
+            SaveAudioData(); 
+        }
+        
+        string loadAudioData = File.ReadAllText(path);
+        audioSettings = JsonUtility.FromJson<AudioSettings>(loadAudioData);
+        
+        soundManager.SetMasterVolume(audioSettings.MasterVolume);
+        soundManager.SetSFxVolume(audioSettings.SfxVolume);
+        soundManager.SetBgmVolume(audioSettings.BgmVolume);
+    }
+
+    public void SaveAudioData()
+    {
+        audioSettings = new AudioSettings();
+
+        //오디오 데이터가 없을 경우 초기값 생성
+        if (!File.Exists(path))
+        {
+            audioSettings.MasterVolume = 0.5f;
+            audioSettings.BgmVolume = 0.5f;
+            audioSettings.SfxVolume = 0.5f;
+        }
+         
+        string json = JsonUtility.ToJson(audioSettings);
+        File.WriteAllText(path, json);
+    }
+    
     /// <summary>
     /// 캐릭터 생성 -> 선택한 프리셋 json 저장
     /// </summary>
