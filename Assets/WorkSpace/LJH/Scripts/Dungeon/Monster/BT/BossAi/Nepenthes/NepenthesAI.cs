@@ -10,8 +10,16 @@ public class NepenthesAI : BossMonsterAI
     public override List<BTNode> AttackSelector()
     {
         List<BTNode> nodes = new List<BTNode>();
-        nodes.Add(rangeAttackSequence);
-        nodes.Add(meleeAttackSequence);
+
+        // 거리 체크 + 원거리 공격
+        BTNode rangeCombo = new Sequence(new List<BTNode>()
+    {
+        rangeCheckNode,
+        rangeAttackSequence
+    });
+
+        nodes.Add(rangeCombo);         // 조건 만족 시 원거리
+        nodes.Add(meleeAttackSequence); // 실패 시 근거리
 
         return nodes;
     }
@@ -19,7 +27,8 @@ public class NepenthesAI : BossMonsterAI
     public List<BTNode> RangeAttackSequence()
     {
         List<BTNode> nodes = new List<BTNode>();
-
+        
+        
 
         return nodes;
     }
@@ -29,6 +38,7 @@ public class NepenthesAI : BossMonsterAI
         List<BTNode> nodes = new List<BTNode>();
 
 
+
         return nodes;
     }
 
@@ -36,5 +46,7 @@ public class NepenthesAI : BossMonsterAI
     {
         rangeAttackSequence = new Sequence(RangeAttackSequence());
         meleeAttackSequence = new Sequence(MeleeAttackSequence());
+
+        rangeCheckNode = new IsAttackRangeNode(transform, player.transform, 5f);
     }
 }

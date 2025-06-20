@@ -82,7 +82,7 @@ public class BossMonsterAI : MonoBehaviour
         //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
         List<BTNode> nodes = new List<BTNode>();
         nodes.Add(attackCheck);
-        nodes.Add(attack);
+        nodes.Add(attackSelector);
 
         return nodes;
     }
