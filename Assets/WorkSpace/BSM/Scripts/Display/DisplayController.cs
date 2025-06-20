@@ -14,7 +14,7 @@ public class DisplayController : MonoBehaviour
     
     private GameManager gameManager => GameManager.Instance;
 
-    private readonly int[] windowModeValues = new[]{ 0, 1, 3 };
+    private readonly int[] windowModeValues = new[]{ 0, 3, 1 };
     private readonly int[] mouseLockValues = new[]{ 2, 0 };  
     
     private void Start()
@@ -27,10 +27,7 @@ public class DisplayController : MonoBehaviour
         OnChangedWindowModeToggle();
         UpdateWindowModeToggles();
         OnChangedMouseLockToggle();
-        UpdateMouseLockToggles();
-        
-        resolutionDropdown.interactable = !windowModeToggles[0].isOn;
-
+        UpdateMouseLockToggles(); 
     }
 
     /// <summary>
@@ -61,8 +58,13 @@ public class DisplayController : MonoBehaviour
         {
             windowModeToggles[i].isOn = gameManager.GetWindowMode() == windowModeValues[i];
         } 
+        
+        resolutionDropdown.interactable = !windowModeToggles[0].isOn;
     }
-
+    
+    /// <summary>
+    /// 마우스 가두기 토글 이벤트 등록
+    /// </summary>
     private void OnChangedMouseLockToggle()
     {
         for (int i = 0; i < mouseLockToggles.Count; i++)
@@ -78,6 +80,9 @@ public class DisplayController : MonoBehaviour
         } 
     }
 
+    /// <summary>
+    /// 마우스 가두기 토글 상태 업데이트
+    /// </summary>
     private void UpdateMouseLockToggles()
     {
         for (int i = 0; i < mouseLockToggles.Count; i++)
