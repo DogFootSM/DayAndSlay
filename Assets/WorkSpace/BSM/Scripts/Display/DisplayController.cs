@@ -8,20 +8,66 @@ using Zenject;
 
 public class DisplayController : MonoBehaviour
 {
-    [Inject] private DataManager dataManager;
-    
     [SerializeField] private List<Toggle> windowModeToggles;
     [SerializeField] private List<Toggle> mouseLockToggles;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     
+    private GameManager gameManager => GameManager.Instance;
+
+    private readonly int[] windowModeValues = new[]{ 0, 1, 3 };
+    private readonly int[] mouseLockValues = new[]{ 0, 2 };  
     
     private void Start()
     {
-        //Windowed - 창모드
-        //Exclusive Fullscreen - 전체 화면
-        //Fullscreen Window - 테두리 없는 창모드
-        
+        //Windowed - 창모드 3
+        //Exclusive Fullscreen - 전체 화면 0
+        //Fullscreen Window - 테두리 없는 창모드 1
+        //마우스 가두기 = 0, 해제 = 1
         //화면 해상도 설정 드롭다운은 전체화면일 때 비활성화
+        OnChangedWindowModeToggle();
+        UpdateWindowModeToggles();
+        resolutionDropdown.interactable = !windowModeToggles[0].isOn;
+
+    }
+
+    /// <summary>
+    /// 토글 이벤트 등록
+    /// </summary>
+    private void OnChangedWindowModeToggle()
+    {
+        for (int i = 0; i < windowModeToggles.Count; i++)
+        {
+            int index = i;
+            
+            windowModeToggles[i].onValueChanged.AddListener(toggle =>
+            {
+                if(toggle) gameManager.SetWindowMode(windowModeValues[index]);
+
+                UpdateWindowModeToggles();
+            }); 
+        }
+         
+    }
+
+    /// <summary>
+    /// 현재 선택된 화면 모드 토글 외 선택 해제
+    /// </summary>
+    private void UpdateWindowModeToggles()
+    {
+        for (int i = 0; i < windowModeToggles.Count; i++)
+        {
+            windowModeToggles[i].isOn = gameManager.GetWindowMode() == windowModeValues[i];
+        } 
+    }
+
+    private void OnChangedMouseLockToggle()
+    {
+        for (int i = 0; i < mouseLockToggles.Count; i++)
+        {
+            mouseLockToggles.
+            
+        }
         
     }
+    
 }

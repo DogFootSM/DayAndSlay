@@ -266,8 +266,20 @@ public enum BGMSound
     START_SCENE_BGM, TOWN_SCENE_BGM, DENGEON_1_BGM
 }
 
+/// <summary>
+/// 설정창 탭 타입
+/// </summary>
 [Serializable]
 public enum Setting
 {
     AUDIO, VIDEO
+}
+
+/// <summary>
+/// 윈도우 모드 설정 타입
+/// </summary>
+[Serializable]
+public enum WindowModeState
+{
+    FULLSCREEN, WINDOW, BORDERLESS
 }

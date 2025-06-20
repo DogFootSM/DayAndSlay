@@ -223,9 +223,6 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 9c3c0f666afde004c91537987db36407, type: 2}
   sfxAudioSource: {fileID: 983230382}
   bgmAudioSource: {fileID: 1179126618}
-  MasterVolume: 0
-  SfxVolume: 0
-  BgmVolume: 0
 --- !u!1 &252562021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,6 +1131,50 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &566569102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 566569104}
+  - component: {fileID: 566569103}
+  m_Layer: 0
+  m_Name: TempGameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &566569103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566569102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68851d11374a1404aa49881887d5e849, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &566569104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566569102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 857.7488, y: 529.0965, z: 8.086425}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &595532853
 GameObject:
   m_ObjectHideFlags: 0

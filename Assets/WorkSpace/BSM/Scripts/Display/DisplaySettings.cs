@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class DisplaySettings
 {
-    public int resolutionIndex;
-    
-
-
+    public int Resolution;
+    public int WindowMode;
+    public int MouseLock;
 }
