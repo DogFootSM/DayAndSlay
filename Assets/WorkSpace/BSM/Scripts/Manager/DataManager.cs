@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -19,6 +20,114 @@ public class DataManager : MonoBehaviour
     private List<string> spriteColumns = new List<string>();
     private List<string> spriteNames = new List<string>();
 
+    private string path;
+    private AudioSettings audioSettings;
+    private DisplaySettings displaySettings;
+    private SoundManager soundManager => SoundManager.Instance;
+    private GameManager gameManager => GameManager.Instance;
+
+    private const string audioDataPath = "AudioSetting.json";
+    private const string displayDataPath = "DisplaySettings.json";
+
+    private void Awake()
+    {
+        Init();
+    }
+
+    /// <summary>
+    /// Setting Data 객체 생성
+    /// </summary>
+    private void Init()
+    {
+        displaySettings = new DisplaySettings();
+        audioSettings = new AudioSettings(); 
+    }
+    
+    /// <summary>
+    /// Data Path 설정
+    /// </summary>
+    /// <param name="path"></param>
+    private void SetPath(string path)
+    {
+        this.path = Path.Combine(Application.streamingAssetsPath, path);
+    }
+
+    /// <summary>
+    /// Display 관련 설정 데이터 Load
+    /// </summary>
+    public void LoadDisplayData()
+    {
+        SetPath(displayDataPath);
+         
+        if (!File.Exists(path))
+        { 
+            SaveDisplayData(0, (int)FullScreenMode.ExclusiveFullScreen, (int)CursorLockMode.None);
+        }
+
+        string loadDisplayData = File.ReadAllText(path);
+
+        displaySettings = JsonUtility.FromJson<DisplaySettings>(loadDisplayData);
+        
+        gameManager.SetResolution(displaySettings.Resolution);
+        gameManager.SetWindowMode(displaySettings.WindowMode);
+        gameManager.SetMouseCursorLockMode(displaySettings.MouseLock);
+    }
+
+    /// <summary>
+    /// Display 설정 저장
+    /// </summary>
+    /// <param name="resolution">화면비</param>
+    /// <param name="windowMode">화면 모드</param>
+    /// <param name="mouseCursorLockMode">마우스 잠금 설정</param>
+    public void SaveDisplayData(int resolution, int windowMode, int mouseCursorLockMode)
+    {
+        displaySettings.Resolution = resolution;
+        displaySettings.WindowMode = windowMode;
+        displaySettings.MouseLock = mouseCursorLockMode;
+
+        string toJson = JsonUtility.ToJson(displaySettings);
+        File.WriteAllText(path, toJson);
+    }
+    
+    /// <summary>
+    /// 소리 설정 Data Load
+    /// </summary>
+    public void LoadAudioData()
+    {
+        SetPath(audioDataPath);
+             
+        //해당 경로에 파일이 없을 경우 데이터 생성
+        if (!File.Exists(path))
+        {
+            SaveAudioData(0.5f, 0.5f, 0.5f); 
+        }
+        
+        string loadAudioData = File.ReadAllText(path);
+        audioSettings = JsonUtility.FromJson<AudioSettings>(loadAudioData);
+        
+        soundManager.SetMasterVolume(audioSettings.MasterVolume);
+        soundManager.SetSFxVolume(audioSettings.SfxVolume);
+        soundManager.SetBgmVolume(audioSettings.BgmVolume);
+    }
+
+    /// <summary>
+    /// 현재 설정되어 있는 Audio Volume 값 저장
+    /// </summary>
+    /// <param name="MasterVolume">전체 음량</param>
+    /// <param name="BgmVolume">배경음</param>
+    /// <param name="SfxVolume">효과음</param>
+    public void SaveAudioData(float MasterVolume, float BgmVolume, float SfxVolume)
+    {
+        SetPath(audioDataPath);
+         
+        audioSettings.MasterVolume = MasterVolume;
+        audioSettings.BgmVolume = BgmVolume;
+        audioSettings.SfxVolume = SfxVolume;
+        
+        string json = JsonUtility.ToJson(audioSettings);
+        File.WriteAllText(path, json);
+    }
+    
     /// <summary>
     /// 캐릭터 생성 -> 선택한 프리셋 json 저장
     /// </summary>
