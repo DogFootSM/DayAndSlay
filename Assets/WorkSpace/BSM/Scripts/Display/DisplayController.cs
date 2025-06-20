@@ -15,7 +15,7 @@ public class DisplayController : MonoBehaviour
     private GameManager gameManager => GameManager.Instance;
 
     private readonly int[] windowModeValues = new[]{ 0, 1, 3 };
-    private readonly int[] mouseLockValues = new[]{ 0, 2 };  
+    private readonly int[] mouseLockValues = new[]{ 2, 0 };  
     
     private void Start()
     {
@@ -26,6 +26,9 @@ public class DisplayController : MonoBehaviour
         //화면 해상도 설정 드롭다운은 전체화면일 때 비활성화
         OnChangedWindowModeToggle();
         UpdateWindowModeToggles();
+        OnChangedMouseLockToggle();
+        UpdateMouseLockToggles();
+        
         resolutionDropdown.interactable = !windowModeToggles[0].isOn;
 
     }
@@ -64,10 +67,23 @@ public class DisplayController : MonoBehaviour
     {
         for (int i = 0; i < mouseLockToggles.Count; i++)
         {
-            mouseLockToggles.
+            int index = i;
             
+            mouseLockToggles[i].onValueChanged.AddListener(toggle =>
+            {
+                if(toggle) gameManager.SetMouseCursorLockMode(mouseLockValues[index]);
+                
+                UpdateMouseLockToggles();
+            }); 
+        } 
+    }
+
+    private void UpdateMouseLockToggles()
+    {
+        for (int i = 0; i < mouseLockToggles.Count; i++)
+        {
+            mouseLockToggles[i].isOn = gameManager.GetMouseCursorLockMode() == mouseLockValues[i];
         }
-        
     }
     
 }

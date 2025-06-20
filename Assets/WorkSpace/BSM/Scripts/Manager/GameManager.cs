@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour
     [Inject] private DataManager dataManager;
 
     public static GameManager Instance;
-
-    private int windowMode;
-    
+ 
     private void Awake()
     {
         if (Instance == null)
@@ -35,14 +33,14 @@ public class GameManager : MonoBehaviour
         //Windowed - 창모드 3
         //Exclusive Fullscreen - 전체 화면 0
         //Fullscreen Window - 테두리 없는 창모드 1
-        Screen.fullScreenMode = (FullScreenMode)windowMode;
-        
-        this.windowMode = windowMode;
+        Screen.fullScreenMode = (FullScreenMode)windowMode; 
+        Debug.Log(Screen.fullScreenMode);
     }
 
     public int GetWindowMode()
     { 
-        return windowMode;
+        Debug.Log($"정수 변환:{Screen.fullScreenMode}");
+        return (int)Screen.fullScreenMode;
     }
     
     public void SetResolution(int resolution)
@@ -58,6 +56,10 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = (CursorLockMode)mouseCursorLockMode;
     }
-    
+
+    public int GetMouseCursorLockMode()
+    {
+        return (int)Cursor.lockState;
+    }
     
 }
