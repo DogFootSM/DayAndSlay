@@ -15,19 +15,15 @@ public class DisplayController : MonoBehaviour
     private GameManager gameManager => GameManager.Instance;
 
     private readonly int[] windowModeValues = new[]{ 0, 3, 1 };
-    private readonly int[] mouseLockValues = new[]{ 2, 0 };  
-    
+    private readonly int[] mouseLockValues = new[]{ 2, 0 };
+ 
     private void Start()
-    {
-        //Windowed - 창모드 3
-        //Exclusive Fullscreen - 전체 화면 0
-        //Fullscreen Window - 테두리 없는 창모드 1
-        //마우스 가두기 = 0, 해제 = 1
-        //화면 해상도 설정 드롭다운은 전체화면일 때 비활성화
+    { 
         OnChangedWindowModeToggle();
         UpdateWindowModeToggles();
         OnChangedMouseLockToggle();
-        UpdateMouseLockToggles(); 
+        UpdateMouseLockToggles();
+        OnChangedResolution();
     }
 
     /// <summary>
@@ -89,6 +85,14 @@ public class DisplayController : MonoBehaviour
         {
             mouseLockToggles[i].isOn = gameManager.GetMouseCursorLockMode() == mouseLockValues[i];
         }
+    }
+
+    /// <summary>
+    /// 화면 해상도 이벤트 등록
+    /// </summary>
+    private void OnChangedResolution()
+    {
+        resolutionDropdown.onValueChanged.AddListener(x => gameManager.SetResolution(x));
     }
     
 }

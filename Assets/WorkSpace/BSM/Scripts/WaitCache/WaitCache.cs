@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class WaitCache : MonoBehaviour
+public static class WaitCache
 {
 
-    private Dictionary<float, WaitForSeconds> WaitDict = new();
+    private static Dictionary<float, WaitForSeconds> WaitDict = new();
 
     /// <summary>
     /// WaitForSeconds 객체 반환
     /// </summary>
     /// <param name="waitTime">키로 사용할 대기 시간</param>
     /// <returns></returns>
-    public WaitForSeconds GetWait(float waitTime)
+    public static WaitForSeconds GetWait(float waitTime)
     {
         if (!WaitDict.ContainsKey(waitTime))
         {
