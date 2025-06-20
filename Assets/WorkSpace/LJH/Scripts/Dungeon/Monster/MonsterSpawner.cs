@@ -7,22 +7,20 @@ using Zenject;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    [Inject] private DiContainer container;
-    [Inject] private List<GameObject> monsters;
+    [Inject] protected DiContainer container;
+    [Inject] protected List<GameObject> monsters;
 
-    [SerializeField] private List<GameObject> spawnerList = new List<GameObject>();
-    [SerializeField] private List<GameObject> monsterList = new List<GameObject>();
+    [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
+    [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
 
 
     //플레이어 위치 체크 테스트용 변수
-    [SerializeField] GameObject player;
+    [SerializeField] private GameObject player;
 
     private Grid grid;
     BoundsInt localBounds;
 
-    [SerializeField] Tilemap floor;
-    List<Tile> tileList = new List<Tile>();
-    List<Vector3> posList = new List<Vector3>();
+    [SerializeField] protected Tilemap floor;
 
     int mapSize = 20;
 
@@ -37,7 +35,6 @@ public class MonsterSpawner : MonoBehaviour
 
         MonsterSpawnPosSet();
         MonsterSpawn();
-
     }
 
     private void Update()
@@ -55,33 +52,34 @@ public class MonsterSpawner : MonoBehaviour
 
         return false;
     }
-
-    void MonsterSpawnPosSet()
+    int checkNum;
+    virtual public void MonsterSpawnPosSet()
     {
         foreach (GameObject spawner in spawnerList)
         {
-            Vector3Int spawnPos;
+            checkNum = 0;
+            Vector3 spawnPos = Vector3.zero;
+            Vector3Int tilePos = Vector3Int.zero;
             do
             {
-                int xPos = Random.Range(this.xPos[Direction.Left], this.xPos[Direction.Right]);
-                int yPos = Random.Range(this.yPos[Direction.Up], this.yPos[Direction.Down]);
+                int xPos = Random.Range(this.xPos[Direction.Left], this.xPos[Direction.Right]) + (int)GetComponentInParent<Transform>().position.x;
+                int yPos = Random.Range(this.yPos[Direction.Up], this.yPos[Direction.Down]) + (int)GetComponentInParent<Transform>().position.y;
 
                 spawnPos = new Vector3Int(xPos, yPos, 0);
+                tilePos = floor.WorldToCell(spawnPos);
+                checkNum++;
+            } while (!CheckTile(tilePos) && checkNum < 30);
 
-            } while (CheckTile(spawnPos) != true);
-
-            //do_While문 이용
-            //위치를 랜덤으로 뽑고
-            //위치가 바닥 타일맵에 일부라면
-            //스포너의 위치는 거기로 정해짐
-            //위치가 바닥 타일맵이 안깔린 곳이라면
-            //처음부터 반복
+            if (checkNum == 30)
+            {
+                Debug.Log("무한루프 터짐");
+            }
 
             spawner.transform.position = spawnPos;
         }
     }
 
-    void MonsterSpawn()
+    virtual public void MonsterSpawn()
     {
         for(int i = 0; i < spawnerList.Count; i++)
         {
@@ -102,7 +100,6 @@ public class MonsterSpawner : MonoBehaviour
     /// </summary>
     public void MonsterActiver()
     {
-
         foreach(GameObject mon in monsterList)
         {
             mon.SetActive(ContainsPlayer(player.transform.position));
