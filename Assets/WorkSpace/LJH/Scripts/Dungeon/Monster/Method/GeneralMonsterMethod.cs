@@ -9,7 +9,9 @@ public class GeneralMonsterMethod : MonoBehaviour
     [Inject]
     DungeonManager dungeonManager;
 
-    [SerializeField] BoxCollider2D myCollider;
+    [SerializeField] BoxCollider2D attackHitBox;
+    [SerializeField] AstarPath astarPath;
+    [SerializeField] TestPlayer player;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -30,6 +32,15 @@ public class GeneralMonsterMethod : MonoBehaviour
     public void Move()
     {
         //Todo : 몬스터가 캐릭터에게 이동해야 함
+        /*
+        Vector2Int가 담긴 리스트 갱신 
+        Vector2Int.up 이면 위로 한칸 이동함
+        Vector2Int가 담긴 리스트 갱신 
+        Vector2Ini.right 이면 오른쪽으로 한칸 이동함
+        */
+
+
+
     }
 
     public void Attack()
@@ -41,12 +52,12 @@ public class GeneralMonsterMethod : MonoBehaviour
 
     public void BeforeAttack()
     {
-        myCollider.enabled = true;
+        attackHitBox.enabled = true;
     }
 
     public void AfterAttack() 
     {
-        myCollider.enabled = false;
+        attackHitBox.enabled = false;
     }
 
     public void Die()

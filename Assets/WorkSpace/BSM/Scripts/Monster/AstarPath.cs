@@ -19,6 +19,8 @@ public class Node
     public int fCost  => gCost + hCost; 
 }
 
+[RequireComponent(typeof(TargetSensor))]
+[RequireComponent (typeof(CircleCollider2D))]
 public class AstarPath : MonoBehaviour
 {
     [SerializeField] private Grid mapGrid;
@@ -206,11 +208,11 @@ public class AstarPath : MonoBehaviour
         
         path.Reverse();  
         
-        // for (int i = 0; i < path.Count - 1; i++)
-        // {
-        //     Debug.Log($"경로 :{path[i]} / 타겟 위치 :{targetPos}");
-        //     Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
-        // }
+        //for (int i = 0; i < path.Count - 1; i++)
+        //{
+        //    Debug.Log($"경로 :{path[i]} / 타겟 위치 :{targetPos}");
+        //    Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
+        //}
     } 
     
     /// <summary>
