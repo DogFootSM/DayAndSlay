@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     {
         dataManager.LoadDisplayData();
     }
-
+ 
     /// <summary>
     /// 사용자가 설정한 화면 모드에 따른 화면 모드 설정
     /// </summary>
