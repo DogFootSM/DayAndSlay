@@ -53,9 +53,15 @@ public class DisplayController : MonoBehaviour
         for (int i = 0; i < windowModeToggles.Count; i++)
         {
             windowModeToggles[i].isOn = gameManager.GetWindowMode() == windowModeValues[i];
-        } 
+        }
+
         
         resolutionDropdown.interactable = !windowModeToggles[0].isOn;
+        
+        if (windowModeToggles[0].isOn)
+        { 
+            resolutionDropdown.value = 0;
+        } 
     }
     
     /// <summary>

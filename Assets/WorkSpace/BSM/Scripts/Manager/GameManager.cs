@@ -66,19 +66,24 @@ public class GameManager : MonoBehaviour
         Screen.fullScreenMode = (FullScreenMode)windowMode;
 
         this.windowMode = windowMode;
-         
-        if (windowMode == 0)                     //전체 화면 선택시에는 1920, 1080 전체 화면으로 고정
+
+        switch (windowMode)
         {
-            SetResolution(windowMode);          
-        }
-        else if (windowMode == 1)               //테두리 없는 창모드일 경우 현재 화면 해상도 인덱스로 설정
-        { 
-            SetResolution(resolutionIndex);
-        }
-        else                                    //테두리 없는 창모드 -> 창모드 변경 시 테두리 복구
-        {
-            Borderless();
-        }
+            //전체 화면 선택시에는 1920, 1080 전체 화면으로 고정
+            case 0 :
+                SetResolution(windowMode);
+                break;
+            
+            //테두리 없는 창모드일 경우 현재 화면 해상도 인덱스로 설정
+            case 1 :
+                SetResolution(resolutionIndex);
+                break;
+            
+            //테두리 없는 창모드 -> 창모드 변경 시 테두리 복구
+            default :
+                Borderless();
+                break;
+        } 
     }
 
     /// <summary>
