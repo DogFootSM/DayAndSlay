@@ -10,7 +10,10 @@ public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField]
     public MonsterData monsterData;
-    [Inject]
+    
+    //테스트씬 테스트용
+    //[Inject]
+    [SerializeField]
     protected TestPlayer player;
 
     protected BehaviourTree tree;
@@ -92,6 +95,8 @@ public class GeneralMonsterAI : MonoBehaviour
         attack = new AttackNode(this.Attack);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
+        Debug.Log(player);
+        Debug.Log(monsterData);
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
         chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange);
 

@@ -13,6 +13,8 @@ public class GeneralMonsterMethod : MonoBehaviour
     [SerializeField] AstarPath astarPath;
     [SerializeField] TestPlayer player;
 
+    public Coroutine moveCo;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
@@ -29,6 +31,15 @@ public class GeneralMonsterMethod : MonoBehaviour
             Debug.Log("몬스터데이터 주입 안됨");
     }
 
+    IEnumerator MoveCo()
+    {
+        for (int i = 0; i < astarPath.path.Count; i++)
+        {
+            yield return new WaitForSeconds(0.3f);
+            transform.position = astarPath.path[i];
+        }
+    }
+
     public void Move()
     {
         //Todo : 몬스터가 캐릭터에게 이동해야 함
@@ -39,7 +50,12 @@ public class GeneralMonsterMethod : MonoBehaviour
         Vector2Ini.right 이면 오른쪽으로 한칸 이동함
         */
 
-
+        if(moveCo == null) moveCo = StartCoroutine(MoveCo());
+        
+        //Todo : 코루틴 제어 정상적으로 돌아가게 해줘야함
+        // 이동 시작할때 무브코에 넣어주고 스타트 한다음 공격 상태가 된 경우 or 플레이어가 이동하여 경로 재탐색 하는 경우에 스탑코루틴 해주면서 moveCo 널로 바꿔주면 될듯
+        // 이동 구현되면 아이템 드랍 구현해야됨
+        // 아이템 풀을 이용해서 구현할 것
 
     }
 
