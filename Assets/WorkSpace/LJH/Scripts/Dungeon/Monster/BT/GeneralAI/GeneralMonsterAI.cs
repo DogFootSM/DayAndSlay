@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 using Zenject;
 
@@ -31,6 +32,9 @@ public class GeneralMonsterAI : MonoBehaviour
     protected MonsterStateMachine stateMachine;
 
     protected GeneralMonsterMethod method;
+
+    public M_State monsterState;
+
 
     private void Start()
     {
@@ -85,6 +89,8 @@ public class GeneralMonsterAI : MonoBehaviour
         List<BTNode> nodes = new List<BTNode>();
         nodes.Add(attackCheck);
         nodes.Add(attack);
+        nodes.Add(new WaitNode(() => method.isAttacking));
+        nodes.Add(idle);
 
         return nodes;
     }
@@ -95,8 +101,6 @@ public class GeneralMonsterAI : MonoBehaviour
         attack = new AttackNode(this.Attack);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
-        Debug.Log(player);
-        Debug.Log(monsterData);
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
         chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange);
 

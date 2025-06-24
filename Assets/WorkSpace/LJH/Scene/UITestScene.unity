@@ -137,6 +137,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin
       objectReference: {fileID: 0}
+    - target: {fileID: 1488993737496387518, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753061025455133330, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
+      propertyPath: grid
+      value: 
+      objectReference: {fileID: 9196023732332671447}
     - target: {fileID: 1980958820101092610, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -157,6 +165,10 @@ PrefabInstance:
       propertyPath: obstacleTileMap
       value: 
       objectReference: {fileID: 3982627038302901588}
+    - target: {fileID: 7058692877317689546, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8460169462903940577, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2611,6 +2623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   astar: {fileID: 1399668796}
   findCollider: {fileID: 1399668798}
+  grid: {fileID: 0}
 --- !u!58 &1399668798
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2640,7 +2653,6 @@ GameObject:
   - component: {fileID: 1403787123}
   - component: {fileID: 1403787122}
   - component: {fileID: 1403787121}
-  - component: {fileID: 1403787120}
   - component: {fileID: 1403787119}
   - component: {fileID: 1403787118}
   - component: {fileID: 1403787126}
@@ -2681,18 +2693,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Library: []
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 75da0bdf470dd5b4098130f9a5062906, type: 3}
---- !u!114 &1403787120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403787117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be41caa0577837d48b5c30b4b7667335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1403787121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3087,7 +3087,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442869375}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.77, y: 0.87, z: 0}
+  m_LocalPosition: {x: -5.09, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5544,7 +5544,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9196023732332671440}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.19, y: 0.99, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

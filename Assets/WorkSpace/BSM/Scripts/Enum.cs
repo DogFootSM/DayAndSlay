@@ -204,9 +204,10 @@ public enum NodeState
 [Serializable]
 public enum M_State
 {
-    Attck,
-    Move,
-    Die
+    IDLE,
+    ATTACK,
+    MOVE,
+    DIE
 }
 
 public enum ItemSet

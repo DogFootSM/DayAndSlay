@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Zenject;
 
@@ -14,12 +15,14 @@ public class GeneralMonsterMethod : MonoBehaviour
     [SerializeField] TestPlayer player;
 
     public Coroutine moveCo;
+    public bool isMoving;
+    public bool isAttacking = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            Attack();
+            AttackMethod(monsterData.Attack);
         }
     }
 
@@ -33,48 +36,80 @@ public class GeneralMonsterMethod : MonoBehaviour
 
     IEnumerator MoveCo()
     {
-        for (int i = 0; i < astarPath.path.Count; i++)
+        isMoving = true;
+
+        if (astarPath.path != null && astarPath.path.Count > 1)
         {
-            yield return new WaitForSeconds(0.3f);
-            transform.position = astarPath.path[i];
+            for (int i = 1; i < astarPath.path.Count; i++)
+            {
+                Vector3 current = transform.position;
+                Vector3 target = astarPath.path[i];
+
+                Vector3 direction = target - current;
+                Vector3 moveDir;
+
+                // 대각선 방지: x 또는 y 중 큰 쪽만 이동
+                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                    moveDir = (direction.x > 0) ? Vector3.right : Vector3.left;
+                else
+                    moveDir = (direction.y > 0) ? Vector3.up : Vector3.down;
+
+                Vector3 nextPos = current + moveDir;
+
+                // 타일 한 칸씩 이동
+                while (Vector2.Distance(transform.position, nextPos) > 0.01f)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, nextPos, monsterData.MoveSpeed * Time.deltaTime);
+                    yield return null;
+                }
+
+                transform.position = nextPos; // 위치 스냅
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+
+        isMoving = false;
+        moveCo = null;
+    }
+
+    public void StopMoveCo()
+    {
+        if (moveCo != null)
+        {
+            StopCoroutine(moveCo);
+            moveCo = null;
+            isMoving = false;
         }
     }
 
-    public void Move()
+    public void MoveMethod()
     {
-        //Todo : 몬스터가 캐릭터에게 이동해야 함
-        /*
-        Vector2Int가 담긴 리스트 갱신 
-        Vector2Int.up 이면 위로 한칸 이동함
-        Vector2Int가 담긴 리스트 갱신 
-        Vector2Ini.right 이면 오른쪽으로 한칸 이동함
-        */
 
-        if(moveCo == null) moveCo = StartCoroutine(MoveCo());
-        
         //Todo : 코루틴 제어 정상적으로 돌아가게 해줘야함
         // 이동 시작할때 무브코에 넣어주고 스타트 한다음 공격 상태가 된 경우 or 플레이어가 이동하여 경로 재탐색 하는 경우에 스탑코루틴 해주면서 moveCo 널로 바꿔주면 될듯
         // 이동 구현되면 아이템 드랍 구현해야됨
         // 아이템 풀을 이용해서 구현할 것
+        {
+            if (moveCo != null)
+            {
+                StopCoroutine(moveCo);
+                moveCo = null;
+            }
 
+            moveCo = StartCoroutine(MoveCo());
+        }
     }
 
-    public void Attack()
+    public void AttackMethod(int damage)
     {
-        //Todo : 몬스터가 공격해야 함
-        // 플레이어에게서 데미지 주는 함수 이용
-        Debug.Log("몬스터가 공격함");
+        //int hp = player.GetComponent<PlayerStats>().Health;
+        int hp = 100;
+        Debug.Log($"피격 전 체력{hp} // 몬스터의 공격력{damage} ");
+        hp -= damage;
+        Debug.Log($"피격 후 체력{hp}");
+        //Todo : 실제 데미지 처리 해야함
     }
 
-    public void BeforeAttack()
-    {
-        attackHitBox.enabled = true;
-    }
-
-    public void AfterAttack() 
-    {
-        attackHitBox.enabled = false;
-    }
 
     public void Die()
     {
