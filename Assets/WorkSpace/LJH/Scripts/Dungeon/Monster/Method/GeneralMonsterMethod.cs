@@ -14,7 +14,7 @@ public class GeneralMonsterMethod : MonoBehaviour
     [SerializeField] AstarPath astarPath;
     [SerializeField] TestPlayer player;
 
-    public Coroutine moveCo;
+    public Coroutine moveCoroutine;
     public bool isMoving;
     public bool isAttacking = false;
 
@@ -34,7 +34,7 @@ public class GeneralMonsterMethod : MonoBehaviour
             Debug.Log("몬스터데이터 주입 안됨");
     }
 
-    IEnumerator MoveCo()
+    IEnumerator MoveCoroutine()
     {
         isMoving = true;
 
@@ -64,20 +64,20 @@ public class GeneralMonsterMethod : MonoBehaviour
                 }
 
                 transform.position = nextPos; // 위치 스냅
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.05f);
             }
         }
 
         isMoving = false;
-        moveCo = null;
+        moveCoroutine = null;
     }
 
     public void StopMoveCo()
     {
-        if (moveCo != null)
+        if (moveCoroutine != null)
         {
-            StopCoroutine(moveCo);
-            moveCo = null;
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
             isMoving = false;
         }
     }
@@ -90,13 +90,13 @@ public class GeneralMonsterMethod : MonoBehaviour
         // 이동 구현되면 아이템 드랍 구현해야됨
         // 아이템 풀을 이용해서 구현할 것
         {
-            if (moveCo != null)
+            if (moveCoroutine != null)
             {
-                StopCoroutine(moveCo);
-                moveCo = null;
+                StopCoroutine(moveCoroutine);
+                moveCoroutine = null;
             }
 
-            moveCo = StartCoroutine(MoveCo());
+            moveCoroutine = StartCoroutine(MoveCoroutine());
         }
     }
 
@@ -104,9 +104,7 @@ public class GeneralMonsterMethod : MonoBehaviour
     {
         //int hp = player.GetComponent<PlayerStats>().Health;
         int hp = 100;
-        Debug.Log($"피격 전 체력{hp} // 몬스터의 공격력{damage} ");
         hp -= damage;
-        Debug.Log($"피격 후 체력{hp}");
         //Todo : 실제 데미지 처리 해야함
     }
 

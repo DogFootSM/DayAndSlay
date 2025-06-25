@@ -15,28 +15,34 @@ public class GoblinAi : GeneralMonsterAI
 
     public override void Idle()
     {
+        if (monsterState == M_State.IDLE)
+        {
+            return;
+        }
+
         Debug.Log("몬스터 대기 실행");
         stateMachine.ChangeState(new MonsterIdleState());
         monsterState = M_State.IDLE;
     }
     public override void Attack()
     {
-        Debug.Log("공격 함수 실행");
-        if (monsterState != M_State.ATTACK)
+        if (monsterState == M_State.ATTACK)
         {
-            Debug.Log("몬스터 공격 실행");
-            stateMachine.ChangeState(new MonsterAttackState());
-
-            monsterState = M_State.ATTACK;
-            method.StopMoveCo();
-            method.isAttacking = true;
+            return;
         }
+
+        Debug.Log("몬스터 공격 실행");
+        monsterState = M_State.ATTACK;
+        stateMachine.ChangeState(new MonsterAttackState());
+        method.StopMoveCo();
+        method.isAttacking = true;
+
+        StartCoroutine(AttackEndDelay()); // 공격 종료 타이밍 처리
     }
 
     public override void Move()
     {
-        Debug.Log("이동 함수 실행");
-        if (!method.isMoving && monsterState == M_State.IDLE)
+        if (!method.isMoving)
         {
             Debug.Log("몬스터 이동 실행");
             stateMachine.ChangeState(new MonsterMoveState());

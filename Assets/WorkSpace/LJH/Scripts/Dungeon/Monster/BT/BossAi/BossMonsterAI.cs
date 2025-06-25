@@ -38,7 +38,7 @@ public abstract class BossMonsterAI : MonoBehaviour
     {
         return new List<BTNode>
         {
-            new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange),
+            new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange),
             new ChaseNode(Move)
         };
     }

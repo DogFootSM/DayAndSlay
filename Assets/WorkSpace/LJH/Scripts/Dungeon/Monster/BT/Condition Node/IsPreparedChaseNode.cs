@@ -8,19 +8,22 @@ public class IsPreparedChaseNode : BTNode
 {
     private Transform self;            // 몬스터
     private Transform target;         // 플레이어
-    private float range;             // 기준 거리
+    private float chaseRange;             // 기준 거리
+    private float attackRange;      // 몬스터 사거리
 
-    public IsPreparedChaseNode(Transform self, Transform target, float range)
+    public IsPreparedChaseNode(Transform self, Transform target, float chaseRange, float attackRange)
     {
         this.self = self;
         this.target = target;
-        this.range = range;
+        this.chaseRange = chaseRange;
+        this.attackRange = attackRange;
     }
 
     public override NodeState Tick()
     {
         float distance = Vector3.Distance(self.position, target.position);
-        if (distance <= range)
+
+        if (distance <= chaseRange && distance > attackRange)
         {
             return NodeState.Success;
         }

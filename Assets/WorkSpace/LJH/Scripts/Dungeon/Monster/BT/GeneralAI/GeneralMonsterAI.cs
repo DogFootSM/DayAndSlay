@@ -89,10 +89,20 @@ public class GeneralMonsterAI : MonoBehaviour
         List<BTNode> nodes = new List<BTNode>();
         nodes.Add(attackCheck);
         nodes.Add(attack);
-        nodes.Add(new WaitNode(() => method.isAttacking));
-        nodes.Add(idle);
-
+        //nodes.Add(new WaitNode(() => !method.isAttacking));
+        
         return nodes;
+    }
+
+    public IEnumerator AttackEndDelay()
+    {
+        //임시로 시간 지정
+        float animeLength = 0.5f; 
+        yield return new WaitForSeconds(animeLength);
+
+        method.isAttacking = false;
+        monsterState = M_State.IDLE;
+
     }
 
 
@@ -102,7 +112,7 @@ public class GeneralMonsterAI : MonoBehaviour
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
-        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange);
+        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange);
 
 
         //예시 용

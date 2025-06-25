@@ -158,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: e3ba7f2a8fc2d13418889f7bcb50bd40, type: 2}
   player: {fileID: 0}
+  monsterState: 0
 --- !u!114 &2575475074534013927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +196,8 @@ MonoBehaviour:
   attackHitBox: {fileID: 2701887625613745867}
   astarPath: {fileID: 4866361157382623761}
   player: {fileID: 0}
+  isMoving: 0
+  isAttacking: 0
 --- !u!61 &9171184401338512563
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -255,19 +258,19 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488993737496387518}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1980958820101092610
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   astar: {fileID: 4866361157382623761}
   findCollider: {fileID: 7058692877317689546}
+  grid: {fileID: 0}
 --- !u!58 &7058692877317689546
 CircleCollider2D:
   m_ObjectHideFlags: 0

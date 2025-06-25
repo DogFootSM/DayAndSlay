@@ -5774,6 +5774,7 @@ MonoBehaviour:
       Value: {fileID: 11400000, guid: 8b3e07922d4e6ee40811f5c8830a4575, type: 2}
     - Key: SHOES3
       Value: {fileID: 11400000, guid: 6cce4496e65240846b7ffb69cd8c7676, type: 2}
+  createButton: {fileID: 1939588266}
 --- !u!95 &645209537
 Animator:
   serializedVersion: 5
@@ -11247,14 +11248,6 @@ Tilemap:
     m_Data: {fileID: 1797290975, guid: 7ada4e9a4a17f2e4fbf141027a81586c, type: 3}
   - m_RefCount: 11
     m_Data: {fileID: -491244647, guid: 7ada4e9a4a17f2e4fbf141027a81586c, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 265
     m_Data:
@@ -11277,10 +11270,6 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 265
     m_Data: {r: 1, g: 1, b: 1, a: 1}
-  - m_RefCount: 0
-    m_Data: {r: 4.1509e-41, g: 4.1509e-41, b: 4.1509e-41, a: 4.1509e-41}
-  - m_RefCount: 0
-    m_Data: {r: 4.1509e-41, g: 4.1509e-41, b: 4.1509e-41, a: 4.1509e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -13053,6 +13042,7 @@ MonoBehaviour:
       Value: {fileID: 11400000, guid: 30509cb222066d446bfb61a50fa91b2b, type: 2}
     - Key: BOOK3
       Value: {fileID: 11400000, guid: 1836107d053d9e942bf2f102f57a1226, type: 2}
+  createButton: {fileID: 1794274726}
 --- !u!95 &1100016335
 Animator:
   serializedVersion: 5
@@ -25187,6 +25177,7 @@ GameObject:
   - component: {fileID: 1794274725}
   - component: {fileID: 1794274724}
   - component: {fileID: 1794274723}
+  - component: {fileID: 1794274726}
   m_Layer: 5
   m_Name: OkayButton
   m_TagString: Untagged
@@ -25297,6 +25288,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794274721}
   m_CullTransparentMesh: 1
+--- !u!114 &1794274726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794274721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45cfda38f8acc7344887ef17c7eaf42f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curSelectedItem: {fileID: 0}
 --- !u!1 &1844241658
 GameObject:
   m_ObjectHideFlags: 0
@@ -26240,6 +26244,7 @@ GameObject:
   - component: {fileID: 1939588265}
   - component: {fileID: 1939588264}
   - component: {fileID: 1939588263}
+  - component: {fileID: 1939588266}
   m_Layer: 5
   m_Name: OkayButton
   m_TagString: Untagged
@@ -26350,6 +26355,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939588261}
   m_CullTransparentMesh: 1
+--- !u!114 &1939588266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939588261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45cfda38f8acc7344887ef17c7eaf42f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curSelectedItem: {fileID: 0}
 --- !u!1 &1945314117
 GameObject:
   m_ObjectHideFlags: 0

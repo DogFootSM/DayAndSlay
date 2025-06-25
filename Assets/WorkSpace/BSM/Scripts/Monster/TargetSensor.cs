@@ -10,7 +10,7 @@ public class TargetSensor : MonoBehaviour
     [SerializeField] private CircleCollider2D findCollider; 
   
     private LayerMask targetLayer;
-    private float findRange = 2f;
+    private float findRange = 5f;
 
     GameObject player;
     float interval = 0.2f;
