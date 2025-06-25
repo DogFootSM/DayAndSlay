@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [DllImport("user32.dll")]
     private static extern bool SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int y, int cx, int cy,
         uint uFlags);
-
+    
     [DllImport("user32.dll")]
     private static extern IntPtr GetActiveWindow();
     
