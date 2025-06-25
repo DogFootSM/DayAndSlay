@@ -52,6 +52,8 @@ public class UI_ArmorForge : BaseUI
     private DictList<TextMeshProUGUI> prevTextDictList = new DictList<TextMeshProUGUI>();
     private Image prevItemImage;
 
+    [SerializeField] CreateButton createButton;
+
     private void Start()
     {
         //초기 설정을 아예 제대로 잡아주는게 좋아보임
@@ -280,6 +282,7 @@ public class UI_ArmorForge : BaseUI
                 prevTextDictList["Ingrediant2"].text = itemButtonWrapper.itemData.Name.ToString();
                 prevTextDictList["Ingrediant3"].text = itemButtonWrapper.itemData.Name.ToString();
                 prevTextDictList["Ingrediant4"].text = itemButtonWrapper.itemData.Name.ToString();
+                createButton.curSelectedItem = itemButtonWrapper.itemData;
             }
         }
     }

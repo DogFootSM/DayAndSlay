@@ -32,4 +32,5 @@ public class ItemButton : MonoBehaviour
         // 오픈됨 상태일 때 하이더가 걷혀야 하기에 !로 bool변수 입력
         hider.SetActive(!isOpend);
     }
+
 }
