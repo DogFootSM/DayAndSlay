@@ -22,7 +22,7 @@ public class QuitConfirm : MonoBehaviour
     /// </summary>
     private void CloseMenuPanel()
     {
-        transform.parent.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     /// <summary>
