@@ -19,6 +19,8 @@ public class Node
     public int fCost  => gCost + hCost; 
 }
 
+[RequireComponent(typeof(TargetSensor))]
+[RequireComponent (typeof(CircleCollider2D))]
 public class AstarPath : MonoBehaviour
 {
     [SerializeField] private Grid mapGrid;
@@ -38,7 +40,7 @@ public class AstarPath : MonoBehaviour
     private Dictionary<Vector2Int, Node> neighborsDict = new Dictionary<Vector2Int, Node>();
     private List<Node> openList = new List<Node>();
     private List<Node> closedList = new List<Node>();
-    private List<Vector3> path = new List<Vector3>();
+    public List<Vector3> path = new List<Vector3>();
     
     private Node startNode;
     private Node currentNode;
@@ -65,7 +67,7 @@ public class AstarPath : MonoBehaviour
     {
         this.startPos = (Vector2Int)mapGrid.WorldToCell(startPos);
         this.targetPos = (Vector2Int)mapGrid.WorldToCell(targetPos);
-        Debug.Log("플레이어 감지, 플레이어 추적 시작");
+        //Debug.Log("플레이어 감지, 플레이어 추적 시작");
 
         FindPath(this.startPos, this.targetPos); 
     } 
@@ -206,11 +208,11 @@ public class AstarPath : MonoBehaviour
         
         path.Reverse();  
         
-        // for (int i = 0; i < path.Count - 1; i++)
-        // {
-        //     Debug.Log($"경로 :{path[i]} / 타겟 위치 :{targetPos}");
-        //     Debug.DrawLine(path[i], path[i + 1], Color.red, 2f);
-        // }
+        //for (int i = 0; i < path.Count - 1; i++)
+        //{
+        //    Debug.Log($"경로 :path{i} 위치 {path[i]} / 타겟 위치 :{targetPos}");
+        //    Debug.DrawLine(path[i], path[i + 1], Color.red, 0.1f);
+        //}
     } 
     
     /// <summary>

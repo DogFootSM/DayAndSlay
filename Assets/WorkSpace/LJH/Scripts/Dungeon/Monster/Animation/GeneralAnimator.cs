@@ -25,6 +25,12 @@ public class GeneralAnimator : MonoBehaviour
     protected Dictionary<Direction, string> hitAction = new Dictionary<Direction, string>();
 
     Direction dir;
+    GameObject player;
+
+    private Direction attackDir;
+    private Direction moveDir;
+
+    float term = 0.1f;
 
     private void Start()
     {
@@ -36,25 +42,58 @@ public class GeneralAnimator : MonoBehaviour
         stateMachine.ChangeState(new MonsterIdleState());
 
         DictinaryInit();
+        player = GameObject.FindWithTag("Player");
 
+        StartCoroutine(dirCoroutine());
     }
 
     
     private void Update()
     {
-        dir = Direction.Left;
-
         if (isAction)
         {
             //애니메이션 진행도 확인
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            currentAttackHash = SetAttackHash(attackAction[dir]);
+            
+            currentAttackHash = SetAttackHash(attackAction[SetDirection()]);
 
             if (stateInfo.fullPathHash == currentAttackHash && stateInfo.normalizedTime >= 1f)
             {
-                isAction = false;
+                    isAction = false;
             }
         }
+    }
+
+    IEnumerator dirCoroutine()
+    {
+        //현재 이건 의미 없는 상태
+        //because : 애니메이션의 방향을 지정해서 그 애니메이션을 실행 시키는 로직이라
+        //실행 시킨 이후에 방향을 바꿔주는건 의미 없음
+        while (true)
+        {
+            yield return new WaitForSeconds(term);
+            SetDirection();
+        }
+    }
+
+    Direction SetDirection()
+    {
+        //방향 변경을 꺾을때마다 해줘야함
+        //현재 상황은 처음 애니메이션 시작할 때 방향을 정해줘서
+        //계속 한 방향으로 이동하는 상태
+
+        Vector2 diff = player.transform.position - transform.position;
+
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+        {
+            dir = (diff.x > 0) ? Direction.Right : Direction.Left;
+        }
+        else
+        {
+            dir = (diff.y > 0) ? Direction.Up : Direction.Down;
+        }
+
+        return dir;
     }
     
     int SetAttackHash(string currentAttack)
@@ -64,6 +103,8 @@ public class GeneralAnimator : MonoBehaviour
 
     public void PlayIdle() 
     {
+        if (isAction) return;
+
         spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
         animator.Play("MonsterIdle");
     }
@@ -71,25 +112,27 @@ public class GeneralAnimator : MonoBehaviour
     {
         if (isAction) return;
 
+        moveDir = SetDirection();
         spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
-
-        animator.Play(moveAction[dir]);
+        animator.Play(moveAction[moveDir]);
     }
     public void PlayAttack() 
     {
+
         if (isAction) return;
 
         isAction = true;
-        spriteLibrary.spriteLibraryAsset = spriteDict["Attack"];
 
-        animator.Play(attackAction[dir]);
+        attackDir = SetDirection();
+        spriteLibrary.spriteLibraryAsset = spriteDict["Attack"];
+        animator.Play(attackAction[attackDir]);
 
     }
     public void PlayHit() 
     {
         spriteLibrary.spriteLibraryAsset = spriteDict["Hit"];
 
-        animator.Play(hitAction[dir]);
+        animator.Play(hitAction[SetDirection()]);
     }
     public void PlayDie() 
     {

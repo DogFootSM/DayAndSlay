@@ -1,5 +1,4 @@
 using AYellowpaper.SerializedCollections;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
@@ -14,7 +13,7 @@ public class BossAnimator : MonoBehaviour
     [SerializeField]
     protected SerializedDictionary<string, SpriteLibraryAsset> spriteDict = new SerializedDictionary<string, SpriteLibraryAsset>();
 
-    BossMonsterStateMachine stateMachine;
+    public BossMonsterStateMachine stateMachine;
 
     private int currentAttackHash;
 

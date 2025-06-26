@@ -4,18 +4,50 @@ using UnityEngine;
 
 public class GoblinAi : GeneralMonsterAI
 {
+    // AI가 움직여야겠다 라고 판단했을 때 무브를 실행해
+    // AI가 공격해야겠다 라고 판단했을 때 어택을 실행해
+    // AI가 할게 없을 때 아이들을 실행해
+
+    //Idle이 아닐때에만 Idle을 실행해야지
+    //움직이는 중이 아닐 때에만 Move를 실행하고
+    // 공격중이 아닐때에만 Attack을 실행하고
+
 
     public override void Idle()
     {
+        if (monsterState == M_State.IDLE)
+        {
+            return;
+        }
+
+        Debug.Log("몬스터 대기 실행");
         stateMachine.ChangeState(new MonsterIdleState());
+        monsterState = M_State.IDLE;
     }
     public override void Attack()
     {
+        if (monsterState == M_State.ATTACK)
+        {
+            return;
+        }
+
+        Debug.Log("몬스터 공격 실행");
+        monsterState = M_State.ATTACK;
         stateMachine.ChangeState(new MonsterAttackState());
+        method.StopMoveCo();
+        method.isAttacking = true;
+
+        StartCoroutine(AttackEndDelay()); // 공격 종료 타이밍 처리
     }
 
     public override void Move()
     {
-        stateMachine.ChangeState(new MonsterMoveState());
+        if (!method.isMoving)
+        {
+            Debug.Log("몬스터 이동 실행");
+            stateMachine.ChangeState(new MonsterMoveState());
+            monsterState = M_State.MOVE;
+            method.MoveMethod();
+        }
     }
 }

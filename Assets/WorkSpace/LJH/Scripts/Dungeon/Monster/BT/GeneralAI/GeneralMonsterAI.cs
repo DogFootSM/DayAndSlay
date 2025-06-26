@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +11,10 @@ public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField]
     public MonsterData monsterData;
-    [Inject]
+    
+    //테스트씬 테스트용
+    //[Inject]
+    [SerializeField]
     protected TestPlayer player;
 
     protected BehaviourTree tree;
@@ -28,6 +32,9 @@ public class GeneralMonsterAI : MonoBehaviour
     protected MonsterStateMachine stateMachine;
 
     protected GeneralMonsterMethod method;
+
+    public M_State monsterState;
+
 
     private void Start()
     {
@@ -82,8 +89,20 @@ public class GeneralMonsterAI : MonoBehaviour
         List<BTNode> nodes = new List<BTNode>();
         nodes.Add(attackCheck);
         nodes.Add(attack);
-
+        //nodes.Add(new WaitNode(() => !method.isAttacking));
+        
         return nodes;
+    }
+
+    public IEnumerator AttackEndDelay()
+    {
+        //임시로 시간 지정
+        float animeLength = 0.5f; 
+        yield return new WaitForSeconds(animeLength);
+
+        method.isAttacking = false;
+        monsterState = M_State.IDLE;
+
     }
 
 
@@ -93,7 +112,7 @@ public class GeneralMonsterAI : MonoBehaviour
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
-        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange);
+        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange);
 
 
         //예시 용
