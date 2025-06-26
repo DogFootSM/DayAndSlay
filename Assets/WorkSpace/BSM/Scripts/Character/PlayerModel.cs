@@ -70,7 +70,8 @@ public class PlayerModel : MonoBehaviour
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     private IDataReader dataReader;
-
+    private GameManager gameManager => GameManager.Instance;
+    
     //이동 속도
     private float moveSpeed = 3f;
     public float MoveSpeed {get => moveSpeed;}
@@ -182,7 +183,7 @@ public class PlayerModel : MonoBehaviour
         playerStats.level++;
         playerStats.statsPoints += IncreaseStatsPoint;  
         playerStats.skillPoints += IncreaseSkillPoints;
-        
+        gameManager.HasUnsavedChanges = true;
         skillTree.NotifySkillPointChanged(); 
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
