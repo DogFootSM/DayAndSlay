@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using Zenject;
@@ -8,7 +9,7 @@ using Zenject;
 public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
-
+ 
     public static GameManager Instance;
 
     [DllImport("user32.dll")]
@@ -38,6 +39,14 @@ public class GameManager : MonoBehaviour
     private int windowMode;
     private (int, int) resolution;
     private int resolutionIndex;
+    
+    private Dictionary<int, (int, int)> resolutionMaps = new()
+    {
+        {0,(1920, 1080)},
+        {1,(1600, 900)},
+        {2,(1366, 768)},
+        {3,(1280, 720)}, 
+    };
     
     private void Awake()
     {
@@ -111,10 +120,10 @@ public class GameManager : MonoBehaviour
         
         this.resolution = resolution switch
         {
-            0 => (1920, 1080),
-            1 => (1600, 900),
-            2 => (1366, 768),
-            3 => (1280, 720)
+            0 => resolutionMaps[0],
+            1 => resolutionMaps[1],
+            2 => resolutionMaps[2],
+            3 => resolutionMaps[3]
         };
 
         bool isFullScreen = (FullScreenMode)windowMode == FullScreenMode.ExclusiveFullScreen;
@@ -197,6 +206,19 @@ public class GameManager : MonoBehaviour
         
         SetWindowPos(hwnd,0, posX, posY, width, height, SWP_SHOWWINDOW); 
     }
-    
-    
+
+    /// <summary>
+    /// 화면 해상도 확인
+    /// </summary>
+    /// <param name="width">현재 해상도의 가로 길이</param>
+    /// <param name="height">현재 해상도의 세로 길이</param>
+    /// <returns></returns>
+    public bool ResolutionCheck(int width, int height)
+    {
+        if(resolutionMaps.ContainsValue((width, height)))
+        {
+            return true;
+        }
+        return false;
+    } 
 }
