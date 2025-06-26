@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
- 
-    public static GameManager Instance;
-
+    
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
@@ -28,6 +27,8 @@ public class GameManager : MonoBehaviour
     [DllImport("user32.dll")]
     private static extern int GetSystemMetrics(int nIndex);
      
+    public static GameManager Instance;
+    
     private const int GWL_STYLE = -16;
     private const uint WS_POPUP = 0x80000000;
     private const uint WS_VISIBLE = 0x10000000;
@@ -59,7 +60,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
+  
+    }   
 
     private void Start()
     {
@@ -207,18 +209,5 @@ public class GameManager : MonoBehaviour
         SetWindowPos(hwnd,0, posX, posY, width, height, SWP_SHOWWINDOW); 
     }
 
-    /// <summary>
-    /// 화면 해상도 확인
-    /// </summary>
-    /// <param name="width">현재 해상도의 가로 길이</param>
-    /// <param name="height">현재 해상도의 세로 길이</param>
-    /// <returns></returns>
-    public bool ResolutionCheck(int width, int height)
-    {
-        if(resolutionMaps.ContainsValue((width, height)))
-        {
-            return true;
-        }
-        return false;
-    } 
+    
 }

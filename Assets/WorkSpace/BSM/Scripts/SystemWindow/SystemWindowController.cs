@@ -10,7 +10,8 @@ public class SystemWindowController : MonoBehaviour
     private SerializedDictionary<SystemType, GameObject> systemWindows;
 
     [SerializeField] private GameObject parentCanvas;
-
+    [SerializeField] private GameObject menuCanvas;
+    
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
     private SystemType currentSystemType;
     
@@ -87,13 +88,13 @@ public class SystemWindowController : MonoBehaviour
         {
             OpenSystemWindow(SystemType.RECIPE);
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            OpenSystemWindow(SystemType.SETTING);
-        }
         else if (Input.GetKeyDown(KeyCode.I))
         {
             OpenSystemWindow(SystemType.INVENTORY);
+        } 
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            menuCanvas.SetActive(!menuCanvas.activeSelf);
         }
     }
 
