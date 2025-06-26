@@ -12,7 +12,7 @@ public class TestPlayer : MonoBehaviour
 
     [SerializeField] float moveSpeed;
 
-    GameObject interactObj;
+    private GameObject interactObj;
 
     Item haveItem;
 

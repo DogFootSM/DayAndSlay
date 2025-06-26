@@ -39,7 +39,8 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         //오디오 설정 Data Load
-        dataManager.LoadAudioData(); 
+        dataManager.LoadAudioData();
+        PlayBGM(BGMSound.START_SCENE_BGM);
     }
 
     /// <summary>
@@ -105,19 +106,19 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// 효과음 1회 재생
     /// </summary>
-    /// <param name="audioClip">1번 재생할 효과음 오디오 클립</param>
-    public void PlaySfx(AudioClip audioClip)
+    /// <param name="sfxSound">효과음으로 사용할 오디오 타입</param>
+    public void PlaySfx(SFXSound sfxSound)
     {
-        sfxAudioSource.PlayOneShot(audioClip);
+        sfxAudioSource.PlayOneShot(sfxSounds[sfxSound]);
     }
 
     /// <summary>
     /// 배경음 재생
     /// </summary>
-    /// <param name="audioClip">현재 위치에 따라 재생할 배경음 오디오 클립</param>
-    public void PlayBGM(AudioClip audioClip)
+    /// <param name="bgmSound">배경음으로 사용할 오디오 타입</param>
+    public void PlayBGM(BGMSound bgmSound)
     {
-        bgmAudioSource.clip = audioClip;
+        bgmAudioSource.clip = bgmSounds[bgmSound];
         bgmAudioSource.Play();
     }
     

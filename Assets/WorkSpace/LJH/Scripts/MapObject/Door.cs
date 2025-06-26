@@ -23,6 +23,7 @@ public class Door : InteractableObj, IInteractionStoreScene
     {
         animator = GetComponent<Animator>();
         movePos = movePosTrans.position;
+        player = GameObject.FindWithTag("Player");
     }
 
     public override void Interaction()
