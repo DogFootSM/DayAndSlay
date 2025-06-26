@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject.SpaceFighter;
 
 public class TargetSensor : MonoBehaviour
 {
@@ -24,7 +23,7 @@ public class TargetSensor : MonoBehaviour
         findCollider.radius = findRange;
         targetLayer = LayerMask.GetMask("Player");
 
-        //ÀÌÀçÈ£°¡ Ãß°¡ÇÑ ÄÚµå
+        //ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½Úµï¿½
         player = GameObject.FindWithTag("Player");
         lastPlayerCell = grid.WorldToCell(player.transform.position);
     }
@@ -38,8 +37,8 @@ public class TargetSensor : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÌÀçÈ£°¡ Ãß°¡ÇÑ ÄÚµå
-    /// °æ·Î ÀçÅ½»ö Å×½ºÆ®¸¦ À§ÇØ Ãß°¡ÇÔ
+    /// ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½Úµï¿½
+    /// ï¿½ï¿½ï¿½ ï¿½ï¿½Å½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½
     /// </summary>
     private void OnTriggerStay2D(Collider2D collision)
     {
