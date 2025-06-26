@@ -23,7 +23,7 @@ public class TargetSensor : MonoBehaviour
         findCollider.radius = findRange;
         targetLayer = LayerMask.GetMask("Player");
 
-        //����ȣ�� �߰��� �ڵ�
+        //이재호가 쓴 코드
         player = GameObject.FindWithTag("Player");
         lastPlayerCell = grid.WorldToCell(player.transform.position);
     }
@@ -37,8 +37,7 @@ public class TargetSensor : MonoBehaviour
     }
 
     /// <summary>
-    /// ����ȣ�� �߰��� �ڵ�
-    /// ��� ��Ž�� �׽�Ʈ�� ���� �߰���
+    /// 이재호가 작성한 코드
     /// </summary>
     private void OnTriggerStay2D(Collider2D collision)
     {
