@@ -20,10 +20,8 @@ public class PlayerController : MonoBehaviour
     public PlayerModel PlayerModel => playerModel;
     public Animator BodyAnimator => bodyAnimator;
     public Weapon CurWeapon => curWeapon;
-    public WaitCache WaitCache => waitCache;
     public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
-    
-    [Inject] private WaitCache waitCache;
+
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
 

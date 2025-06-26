@@ -47,7 +47,7 @@ public class PlayerAttack : PlayerState
         playerController.CurWeapon.NormalAttack();
         playerController.BodyAnimator.Play(attackHash);
         playerController.WeaponAnimator.Play(attackHash);
-        yield return playerController.WaitCache.GetWait(attackSpeed);
+        yield return WaitCache.GetWait(attackSpeed);
 
         playerController.ChangeState(CharacterStateType.IDLE);
     }

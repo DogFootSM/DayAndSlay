@@ -44,7 +44,7 @@ public class PlayerSkill : PlayerState
     /// <returns></returns>
     private IEnumerator AfterDelayRoutine()
     { 
-        yield return playerController.WaitCache.GetWait(afterDelay); 
+        yield return WaitCache.GetWait(afterDelay); 
         playerController.ChangeState(CharacterStateType.IDLE);
     }
     
