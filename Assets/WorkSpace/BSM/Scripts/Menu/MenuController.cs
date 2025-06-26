@@ -12,10 +12,13 @@ public class MenuController : MonoBehaviour
     
     [SerializeField] private SystemWindowController systemWindowController;
     
+    private GameManager gameManager => GameManager.Instance;
+    
     private void Awake()
     {
         continueButton.onClick.AddListener(CloseMenu);
         optionButton.onClick.AddListener(OpenSettingPanel);
+        quitButton.onClick.AddListener(OnClickQuit);
     }
 
     /// <summary>
@@ -23,7 +26,7 @@ public class MenuController : MonoBehaviour
     /// </summary>
     private void CloseMenu()
     {
-        transform.parent.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
     
     /// <summary>
@@ -31,8 +34,16 @@ public class MenuController : MonoBehaviour
     /// </summary>
     private void OpenSettingPanel()
     {
-        transform.parent.gameObject.SetActive(false);
+        gameObject.SetActive(false);
         systemWindowController.OpenSystemWindow(SystemType.SETTING); 
+    }
+
+    /// <summary>
+    /// 게임 종료 버튼 클릭하여 게임 종료 로직 호출
+    /// </summary>
+    private void OnClickQuit()
+    {
+        gameManager.ConfirmQuit();
     }
     
 }

@@ -10,6 +10,7 @@ using Zenject;
 public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
+    [SerializeField] private GameObject QuitAskPanel;
     
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
@@ -28,6 +29,8 @@ public class GameManager : MonoBehaviour
     private static extern int GetSystemMetrics(int nIndex);
      
     public static GameManager Instance;
+
+    public bool HasUnsavedChanges;
     
     private const int GWL_STYLE = -16;
     private const uint WS_POPUP = 0x80000000;
@@ -60,7 +63,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-  
+
+
+        Application.wantsToQuit += ApplicationQuit;
     }   
 
     private void Start()
@@ -209,5 +214,22 @@ public class GameManager : MonoBehaviour
         SetWindowPos(hwnd,0, posX, posY, width, height, SWP_SHOWWINDOW); 
     }
 
+    public void ConfirmQuit()
+    {
+        Application.Quit();
+    }
+     
+    private bool ApplicationQuit()
+    {
+        if (HasUnsavedChanges)
+        {
+            //변경된 사항 알림 UI Open
+            QuitAskPanel.SetActive(true);
+            return false;
+        }
+
+        return true;
+    }
+    
     
 }
