@@ -43,7 +43,14 @@ public class PlayerController : MonoBehaviour
 
     private float posX;
     private float posY;
-    
+
+
+    //이재호가 붙여둔 임시 코드
+    private GameObject interactObj;
+    private IInteractionStoreScene interactable;
+
+
+
     private void Awake()
     {
         // ProjectContext.Instance.Container.Inject(this);
@@ -65,6 +72,9 @@ public class PlayerController : MonoBehaviour
     {
         KeyInput();
         characterStates[(int)curState].Update();  
+
+        //이재호가 붙여둔 테스트용
+        TakeInteraction();
     }
 
     private void FixedUpdate()
@@ -180,4 +190,36 @@ public class PlayerController : MonoBehaviour
     {
         playerModel.GainExperience(exp);
     }
+
+    /// <summary>
+    /// 이재호가 붙인 임시 코드
+    /// </summary>
+    private void TakeInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.E) &&
+            interactObj != null)
+        {
+            switch (interactable)
+            {
+                case Table table:
+                    //Todo : 통합하면서 인벤토리와 결합해서 새로 만들기
+                    //table.TakeItem(choiceItem);
+                    break;
+
+                default:
+                    interactable.Interaction();
+                    break;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        if (collision.gameObject.TryGetComponent(out interactable))
+        {
+            interactObj = collision.gameObject;
+        }
+    }
+
 }

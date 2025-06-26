@@ -26,6 +26,7 @@ public class Loading : MonoBehaviour
         yield return null;
         if (nextScene != null)
         {
+            Debug.Log($"이동할 씬 이름 { nextScene.Name}");
             AsyncOperation op = SceneManager.LoadSceneAsync(nextScene.Name);
             op.allowSceneActivation = false;
 
