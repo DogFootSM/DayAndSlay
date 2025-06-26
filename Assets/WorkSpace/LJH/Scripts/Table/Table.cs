@@ -21,33 +21,28 @@ public class Table : InteractableObj, IInteractionStoreScene
     void Start()
     {
         tableItem = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        isHave = item ? false : true;
     }
 
-    void Update()
-    {
-        if (item == null)
-        {
-            isHave = false;
-        }
-        else
-        {
-            isHave = true;
-        }
-    }
+    
 
     public override void Interaction()
     {
         Debug.Log("테이블 사용");
         //Todo: 테이블 사용
 
-        //if(isHave)
-        //{
-        //    GiveItem();
-        //}
-        //
-        //else
-        //{
-            //}
+
+        if(isHave)
+        {
+            Debug.Log("아이템을 뺐습니다.");
+            GiveItem();
+        }
+        
+        else
+        {
+            Debug.Log("아이템을 넣었습니다.");
+            //TakeItem(선택한 아이템 들어가야 함);
+        }
     }
 
     public override void UiOnOffMethod(Collision2D collision)
