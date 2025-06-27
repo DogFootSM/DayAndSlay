@@ -31,8 +31,9 @@ public class GameManager : MonoBehaviour
      
     public static GameManager Instance;
     
-    public bool HasUnsavedChanges;
-    public int ResolutionIndex;
+    public bool HasUnsavedChanges;              //캐릭터의 변경 사항 유무
+    public int ResolutionIndex;                 //현재 사용중인 해상도 드롭다운의 인덱스
+    public int CurDayState =1;                     //현재 진행중인 날짜의 낮, 밤 상태 (게임 시간 흐름에 따라 변화)
     
     private const int GWL_STYLE = -16;
     private const uint WS_POPUP = 0x80000000;
@@ -54,10 +55,7 @@ public class GameManager : MonoBehaviour
         {2,(1366, 768)},
         {3,(1280, 720)}, 
     };
-    
-    //사운드 설정 정보
-    
-    
+     
     private void Awake()
     {
         if (Instance == null)

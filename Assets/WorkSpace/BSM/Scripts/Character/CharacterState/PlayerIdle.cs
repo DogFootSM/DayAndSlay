@@ -28,7 +28,7 @@ public class PlayerIdle : PlayerState
 
     public override void Update()
     {
-        if (!Input.GetKey(KeyCode.LeftShift) && playerController.moveDir != Vector2.zero)
+        if (!Input.GetKey(KeyCode.LeftShift) && playerController.MoveDir != Vector2.zero)
         {
             playerController.ChangeState(CharacterStateType.WALK);
         }
