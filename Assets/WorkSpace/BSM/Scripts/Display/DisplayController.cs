@@ -41,8 +41,7 @@ public class DisplayController : MonoBehaviour
 
                 UpdateWindowModeToggles();
             }); 
-        }
-         
+        } 
     }
 
     /// <summary>
@@ -97,7 +96,8 @@ public class DisplayController : MonoBehaviour
     /// 화면 해상도 이벤트 등록
     /// </summary>
     private void OnChangedResolution()
-    {
+    { 
+        resolutionDropdown.value = gameManager.GetResolution();
         resolutionDropdown.onValueChanged.AddListener(x => gameManager.SetResolution(x));
     }
     

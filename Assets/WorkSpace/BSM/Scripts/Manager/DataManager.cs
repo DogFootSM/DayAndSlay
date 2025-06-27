@@ -67,9 +67,10 @@ public class DataManager : MonoBehaviour
         string loadDisplayData = File.ReadAllText(path);
 
         displaySettings = JsonUtility.FromJson<DisplaySettings>(loadDisplayData);
-        
-        gameManager.SetResolution(displaySettings.Resolution);
+
+        gameManager.ResolutionIndex = displaySettings.Resolution;
         gameManager.SetWindowMode(displaySettings.WindowMode);
+        gameManager.SetResolution(displaySettings.Resolution);
         gameManager.SetMouseCursorLockMode(displaySettings.MouseLock);
     }
 

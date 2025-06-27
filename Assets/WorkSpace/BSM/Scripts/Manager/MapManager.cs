@@ -25,7 +25,7 @@ public class MapManager : MonoBehaviour
     /// 씬 이동 시 타입 변경
     /// </summary>
     /// <param name="mapType"></param>
-    public void ManChange(MapType mapType)
+    public void MapChange(MapType mapType)
     {
         curMapType = mapType;
         FollowCamera?.OnMapChanged?.Invoke(); 
