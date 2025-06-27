@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 public class InventoryInteraction : 
     InventoryController, 
@@ -23,6 +24,8 @@ public class InventoryInteraction :
     [SerializeField] private TextMeshProUGUI equipStateButtonText;
     [SerializeField] private SystemWindowController systemWindowController;
     
+    [Inject] private SaveManager saveManager;
+    
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
     
@@ -31,12 +34,13 @@ public class InventoryInteraction :
     
     private bool fromSlotItem => fromSlot != null && fromSlot.CurSlotItem == null;
     private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY;
-    private LayerMask dimedLayer;
+    private LayerMask dimmedLayer;
     
     new void Awake()
     {
         base.Awake();
-        dimedLayer = LayerMask.GetMask("Dimed");
+        saveManager.InitInventorySlots(this);
+        dimmedLayer = LayerMask.GetMask("Dimmed");
         //SetSlotItemData();
         //SetOwnedItemSet(); 
         //equipButton.onClick.AddListener(Equip);

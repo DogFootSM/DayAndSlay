@@ -6,13 +6,13 @@ using UnityEngine;
 public class PlayerSaveInteractor : MonoBehaviour
 {
     [SerializeField] private PlayerController playerController;
-    
+
     private LayerMask savePointLayerMask; 
     private RaycastHit2D hit;
-     
-    private int ignorePlayerLayer;
     private Vector2 curDir;
     
+    private int ignorePlayerLayer;
+     
     private void Awake()
     {
         savePointLayerMask = LayerMask.GetMask("SavePoint");
@@ -23,8 +23,6 @@ public class PlayerSaveInteractor : MonoBehaviour
     {
         SetRayDirection();
         
-        Debug.DrawRay(transform.position, curDir * 1.5f, Color.red);
-
         hit = Physics2D.Raycast(transform.position, curDir, 1.5f, savePointLayerMask & ignorePlayerLayer);
 
         if (hit.collider != null)
@@ -32,7 +30,7 @@ public class PlayerSaveInteractor : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 GameSaveHandler gameSaveHandler = hit.collider.gameObject.GetComponent<GameSaveHandler>();
-                gameSaveHandler.OpenSaveAlert();
+                gameSaveHandler.OpenSaveAlert(); 
             } 
         } 
     }

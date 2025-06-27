@@ -28,6 +28,8 @@ public class InventoryController : MonoBehaviour
     
     [Inject] private DataManager dataManager;
     [Inject] private SqlManager sqlManager;
+    [Inject] private SaveManager saveManager;
+    
     protected List<InventorySlot> inventorySlots = new List<InventorySlot>();
     private List<BSM_ItemData> itemDatas = new List<BSM_ItemData>();
     private IDataReader dataReader;
@@ -86,6 +88,5 @@ public class InventoryController : MonoBehaviour
     protected List<BSM_ItemData> GetItemId()
     { 
         return itemDatas;
-    } 
-    
+    }
 }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class GameSaveHandler : MonoBehaviour
 {
@@ -11,8 +13,16 @@ public class GameSaveHandler : MonoBehaviour
     [SerializeField] private Image saveDimmedImage;
     [SerializeField] private GameObject blinkText;
     
-    private Coroutine saveFadeCo;
+    [Inject] private SaveManager saveManager;
     
+    private Coroutine saveFadeCo;
+    private GameManager gameManager => GameManager.Instance;
+
+    private void Awake()
+    {
+        ProjectContext.Instance.Container.Inject(this);
+    }
+
     /// <summary>
     /// 저장 안내 얼럿 활성화
     /// </summary>
@@ -50,7 +60,11 @@ public class GameSaveHandler : MonoBehaviour
             saveDimmedImage.color = new Color(0, 0, 0, elapsedTime);
         }
         
-        blinkText.SetActive(true);
+        blinkText.SetActive(true); 
+        
+        //SaveManager의 저장 로직 호출
+        saveManager.GameDataSave();
+        //TODO: Save 호출 필요, Wait으로 기다리는게 아닌 async로 기다리기?
         yield return WaitCache.GetWait(2f);
         
         elapsedTime = 1.5f;

@@ -13,6 +13,7 @@ public class SkillTree : MonoBehaviour
     [SerializeField] private PlayerModel playerModel;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
+    [Inject] private SaveManager saveManager;
     
     public List<SkillData> SkillDatas = new List<SkillData>();
 
@@ -30,6 +31,8 @@ public class SkillTree : MonoBehaviour
         InitializeSkillData();
         CategorizeByWeapon();
         SortSkillNodesByWeapon();
+        
+        saveManager.InitSkillNode(this);
     }
  
     /// <summary>
@@ -140,4 +143,5 @@ public class SkillTree : MonoBehaviour
         skillTreeUI.OnChangedSkillTab?.Invoke(curWeapon);
     }
 
+    
 }

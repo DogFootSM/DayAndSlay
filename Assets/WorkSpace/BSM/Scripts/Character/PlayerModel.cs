@@ -69,6 +69,8 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private SkillTree skillTree; 
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
+    [Inject] private SaveManager saveManager;
+    
     private IDataReader dataReader;
     private GameManager gameManager => GameManager.Instance;
     
@@ -104,6 +106,7 @@ public class PlayerModel : MonoBehaviour
   
     private void Init()
     { 
+        saveManager.InitPlayerModel(this);
         SetStatsData(); 
     }
 
@@ -152,6 +155,7 @@ public class PlayerModel : MonoBehaviour
 
     private void Update()
     {
+        //TODO: 테스트용 코드
         if (Input.GetKeyDown(KeyCode.V))
         {
             GainExperience(50);

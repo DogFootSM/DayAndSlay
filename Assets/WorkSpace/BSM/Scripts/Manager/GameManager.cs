@@ -67,8 +67,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
+ 
         Application.wantsToQuit += ApplicationQuit;
     }   
 
@@ -258,7 +257,5 @@ public class GameManager : MonoBehaviour
         }
 
         return true;
-    }
-    
-    
+    } 
 }
