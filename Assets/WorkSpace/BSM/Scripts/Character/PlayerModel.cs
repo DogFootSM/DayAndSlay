@@ -54,7 +54,7 @@ public class PlayerStats
     
 }
 
-public class PlayerModel : MonoBehaviour
+public class PlayerModel : MonoBehaviour, ISavable
 {
     [Header("캐릭터 레벨업 시 스탯 포인트")]
     public int IncreaseStatsPoint;
@@ -105,8 +105,8 @@ public class PlayerModel : MonoBehaviour
     }
   
     private void Init()
-    { 
-        saveManager.InitPlayerModel(this);
+    {  
+        saveManager.SavableRegister(this);
         SetStatsData(); 
     }
 
@@ -231,5 +231,13 @@ public class PlayerModel : MonoBehaviour
         playerStats.statsPoints -= increasePoint; 
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+
+    /// <summary>
+    /// PlayerStat 데이터 저장
+    /// </summary>
+    public void Save(SqlManager sqlManager)
+    {
+        Debug.Log("스탯 저장 진행");
     }
 }

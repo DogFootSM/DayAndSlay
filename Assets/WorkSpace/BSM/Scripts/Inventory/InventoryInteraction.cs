@@ -13,7 +13,8 @@ using Zenject;
 public class InventoryInteraction : 
     InventoryController, 
     IPointerUpHandler,IPointerDownHandler,IPointerClickHandler,
-    IDragHandler
+    IDragHandler,
+    ISavable
 { 
     [SerializeField] GraphicRaycaster inventoryRayCanvas;
     [SerializeField] private Image dragItemImage;
@@ -38,8 +39,8 @@ public class InventoryInteraction :
     
     new void Awake()
     {
-        base.Awake();
-        saveManager.InitInventorySlots(this);
+        base.Awake(); 
+        saveManager.SavableRegister(this);
         dimmedLayer = LayerMask.GetMask("Dimmed");
         //SetSlotItemData();
         //SetOwnedItemSet(); 
@@ -294,5 +295,12 @@ public class InventoryInteraction :
         detailItemDescA.gameObject.SetActive(!fromSlotItem);
         detailItemDescB.gameObject.SetActive(!fromSlotItem);
     }
-    
+
+    /// <summary>
+    /// 아이템 데이터 저장
+    /// </summary>
+    public void Save(SqlManager sqlManager)
+    {
+        Debug.Log("아이템 저장");         
+    }
 }

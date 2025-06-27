@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-public class SkillTree : MonoBehaviour
+public class SkillTree : MonoBehaviour, ISavable
 {
     [SerializeField] private SkillTreeUI skillTreeUI;
     [SerializeField] private PlayerModel playerModel;
@@ -31,8 +31,7 @@ public class SkillTree : MonoBehaviour
         InitializeSkillData();
         CategorizeByWeapon();
         SortSkillNodesByWeapon();
-        
-        saveManager.InitSkillNode(this);
+        saveManager.SavableRegister(this);
     }
  
     /// <summary>
@@ -143,5 +142,12 @@ public class SkillTree : MonoBehaviour
         skillTreeUI.OnChangedSkillTab?.Invoke(curWeapon);
     }
 
-    
+
+    /// <summary>
+    /// 스킬 데이터 저장
+    /// </summary>
+    public void Save(SqlManager sqlManager)
+    {
+        Debug.Log("스킬 저장 진행");
+    }
 }

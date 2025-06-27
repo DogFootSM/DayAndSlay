@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,47 +6,37 @@ using Zenject;
 
 public class SaveManager : MonoBehaviour
 {
-    private SkillTree skillTree;
-    private PlayerModel playerModel;
-    private InventoryController inventoryController;
-
-    public void InitSkillNode(SkillTree skillTree)
+    [Inject] private DataManager dataManager;
+    [Inject] private SqlManager sqlManager;
+ 
+    private List<ISavable> savables = new List<ISavable>();
+    
+    private void Awake()
     {
-        this.skillTree = skillTree;
+        ProjectContext.Instance.Container.Inject(this);
     }
 
-    public void InitPlayerModel(PlayerModel playerModel)
+    /// <summary>
+    /// 저장할 데이터 추상화 객체 저장
+    /// </summary>
+    /// <param name="savable">저장할 데이터 객체</param>
+    public void SavableRegister(ISavable savable)
     {
-        this.playerModel = playerModel;
+        if (!savables.Contains(savable))
+        {
+            savables.Add(savable);
+        }
     }
 
-    public void InitInventorySlots(InventoryController inventoryController)
-    {
-        this.inventoryController = inventoryController;
-    }
-
+    /// <summary>
+    /// 각각의 데이터 저장 로직 호출
+    /// </summary>
     public void GameDataSave()
     {
-        SkillDataSave();
-        StatDataSave();
-        ItemDataSave();
+        foreach (var savable in savables)
+        {
+            savable.Save(sqlManager);
+        } 
     }
  
-    /// <summary>
-    /// 
-    /// </summary>
-    private void SkillDataSave()
-    {
-        Debug.Log($"스킬트리 저장 :{skillTree == null}"); 
-    }
-    
-    private void StatDataSave()
-    {
-        Debug.Log($"스탯 저장 :{playerModel == null}");
-    }
-
-    private void ItemDataSave()
-    {
-        Debug.Log($"아이템 저장 :{inventoryController == null}");
-    }
 }
