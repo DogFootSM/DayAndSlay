@@ -120,10 +120,10 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 선택한 옵션에 따른 화면 해상도 설정
     /// </summary>
-    /// <param name="resolution">드롭다운 메뉴로 선택한 옵션값</param>
-    public void SetResolution(int resolution)
+    /// <param name="resolutionValue">드롭다운 메뉴로 선택한 옵션값</param>
+    public void SetResolution(int resolutionValue)
     {
-        ResolutionIndex = resolution;
+        ResolutionIndex = resolutionValue;
         
         if (borderlessCo != null)
         {
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
             borderlessCo = null;
         }
         
-        this.resolution = resolution switch
+        this.resolution = resolutionValue switch
         {
             0 => resolutionMaps[0],
             1 => resolutionMaps[1],
