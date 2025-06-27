@@ -7,9 +7,12 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SavePromptUI : MonoBehaviour
-{
+{ 
     [SerializeField] private TextMeshProUGUI alertText;
-
+    [SerializeField] private Button saveConfirmButton;
+    [SerializeField] private Button saveCancelButton;
+    [SerializeField] private GameSaveHandler saveHandler;
+    
     private GameManager gameManager => GameManager.Instance;
     
     private readonly string[] saveAlertText =
@@ -17,6 +20,16 @@ public class SavePromptUI : MonoBehaviour
         "낮잠을 주무시겠습니까?\n낮잠을 자면 게임이 저장되며, \n밤에 잠을 잘 수 없습니다.",
         "잠을 주무시겠습니까?\n 잠을 자면 게임이 저장되며, \n아침이 됩니다."
     };
+
+    private void Awake()
+    {
+        saveConfirmButton.onClick.AddListener(() =>
+        {
+            saveHandler.GameSaveProcess();
+            gameObject.SetActive(false);
+        });
+        saveCancelButton.onClick.AddListener(() => gameObject.SetActive(false));
+    }
 
     private void OnEnable()
     { 
@@ -31,6 +44,4 @@ public class SavePromptUI : MonoBehaviour
     {
         alertText.text = saveAlertText[dayState];
     }
-    
-
 }

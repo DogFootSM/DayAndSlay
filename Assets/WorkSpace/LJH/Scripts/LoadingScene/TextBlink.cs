@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,27 +9,44 @@ public class TextBlink : MonoBehaviour
 {
     private Color curColor;
 
-    [Header("ÅØ½ºÆ® »ö»ó º¯°æ ¼Óµµ Á¶Àı default: 0.01f")]
+    [Header("í…ìŠ¤íŠ¸ ìƒ‰ìƒ ë³€ê²½ ì†ë„ ì¡°ì ˆ default: 0.01f")]
     [SerializeField] private float tick = 0.01f;
     private float lowCut = 0.25f;
     private float highCut = 0.99f;
 
-    TextMeshProUGUI loadingText;
+    private TextMeshProUGUI loadingText;
 
-    void Start()
+    private Coroutine blinkTextCo;
+    
+    void Awake()
     {
         loadingText = GetComponent<TextMeshProUGUI>();
-        curColor = loadingText.color;
-
-        StartCoroutine(BlinkCoroutine());
     }
 
+    private void OnEnable()
+    { 
+        curColor = loadingText.color;
+
+        if (blinkTextCo == null)
+        {
+            blinkTextCo = StartCoroutine(BlinkCoroutine());
+        } 
+    }
+
+    private void OnDisable()
+    {
+        if (blinkTextCo != null)
+        {
+            StopCoroutine(blinkTextCo);
+            blinkTextCo = null;
+        }
+    }
 
     IEnumerator BlinkCoroutine()
     {
         bool isDecreasing = true;
 
-        //½ÇÁ¦·Î µé¾î°¥ °ª
+        //ì‹¤ì œë¡œ ë“¤ì–´ê°ˆ ê°’
         float tick;
 
         while (true)
