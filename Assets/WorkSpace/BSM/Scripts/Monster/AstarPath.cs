@@ -23,7 +23,6 @@ public class Node
 [RequireComponent (typeof(CircleCollider2D))]
 public class AstarPath : MonoBehaviour
 {
-    [SerializeField] private Grid mapGrid;
     [SerializeField] private Tilemap mapTileMap;
     [SerializeField] private Tilemap obstacleTileMap;
      
@@ -41,7 +40,9 @@ public class AstarPath : MonoBehaviour
     private List<Node> openList = new List<Node>();
     private List<Node> closedList = new List<Node>();
     public List<Vector3> path = new List<Vector3>();
-    
+
+    public Grid mapGrid;
+
     private Node startNode;
     private Node currentNode;
      
@@ -49,13 +50,23 @@ public class AstarPath : MonoBehaviour
     private Vector2Int targetPos; 
     private void Awake()
     {
-        monster = GetComponentInParent<Monster>(); 
-        
+        startNode = new Node();
+        currentNode = new Node();
+        StartCoroutine(MonsterSpawnWaitCoroutine());
+    }
+
+    private IEnumerator MonsterSpawnWaitCoroutine()
+    {
+        yield return new WaitUntil(() => mapGrid != null);
+
+        monster = GetComponentInParent<Monster>();
+
         //현재 몬스터의 스폰 위치
         startPos = (Vector2Int)mapGrid.WorldToCell(transform.position);
-        
-        startNode = new Node();
-        currentNode = new Node(); 
+
+        //이재호가 수정 해당 코드를 앞으로 땡겨서 null 방지
+        //startNode = new Node();
+        //currentNode = new Node();
     }
  
     /// <summary>
@@ -226,5 +237,16 @@ public class AstarPath : MonoBehaviour
         return (Mathf.Abs(x1.x - x2.x) + Mathf.Abs(x1.y - x2.y)) * 10;
     }
     
-    
+    /// <summary>
+    /// 이재호가 추가한 코드
+    /// 타일맵 참조시켜주는 함수
+    /// </summary>
+    public void TileMapReference()
+    {
+        Room room = mapGrid.GetComponent<Room>();
+        mapTileMap = room.mapTilemap;
+        obstacleTileMap = room.obstacleTilemap;
+    }
+
+
 }

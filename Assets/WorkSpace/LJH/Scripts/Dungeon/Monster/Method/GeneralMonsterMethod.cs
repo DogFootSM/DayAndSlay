@@ -12,12 +12,16 @@ public class GeneralMonsterMethod : MonoBehaviour
 
     [SerializeField] BoxCollider2D attackHitBox;
     [SerializeField] AstarPath astarPath;
-    [SerializeField] TestPlayer player;
+    [SerializeField] GameObject player;
 
     public Coroutine moveCoroutine;
     public bool isMoving;
     public bool isAttacking = false;
 
+    private void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))

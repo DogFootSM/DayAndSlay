@@ -52,10 +52,10 @@ public class MapLoader : MonoBehaviour
                             mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
                             break;
                         case 2:
-                            objectTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, objectTileList.Count)]);
+                            wallTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, objectTileList.Count)]);
                             break;
                         case 3:
-                            waterTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, waterTileList.Count)]);
+                            wallTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, waterTileList.Count)]);
                             break;
                     }
                 }
