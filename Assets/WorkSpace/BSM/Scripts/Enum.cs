@@ -280,3 +280,10 @@ public enum WindowModeState
 {
     FULLSCREEN, WINDOW, BORDERLESS
 }
+
+[Serializable]
+public enum DoorType
+{
+    DOOR,
+    LADDER,
+}
