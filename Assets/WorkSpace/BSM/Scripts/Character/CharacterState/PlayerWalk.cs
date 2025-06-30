@@ -16,14 +16,14 @@ public class PlayerWalk : PlayerState
 
     public override void Update()
     { 
-        playerController.BodyAnimator.SetFloat(walkPosXHash, playerController.moveDir.x);
-        playerController.BodyAnimator.SetFloat(walkPosYHash, playerController.moveDir.y); 
+        playerController.BodyAnimator.SetFloat(walkPosXHash, playerController.MoveDir.x);
+        playerController.BodyAnimator.SetFloat(walkPosYHash, playerController.MoveDir.y); 
         
-        playerController.WeaponAnimator.SetFloat(walkPosXHash, playerController.moveDir.x);
-        playerController.WeaponAnimator.SetFloat(walkPosYHash, playerController.moveDir.y); 
+        playerController.WeaponAnimator.SetFloat(walkPosXHash, playerController.MoveDir.x);
+        playerController.WeaponAnimator.SetFloat(walkPosYHash, playerController.MoveDir.y); 
         
         
-        if (playerController.moveDir == Vector2.zero)
+        if (playerController.MoveDir == Vector2.zero)
         { 
             playerController.ChangeState(CharacterStateType.IDLE);
         }
@@ -37,7 +37,7 @@ public class PlayerWalk : PlayerState
     
     public override void FixedUpdate()
     {
-        Vector3 dir = new Vector3(playerController.moveDir.x, playerController.moveDir.y, 0);
+        Vector3 dir = new Vector3(playerController.MoveDir.x, playerController.MoveDir.y, 0);
 
         playerController.CharacterRb.MovePosition(playerController.transform.position +
                                                      dir * playerController.PlayerModel.MoveSpeed *

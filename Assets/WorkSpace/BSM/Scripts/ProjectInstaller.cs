@@ -8,11 +8,13 @@ public class ProjectInstaller : MonoInstaller
 {
     public DataManager DataManager;
     public MapManager MapManager;
+    public SaveManager SaveManager;
     
     public override void InstallBindings()
     {
         Container.Bind<DataManager>().FromComponentInNewPrefab(DataManager).AsSingle().NonLazy();
         Container.Bind<MapManager>().FromComponentInNewPrefab(MapManager).AsSingle().NonLazy();
+        Container.Bind<SaveManager>().FromComponentInNewPrefab(SaveManager).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SqlManager>().AsSingle().NonLazy();
     }
 }

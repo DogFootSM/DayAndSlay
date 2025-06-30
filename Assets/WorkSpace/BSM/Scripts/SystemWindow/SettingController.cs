@@ -9,7 +9,7 @@ public class SettingController : MonoBehaviour
 {
     [SerializeField] private Button audioTabButton;
     [SerializeField] private Button videoTabButton;
-
+    
     [SerializedDictionary] [SerializeField]
     private SerializedDictionary<Setting, GameObject> settingPanels;
 

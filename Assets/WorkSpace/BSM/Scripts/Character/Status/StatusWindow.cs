@@ -53,13 +53,14 @@ public class StatusWindow : MonoBehaviour
     /// 전체 스탯 변경
     /// </summary>
     /// <param name="playerStats">변경된 스탯을 넘겨 받음</param>
+    //private void ChangedAllStats(PlayerStats playerStats, ItemData itemData = null)
     private void ChangedAllStats(PlayerStats playerStats)
     { 
-        statsTexts[0].text = $"{playerStats.strength}";
-        statsTexts[1].text = $"{playerStats.agility}";
-        statsTexts[2].text = $"{playerStats.intelligence}";
+        statsTexts[0].text = $"{playerStats.VisibleStrength}";
+        statsTexts[1].text = $"{playerStats.VisibleAgility}";
+        statsTexts[2].text = $"{playerStats.VisibleIntelligence}";
         statsTexts[3].text = $"{playerStats.Health}";
-        statsTexts[4].text = $"{playerStats.critical}";
+        statsTexts[4].text = $"{playerStats.VisibleCritical}";
         statsTexts[5].text = $"{playerStats.PhysicalAttack}";
         statsTexts[6].text = $"{playerStats.PhysicalDefense}";
         statsTexts[7].text = $"{playerStats.SkillAttack}";

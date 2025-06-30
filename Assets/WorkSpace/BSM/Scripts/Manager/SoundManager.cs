@@ -41,7 +41,7 @@ public class SoundManager : MonoBehaviour
         //오디오 설정 Data Load
         dataManager.LoadAudioData();
         PlayBGM(BGMSound.START_SCENE_BGM);
-    }
+    } 
 
     /// <summary>
     /// 마스터 볼륨 설정

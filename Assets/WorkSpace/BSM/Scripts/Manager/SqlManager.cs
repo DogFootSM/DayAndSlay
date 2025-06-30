@@ -102,7 +102,7 @@ public class SqlManager : IInitializable
     /// <param name="columnValue">업데이트 값</param>
     /// <param name="condition">업데이트 조건</param>
     /// <param name="conditionValue">업데이트 조건 값</param>
-    public void UpdateDataColumn(string[] columnName, string[] columnValue, string condition, string conditionValue)
+    public void UpdateCharacterDataColumn(string[] columnName, string[] columnValue, string condition, string conditionValue)
     {
         sqlDatabase.CharacterUpdateTable(columnName, columnValue, condition, conditionValue);
     }
@@ -155,6 +155,5 @@ public class SqlManager : IInitializable
     public IDataReader ReadSkillDataColumn(string slotID)
     {
         return sqlDatabase.SkillReadTable(slotID);
-    }
-    
+    } 
 }

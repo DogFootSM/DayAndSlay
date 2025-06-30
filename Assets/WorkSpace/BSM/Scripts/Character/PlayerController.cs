@@ -11,7 +11,7 @@ using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector] public Vector2 moveDir;
+    [HideInInspector] public Vector2 MoveDir;
     [NonSerialized] public Direction LastMoveKey;
     
     [Header("무기 애니메이션 컨트롤러 컴포넌트")] public Animator WeaponAnimator;
@@ -71,8 +71,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         KeyInput();
-        characterStates[(int)curState].Update();  
-
+        characterStates[(int)curState].Update();   
+        
         //이재호가 붙여둔 테스트용
         TakeInteraction();
     }
@@ -148,9 +148,9 @@ public class PlayerController : MonoBehaviour
             posX = 0;
         }
  
-        moveDir = new Vector2(posX, posY);
+        MoveDir = new Vector2(posX, posY);
         
-        if (moveDir != Vector2.zero)
+        if (MoveDir != Vector2.zero)
         {
             curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));

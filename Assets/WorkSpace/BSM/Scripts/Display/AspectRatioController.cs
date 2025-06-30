@@ -184,9 +184,7 @@ public class AspectRatioController : MonoBehaviour
             if (!IsAspectRatioValid(Screen.width, Screen.height))
             {
                 Screen.SetResolution(setWidth, setHeight, Screen.fullScreen);
-            }
-            //TODO: 여기서 근사치 조건 확인해서 SetResolution
-            
+            } 
         }
          
         #if UNITY_EDITOR
