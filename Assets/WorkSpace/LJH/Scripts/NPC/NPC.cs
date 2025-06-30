@@ -8,7 +8,7 @@ public class NPC : MonoBehaviour
     public bool IsBuyer;
 
     [Inject]
-    ItemManager itemManager;
+    ItemStorage itemManager;
 
     private List<Item> wantItemList = new List<Item>();
     [SerializeField] private Item wantItem;

@@ -17,7 +17,7 @@ public class GameSceneInstaller : MonoInstaller
 
     [SerializeField] List<NPC> npc = new List<NPC>();
 
-    [SerializeField] ItemManager itemManager;
+    [SerializeField] ItemStorage itemManager;
 
     [SerializeField] GameObject popUp;
 
@@ -48,7 +48,7 @@ public class GameSceneInstaller : MonoInstaller
             .FromInstance(npc);
 
         Container
-            .Bind<ItemManager>()
+            .Bind<ItemStorage>()
             .FromInstance(itemManager);
 
         Container

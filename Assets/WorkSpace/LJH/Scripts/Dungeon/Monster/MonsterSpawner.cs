@@ -85,7 +85,6 @@ public class MonsterSpawner : MonoBehaviour
 
     virtual public void MonsterSpawn()
     {
-        Debug.Log("몬스터 소환");
         for(int i = 0; i < spawnerList.Count; i++)
         {
             //젠젝트로 사용해야 하기에 컨테이너를 이용한 Instantiate 사용

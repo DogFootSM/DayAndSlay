@@ -13,7 +13,7 @@ public class MapLoader : MonoBehaviour
 
     [SerializeField] private RuleTile wallTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
     [SerializeField] private List<Tile> floorTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
-    [SerializeField] private List<Tile> objectTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private RuleTile objectTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
     [SerializeField] private RuleTile waterTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
 
     private DictList<List<Tile>> tileDictList = new DictList<List<Tile>>();
@@ -52,7 +52,8 @@ public class MapLoader : MonoBehaviour
                             mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
                             break;
                         case 2:
-                            wallTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, objectTileList.Count)]);
+                            mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
+                            wallTilemap.SetTile(pos, objectTile);
                             break;
                         case 3:
                             wallTilemap.SetTile(pos, waterTile);
@@ -70,7 +71,7 @@ public class MapLoader : MonoBehaviour
     {
             tileDictList.Add($"wall", floorTileList);
             tileDictList.Add($"floor", floorTileList);
-            tileDictList.Add($"object", objectTileList);
+            tileDictList.Add($"object", floorTileList);
             tileDictList.Add($"water", floorTileList);
     }
 }

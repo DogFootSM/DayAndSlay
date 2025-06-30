@@ -111,8 +111,6 @@ public class GeneralMonsterAI : MonoBehaviour
         attack = new AttackNode(this.Attack);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
-        Debug.Log(player);
-        Debug.Log(monsterData.Name);
 
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
         chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange);

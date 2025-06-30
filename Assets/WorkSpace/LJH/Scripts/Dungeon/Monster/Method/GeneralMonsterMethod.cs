@@ -9,6 +9,8 @@ public class GeneralMonsterMethod : MonoBehaviour
     MonsterData monsterData;
     [Inject]
     DungeonManager dungeonManager;
+    [Inject]
+    ItemStorage itemStorage;
 
     [SerializeField] BoxCollider2D attackHitBox;
     [SerializeField] AstarPath astarPath;
@@ -123,21 +125,23 @@ public class GeneralMonsterMethod : MonoBehaviour
 
     private void DropItem()
     {
-        // 확률 기반으로 랜덤 드랍
-        //DropItemEntry dropEntry = monsterData.DropTable[Random.Range(0, monsterData.DropTable.Count)];
-        //
-        //// ID로 아이템 데이터 불러오기
-        //ItemData itemData = ItemManager.GetItemById(dropEntry.ItemId);
-        //if (itemData == null)
-        //{
-        //    Debug.LogWarning("드랍할 아이템을 찾을 수 없습니다.");
-        //    return;
-        //}
-        //
-        //GameObject dropItem = dungeonManager.pool.GetPool();
-        //dropItem.GetComponent<Item>().itemData = itemData;
-        //dropItem.transform.position = transform.position;
+        //확률 기반으로 랜덤 드랍
+        DropItemEntry dropEntry = monsterData.DropTable[Random.Range(0, monsterData.DropTable.Count)];
+        int ItemId = dropEntry.ItemId;
+        
+        // ID로 아이템 데이터 불러오기
+        ItemData itemData = itemStorage.GetItemById(ItemId);
 
-        // 이후: 드랍 아이템이 일정 시간 뒤에 자동으로 풀에 리턴되게 만들기
+        if (itemData == null)
+        {
+            Debug.LogWarning("드랍할 아이템을 찾을 수 없습니다.");
+            return;
+        }
+        
+        GameObject dropItem = dungeonManager.pool.GetPool();
+        dropItem.GetComponent<Item>().itemData = itemData;
+        dropItem.transform.position = transform.position;
+
+        //이후: 드랍 아이템이 일정 시간 뒤에 자동으로 풀에 리턴되게 만들기
     }
 }
