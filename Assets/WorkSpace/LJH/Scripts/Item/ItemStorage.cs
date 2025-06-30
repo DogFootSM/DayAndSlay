@@ -32,6 +32,10 @@ public class ItemStorage : MonoBehaviour
     {
         //아이템 아이디를 인수로 넣으면
         //아이템 목록에서 그 아이디를 가진 아이템을 반환해줘야함
+        Debug.Log($"아이템데이터 딕셔너리의 크기 {itemDatasDict.Count}");
+        Debug.Log($" 맨앞에 0이있는경우 {itemDatasDict[040118].name}");
+        Debug.Log($"지금불러오는 id {itemDatasDict[40118].name}");
+
         return itemDatasDict[id];
     }
 }

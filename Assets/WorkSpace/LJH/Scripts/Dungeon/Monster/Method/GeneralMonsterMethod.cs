@@ -24,6 +24,15 @@ public class GeneralMonsterMethod : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
     }
+
+    /// <summary>
+    /// 테스트용 : 테스트 끝나고 지울 것
+    /// </summary>
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        Die();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
