@@ -145,7 +145,7 @@ public class DataManager : MonoBehaviour
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new[] { $"{SlotId}" });
 
-        sqlManager.UpdateDataColumn(new[]
+        sqlManager.UpdateCharacterDataColumn(new[]
             {
                 sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
@@ -153,7 +153,7 @@ public class DataManager : MonoBehaviour
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
             }, spriteColumns.ToArray(), sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
 
-        sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
+        sqlManager.UpdateCharacterDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
             new[] { $"{WeaponType}" },
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
@@ -302,7 +302,7 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void CreateDataUpdate()
     {
-        sqlManager.UpdateDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.IS_CREATE) },
+        sqlManager.UpdateCharacterDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.IS_CREATE) },
             new[] { "1" },
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
