@@ -155,6 +155,5 @@ public class SqlManager : IInitializable
     public IDataReader ReadSkillDataColumn(string slotID)
     {
         return sqlDatabase.SkillReadTable(slotID);
-    }
-    
+    } 
 }

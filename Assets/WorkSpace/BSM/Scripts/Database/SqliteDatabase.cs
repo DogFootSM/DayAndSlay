@@ -408,6 +408,16 @@ public class SqliteDatabase
         } 
     }
 
+    public void SkillUpdateTable(string[] column, string[] columnValue, string[] condition, string[] conditionValue)
+    {
+        using (dbCommand = dbConnection.CreateCommand())
+        {
+            string query = "UPDATE CharacterSkill SET";
+
+
+        } 
+    }
+    
     /// <summary>
     /// 현재 슬롯의 캐릭터 스킬 데이터를 읽어옴
     /// </summary>
