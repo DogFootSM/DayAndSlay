@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -16,23 +17,29 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] private GameObject player;
 
     private Grid grid;
-    BoundsInt localBounds;
+    private BoundsInt localBounds;
 
     [SerializeField] protected Tilemap floor;
 
-    int mapSize = 20;
+    private int mapSize = 20;
 
-    Dictionary<Direction, int> xPos = new Dictionary<Direction, int>();
-    Dictionary<Direction, int> yPos = new Dictionary<Direction, int>();
+    private Dictionary<Direction, int> xPos = new Dictionary<Direction, int>();
+    private Dictionary<Direction, int> yPos = new Dictionary<Direction, int>();
 
 
 
-    void Start()
+    private void Start()
     {
-        Init();
+        StartCoroutine(DelayCoroutine());
+    }
 
+    IEnumerator DelayCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Init();
         MonsterSpawnPosSet();
         MonsterSpawn();
+        SpawnerDestroy();
     }
 
     private void Update()
@@ -41,7 +48,7 @@ public class MonsterSpawner : MonoBehaviour
         
     }
 
-    bool CheckTile(Vector3Int pos)
+    private bool CheckTile(Vector3Int pos)
     {
         if (floor.GetTile(pos) != null)
         {
@@ -92,6 +99,14 @@ public class MonsterSpawner : MonoBehaviour
         
     }
 
+    private void SpawnerDestroy()
+    {
+        for (int i = spawnerList.Count - 1; i >= 0; i--)
+        {
+            Destroy(spawnerList[i]);
+        }
+    }
+
     /// <summary>
     /// 현재 플레이어가 존재하지 않는 방에선 몬스터 비활성화 함수
     /// 맵 이동시 해당 함수 넣어줘서 활성화 처리
@@ -100,17 +115,32 @@ public class MonsterSpawner : MonoBehaviour
     {
         foreach(GameObject mon in monsterList)
         {
+            GridReFerence(mon);
             mon.SetActive(ContainsPlayer(player.transform.position));
         }
     }
 
-    bool ContainsPlayer(Vector3 pos)
+    /// <summary>
+    /// 그리드 참조해주는 함수
+    /// </summary>
+    private void GridReFerence(GameObject mon)
+    {
+        //AstarPath 내부에서 그리드 지정해주는
+        TargetSensor targetSensor = mon.GetComponentInChildren<TargetSensor>();
+        AstarPath astarPath = mon.GetComponentInChildren<AstarPath>();
+
+        targetSensor.grid = grid;
+        astarPath.mapGrid = grid;
+        astarPath.TileMapReference();
+    }
+
+    private bool ContainsPlayer(Vector3 pos)
     {
         Vector3Int localCell = grid.WorldToCell(pos);
         return localBounds.Contains(localCell);
     }
 
-    void Init()
+    private void Init()
     {
         //플레이어 참조용 테스트 코드
         player = GameObject.FindWithTag("Player");
@@ -123,5 +153,6 @@ public class MonsterSpawner : MonoBehaviour
         yPos[Direction.Down] = -mapSize;
 
     }
+
 
 }

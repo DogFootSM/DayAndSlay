@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Jobs;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Room : MonoBehaviour
 {
     [SerializeField] List<GameObject> doors;
+
+    public Tilemap mapTilemap;
+    public Tilemap obstacleTilemap;
 
     public List<GameObject> GetDoorList()
     {

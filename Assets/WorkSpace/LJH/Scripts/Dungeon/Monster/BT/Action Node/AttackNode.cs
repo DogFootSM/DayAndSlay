@@ -12,8 +12,6 @@ public class AttackNode : BTNode
 
     public override NodeState Tick()
     {
-        //요놈이 세번 실행중
-        Debug.Log("어택 노드 실행");
         performAttack?.Invoke();
         return NodeState.Success;
     }

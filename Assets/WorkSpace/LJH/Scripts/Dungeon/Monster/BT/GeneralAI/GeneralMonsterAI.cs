@@ -13,9 +13,8 @@ public class GeneralMonsterAI : MonoBehaviour
     public MonsterData monsterData;
     
     //테스트씬 테스트용
-    //[Inject]
     [SerializeField]
-    protected TestPlayer player;
+    protected GameObject player;
 
     protected BehaviourTree tree;
 
@@ -38,6 +37,7 @@ public class GeneralMonsterAI : MonoBehaviour
 
     private void Start()
     {
+        Init();
         NodeInit();
         ExternalInit();
     }
@@ -111,6 +111,7 @@ public class GeneralMonsterAI : MonoBehaviour
         attack = new AttackNode(this.Attack);
         idle = new IdleNode(this.Idle);
         chase = new ChaseNode(this.Move);
+
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
         chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange);
 
@@ -129,6 +130,11 @@ public class GeneralMonsterAI : MonoBehaviour
         stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
         method = GetComponent<GeneralMonsterMethod>();
         method.MonsterDataInit(monsterData);
+    }
+
+    void Init()
+    {
+        player = GameObject.FindWithTag("Player");
     }
 
 }

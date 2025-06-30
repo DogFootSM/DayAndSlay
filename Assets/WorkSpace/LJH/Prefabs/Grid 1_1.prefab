@@ -610,18 +610,13 @@ MonoBehaviour:
   mapTilemap: {fileID: 9196023731825431480}
   objectTilemap: {fileID: 3982627039264738790}
   waterTilemap: {fileID: 8525417246131819520}
-  wallTileList:
-  - {fileID: 11400000, guid: 5ca0154d6be509a4892d1c6174c20b50, type: 2}
-  - {fileID: 11400000, guid: 64182161633eb8d4da91699333cd7cba, type: 2}
-  - {fileID: 11400000, guid: 03c6001e4066c9f45af3866d4d2755a1, type: 2}
+  wallTile: {fileID: 11400000, guid: 6befc7adc1001ac4b87bfb6f5ae63dc3, type: 2}
   floorTileList:
   - {fileID: 11400000, guid: 2775bca09ba2182458bbb8841e7cb417, type: 2}
-  - {fileID: 11400000, guid: de74457aa45d4ec47bdb652b8e79388d, type: 2}
-  - {fileID: 11400000, guid: 3dff7702caf328e40906d70e2e32de1d, type: 2}
-  objectTileList:
-  - {fileID: 11400000, guid: 02b3b677c77ee874ab5d1e25e928564f, type: 2}
-  waterTileList:
-  - {fileID: 11400000, guid: 10ac8c58b3c66fa49b22aa0e333fedb1, type: 2}
+  - {fileID: 11400000, guid: 82a477b5c733a0945ade5dc328ef0b1a, type: 2}
+  - {fileID: 11400000, guid: d8897b674ade1dc44a81d3cf4d0c986e, type: 2}
+  objectTile: {fileID: 11400000, guid: 091d5fb28688aa04cb14d94a098b0508, type: 2}
+  waterTile: {fileID: 11400000, guid: e27dd5c157e970443853ca4b235c37f9, type: 2}
   csvFileNames:
   - Maps/map01
   - Maps/map02
@@ -1895,6 +1890,8 @@ MonoBehaviour:
   - {fileID: 873833229786526672}
   - {fileID: 7906512878869473137}
   - {fileID: 8749192179230789563}
+  mapTilemap: {fileID: 9196023731825431480}
+  obstacleTilemap: {fileID: 3982627039264738790}
 --- !u!1 &9196023732137291217
 GameObject:
   m_ObjectHideFlags: 0

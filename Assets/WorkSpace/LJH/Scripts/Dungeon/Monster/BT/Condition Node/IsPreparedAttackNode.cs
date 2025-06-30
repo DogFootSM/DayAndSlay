@@ -37,11 +37,9 @@ public class IsPreparedAttackNode : BTNode
 
         if (distance <= range && currentCooldown <= 0f)
         {
-            Debug.Log("어택 체크 성공");
             currentCooldown = cooldown;
             return NodeState.Success;
         }
-        Debug.Log("어택 체크 실패");
         return NodeState.Failure;
     }
 }

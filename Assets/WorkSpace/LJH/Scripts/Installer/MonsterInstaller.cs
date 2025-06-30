@@ -10,6 +10,7 @@ public class MonsterInstaller : MonoInstaller
     //[SerializeField] PlayerController player;
     [SerializeField] TestPlayer player;
     [SerializeField] DungeonManager dungeonManager;
+    [SerializeField] ItemStorage itemStorage;
 
     public override void InstallBindings()
     {
@@ -33,6 +34,10 @@ public class MonsterInstaller : MonoInstaller
         Container
             .Bind<DungeonManager>()
             .FromInstance(dungeonManager);
+
+        Container
+            .Bind<ItemStorage>()
+            .FromInstance(itemStorage);
     }
     
 }

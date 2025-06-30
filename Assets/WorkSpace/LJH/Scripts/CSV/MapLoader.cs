@@ -11,10 +11,10 @@ public class MapLoader : MonoBehaviour
     [SerializeField] private Tilemap objectTilemap;
     [SerializeField] private Tilemap waterTilemap;
 
-    [SerializeField] private List<Tile> wallTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private RuleTile wallTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
     [SerializeField] private List<Tile> floorTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
-    [SerializeField] private List<Tile> objectTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
-    [SerializeField] private List<Tile> waterTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private RuleTile objectTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private RuleTile waterTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
 
     private DictList<List<Tile>> tileDictList = new DictList<List<Tile>>();
     [SerializeField] private List<string> csvFileNames;
@@ -46,16 +46,17 @@ public class MapLoader : MonoBehaviour
                     switch (tileIndex)
                     {
                         case 0:
-                            wallTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, wallTileList.Count)]);
+                            wallTilemap.SetTile(pos, wallTile);
                             break;
                         case 1:
                             mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
                             break;
                         case 2:
-                            objectTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, objectTileList.Count)]);
+                            mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
+                            wallTilemap.SetTile(pos, objectTile);
                             break;
                         case 3:
-                            waterTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, waterTileList.Count)]);
+                            wallTilemap.SetTile(pos, waterTile);
                             break;
                     }
                 }
@@ -68,9 +69,9 @@ public class MapLoader : MonoBehaviour
     /// </summary>
     void TileDictMaker()
     {
-            tileDictList.Add($"wall", wallTileList);
+            tileDictList.Add($"wall", floorTileList);
             tileDictList.Add($"floor", floorTileList);
-            tileDictList.Add($"object", objectTileList);
-            tileDictList.Add($"water", waterTileList);
+            tileDictList.Add($"object", floorTileList);
+            tileDictList.Add($"water", floorTileList);
     }
 }

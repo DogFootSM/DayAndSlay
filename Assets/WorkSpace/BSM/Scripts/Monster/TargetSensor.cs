@@ -11,10 +11,12 @@ public class TargetSensor : MonoBehaviour
     private LayerMask targetLayer;
     private float findRange = 5f;
 
+    //아래로 이재호가 추가한 변수
     GameObject player;
     float interval = 0.2f;
     float nextCheckTime = 0f;
-    [SerializeField] private Grid grid;
+    
+    public Grid grid;
     Vector3Int lastPlayerCell;
 
 
@@ -25,11 +27,12 @@ public class TargetSensor : MonoBehaviour
 
         //이재호가 쓴 코드
         player = GameObject.FindWithTag("Player");
-        lastPlayerCell = grid.WorldToCell(player.transform.position);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    { 
+    {
+        lastPlayerCell = grid.WorldToCell(player.transform.position);
+
         if (((1 << other.gameObject.layer) & targetLayer) != 0)
         {  
             astar.DetectTarget(transform.position, other.gameObject.transform.position);

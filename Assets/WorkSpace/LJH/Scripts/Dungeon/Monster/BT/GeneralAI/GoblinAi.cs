@@ -20,7 +20,6 @@ public class GoblinAi : GeneralMonsterAI
             return;
         }
 
-        Debug.Log("몬스터 대기 실행");
         stateMachine.ChangeState(new MonsterIdleState());
         monsterState = M_State.IDLE;
     }
@@ -31,7 +30,6 @@ public class GoblinAi : GeneralMonsterAI
             return;
         }
 
-        Debug.Log("몬스터 공격 실행");
         monsterState = M_State.ATTACK;
         stateMachine.ChangeState(new MonsterAttackState());
         method.StopMoveCo();
@@ -44,7 +42,6 @@ public class GoblinAi : GeneralMonsterAI
     {
         if (!method.isMoving)
         {
-            Debug.Log("몬스터 이동 실행");
             stateMachine.ChangeState(new MonsterMoveState());
             monsterState = M_State.MOVE;
             method.MoveMethod();
