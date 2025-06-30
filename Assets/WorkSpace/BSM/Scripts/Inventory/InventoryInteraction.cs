@@ -26,6 +26,7 @@ public class InventoryInteraction :
     [SerializeField] private SystemWindowController systemWindowController;
     
     [Inject] private SaveManager saveManager;
+    [Inject] private DataManager dataManager;
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
@@ -296,11 +297,44 @@ public class InventoryInteraction :
         detailItemDescB.gameObject.SetActive(!fromSlotItem);
     }
 
+    
+    
     /// <summary>
     /// 아이템 데이터 저장
     /// </summary>
     public void Save(SqlManager sqlManager)
     {
-        Debug.Log("아이템 저장");         
+        List<(string, string, string, string, int)> items = new();
+
+        for (int i = 0; i < inventorySlots.Count; i++)
+        {
+            if (inventorySlots[i].CurSlotItem != null)
+            { 
+                int equipState = inventorySlots[i].IsEquip ? 1 : 0;
+                items.Add(($"{inventorySlots[i].CurSlotItem.ItemId}", $"1", $"{inventorySlots[i].ItemCount}", $"{i}", equipState)); 
+            } 
+        }
+ 
+        for (int i = 0; i < items.Count; i++)
+        {
+            sqlManager.UpsertItemDataColumn(
+                new[]
+                {
+                    sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_ID),
+                    sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.SLOT_ID),
+                    sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_AMOUNT),
+                    sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.INVENTORY_SLOT_ID),
+                    sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.IS_EQUIPMENT),
+                },
+                new[]
+                {
+                    items[i].Item1, //지급할 Item_id
+                    items[i].Item2, //해당 캐릭터 slotId
+                    items[i].Item3, //지급할 개수
+                    items[i].Item4, //인벤토리 슬롯의 위치
+                    $"{items[i].Item5}" //장비 착용 여부
+                }
+            );
+        }     
     }
 }
