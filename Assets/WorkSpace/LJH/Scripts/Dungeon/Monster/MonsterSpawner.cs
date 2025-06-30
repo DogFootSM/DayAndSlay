@@ -39,6 +39,7 @@ public class MonsterSpawner : MonoBehaviour
         Init();
         MonsterSpawnPosSet();
         MonsterSpawn();
+        SpawnerDestroy();
     }
 
     private void Update()
@@ -96,6 +97,14 @@ public class MonsterSpawner : MonoBehaviour
         }
 
         
+    }
+
+    private void SpawnerDestroy()
+    {
+        for (int i = spawnerList.Count - 1; i >= 0; i--)
+        {
+            Destroy(spawnerList[i]);
+        }
     }
 
     /// <summary>
