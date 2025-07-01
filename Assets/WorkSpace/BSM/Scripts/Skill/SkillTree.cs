@@ -14,7 +14,7 @@ public class SkillTree : MonoBehaviour, ISavable
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     [Inject] private SaveManager saveManager;
-    
+
     public List<SkillData> SkillDatas = new List<SkillData>();
 
     private List<SkillNode> allskillNodes = new();
@@ -22,7 +22,7 @@ public class SkillTree : MonoBehaviour, ISavable
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();
     private WeaponType curWeapon;
-    
+
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -33,7 +33,7 @@ public class SkillTree : MonoBehaviour, ISavable
         SortSkillNodesByWeapon();
         saveManager.SavableRegister(this);
     }
- 
+
     /// <summary>
     /// 스킬 상태를 DB에서 가져와 설정
     /// </summary>
@@ -45,16 +45,16 @@ public class SkillTree : MonoBehaviour, ISavable
 
         while (reader.Read())
         {
-            string skillId = reader.GetString(0);           //현재 스킬 ID
-            int skillLevel = reader.GetInt32(1);            //현재 스킬 레벨
-            bool unlocked = reader.GetBoolean(2);           //현재 스킬 해금
+            string skillId = reader.GetString(0); //현재 스킬 ID
+            int skillLevel = reader.GetInt32(1); //현재 스킬 레벨
+            bool unlocked = reader.GetBoolean(2); //현재 스킬 해금
 
             //스킬 ID 키가 있을 경우 스킬 DB 정보 반영
             if (prerequisiteNodeMap.ContainsKey(skillId))
             {
                 prerequisiteNodeMap[skillId].LoadSkillFromDB(skillLevel, unlocked);
-            } 
-        } 
+            }
+        }
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public class SkillTree : MonoBehaviour, ISavable
         prerequisiteNodeMap = allskillNodes.ToDictionary(x => x.skillData.SkillId);
 
         foreach (SkillNode node in allskillNodes)
-        { 
+        {
             //해당 노드의 선행 스킬 리스트 이름 추출
             foreach (string prerequisite in node.skillData.prerequisiteSkillsId)
             {
@@ -100,9 +100,9 @@ public class SkillTree : MonoBehaviour, ISavable
         {
             node.Value.Sort((x, y) => x.skillData.SkillId.CompareTo(y.skillData.SkillId));
         }
-        
+
         //스킬 UI에 노드 리스트 전달
-        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes); 
+        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes);
         NotifySkillPointChanged();
     }
 
@@ -110,10 +110,10 @@ public class SkillTree : MonoBehaviour, ISavable
     /// 스킬트리 UI에 현재 모델이 보유중인 스킬 포인트를 알림
     /// </summary>
     public void NotifySkillPointChanged()
-    { 
+    {
         skillTreeUI.UpdateAllNodeButtonsWithPoint(playerModel.CurSkillPoint);
     }
-    
+
     /// <summary>
     /// 무기 타입에 따른 노드 구분
     /// </summary>
@@ -148,6 +148,17 @@ public class SkillTree : MonoBehaviour, ISavable
     /// </summary>
     public void Save(SqlManager sqlManager)
     {
-        Debug.Log("스킬 저장 진행");
+        for (int i = 0; i < allskillNodes.Count; i++)
+        {
+            int lockState = allskillNodes[i].UnLocked ? 1 : 0;
+            
+            sqlManager.UpdateSkillDataColumn
+            (
+                new[] {"skill_level", "skill_unlocked"},
+                new[] { $"{allskillNodes[i].CurSkillLevel}", $"{lockState}"},
+                new[] { "slot_id", "skill_id"},
+                new[] { $"{dataManager.SlotId}", allskillNodes[i].skillData.SkillId}
+            );
+        }
     }
 }
