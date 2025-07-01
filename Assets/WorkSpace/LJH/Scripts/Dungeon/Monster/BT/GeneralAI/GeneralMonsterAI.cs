@@ -7,6 +7,7 @@ using Zenject;
 
 [RequireComponent(typeof(GeneralMonsterMethod))]
 [RequireComponent(typeof(GeneralAnimator))]
+[RequireComponent (typeof(MonsterModel))]
 public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField]
@@ -18,18 +19,22 @@ public class GeneralMonsterAI : MonoBehaviour
 
     protected BehaviourTree tree;
 
+    protected BTNode die;
     protected BTNode attack;
     protected BTNode idle;
     protected BTNode chase;
+
+    protected BTNode dieCheck;
     protected BTNode attackCheck;
     protected BTNode chaseCheck;
 
     protected BTNode selector;
+    protected BTNode dieSequence;
     protected BTNode attackSequence;
     protected BTNode chaseSequence;
 
     protected MonsterStateMachine stateMachine;
-
+    protected MonsterModel model;
     protected GeneralMonsterMethod method;
 
     public M_State monsterState;
@@ -45,6 +50,23 @@ public class GeneralMonsterAI : MonoBehaviour
     private void Update()
     {
         tree.Tick();
+
+        /// <summary>
+        /// 테스트용 : 몬스터 죽이기 코드
+        /// </summary>
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //    model.Hp = 0;
+    }
+
+    public virtual void Hit()
+    {
+        //Toodo : 히트 만들어줘야함
+    }
+    public virtual void Die()
+    {
+        Debug.Log("몬스터가 사망했습니다");
+        method.Die();
+        stateMachine.ChangeState(new MonsterDieState());
     }
 
     public virtual void Idle()
@@ -65,10 +87,20 @@ public class GeneralMonsterAI : MonoBehaviour
     {
         List<BTNode> nodes = new List<BTNode>();
         //Die를 맨 앞에 놔야함
-       
+        nodes.Add(dieSequence);
         nodes.Add(attackSequence);
         nodes.Add(chaseSequence);
         nodes.Add(idle);
+
+        return nodes;
+    }
+
+    protected List<BTNode> DieSequence()
+    {
+        //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
+        List<BTNode> nodes = new List<BTNode>();
+        nodes.Add(dieCheck);
+        nodes.Add(die);
 
         return nodes;
     }
@@ -108,10 +140,12 @@ public class GeneralMonsterAI : MonoBehaviour
 
     void NodeInit()
     {
-        attack = new AttackNode(this.Attack);
-        idle = new IdleNode(this.Idle);
-        chase = new ChaseNode(this.Move);
+        die = new ActionNode(this.Die);
+        attack = new ActionNode(this.Attack);
+        idle = new ActionNode(this.Idle);
+        chase = new ActionNode(this.Move);
 
+        dieCheck = new IsDieNode(() => model.Hp);
         attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
         chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange);
 
@@ -119,7 +153,7 @@ public class GeneralMonsterAI : MonoBehaviour
         //예시 용
         attackSequence = new Sequence(AttackSequence());
         chaseSequence = new Sequence(ChaseSequence());
-
+        dieSequence = new Sequence(DieSequence());
 
         selector = new Selector(RootSelector());
         tree = new BehaviourTree(selector);
@@ -135,6 +169,7 @@ public class GeneralMonsterAI : MonoBehaviour
     void Init()
     {
         player = GameObject.FindWithTag("Player");
+        model = GetComponent<MonsterModel>();
     }
 
 }

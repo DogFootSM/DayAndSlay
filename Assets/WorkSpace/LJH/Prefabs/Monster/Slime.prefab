@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3950774981472583126}
   - component: {fileID: 7848198602268989358}
   - component: {fileID: 8524778961033154014}
+  - component: {fileID: -5471911796277688368}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: b224440762d42f3428e76a289b92415e, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: ecfa29d2cc564634fbbcf41a28ee27ff, type: 3}
 --- !u!114 &2915400258908273984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 1.0476273e-35
+  m_SpriteKey: 1.43289105e-11
 --- !u!95 &446733505822531971
 Animator:
   serializedVersion: 5
@@ -156,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b579d5da9517346bf807271d99247b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 83c4acadb7139564294bbefaf4d3b5b2, type: 2}
+  monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
   player: {fileID: 0}
   monsterState: 0
 --- !u!114 &7649508663265473154
@@ -271,6 +272,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-5471911796277688368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718412542748530395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  Hp: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0
 --- !u!1 &7090935891435310245
 GameObject:
   m_ObjectHideFlags: 0

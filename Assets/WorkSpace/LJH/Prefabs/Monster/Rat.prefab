@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 8218918077755205585}
   - component: {fileID: 2852571515173303574}
   - component: {fileID: 1584338468107993734}
+  - component: {fileID: 4894937483075603683}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Untagged
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: cf91f750415c5d947996180f46f884c7, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 8b9367686b4a8f74dba07cc91e4256e7, type: 3}
 --- !u!114 &4280622862996560033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d51e6034e2c1a1e49a07c9ecf40f542a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: c4293926ce8a72d429aa051dd442abd2, type: 2}
+  monsterData: {fileID: 11400000, guid: a3b3925797c3d5d449a1e39046a93fa8, type: 2}
   player: {fileID: 0}
   monsterState: 0
 --- !u!114 &2622700998350529938
@@ -330,3 +331,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
+--- !u!114 &4894937483075603683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269701800412192224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  Hp: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0

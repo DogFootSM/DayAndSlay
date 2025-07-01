@@ -7,11 +7,15 @@ public class ItemStorage : MonoBehaviour
 {
     [Header("아이템")]
     public List<Item> ItemList = new List<Item>();
+
     [Header("아이템 데이터")]
     public List<ItemData> ItemDatas = new List<ItemData>();
-    private Dictionary<int, ItemData> itemDatasDict = new Dictionary<int, ItemData>();
+    public Dictionary<int, ItemData> ItemDatasDict = new Dictionary<int, ItemData>();
+
     [Header("재료 아이템")]
-    public List<Ingredient> Ingredients = new List<Ingredient>();
+    public List<ItemData> Ingrediants = new List<ItemData>();
+    public Dictionary<int, ItemData> IngrediantDict = new Dictionary<int, ItemData>();
+    
     [Header("아이템 레시피")]
     public List<ItemRecipe> ItemRecipes = new List<ItemRecipe>();
 
@@ -25,17 +29,19 @@ public class ItemStorage : MonoBehaviour
     {
         for (int i = 0; i < ItemDatas.Count; i++)
         {
-            itemDatasDict[ItemDatas[i].ItemId] = ItemDatas[i];
+            ItemDatasDict[ItemDatas[i].ItemId] = ItemDatas[i];
+        }
+
+        for (int i =0; i < Ingrediants.Count; i++)
+        {
+            IngrediantDict[Ingrediants[i].ItemId] = Ingrediants[i];
         }
     }
-    public ItemData GetItemById(int id)
+    public ItemData GetItemById(Dictionary<int, ItemData> dictionary, int id)
     {
         //아이템 아이디를 인수로 넣으면
         //아이템 목록에서 그 아이디를 가진 아이템을 반환해줘야함
-        Debug.Log($"아이템데이터 딕셔너리의 크기 {itemDatasDict.Count}");
-        Debug.Log($" 맨앞에 0이있는경우 {itemDatasDict[040118].name}");
-        Debug.Log($"지금불러오는 id {itemDatasDict[40118].name}");
 
-        return itemDatasDict[id];
+        return dictionary[id];
     }
 }

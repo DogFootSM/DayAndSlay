@@ -136,6 +136,7 @@ public class GeneralAnimator : MonoBehaviour
     }
     public void PlayDie() 
     {
+        Debug.Log("Á×À½ ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇàµÊ");
         spriteLibrary.spriteLibraryAsset = spriteDict["Die"];
         animator.Play("MonsterDie");
     }
