@@ -298,13 +298,13 @@ public class InventoryInteraction :
     }
 
     /// <summary>
-    /// 현재 보유중인 슬롯의 아이템 데이터 반환
+    /// 테이블에 아이템 등록 시 사용할 현재 플레이어가 보유중인 아이템 리스트
+    /// 장비 아이템만 반환
     /// </summary>
     /// <returns></returns>
     public List<ItemData> GetSlotItemList()
     {
-        return inventorySlots.Where(x => x.CurSlotItem != null).Select(x => x.CurSlotItem).ToList();
-
+        return inventorySlots.Where(x => x.CurSlotItem != null && x.CurSlotItem.IsEquipment).Select(x => x.CurSlotItem).ToList();
     }
     
     /// <summary>
