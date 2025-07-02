@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         characterStates[(int)curState].Update();   
         
-        //이재호가 붙여둔 테스트용
         TakeInteraction();
     }
 
@@ -185,7 +184,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 경험치를 model에게 넘겨줌
     /// </summary>
-    /// <param name="exp">몬스터에게 받을 경험치</param>
+    /// <param name="exp">아이템을 팔았을 때 받을 경험치</param>
     public void GrantExperience(int exp)
     {
         playerModel.GainExperience(exp);
@@ -199,10 +198,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) &&
             interactObj != null)
         {
+            Debug.Log("TABLE과 상호작용");
+            
             switch (interactable)
             {
-                case Table table:
-                    //Todo : 통합하면서 인벤토리와 결합해서 새로 만들기
+                //E 키를 눌렀을 때, TableManager에 아이템 등록 팝업 활성화 요청하면서 인벤토리 넘겨줌
+                //TableManager에서 활성화 되면 인벤토리에 들어있는 아이템으로 UI 설정
+                //유저가 아이템을 선택하면 Table의 Interaction 호출하면서 선택한 아이템 데이터 넘겨줌
+                
+                
+                case Table table: 
                     //table.TakeItem(choiceItem);
                     break;
 
@@ -215,7 +220,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (collision.gameObject.TryGetComponent(out interactable))
         {
             interactObj = collision.gameObject;

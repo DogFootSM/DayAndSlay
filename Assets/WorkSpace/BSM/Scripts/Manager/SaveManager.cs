@@ -8,7 +8,9 @@ public class SaveManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
     [Inject] private SqlManager sqlManager;
- 
+    
+    private GameManager gameManager => GameManager.Instance;
+    
     private List<ISavable> savables = new List<ISavable>();
     
     private void Awake()
@@ -36,7 +38,9 @@ public class SaveManager : MonoBehaviour
         foreach (var savable in savables)
         {
             savable.Save(sqlManager);
-        } 
+        }
+
+        gameManager.HasUnsavedChanges = false;
     }
  
 }
