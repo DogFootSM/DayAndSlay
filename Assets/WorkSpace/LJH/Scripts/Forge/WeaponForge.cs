@@ -4,7 +4,7 @@ using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
-public class WeaponForge : InteractableObj, IInteractionStoreScene
+public class WeaponForge : InteractableObj
 {
     [Inject(Id = "WeaponForge")]
     GameObject forgeUi;
@@ -12,7 +12,7 @@ public class WeaponForge : InteractableObj, IInteractionStoreScene
     [Inject(Id = "PopUp")]
     GameObject popUp;
 
-    public override void Interaction()
+    public override void Interaction(ItemData dummy)
     {
         popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);

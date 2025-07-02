@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class Door : InteractableObj, IInteractionStoreScene
+public class Door : InteractableObj
 {
     private Animator animator;
 
@@ -24,7 +24,7 @@ public class Door : InteractableObj, IInteractionStoreScene
         player = GameObject.FindWithTag("Player");
     }
 
-    public override void Interaction()
+    public override void Interaction(ItemData dummy)
     {
         Debug.Log("문열림 실행");
         animator.Play("DoorOpenAni");
