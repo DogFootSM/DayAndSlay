@@ -155,5 +155,19 @@ public class SqlManager : IInitializable
     public IDataReader ReadSkillDataColumn(string slotID)
     {
         return sqlDatabase.SkillReadTable(slotID);
-    } 
+    }
+
+    /// <summary>
+    /// 현재 슬롯의 캐릭터 스킬 데이터 업데이트
+    /// </summary>
+    /// <param name="column">캐릭터 스킬 테이블 컬럼 리스트</param>
+    /// <param name="columnValue">업데이트 컬럼 리스트 데이터 값</param>
+    /// <param name="condition">업데이트 진행할 조건, 캐릭터 슬롯 ID, 스킬 ID</param>
+    /// <param name="conditionValue">슬롯의 Number, 업데이트 할 스킬 ID</param>
+    public void UpdateSkillDataColumn(string[] column, string[] columnValue, string[] condition,
+        string[] conditionValue)
+    {
+        sqlDatabase.SkillUpdateTable(column, columnValue, condition, conditionValue);   
+    }
+    
 }

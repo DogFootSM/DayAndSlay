@@ -408,13 +408,45 @@ public class SqliteDatabase
         } 
     }
 
+    /// <summary>
+    /// 스킬 테이블 업데이트
+    /// </summary>
+    /// <param name="column">스킬 테이블 컬럼명</param>
+    /// <param name="columnValue">업데이트할 행 데이터 값</param>
+    /// <param name="condition">업데이트 조건</param>
+    /// <param name="conditionValue">조건의 값</param>
     public void SkillUpdateTable(string[] column, string[] columnValue, string[] condition, string[] conditionValue)
     {
         using (dbCommand = dbConnection.CreateCommand())
         {
-            string query = "UPDATE CharacterSkill SET";
+            string query = "UPDATE CharacterSkill SET ";
 
-
+            for (int i = 0; i < column.Length; i++)
+            {
+                query += $"{column[i]} = @set{i}";
+                dbCommand.Parameters.Add(new SqliteParameter($"@set{i}", columnValue[i]));
+                 
+                if (i < column.Length - 1)
+                {
+                    query += ", ";
+                } 
+            }
+             
+            query += " WHERE ";
+            
+            for (int con = 0; con < condition.Length; con++)
+            {
+                query += $"{condition[con]} = @con{con}";
+                dbCommand.Parameters.Add(new SqliteParameter($"@con{con}", conditionValue[con]));
+         
+                if (con < condition.Length - 1)
+                {
+                    query += " AND ";
+                } 
+            }  
+             
+            dbCommand.CommandText = query;
+            dbCommand.ExecuteNonQuery();
         } 
     }
     

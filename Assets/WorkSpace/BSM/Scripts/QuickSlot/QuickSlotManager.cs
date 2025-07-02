@@ -21,6 +21,7 @@ public class QuickSlotManager : MonoBehaviour
         {
             Instance = this;
         } 
+        //TODO: 퀵슬롯 JSON 저장 필요
     }
 
     /// <summary>

@@ -297,8 +297,6 @@ public class InventoryInteraction :
         detailItemDescB.gameObject.SetActive(!fromSlotItem);
     }
 
-    
-    
     /// <summary>
     /// 아이템 데이터 저장
     /// </summary>
