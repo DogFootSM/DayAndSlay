@@ -4,12 +4,14 @@ using Zenject;
 
 [RequireComponent(typeof(BossMonsterMethod))]
 [RequireComponent(typeof(BossAnimator))]
+[RequireComponent (typeof(MonsterModel))]
 public abstract class BossMonsterAI : MonoBehaviour
 {
     [Inject] protected TestPlayer player;
     [SerializeField] protected MonsterData monsterData;
     [SerializeField] protected BossAnimator animator;
     [SerializeField] protected BossMonsterMethod method;
+    [SerializeField] protected MonsterModel model;
 
     protected BehaviourTree tree;
 
@@ -30,7 +32,7 @@ public abstract class BossMonsterAI : MonoBehaviour
         {
             new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
-            new IdleNode(Idle)
+            new ActionNode(Idle)
         });
     }
 
@@ -39,7 +41,7 @@ public abstract class BossMonsterAI : MonoBehaviour
         return new List<BTNode>
         {
             new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange),
-            new ChaseNode(Move)
+            new ActionNode(Move)
         };
     }
 

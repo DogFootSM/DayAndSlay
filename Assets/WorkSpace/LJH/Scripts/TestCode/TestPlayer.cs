@@ -50,7 +50,7 @@ public class TestPlayer : MonoBehaviour
     }
 
 
-    void TakeInteraction()
+    void TakeInteraction2()
     {
         if (Input.GetKeyDown(KeyCode.E) &&
             interactObj != null &&
@@ -66,6 +66,14 @@ public class TestPlayer : MonoBehaviour
                     interactable.Interaction();
                     break;
             }
+        }
+    }
+
+    void TakeInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && interactObj != null && interactObj.GetComponent<InteractableObj>())
+        {
+            interactObj.GetComponent<InteractableObj>().Interaction();
         }
     }
 

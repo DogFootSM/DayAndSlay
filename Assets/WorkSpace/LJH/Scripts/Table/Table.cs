@@ -4,19 +4,21 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
-public class Table : InteractableObj, IInteractionStoreScene
+public class Table : InteractableObj
 {
     //아이템 보유 여부
     private bool isHave;
 
-    [SerializeField] public ItemData item;
-    Sprite itemImage;
+    public ItemData item;
 
-    SpriteRenderer tableItem;
+    private Sprite itemImage;
+    private SpriteRenderer tableItem;
     //임시용
-    InventoryInteraction inventory;
+    private InventoryInteraction inventory;
     [Inject(Id = "PopUp")]
     GameObject popUp;
+
+    // 테이블의 내용물을 저장하기 위한 마스터 클래스가 필요함
 
     void Start()
     {
@@ -24,24 +26,24 @@ public class Table : InteractableObj, IInteractionStoreScene
         isHave = item ? false : true;
     }
 
-    
 
-    public override void Interaction()
+
+    public override void Interaction(ItemData item)
     {
         Debug.Log("테이블 사용");
         //Todo: 테이블 사용
 
 
-        if(isHave)
+        if (isHave)
         {
             Debug.Log("아이템을 뺐습니다.");
             GiveItem();
         }
-        
+
         else
         {
             Debug.Log("아이템을 넣었습니다.");
-            //TakeItem(선택한 아이템 들어가야 함);
+            //TakeItem(item);
         }
     }
 
@@ -79,6 +81,10 @@ public class Table : InteractableObj, IInteractionStoreScene
         isHave = false;
     }
 
+    /// <summary>
+    /// 테이블에 아이템 넣어주는 테스트 코드
+    /// </summary>
+    /// <param name="item"></param>
     private void SettingItem(ItemData item)
     {
         this.item = item;

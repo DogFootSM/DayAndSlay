@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class InteractableObj : MonoBehaviour, IInteractionStoreScene
+public abstract class InteractableObj : MonoBehaviour
 {
-    public abstract void Interaction();
+    public abstract void Interaction(ItemData item = null);
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -17,5 +17,6 @@ public abstract class InteractableObj : MonoBehaviour, IInteractionStoreScene
     }
 
     public virtual void UiOnOffMethod(Collision2D collision) {}
+
 
 }
