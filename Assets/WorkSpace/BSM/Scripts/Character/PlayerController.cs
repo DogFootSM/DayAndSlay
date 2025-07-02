@@ -24,9 +24,11 @@ public class PlayerController : MonoBehaviour
 
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
-
+    [Inject] private TableManager tableManager;
+    
     [SerializeField] private GameObject shieldObject;
     [SerializeField] private SkillTree curSkillTree;
+    [SerializeField] private InventoryInteraction inventoryInteraction;
     
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
@@ -35,7 +37,9 @@ public class PlayerController : MonoBehaviour
     private Weapon curWeapon;
     private IDataReader dataReader;
     private SkillSlotInvoker skillSlotInvoker; 
-    
+    private InteractableObj tableObject;
+
+    private LayerMask tableLayer;
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
      
@@ -44,11 +48,9 @@ public class PlayerController : MonoBehaviour
     private float posX;
     private float posY;
 
+    
 
-    //이재호가 붙여둔 임시 코드
-    private GameObject interactObj;
-    private IInteractionStoreScene interactable;
-
+    
 
 
     private void Awake()
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         characterStates[(int)curState].Update();   
         
-        TakeInteraction();
+        InventoryToTableItem();
     }
 
     private void FixedUpdate()
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviour
     private void Init()
     {
         LastMoveKey = Direction.Down;
+        tableLayer = LayerMask.GetMask("Table");
         
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
@@ -191,39 +194,29 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 이재호가 붙인 임시 코드
+    /// 보유중인 아이템을 테이블 오브젝트에 등록하기 위한 테이블과의 상호작용
     /// </summary>
-    private void TakeInteraction()
+    private void InventoryToTableItem()
     {
-        if (Input.GetKeyDown(KeyCode.E) &&
-            interactObj != null)
+        if (Input.GetKeyDown(KeyCode.E) && tableObject != null)
         {
-            Debug.Log("TABLE과 상호작용");
-            
-            switch (interactable)
-            {
-                //E 키를 눌렀을 때, TableManager에 아이템 등록 팝업 활성화 요청하면서 인벤토리 넘겨줌
-                //TableManager에서 활성화 되면 인벤토리에 들어있는 아이템으로 UI 설정
-                //유저가 아이템을 선택하면 Table의 Interaction 호출하면서 선택한 아이템 데이터 넘겨줌
-                
-                
-                case Table table: 
-                    //table.TakeItem(choiceItem);
-                    break;
-
-                default:
-                    interactable.Interaction();
-                    break;
-            }
-        }
+            tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
+        } 
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out interactable))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Table"))
         {
-            interactObj = collision.gameObject;
-        }
+            tableObject = collision.gameObject.GetComponent<InteractableObj>();
+        } 
     }
 
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Table"))
+        {
+            tableObject = null;
+        } 
+    }
 }

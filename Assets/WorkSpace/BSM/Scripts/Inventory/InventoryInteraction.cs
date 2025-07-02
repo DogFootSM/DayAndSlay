@@ -298,6 +298,16 @@ public class InventoryInteraction :
     }
 
     /// <summary>
+    /// 현재 보유중인 슬롯의 아이템 데이터 반환
+    /// </summary>
+    /// <returns></returns>
+    public List<ItemData> GetSlotItemList()
+    {
+        return inventorySlots.Where(x => x.CurSlotItem != null).Select(x => x.CurSlotItem).ToList();
+
+    }
+    
+    /// <summary>
     /// 아이템 데이터 저장
     /// </summary>
     public void Save(SqlManager sqlManager)
