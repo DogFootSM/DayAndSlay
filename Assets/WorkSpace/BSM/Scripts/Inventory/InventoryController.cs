@@ -27,9 +27,8 @@ public class InventoryController : MonoBehaviour
     [SerializeField] protected Equipment equipment;
     
     [Inject] private DataManager dataManager;
-    [Inject] private SqlManager sqlManager;
-    [Inject] private SaveManager saveManager;
-    
+    [Inject] protected SqlManager sqlManager;
+ 
     protected List<InventorySlot> inventorySlots = new List<InventorySlot>();
     private List<BSM_ItemData> itemDatas = new List<BSM_ItemData>();
     private IDataReader dataReader;

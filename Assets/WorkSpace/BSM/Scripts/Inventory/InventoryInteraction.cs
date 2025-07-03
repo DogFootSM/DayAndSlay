@@ -24,10 +24,9 @@ public class InventoryInteraction :
     [SerializeField] private Button equipButton;
     [SerializeField] private TextMeshProUGUI equipStateButtonText;
     [SerializeField] private SystemWindowController systemWindowController;
-
+ 
     [Inject] private SaveManager saveManager;
-    [Inject] private DataManager dataManager;
-
+    
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
 
