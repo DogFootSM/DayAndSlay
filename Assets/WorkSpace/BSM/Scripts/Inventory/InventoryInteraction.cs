@@ -29,12 +29,12 @@ public class InventoryInteraction :
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
-
+     
     private InventorySlot beginSlot;
     private InventorySlot endSlot;
     private InventorySlot selectedSlot;
     
-    private bool fromSlotItem => beginSlot != null && beginSlot.CurSlotItem == null;
+    private bool beginSlotNullCheck => beginSlot != null && beginSlot.CurSlotItem == null;
     private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY;
     private LayerMask dimmedLayer;
 
@@ -63,16 +63,18 @@ public class InventoryInteraction :
     {
         if (selectedSlot.IsEquip)
         {
-            Debug.Log("장착 해제");
+            equipment.UnEquipItem(selectedSlot.CurSlotItem.Parts);
             selectedSlot.IsEquip = false;
+            UpdateEquipButton();
         }
         else
-        {
-            Debug.Log("장착");
-            selectedSlot.IsEquip = true;
+        { 
+            equipment.EquipItem(selectedSlot.CurSlotItem);
+            UpdateEquipState(selectedSlot); 
+            UpdateEquipButton();
         }
     }
-
+ 
     /// <summary>
     /// 아이템 ID HashSet 설정
     /// </summary>
@@ -120,11 +122,27 @@ public class InventoryInteraction :
         //TODO: 빈 슬롯에 대한 안내 방법 추가
         Debug.Log("빈 슬롯이 없습니다.");
     }
+ 
 
+    /// <summary>
+    /// 장비 장착, 해제에 따른 버튼 텍스트 갱신
+    /// </summary>
+    private void UpdateEquipButton()
+    {
+        if (selectedSlot.IsEquip)
+        {
+            equipStateButtonText.text = "장착 해제";
+        }
+        else
+        {
+            equipStateButtonText.text = "장착";
+        }  
+    }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         if (closeInventory) return;
-        
+
         results.Clear();
         
         inventoryRayCanvas.Raycast(eventData, results);
@@ -139,30 +157,18 @@ public class InventoryInteraction :
             detailItemDescA.gameObject.SetActive(true);
             detailItemDescB.gameObject.SetActive(true);
             
-            detailItemImage.sprite = selectedSlot.CurSlotItem.ItemImage;
-            detailItemDescA.text = selectedSlot.CurSlotItem.ItemDescA;
-            detailItemDescB.text = selectedSlot.CurSlotItem.ItemDescB;
-
+            UpdateEquipDetailTab();
+            
             if (selectedSlot.CurSlotItem.IsEquipment)
             {
                 equipButton.gameObject.SetActive(true);
-                
-                if (selectedSlot.IsEquip)
-                {
-                    equipStateButtonText.text = "장착 해제";
-                }
-                else
-                {
-                    equipStateButtonText.text = "장착";
-                }  
+                UpdateEquipButton(); 
             }
             else
             {
                 equipButton.gameObject.SetActive(false);
             } 
-        }
-        
-        
+        } 
     }
     
     /// <summary>
@@ -171,7 +177,7 @@ public class InventoryInteraction :
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        if (fromSlotItem) return;
+        if (beginSlotNullCheck) return;
         if (closeInventory) return;
  
         //마우스가 이동하는 위치로 아이템 이미지 위치 변경
@@ -218,11 +224,16 @@ public class InventoryInteraction :
                 SwapInventorySlot(endSlot, beginSlot);
                 break;
             } 
-        } 
-        
+        }
+ 
         results.Clear();
     }
 
+    /// <summary>
+    /// 인벤토리 슬롯 스왑
+    /// </summary>
+    /// <param name="endSlot">마지막으로 감지한 슬롯</param>
+    /// <param name="beginSlot">처음 감지한 슬롯</param>
     private void SwapInventorySlot(InventorySlot endSlot, InventorySlot beginSlot)
     {
         if (beginSlot.CurSlotItem == null) return;
@@ -233,6 +244,8 @@ public class InventoryInteraction :
             beginSlot.RemoveItem();
             
             endSlot.IsEquip = beginSlot.IsEquip;
+            UpdateEquipSlot(endSlot); 
+            
             beginSlot.IsEquip = false;
         }
         else
@@ -241,12 +254,60 @@ public class InventoryInteraction :
             bool beginEquipState = beginSlot.IsEquip;
             int beginSlotCount = beginSlot.ItemCount;
 
-            beginSlot.ChangeItem(endSlot.CurSlotItem, beginSlot.ItemCount);
+            beginSlot.ChangeItem(endSlot.CurSlotItem, endSlot.ItemCount);
             beginSlot.IsEquip = endSlot.IsEquip;
-    
+             
             endSlot.ChangeItem(beginSlotItem, beginSlotCount);
             endSlot.IsEquip = beginEquipState;
-        }    
+            equipSlotDict[endSlot.CurSlotItem.Parts] = endSlot;
+
+            UpdateEquipSlot(beginSlot);
+            UpdateEquipSlot(endSlot); 
+        }
+ 
+        UpdateEquipDetailTab();
+        UpdateEquipButton();
+    }
+
+    /// <summary>
+    /// 슬롯 스왑시 장비 착용 상태 및 장비 여부를 확인 후 슬롯 갱신
+    /// </summary>
+    /// <param name="inventorySlot"></param>
+    private void UpdateEquipSlot(InventorySlot inventorySlot)
+    {
+        if (inventorySlot.CurSlotItem == null) return;
+        
+        if (inventorySlot.IsEquip && inventorySlot.CurSlotItem.IsEquipment)
+        {
+            equipSlotDict[inventorySlot.CurSlotItem.Parts] = inventorySlot;
+        } 
+    }
+    
+    /// <summary>
+    /// 선택한 아이템의 상세 정보 갱신
+    /// </summary>
+    private void UpdateEquipDetailTab()
+    {
+        detailItemImage.sprite = selectedSlot.CurSlotItem.ItemImage;
+        detailItemDescA.text = selectedSlot.CurSlotItem.ItemDescA;
+        detailItemDescB.text = selectedSlot.CurSlotItem.ItemDescB;
+    }
+    
+    /// <summary>
+    /// 각 슬롯의 파츠별 아이템 장착 상태 갱신
+    /// </summary>
+    /// <param name="inventorySlot"></param>
+    private void UpdateEquipState(InventorySlot inventorySlot)
+    {
+        Parts key = inventorySlot.CurSlotItem.Parts;
+        
+        if (equipSlotDict.ContainsKey(key))
+        { 
+            equipSlotDict[key].IsEquip = false;
+        }
+        
+        equipSlotDict[key] = inventorySlot;
+        equipSlotDict[key].IsEquip = true; 
     }
     
     /// <summary>
@@ -307,5 +368,5 @@ public class InventoryInteraction :
                 }
             );
         }
-    } 
+    }  
 }

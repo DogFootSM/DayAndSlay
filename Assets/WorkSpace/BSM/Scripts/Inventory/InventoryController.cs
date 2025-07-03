@@ -32,6 +32,7 @@ public class InventoryController : MonoBehaviour
     protected List<InventorySlot> inventorySlots = new List<InventorySlot>();
     private List<BSM_ItemData> itemDatas = new List<BSM_ItemData>();
     private IDataReader dataReader;
+    protected Dictionary<Parts, InventorySlot> equipSlotDict = new Dictionary<Parts, InventorySlot>();
     
     private ITEM_MANAGER itemManager => ITEM_MANAGER.instance;
     
@@ -79,7 +80,8 @@ public class InventoryController : MonoBehaviour
             if (inventorySlots[itemDatas[i].inventorySlotId].IsEquip)
             {
                 //DB에서 받아온 아이템 정보로 착용 장비 설정
-                equipment.EquipItem(inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem, inventorySlots[itemDatas[i].inventorySlotId], true);
+                equipment.EquipItem(inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem);
+                equipSlotDict[inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem.Parts] = inventorySlots[itemDatas[i].inventorySlotId];
             } 
         } 
     }

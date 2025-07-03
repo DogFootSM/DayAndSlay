@@ -11,7 +11,7 @@ public class EquipmentUI : MonoBehaviour
     [SerializedDictionary("Parts Type", "Parts UI Object")] [SerializeField]
     private SerializedDictionary<Parts, Image> partsUIDict;
 
-    public UnityAction<EquipmentSlot> OnChangeEquipItem;
+    public UnityAction<ItemData, bool> OnChangeEquipItem;
 
     private void OnEnable()
     {
@@ -27,14 +27,14 @@ public class EquipmentUI : MonoBehaviour
     /// 장착 아이템에 따른 이미지 변경
     /// </summary>
     /// <param name="equipmentSlot"></param>
-    private void EquipItemUI(EquipmentSlot equipmentSlot)
+    private void EquipItemUI(ItemData newItem, bool isEquip)
     {
-        Parts key = equipmentSlot.itemData.Parts;
+        Parts key = newItem.Parts;
 
         //장착과 장착 해제
-        if (equipmentSlot.inventorySlot.IsEquip)
+        if (isEquip)
         {
-            partsUIDict[key].sprite = equipmentSlot.itemData.ItemImage;
+            partsUIDict[key].sprite = newItem.ItemImage;
         }
         else
         {
