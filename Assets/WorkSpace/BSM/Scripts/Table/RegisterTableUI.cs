@@ -12,7 +12,8 @@ public class RegisterTableUI : MonoBehaviour
     [SerializeField] private Image registerItemImage;
     [SerializeField] private TextMeshProUGUI registerItemText;
     [SerializeField] private Button registerItemButton;
-
+    [SerializeField] private Button panelCloseButton;
+    
     [Inject] private TableManager tableManager;
     
     public UnityAction<ItemData> OnRegisterItemEvents;
@@ -22,6 +23,7 @@ public class RegisterTableUI : MonoBehaviour
         ProjectContext.Instance.Container.Inject(this);
         
         registerItemButton.onClick.AddListener(tableManager.Register);
+        panelCloseButton.onClick.AddListener(() => panelCloseButton.gameObject.transform.parent.gameObject.SetActive(false));
     }
 
     private void OnEnable()
