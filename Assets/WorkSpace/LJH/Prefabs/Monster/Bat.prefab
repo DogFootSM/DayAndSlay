@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 6630095741205651445}
   - component: {fileID: 5090944112392897925}
   - component: {fileID: 2746353790196727829}
+  - component: {fileID: -8686654853861548111}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Untagged
@@ -189,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 5c899ad76e4fa2d4f9357dc4486033bd, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: e349c5029ea150c47b679db7099065eb, type: 3}
 --- !u!114 &1773616607031883035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,8 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackHitBox: {fileID: 0}
-  astarPath: {fileID: 0}
+  attackHitBox: {fileID: 6630095741205651445}
+  astarPath: {fileID: 5231037056919957220}
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
@@ -373,3 +374,18 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+--- !u!114 &-8686654853861548111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913998146556878464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 83b9279f9efa57a4385985446418fed9, type: 2}
+  player: {fileID: 0}
+  monsterState: 0

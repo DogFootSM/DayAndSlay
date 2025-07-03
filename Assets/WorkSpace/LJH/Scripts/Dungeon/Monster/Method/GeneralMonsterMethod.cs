@@ -42,7 +42,7 @@ public class GeneralMonsterMethod : MonoBehaviour
             Debug.Log("몬스터데이터 주입 안됨");
     }
 
-    IEnumerator MoveCoroutine()
+    private IEnumerator MoveCoroutine()
     {
         isMoving = true;
 
@@ -108,6 +108,7 @@ public class GeneralMonsterMethod : MonoBehaviour
             }
 
             moveCoroutine = StartCoroutine(MoveCoroutine());
+            
         }
     }
 
@@ -119,8 +120,13 @@ public class GeneralMonsterMethod : MonoBehaviour
         //Todo : 실제 데미지 처리 해야함
     }
 
+    public void HitMethod()
+    {
+        Debug.Log("몬스터 맞았음");
+    }
 
-    public void Die()
+
+    public void DieMethod()
     {
         DropItem();       
         //경험치 넘김

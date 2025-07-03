@@ -42,6 +42,7 @@ public class GoblinAi : GeneralMonsterAI
     {
         if (!method.isMoving)
         {
+            Debug.Log("AI에서 움직임 실행시킴");
             stateMachine.ChangeState(new MonsterMoveState());
             monsterState = M_State.MOVE;
             method.MoveMethod();

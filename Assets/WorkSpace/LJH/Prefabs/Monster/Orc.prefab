@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 1601204771588268310}
   - component: {fileID: 4425910556373969110}
   - component: {fileID: 5386918725613994773}
-  - component: {fileID: 7188607081393485164}
   - component: {fileID: 4879786823134290632}
   - component: {fileID: 6087783516721240178}
   - component: {fileID: 4542563170354638787}
   - component: {fileID: 1267680729230137572}
   - component: {fileID: -4089047552206157527}
+  - component: {fileID: 1583439449573798401}
   m_Layer: 0
   m_Name: Orc
   m_TagString: Untagged
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -1016989793, guid: 82adc61568487374ab5a9b8263b5f817, type: 3}
+  m_Sprite: {fileID: 607490312, guid: 82adc61568487374ab5a9b8263b5f817, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: de59c28073cc9c14a837bbe02fd24192, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: ad6545c2fe74b3f4fb92c2896f6013cd, type: 3}
 --- !u!114 &4425910556373969110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 8.1929586e-13
   m_labelHash: 0.0031869207
-  m_SpriteKey: 1.0476273e-35
+  m_SpriteKey: 1.2813606e-28
 --- !u!95 &5386918725613994773
 Animator:
   serializedVersion: 5
@@ -144,21 +144,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7188607081393485164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2206897382857518734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cf9beb0080c5c64f8d9f68d940cb99e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 70d4f973e3ca5704ba0a7db1f4cd0286, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
 --- !u!114 &4879786823134290632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackHitBox: {fileID: 0}
-  astarPath: {fileID: 0}
+  attackHitBox: {fileID: 1267680729230137572}
+  astarPath: {fileID: 1754645872257719992}
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
@@ -270,6 +255,21 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+--- !u!114 &1583439449573798401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206897382857518734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 70d4f973e3ca5704ba0a7db1f4cd0286, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
 --- !u!1 &7981083056191550358
 GameObject:
   m_ObjectHideFlags: 0
