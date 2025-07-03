@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 6030937041224774597}
   - component: {fileID: 7292523102532748534}
   - component: {fileID: 5436609772685449269}
-  - component: {fileID: 3582814710259343607}
   - component: {fileID: 2839846741383203636}
   - component: {fileID: 1065835143254805624}
   - component: {fileID: 8904270538623943776}
   - component: {fileID: 2426258245870005784}
   - component: {fileID: 4255817284399838312}
   - component: {fileID: -2693935374702402041}
+  - component: {fileID: -1641107712958166363}
   m_Layer: 0
   m_Name: GoblinSniper
   m_TagString: Untagged
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1073457615, guid: 46a89591b4f54a346a414f5621c0a50d, type: 3}
+  m_Sprite: {fileID: 2069853359, guid: 46a89591b4f54a346a414f5621c0a50d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 86556441d67778f4dac72782455dc9e0, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 015d570c53533c54e826c4f197679946, type: 3}
 --- !u!114 &7292523102532748534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: 1.43289105e-11
+  m_CategoryHash: 2.4377812e-11
+  m_labelHash: 3.991422e-13
+  m_SpriteKey: 0
 --- !u!95 &5436609772685449269
 Animator:
   serializedVersion: 5
@@ -145,21 +145,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3582814710259343607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1188161495205834605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72b579d5da9517346bf807271d99247b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: b3a5b81b43bc7bc4dbd17dd484121520, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
 --- !u!114 &2839846741383203636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackHitBox: {fileID: 0}
-  astarPath: {fileID: 0}
+  attackHitBox: {fileID: 2426258245870005784}
+  astarPath: {fileID: 1967302825783960325}
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
@@ -292,6 +277,21 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+--- !u!114 &-1641107712958166363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188161495205834605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: b3a5b81b43bc7bc4dbd17dd484121520, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
 --- !u!1 &3501327773029655152
 GameObject:
   m_ObjectHideFlags: 0

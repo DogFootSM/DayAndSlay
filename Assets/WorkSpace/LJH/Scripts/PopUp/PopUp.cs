@@ -6,8 +6,10 @@ using UnityEngine;
 public class PopUp : MonoBehaviour
 {
     public string objName;
+    [SerializeField] private TextMeshProUGUI text;
+
     private void OnEnable()
     {
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"E키를 눌러서 \n {objName} 사용하기";
+        text.text = $"E키를 눌러서 \n {objName} 사용하기";
     }
 }

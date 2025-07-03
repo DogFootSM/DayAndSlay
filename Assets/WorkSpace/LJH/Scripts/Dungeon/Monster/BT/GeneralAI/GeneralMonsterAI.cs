@@ -54,33 +54,58 @@ public class GeneralMonsterAI : MonoBehaviour
         /// <summary>
         /// 테스트용 : 몬스터 죽이기 코드
         /// </summary>
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //    model.Hp = 0;
+        if (Input.GetKeyDown(KeyCode.Space))
+            //    model.Hp = 0;
+            Hit();
     }
 
     public virtual void Hit()
     {
-        //Toodo : 히트 만들어줘야함
+        //Todo : 히트 만들어줘야함
+        method.HitMethod();
+        stateMachine.ChangeState(new MonsterHitState());
     }
     public virtual void Die()
     {
         Debug.Log("몬스터가 사망했습니다");
-        method.Die();
+        method.DieMethod();
         stateMachine.ChangeState(new MonsterDieState());
     }
 
     public virtual void Idle()
     {
-        Debug.Log("몬스터가 대기중입니다.");
+        if (monsterState == M_State.IDLE)
+        {
+            return;
+        }
+
+        stateMachine.ChangeState(new MonsterIdleState());
+        monsterState = M_State.IDLE;
     }
+
     public virtual void Attack()
     {
-        Debug.Log("몬스터가 공격합니다");
+        if (monsterState == M_State.ATTACK)
+        {
+            return;
+        }
+
+        monsterState = M_State.ATTACK;
+        stateMachine.ChangeState(new MonsterAttackState());
+        method.StopMoveCo();
+        method.isAttacking = true;
+
+        StartCoroutine(AttackEndDelay()); // 공격 종료 타이밍 처리
     }
 
     public virtual void Move()
     {
-        Debug.Log("몬스터가 이동합니다.");
+        if (!method.isMoving)
+        {
+            stateMachine.ChangeState(new MonsterMoveState());
+            monsterState = M_State.MOVE;
+            method.MoveMethod();
+        }
     }
 
     protected List<BTNode> RootSelector()

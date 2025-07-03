@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 2230296940673157747}
   - component: {fileID: 2915400258908273984}
   - component: {fileID: 446733505822531971}
-  - component: {fileID: 9005260773018638657}
   - component: {fileID: 7649508663265473154}
   - component: {fileID: 4867038125560493518}
   - component: {fileID: 3950774981472583126}
   - component: {fileID: 7848198602268989358}
   - component: {fileID: 8524778961033154014}
   - component: {fileID: -5471911796277688368}
+  - component: {fileID: -7136706325527885263}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1531149496, guid: 42292928336208c47b25bfe5b6fd0c95, type: 3}
+  m_Sprite: {fileID: 1134496268, guid: 42292928336208c47b25bfe5b6fd0c95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: ecfa29d2cc564634fbbcf41a28ee27ff, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: bb6e56230b4e5184bac5cd40af541aaa, type: 3}
 --- !u!114 &2915400258908273984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
+  m_CategoryHash: 2.4377812e-11
+  m_labelHash: 3.991422e-13
   m_SpriteKey: 1.43289105e-11
 --- !u!95 &446733505822531971
 Animator:
@@ -145,21 +145,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &9005260773018638657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72b579d5da9517346bf807271d99247b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
 --- !u!114 &7649508663265473154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackHitBox: {fileID: 0}
-  astarPath: {fileID: 0}
+  attackHitBox: {fileID: 7848198602268989358}
+  astarPath: {fileID: 2112656555474924329}
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
@@ -292,6 +277,21 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+--- !u!114 &-7136706325527885263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718412542748530395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
 --- !u!1 &7090935891435310245
 GameObject:
   m_ObjectHideFlags: 0
