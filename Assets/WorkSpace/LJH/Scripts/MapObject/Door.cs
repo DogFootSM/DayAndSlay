@@ -7,7 +7,7 @@ public class Door : InteractableObj
     private Animator animator;
 
     [Inject(Id = "LoadingScene")]
-    [Header("·Îµù ¾À")]
+    [Header("ï¿½Îµï¿½ ï¿½ï¿½")]
     private SceneReference loadingScene;
 
     [SerializeField] private Transform movePosTrans;
@@ -24,9 +24,9 @@ public class Door : InteractableObj
         player = GameObject.FindWithTag("Player");
     }
 
-    public override void Interaction(ItemData dummy)
+    public override void Interaction()
     {
-        Debug.Log("¹®¿­¸² ½ÇÇà");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         animator.Play("DoorOpenAni");
         SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
         player.transform.position = movePos;
@@ -38,15 +38,15 @@ public class Door : InteractableObj
         switch (doorType)
         {
             case DoorType.DOOR:
-                popUp.GetComponent<PopUp>().objName = "¹®";
+                popUp.GetComponent<PopUp>().objName = "ï¿½ï¿½";
                 break;
 
             case DoorType.LADDER:
-                popUp.GetComponent<PopUp>().objName = "»ç´Ù¸®";
+                popUp.GetComponent<PopUp>().objName = "ï¿½ï¿½Ù¸ï¿½";
                 break;
 
             default:
-                popUp.GetComponent<PopUp>().objName = "Ã£À» ¼ö ¾øÀ½";
+                popUp.GetComponent<PopUp>().objName = "Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
                 break;
         }
         popUp.SetActive(!popUp.gameObject.activeSelf);

@@ -12,7 +12,7 @@ public class WeaponForge : InteractableObj
     [Inject(Id = "PopUp")]
     GameObject popUp;
 
-    public override void Interaction(ItemData dummy)
+    public override void Interaction()
     {
         popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
@@ -20,7 +20,7 @@ public class WeaponForge : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-        popUp.GetComponent<PopUp>().objName = "¹«±â Á¦ÀÛ´ë";
+        popUp.GetComponent<PopUp>().objName = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û´ï¿½";
         popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 }

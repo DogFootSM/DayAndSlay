@@ -1,96 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
 public class Table : InteractableObj
 {
-    //¾ÆÀÌÅÛ º¸À¯ ¿©ºÎ
-    private bool isHave;
 
-    public ItemData item;
+    [SerializeField] private SpriteRenderer registeredItemRenderer;
 
-    private Sprite itemImage;
-    private SpriteRenderer tableItem;
-    //ÀÓ½Ã¿ë
-    private InventoryInteraction inventory;
-    [Inject(Id = "PopUp")]
-    GameObject popUp;
-
-    // Å×ÀÌºíÀÇ ³»¿ë¹°À» ÀúÀåÇÏ±â À§ÇÑ ¸¶½ºÅÍ Å¬·¡½º°¡ ÇÊ¿äÇÔ
-
-    void Start()
+    [Inject(Id = "PopUp")] private GameObject popUp;
+    private PopUp tableAskPopup;
+    private TextMeshProUGUI tableAskText;
+    private ItemData curItemData;
+    public ItemData CurItemDataData => curItemData;
+    
+    public override void Interaction()
     {
-        tableItem = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        isHave = item ? false : true;
-    }
-
-
-
-    public override void Interaction(ItemData item)
-    {
-        Debug.Log("Å×ÀÌºí »ç¿ë");
-        //Todo: Å×ÀÌºí »ç¿ë
-
-
-        if (isHave)
-        {
-            Debug.Log("¾ÆÀÌÅÛÀ» »°½À´Ï´Ù.");
-            GiveItem();
-        }
-
-        else
-        {
-            Debug.Log("¾ÆÀÌÅÛÀ» ³Ö¾ú½À´Ï´Ù.");
-            //TakeItem(item);
-        }
     }
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-        popUp.GetComponent<PopUp>().objName = "°¡ÆÇ´ë";
+        if (tableAskPopup == null)
+        {
+            //TODO: POPUP TEXT êµ¬ì¡° ìˆ˜ì •ë˜ë©´ GetComponentë¡œ ë°›ì•„ì˜¤ëŠ”ê±´ ì•ˆí•´ë„ ë ë“¯
+            tableAskPopup = popUp.GetComponent<PopUp>();
+            tableAskText = popUp.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            tableAskPopup.objName = "ê°€íŒëŒ€";
+        }
+
+        //TODO: ì•ˆë‚´ ë©˜íŠ¸ëŠ” ìˆ˜ì •í•´ì•¼í•¨. 
+        if (curItemData != null)
+        {
+            tableAskText.text = $"{tableAskPopup.objName}ì—ì„œ ì•„ì´í…œì„ íšŒìˆ˜í•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
+        }
+        else
+        {
+            tableAskText.text = $"Eí‚¤ë¥¼ ëˆŒëŸ¬ì„œ {tableAskPopup.objName}ì— ì•„ì´í…œì„ ë“±ë¡í•˜ì„¸ìš”.";
+        }
+
         popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ Å×ÀÌºí¿¡ ¾ÆÀÌÅÛ Áı¾î³ÖÀ» ¶§
+    /// í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ë¡œë¶€í„° ì•„ì´í…œ ë°ì´í„°ë¥¼ ë°›ì•„ì˜´
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="item">ì¸ë²¤í† ë¦¬ì—ì„œ ë„˜ê²¨ ë°›ì€ ì•„ì´í…œ ë°ì´í„°</param>
     public void TakeItem(ItemData item)
     {
-        this.item = item;
-        itemImage = item.GetComponent<Item>().itemData.ItemImage;
-        tableItem.sprite = itemImage;
-        isHave = true;
-
+        this.curItemData = item;
+        registeredItemRenderer.sprite = item.ItemImage;
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ Å×ÀÌºí¿¡¼­ ¾ÆÀÌÅÛ ²¨³¾ ¶§
+    /// í…Œì´ë¸”ì— ë“±ë¡ë˜ì–´ ìˆëŠ” ì•„ì´í…œì„ ë°˜í™˜í•˜ì—¬ ì¸ë²¤í† ë¦¬ì— ë‹¤ì‹œ ì¶”ê°€
     /// </summary>
-    public void GiveItem()
+    /// <param name="inventoryInteraction">í”Œë ˆì´ì–´ê°€ ê°€ì§€ê³  ìˆëŠ” ì¸ë²¤í† ë¦¬</param>
+    public void GiveItem(InventoryInteraction inventoryInteraction)
     {
-        ItemData item = this.item;
-        this.item = null;
-        itemImage = null;
-        tableItem.sprite = null;
-
-        inventory.AddItemToInventory(item);
-        isHave = false;
+        inventoryInteraction.AddItemToInventory(curItemData);
+        curItemData = null;
+        registeredItemRenderer.sprite = null;
     }
-
-    /// <summary>
-    /// Å×ÀÌºí¿¡ ¾ÆÀÌÅÛ ³Ö¾îÁÖ´Â Å×½ºÆ® ÄÚµå
-    /// </summary>
-    /// <param name="item"></param>
-    private void SettingItem(ItemData item)
-    {
-        this.item = item;
-        itemImage = item.ItemImage;
-        tableItem.sprite = itemImage;
-    }
-
-
 }

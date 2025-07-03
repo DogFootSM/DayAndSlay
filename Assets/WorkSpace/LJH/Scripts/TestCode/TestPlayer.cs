@@ -16,7 +16,7 @@ public class TestPlayer : MonoBehaviour
 
     Item haveItem;
 
-    // ÀÎº¥Åä¸® Å×½ºÆ®¿ë º¯¼ö
+    // ï¿½Îºï¿½ï¿½ä¸® ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     List<ItemData> inventories = new List<ItemData>();
 
@@ -26,7 +26,7 @@ public class TestPlayer : MonoBehaviour
     {
         PlayerMove();
         TakeInteraction();
-        //Å×½ºÆ®ÄÚµå
+        //ï¿½×½ï¿½Æ®ï¿½Úµï¿½
         ItemPick();
     }
 
@@ -44,7 +44,7 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("ÃÊÀÌ½º ¾ÆÀÌÅÛ¿¡ ¾ÆÀÌÅÛ ³ÖÀ½");
+            Debug.Log("ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             choiceItem = inventories[0];
         }
     }
@@ -59,7 +59,7 @@ public class TestPlayer : MonoBehaviour
             switch (interactable)
             {
                 case Table table:
-                    table.TakeItem(choiceItem);
+                    //table.TakeItem(choiceItem);
                     break;
 
                 default :
