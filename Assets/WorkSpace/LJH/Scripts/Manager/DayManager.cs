@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using Zenject;
 
-public class DayManager : MonoBehaviour
+public class DayManager : MonoBehaviour, ISavable
 {
-    static DayManager instance;
+    public static DayManager instance;
 
     public DayAndNight dayOrNight;
     // 9Minute
@@ -16,6 +17,10 @@ public class DayManager : MonoBehaviour
     private WaitForSeconds seconds = new WaitForSeconds(1f);
 
     Coroutine timeCoroutine;
+
+    [Inject]DataManager dataManager;
+    [Inject]SqlManager sqlManager;
+    [Inject]SaveManager saveManager;
 
     private void Awake()
     {
@@ -28,6 +33,19 @@ public class DayManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        saveManager.SavableRegister(this);
+
+    }
+
+    private void Start()
+    {
+        StartDay();
+    }
+
+    void Update()
+    {
+        Debug.Log(dayCount);
     }
     /// <summary>
     /// This method changes day & night
@@ -60,6 +78,7 @@ public class DayManager : MonoBehaviour
     /// </summary>
     private void StartDay()
     {
+        Debug.Log("≥∑ Ω√¿€µ ");
         SetDayCount(DefaultDayCount);
         dayOrNight = DayAndNight.DAY;
         
@@ -94,6 +113,7 @@ public class DayManager : MonoBehaviour
     /// </summary>
     private void StartNight()
     {
+        Debug.Log("π„ Ω√¿€µ ");
         if(timeCoroutine != null)
         {
             StopCoroutine(timeCoroutine);
@@ -102,5 +122,15 @@ public class DayManager : MonoBehaviour
 
         dayOrNight = DayAndNight.NIGHT;
         //Todo : æÓµŒøˆ¡ˆ∞Ì ªÛ¡° πÆ¿Ã ¥›«Ùæﬂ«‘
+    }
+
+    public void Save(SqlManager sqlManager)
+    {
+        sqlManager.UpdateCharacterDataColumn
+            (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.LAST_PLAYED_TIME) },
+            new[] { $"{dayOrNight}" },
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
+            $"{dataManager.SlotId}"
+            );
     }
 }
