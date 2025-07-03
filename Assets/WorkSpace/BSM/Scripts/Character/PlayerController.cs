@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private Weapon curWeapon;
     private IDataReader dataReader;
     private SkillSlotInvoker skillSlotInvoker; 
-    private InteractableObj tableObject;
+    private Table tableObject;
 
     private LayerMask tableLayer;
     private CharacterWeaponType curWeaponType;
@@ -199,18 +199,15 @@ public class PlayerController : MonoBehaviour
     private void InventoryToTableItem()
     {
         if (Input.GetKeyDown(KeyCode.E) && tableObject != null)
-        {
-            if (tableObject is Table table)
+        { 
+            if (tableObject.item == null)
             {
-                if (table.item == null)
-                {
-                    tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
-                }
-                else
-                {
-                    tableManager.WithdrawItem();
-                }
-            } 
+                tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
+            }
+            else
+            {
+                tableManager.WithdrawItem(inventoryInteraction, tableObject);
+            }
         } 
     }
 
@@ -218,7 +215,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Table"))
         {
-            tableObject = collision.gameObject.GetComponent<InteractableObj>();
+            tableObject = collision.gameObject.GetComponent<Table>();
         } 
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class InteractableObj : MonoBehaviour
 {
-    public abstract void Interaction(ItemData item = null);
+    public abstract void Interaction();
 
     public void OnCollisionEnter2D(Collision2D collision)
     {

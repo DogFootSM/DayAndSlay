@@ -7,39 +7,15 @@ using Zenject;
 
 public class Table : InteractableObj
 {
-    //������ ���� ����
-    private bool isHave;
-
     public ItemData item;
-    private SpriteRenderer tableItem;
-    
-    //�ӽÿ�
-    private InventoryInteraction inventory;
-    [Inject(Id = "PopUp")]
-    GameObject popUp;
+    [SerializeField] private SpriteRenderer registeredItemRenderer;
 
+    [Inject(Id = "PopUp")] private GameObject popUp;
     private PopUp tableAskPopup;
     private TextMeshProUGUI tableAskText;
-    
-    // ���̺��� ���빰�� �����ϱ� ���� ������ Ŭ������ �ʿ���
 
-    void Start()
+    public override void Interaction()
     {
-        tableItem = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        isHave = item == null ? false : true;
-    }
-
-    public override void Interaction(ItemData item)
-    {  
-        if (isHave)
-        { 
-            GiveItem();
-        }
-
-        else
-        { 
-            TakeItem(item);
-        }
     }
 
     public override void UiOnOffMethod(Collision2D collision)
@@ -54,40 +30,36 @@ public class Table : InteractableObj
 
         //TODO: 안내 멘트는 수정해야함. 
         if (item != null)
-        { 
+        {
             tableAskText.text = $"{tableAskPopup.objName}에서 아이템을 회수하시겠습니까?";
         }
         else
-        { 
+        {
             tableAskText.text = $"E키를 눌러서 {tableAskPopup.objName}에 아이템을 등록하세요.";
         }
-        
+
         popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 
 
     /// <summary>
-    /// �÷��̾ ���̺� ������ ������� ��
+    /// 플레이어 인벤토리로부터 아이템 데이터를 받아옴
     /// </summary>
-    /// <param name="item"></param>
-    private void TakeItem(ItemData item)
+    /// <param name="item">인벤토리에서 넘겨 받은 아이템 데이터</param>
+    public void TakeItem(ItemData item)
     {
         this.item = item;
-        tableItem.sprite = item.ItemImage;
-        isHave = true;
-
+        registeredItemRenderer.sprite = item.ItemImage;
     }
 
     /// <summary>
-    /// �÷��̾ ���̺��� ������ ���� ��
+    /// 테이블에 등록되어 있는 아이템을 반환하여 인벤토리에 다시 추가
     /// </summary>
-    private void GiveItem()
+    /// <param name="inventoryInteraction">플레이어가 가지고 있는 인벤토리</param>
+    public void GiveItem(InventoryInteraction inventoryInteraction)
     {
-        ItemData item = this.item;
-        this.item = null; 
-        tableItem.sprite = null;
-
-        inventory.AddItemToInventory(item);
-        isHave = false;
-    } 
+        inventoryInteraction.AddItemToInventory(item);
+        item = null;
+        registeredItemRenderer.sprite = null;
+    }
 }

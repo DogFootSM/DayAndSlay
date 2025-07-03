@@ -13,10 +13,10 @@ public class TableManager : MonoBehaviour
     [SerializeField] private GameObject registerItemPanel;
     [SerializeField] private GameObject slotsParent;
     
-    private InventoryInteraction inventoryController;
-    private InteractableObj interactorTableObject;
+    private InventoryInteraction inventoryInteraction;
     private Table targetTable; 
     private ItemData itemToRegister;
+    private InventorySlot removeInventorySlot;
     
     private void Awake()
     { 
@@ -29,42 +29,41 @@ public class TableManager : MonoBehaviour
     /// <summary>
     /// 아이템 등록을 위한 팝업 활성화
     /// </summary>
-    /// <param name="inventoryController">캐릭터 인벤토리</param>
-    /// <param name="interactorTableObject">아이템을 등록하기 위해 인식한 테이블</param>
-    public void OpenRegisterItemPanel(InventoryInteraction inventoryController, InteractableObj interactorTableObject)
+    /// <param name="inventoryInteraction">캐릭터 인벤토리</param>
+    /// <param name="targetTable">아이템을 등록하기 위해 인식한 테이블</param>
+    public void OpenRegisterItemPanel(InventoryInteraction inventoryInteraction, Table targetTable)
     {
-        this.inventoryController = inventoryController;
-        this.interactorTableObject = interactorTableObject;
-        registerItemPanel.SetActive(true);
-
-        targetTable = this.interactorTableObject as Table;
+        this.inventoryInteraction = inventoryInteraction;
+        this.targetTable = targetTable;
+        registerItemPanel.SetActive(true); 
         
         //Slots에 인벤토리 아이템들 셋팅
-        for (int i = 0; i < this.inventoryController.GetSlotItemList().Count; i++)
+        for (int i = 0; i < this.inventoryInteraction.GetSlotItemList().Item1.Count; i++)
         {
-            registerTableSlots[i].SetRegisterItem(this.inventoryController.GetSlotItemList()[i]);
+            registerTableSlots[i].SetRegisterItem(this.inventoryInteraction.GetSlotItemList().Item1[i], this.inventoryInteraction.GetSlotItemList().Item2[i]);
         }
     }
 
     /// <summary>
     /// 등록되어 있는 아이템을 다시 꺼냄
     /// </summary>
-    public void WithdrawItem()
+    public void WithdrawItem(InventoryInteraction inventoryInteraction, Table targetTable)
     {
-        //아이템을 꺼내게 되면 Table의 Item은 Null 로 변경
-        //아이템을 꺼내서 Inventory에 다시 추가
+        this.targetTable = targetTable;
+
+        if (this.targetTable == null) return;
         
+        this.targetTable.GiveItem(inventoryInteraction); 
     }
     
     /// <summary>
     /// 테이블 아이템 등록 슬롯에서 넘겨 받은 아이템 데이터를 기반으로 선택 아이템 UI 갱신
     /// </summary>
     /// <param name="itemData"></param>
-    public void SelectRegisterTableSlot(ItemData itemData)
+    public void SelectRegisterTableSlot(ItemData itemData, InventorySlot inventorySlot)
     {
         itemToRegister = itemData;
-        
-        //UI에 선택한 아이템 정보 갱신
+        removeInventorySlot = inventorySlot;
         registerTableUI.OnRegisterItemEvents?.Invoke(itemData);
     }
     
@@ -73,8 +72,9 @@ public class TableManager : MonoBehaviour
     /// </summary>
     public void Register()
     {
-        targetTable.Interaction(itemToRegister);
-        registerItemPanel.SetActive(false);
+        targetTable.TakeItem(itemToRegister);
+        registerItemPanel.SetActive(false); 
+        removeInventorySlot.RemoveItem();
     }
     
 }
