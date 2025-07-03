@@ -191,21 +191,18 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         playerStats.exp += exp;
         if (playerStats.exp >= playerStats.MaxExp)
-        {
-            int remainExp = playerStats.exp - playerStats.MaxExp;
-
-            LevelUp(remainExp);
+        { 
+            LevelUp();
         }
     }
 
     /// <summary>
     /// 캐릭터 레벨업 진행
     /// </summary>
-    /// <param name="remainExp">레벨업 후 남을 경험치</param>
-    private void LevelUp(int remainExp)
+    private void LevelUp()
     {
-        playerStats.exp = remainExp;
-        playerStats.level++;
+        playerStats.level += playerStats.exp / playerStats.MaxExp;              //TODO: 경험치 몫에 대한 재귀처리로 레벨업 필요할 것으로 보임, Max 경험치에 대한 갱신
+        playerStats.exp %= playerStats.MaxExp;
         playerStats.statsPoints += IncreaseStatsPoint;
         playerStats.skillPoints += IncreaseSkillPoints;
         gameManager.HasUnsavedChanges = true;

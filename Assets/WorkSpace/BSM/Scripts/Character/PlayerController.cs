@@ -223,6 +223,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Table"))
         {
+            tableManager.OnPlayerExitRangeClosePanel();
             tableObject = null;
         } 
     }
