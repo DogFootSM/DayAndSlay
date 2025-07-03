@@ -7,13 +7,15 @@ using Zenject;
 
 public class Table : InteractableObj
 {
-    public ItemData item;
+
     [SerializeField] private SpriteRenderer registeredItemRenderer;
 
     [Inject(Id = "PopUp")] private GameObject popUp;
     private PopUp tableAskPopup;
     private TextMeshProUGUI tableAskText;
-
+    private ItemData curItemData;
+    public ItemData CurItemDataData => curItemData;
+    
     public override void Interaction()
     {
     }
@@ -29,7 +31,7 @@ public class Table : InteractableObj
         }
 
         //TODO: 안내 멘트는 수정해야함. 
-        if (item != null)
+        if (curItemData != null)
         {
             tableAskText.text = $"{tableAskPopup.objName}에서 아이템을 회수하시겠습니까?";
         }
@@ -48,7 +50,7 @@ public class Table : InteractableObj
     /// <param name="item">인벤토리에서 넘겨 받은 아이템 데이터</param>
     public void TakeItem(ItemData item)
     {
-        this.item = item;
+        this.curItemData = item;
         registeredItemRenderer.sprite = item.ItemImage;
     }
 
@@ -58,8 +60,8 @@ public class Table : InteractableObj
     /// <param name="inventoryInteraction">플레이어가 가지고 있는 인벤토리</param>
     public void GiveItem(InventoryInteraction inventoryInteraction)
     {
-        inventoryInteraction.AddItemToInventory(item);
-        item = null;
+        inventoryInteraction.AddItemToInventory(curItemData);
+        curItemData = null;
         registeredItemRenderer.sprite = null;
     }
 }
