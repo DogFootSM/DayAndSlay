@@ -200,7 +200,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && tableObject != null)
         {
-            tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
+            if (tableObject is Table table)
+            {
+                if (table.item == null)
+                {
+                    tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
+                }
+                else
+                {
+                    tableManager.WithdrawItem();
+                }
+            } 
         } 
     }
 
