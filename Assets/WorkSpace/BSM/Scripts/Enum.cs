@@ -287,3 +287,9 @@ public enum DoorType
     DOOR,
     LADDER,
 }
+
+public enum DayAndNight
+{
+    DAY,
+    NIGHT,
+}

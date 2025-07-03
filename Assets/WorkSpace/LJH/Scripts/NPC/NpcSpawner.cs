@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-enum DayAndNight
-{
-    day,
-    night
-}
-
 public class NpcSpawner : MonoBehaviour
 {
     [Inject]
@@ -18,6 +12,9 @@ public class NpcSpawner : MonoBehaviour
     [Header("NPC가 물건을 구매할 의향 있게 태어나는 확률 1 / npcBuyProbability")]
     [SerializeField] float npcBuyProbability = 3f;
 
+    /// <summary>
+    /// Todo: 낮밤을 데이 매니저에서 따와야함
+    /// </summary>
     private DayAndNight dayAndNight;
     private float npcSpawnDelay = 1f;
     private WaitForSeconds delayTime;
