@@ -81,7 +81,11 @@ public class InventoryController : MonoBehaviour
             {
                 //DB에서 받아온 아이템 정보로 착용 장비 설정
                 equipment.EquipItem(inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem);
-                equipSlotDict[inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem.Parts] = inventorySlots[itemDatas[i].inventorySlotId];
+                 
+                if (inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem.IsEquipment)
+                {
+                    equipSlotDict[inventorySlots[itemDatas[i].inventorySlotId].CurSlotItem.Parts] = inventorySlots[itemDatas[i].inventorySlotId];
+                } 
             } 
         } 
     }

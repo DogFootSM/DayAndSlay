@@ -154,7 +154,7 @@ public class InventoryInteraction :
         selectedSlot = results[0].gameObject.GetComponentInParent<InventorySlot>();
  
         if (selectedSlot != null && selectedSlot.CurSlotItem != null)
-        {
+        { 
             detailItemImage.gameObject.SetActive(true);
             detailItemDescA.gameObject.SetActive(true);
             detailItemDescB.gameObject.SetActive(true);
@@ -180,7 +180,8 @@ public class InventoryInteraction :
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (closeInventory) return;
-         
+        results.Clear(); 
+        
         inventoryRayCanvas.Raycast(eventData, results);
         
         if(results.Count < 1) return;
@@ -188,11 +189,12 @@ public class InventoryInteraction :
         beginSlot = results[0].gameObject.GetComponentInParent<InventorySlot>();
 
         if (beginSlot != null && beginSlot.CurSlotItem != null)
-        {
+        { 
+            dragItemImage.sprite = beginSlot.CurSlotItem.ItemImage;
+            
             if (!dragItemImage.gameObject.activeSelf)
             {
-                dragItemImage.gameObject.SetActive(true);
-                dragItemImage.sprite = beginSlot.CurSlotItem.ItemImage;
+                dragItemImage.gameObject.SetActive(true); 
             }
         } 
     }
@@ -217,9 +219,7 @@ public class InventoryInteraction :
                 SwapInventorySlot(endSlot, beginSlot);
                 break;
             } 
-        }
- 
-        results.Clear();
+        } 
     }
 
     /// <summary>
@@ -252,8 +252,7 @@ public class InventoryInteraction :
              
             endSlot.ChangeItem(beginSlotItem, beginSlotCount);
             endSlot.IsEquip = beginEquipState;
-            equipSlotDict[endSlot.CurSlotItem.Parts] = endSlot;
-
+  
             UpdateEquipSlot(beginSlot);
             UpdateEquipSlot(endSlot); 
         }
