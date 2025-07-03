@@ -129,6 +129,8 @@ public class InventoryInteraction :
     /// </summary>
     private void UpdateEquipButton()
     {
+        equipButton.gameObject.SetActive(selectedSlot.CurSlotItem.IsEquipment);
+        
         if (selectedSlot.IsEquip)
         {
             equipStateButtonText.text = "장착 해제";
@@ -158,16 +160,7 @@ public class InventoryInteraction :
             detailItemDescB.gameObject.SetActive(true);
             
             UpdateEquipDetailTab();
-            
-            if (selectedSlot.CurSlotItem.IsEquipment)
-            {
-                equipButton.gameObject.SetActive(true);
-                UpdateEquipButton(); 
-            }
-            else
-            {
-                equipButton.gameObject.SetActive(false);
-            } 
+            UpdateEquipButton();
         } 
     }
     
