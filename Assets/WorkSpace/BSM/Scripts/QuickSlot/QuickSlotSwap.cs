@@ -6,6 +6,8 @@ public class QuickSlotSwap : MonoBehaviour
 { 
     public void SwapQuickSlotContents(QuickSlot prevQuickSlot, QuickSlot nextQuickSlot)
     {
+        if (prevQuickSlot.CurrentSlotSkillNode == null) return;
+        
         //이동할 슬롯에 스킬 노드가 존재하는지 확인
         if (nextQuickSlot.CurrentSlotSkillNode == null)
         {
