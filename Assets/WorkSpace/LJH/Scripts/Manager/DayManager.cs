@@ -43,10 +43,6 @@ public class DayManager : MonoBehaviour, ISavable
         StartDay();
     }
 
-    void Update()
-    {
-        Debug.Log(dayCount);
-    }
     /// <summary>
     /// This method changes day & night
     /// </summary>
@@ -78,7 +74,6 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
-        Debug.Log("≥∑ Ω√¿€µ ");
         SetDayCount(DefaultDayCount);
         dayOrNight = DayAndNight.DAY;
         
@@ -113,7 +108,6 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartNight()
     {
-        Debug.Log("π„ Ω√¿€µ ");
         if(timeCoroutine != null)
         {
             StopCoroutine(timeCoroutine);
