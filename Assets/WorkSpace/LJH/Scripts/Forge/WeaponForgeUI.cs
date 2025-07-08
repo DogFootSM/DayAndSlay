@@ -3,76 +3,100 @@ using System;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using UnityEngine.UI;
+using TMPro;
 
-public class WeaponForgeUI : BaseForgeUI<Parts, WeaponType>
+public class WeaponForgeUI : BaseForgeUI
 {
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> weaponStorage;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> subWeaponStorage;
 
-    protected override void Init()
+    [SerializeField] private WeaponType weaponType;
+    [SerializeField] private SubWeaponType subWeaponType;
+
+
+    protected override void SetTypeButton(Parts parts)
     {
-        // itemDict[Parts][WeaponType] = 아이템 리스트 초기화
-        foreach (Parts part in GetUsableTabs())
-        {
-            itemDict[part] = new Dictionary<WeaponType, List<ItemData>>();
+        base.parts = parts;
 
-            foreach (WeaponType weaponType in Enum.GetValues(typeof(WeaponType)))
-            {
-                if (weaponType == WeaponType.NOT_WEAPON)
+        switch (parts)
+        {
+            case Parts.WEAPON:
+                for (int i = 0; i < 4; i++)
                 {
-                    break;
+                    typeButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = ((WeaponType_kr)i).ToString();
                 }
-                itemDict[part][weaponType] = LoadItems(part, weaponType);
+                break;
+
+            case Parts.SUBWEAPON:
+                for (int i = 0; i < 4; i++)
+                {
+                    typeButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = ((SubWeaponType_kr)i).ToString();
+                }
+                break;
+        }
+    }
+
+    protected override void SetItemButton(int typeIndex)
+    {
+        if (parts == Parts.WEAPON)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if ((WeaponType)typeIndex == WeaponType.NOT_WEAPON)
+                    break;
+
+                ItemData itemData = weaponStorage[$"{(WeaponType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
+            }
+
+        }
+        else if (parts == Parts.SUBWEAPON)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if ((SubWeaponType)typeIndex == SubWeaponType.NOT_SUBWEAPON)
+                    break;
+
+                ItemData itemData = weaponStorage[$"{(SubWeaponType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
             }
         }
     }
 
-    private List<ItemData> LoadItems(Parts part, WeaponType type)
+
+    protected override void ButtonInit()
     {
-        List<ItemData> list = new();
-        for (int i = 1; i <= DICTSIZE; i++)
+        //Binding Buttons
+        for (int i = 0; i < 4; i++)
         {
-            string key = $"{type}{i}";
-            if (weaponStorage.TryGetValue(key, out var data))
-                list.Add(data);
-            else
-                Debug.LogWarning($"[WeaponForgeUI] Item not found: {key}");
+            typeButtonList.Add(GetUI<Button>($"Type{i + 1}"));
         }
-        return list;
-    }
+        for (int i = 0; i < 5; i++)
+        {
+            itemButtonList.Add(GetUI<Button>($"Item{i + 1}"));
+        }
 
-    protected override void TabWrapperInit() 
-    {
-        /* 탭 버튼 Wrapper 초기화 */
-        tabButtonDictList.Add("무기", GetUI<Button>("WeaponTab"));
-        tabButtonDictList.Add("보조무기", GetUI<Button>("SubWeaponTab"));
-    }
-    protected override void TypeWrapperInit() 
-    {
-        typeButtonDictList.Add("검", GetUI<Button>("Type1"));
-        typeButtonDictList.Add("창", GetUI<Button>("Type2"));
-        typeButtonDictList.Add("활", GetUI<Button>("Type3"));
-        typeButtonDictList.Add("완드", GetUI<Button>("Type4"));
-    }
-    protected override void ItemWrapperInit()
-    {
-        itemButtonDictList.Add("아이템1", GetUI<Button>("Item1"));
-        itemButtonDictList.Add("아이템2", GetUI<Button>("Item2"));
-        itemButtonDictList.Add("아이템3", GetUI<Button>("Item3"));
-        itemButtonDictList.Add("아이템4", GetUI<Button>("Item4"));
-        itemButtonDictList.Add("아이템5", GetUI<Button>("Item5"));
-    }
+        //AddListener Buttons
+        GetUI<Button>("WeaponTab").onClick.AddListener(() => Tap_TabButton(Parts.WEAPON));
+        GetUI<Button>("SubWeaponTab").onClick.AddListener(() => Tap_TabButton(Parts.SUBWEAPON));
 
-    protected override WeaponType[] GetUsableTypes()
-    {
-        return new WeaponType[] {
-        WeaponType.SHORT_SWORD,
-        WeaponType.SPEAR,
-        WeaponType.BOW,
-        WeaponType.WAND,
-    };
-    }
-    protected override Parts GetDefaultTab() => Parts.WEAPON;
-    protected override WeaponType GetDefaultType() => WeaponType.SHORT_SWORD;
+        for (int i = 0; i < typeButtonList.Count; i++)
+        {
+            int index = i;
+            typeButtonList[i].onClick.AddListener(() => Tap_TypeButton(index));
+        }
 
-    protected override Parts[] GetUsableTabs() => new Parts[] { Parts.WEAPON, Parts.SUBWEAPON };
+        for (int i = 0; i < itemButtonList.Count; i++)
+        {
+            int index = i;
+            itemButtonList[i].onClick.AddListener(() => Tap_ItemButton(index));
+        }
+
+        //Initialized Buttons
+        Tap_TabButton(Parts.WEAPON);
+        Tap_TypeButton(defaultNum);
+        
+    }
 }

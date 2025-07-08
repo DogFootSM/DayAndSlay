@@ -3,73 +3,115 @@ using System;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using UnityEngine.UI;
+using TMPro;
 
-public class ArmorForgeUI : BaseForgeUI<Parts, MaterialType>
+public class ArmorForgeUI : BaseForgeUI
 {
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> helmetStorage;
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> armorStorage;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> pantsStorage;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> armStorage;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> shoesStorage;
 
-    protected override void Init()
+
+
+    [SerializeField] private MaterialType materialType;
+
+
+    protected override void SetTypeButton(Parts parts)
     {
-        // itemDict[Parts][MaterialType] = 아이템 리스트 초기화
-        foreach (Parts part in GetUsableTabs())
+        base.parts = parts;
+        for (int i = 0; i < (int)MaterialType.CLOTH; i++)
         {
-            itemDict[part] = new Dictionary<MaterialType, List<ItemData>>();
+            typeButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = ((MaterialType_kr)i).ToString();
+        }
+    }
 
-            foreach (MaterialType mat in Enum.GetValues(typeof(MaterialType)))
+    protected override void SetItemButton(int typeIndex)
+    {
+        if (parts == Parts.HELMET)
+        {
+            for (int i = 0; i < 3; i++)
             {
-                itemDict[part][mat] = LoadItems(part, mat);
+                ItemData itemData = helmetStorage[$"{(MaterialType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
+            }
+
+        }
+        else if (parts == Parts.ARMOR)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                ItemData itemData = armorStorage[$"{(MaterialType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
+            }
+        }
+        else if (parts == Parts.PANTS)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                ItemData itemData = pantsStorage[$"{(MaterialType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
+            }
+        }
+        else if (parts == Parts.ARM)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                ItemData itemData = armStorage[$"{(MaterialType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
+            }
+        }
+        else if (parts == Parts.SHOES)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                ItemData itemData = shoesStorage[$"{(MaterialType)typeIndex}{i + 1}"];
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
             }
         }
     }
 
-    private List<ItemData> LoadItems(Parts part, MaterialType mat)
+
+    protected override void ButtonInit()
     {
-        List<ItemData> list = new();
-        for (int i = 1; i <= DICTSIZE; i++)
+        //Binding Buttons
+        for (int i = 0; i < 3; i++)
         {
-            string key = $"{part}_{mat}_{i}";
-            if (armorStorage.TryGetValue(key, out var data))
-                list.Add(data);
-            else
-                Debug.LogWarning($"[ArmorForgeUI] Item not found: {key}");
+            typeButtonList.Add(GetUI<Button>($"Type{i + 1}"));
         }
-        return list;
-    }
+        for (int i = 0; i < 5; i++)
+        {
+            itemButtonList.Add(GetUI<Button>($"Item{i + 1}"));
+        }
 
-    protected override void TabWrapperInit() 
-    {
-        tabButtonDictList.Add("헬멧", GetUI<Button>("HelmetTab"));
-        tabButtonDictList.Add("갑옷", GetUI<Button>("ArmorTab"));
-        tabButtonDictList.Add("바지", GetUI<Button>("PantsTab"));
-        tabButtonDictList.Add("장갑", GetUI<Button>("ArmTab"));
-        tabButtonDictList.Add("신발", GetUI<Button>("ShoesTab"));
-    }
-    protected override void TypeWrapperInit() 
-    {
-        tabButtonDictList.Add("중갑", GetUI<Button>("Type1"));
-        tabButtonDictList.Add("가죽", GetUI<Button>("Type2"));
-        tabButtonDictList.Add("천", GetUI<Button>("Type3"));
-    }
-    protected override void ItemWrapperInit()
-    {
-        itemButtonDictList.Add("아이템1", GetUI<Button>("Item1"));
-        itemButtonDictList.Add("아이템2", GetUI<Button>("Item2"));
-        itemButtonDictList.Add("아이템3", GetUI<Button>("Item3"));
-        itemButtonDictList.Add("아이템4", GetUI<Button>("Item4"));
-        itemButtonDictList.Add("아이템5", GetUI<Button>("Item5"));
-    }
+        //AddListener Buttons
+        GetUI<Button>("HelmetTab").onClick.AddListener(() => Tap_TabButton(Parts.HELMET));
+        GetUI<Button>("ArmorTab").onClick.AddListener(() => Tap_TabButton(Parts.ARMOR));
+        GetUI<Button>("HelmetTab").onClick.AddListener(() => Tap_TabButton(Parts.PANTS));
+        GetUI<Button>("ArmorTab").onClick.AddListener(() => Tap_TabButton(Parts.ARM));
+        GetUI<Button>("HelmetTab").onClick.AddListener(() => Tap_TabButton(Parts.SHOES));
 
-    protected override MaterialType[] GetUsableTypes()
-    {
-        return new MaterialType[] {
-        MaterialType.PLATE,
-        MaterialType.LEATHER,
-        MaterialType.CLOTH
-    };
-    }
-    protected override Parts GetDefaultTab() => Parts.HELMET;
-    protected override MaterialType GetDefaultType() => MaterialType.PLATE;
+        for (int i = 0; i < typeButtonList.Count; i++)
+        {
+            int index = i;
+            typeButtonList[i].onClick.AddListener(() => Tap_TypeButton(index));
+        }
 
-    protected override Parts[] GetUsableTabs() =>
-        new Parts[] { Parts.HELMET, Parts.ARMOR, Parts.ARM, Parts.PANTS, Parts.SHOES };
+        for (int i = 0; i < itemButtonList.Count; i++)
+        {
+            int index = i;
+            itemButtonList[i].onClick.AddListener(() => Tap_ItemButton(index));
+        }
+
+        //Initialized Buttons
+        Tap_TabButton(Parts.ARMOR);
+        Tap_TypeButton(defaultNum);
+
+    }
 }

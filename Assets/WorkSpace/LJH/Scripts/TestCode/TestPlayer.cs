@@ -49,7 +49,7 @@ public class TestPlayer : MonoBehaviour
         }
     }
 
-
+    /*
     void TakeInteraction2()
     {
         if (Input.GetKeyDown(KeyCode.E) &&
@@ -68,7 +68,7 @@ public class TestPlayer : MonoBehaviour
             }
         }
     }
-
+    */
     void TakeInteraction()
     {
         if (Input.GetKeyDown(KeyCode.E) && interactObj != null && interactObj.GetComponent<InteractableObj>())
