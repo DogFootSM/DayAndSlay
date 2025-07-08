@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 
 [Serializable]
@@ -82,13 +83,32 @@ public enum Parts
     SUBWEAPON,
     HELMET,
     ARMOR,
-    ARM,
     PANTS,
+    ARM,
     SHOES,
     ACCESSORY,
     CLOAK,
     INGREDIANT,
     RARE_INGREDIANT
+}
+
+/// <summary>
+/// 아이템 파츠 한글
+/// </summary>
+[Serializable]
+public enum Parts_kr
+{
+    무기,
+    보조무기,
+    투구,
+    갑옷,
+    바지,
+    장갑,
+    신발,
+    장신구,
+    망토,
+    재료,
+    레어_재료,
 }
 
 /// <summary>
@@ -107,12 +127,26 @@ public enum EquipType
 [Serializable]
 public enum WeaponType
 {
+    BOW,
     SHORT_SWORD,
     SPEAR,
-    BOW,
     WAND,
     NOT_WEAPON,
     LONG_SWORD,
+}
+
+/// <summary>
+/// 메인 무기 타입 한글
+/// </summary>
+[Serializable]
+public enum WeaponType_kr
+{
+    활,
+    한손검,
+    창,
+    완드,
+    무기아님,
+    두손검,
 }
 
 /// <summary>
@@ -121,12 +155,27 @@ public enum WeaponType
 [Serializable]
 public enum SubWeaponType
 {
+
+    ARROW,
     SHIELD,
     EMBLEM,
-    ARROW,
     BOOK,
     NOT_SUBWEAPON,
     GAUNTLET,
+}
+
+/// <summary>
+/// 서브 무기 타입 한글
+/// </summary>
+[Serializable]
+public enum SubWeaponType_kr
+{
+    화살통,
+    방패,
+    엠블렘,
+    마도서,
+    보조무기아님,
+    건틀렛,
 }
 
 /// <summary>
@@ -138,6 +187,13 @@ public enum MaterialType
     PLATE,
     LEATHER,
     CLOTH,
+}
+[Serializable]
+public enum MaterialType_kr
+{
+    중갑,
+    가죽,
+    천,
 }
 
 /// <summary>
@@ -152,6 +208,15 @@ public enum ArmorType
     ARM,
     SHOES,
     Size,
+}
+[Serializable]
+public enum ArmorType_kr
+{
+    투구,
+    갑옷,
+    바지,
+    장갑,
+    신발,
 }
 
 /// <summary>
@@ -286,4 +351,10 @@ public enum DoorType
 {
     DOOR,
     LADDER,
+}
+
+public enum DayAndNight
+{
+    DAY,
+    NIGHT,
 }

@@ -19,7 +19,7 @@ public class ArmorForge : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-        popUp.GetComponent<PopUp>().objName = "�� ���۴�";
+        popUp.GetComponent<PopUp>().objName = "방어구 제작대";
         popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 }

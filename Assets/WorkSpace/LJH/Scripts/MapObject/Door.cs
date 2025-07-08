@@ -7,7 +7,6 @@ public class Door : InteractableObj
     private Animator animator;
 
     [Inject(Id = "LoadingScene")]
-    [Header("�ε� ��")]
     private SceneReference loadingScene;
 
     [SerializeField] private Transform movePosTrans;
@@ -26,7 +25,6 @@ public class Door : InteractableObj
 
     public override void Interaction()
     {
-        Debug.Log("������ ����");
         animator.Play("DoorOpenAni");
         SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
         player.transform.position = movePos;
@@ -38,15 +36,15 @@ public class Door : InteractableObj
         switch (doorType)
         {
             case DoorType.DOOR:
-                popUp.GetComponent<PopUp>().objName = "��";
+                popUp.GetComponent<PopUp>().objName = "문";
                 break;
 
             case DoorType.LADDER:
-                popUp.GetComponent<PopUp>().objName = "��ٸ�";
+                popUp.GetComponent<PopUp>().objName = "사다리";
                 break;
 
             default:
-                popUp.GetComponent<PopUp>().objName = "ã�� �� ����";
+                popUp.GetComponent<PopUp>().objName = "기타";
                 break;
         }
         popUp.SetActive(!popUp.gameObject.activeSelf);

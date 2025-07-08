@@ -176,6 +176,8 @@ public class DataManager : MonoBehaviour
                 sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+                // this Code By JhLee
+                sqlManager.GetCharacterColumn(CharacterDataColumns.LAST_PLAYED_TIME)
             }, spriteColumns.ToArray(), sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
 
         sqlManager.UpdateCharacterDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
