@@ -8,25 +8,20 @@ using UnityEngine.Tilemaps;
 public class TestPlayer : MonoBehaviour
 {
     public List<Item> items = new List<Item>();
-
-
-    [SerializeField] float moveSpeed;
+    public List<ItemData> inventories = new List<ItemData>();
 
     private GameObject interactObj;
 
-    Item haveItem;
+    private Item haveItem;
 
-    // �κ��丮 �׽�Ʈ�� ����
-    [SerializeField]
-    List<ItemData> inventories = new List<ItemData>();
-
+    [SerializeField] float moveSpeed;
     [SerializeField] public ItemData choiceItem;
     
     private void Update()
     {
         PlayerMove();
         TakeInteraction();
-        //�׽�Ʈ�ڵ�
+        //for Test
         ItemPick();
     }
 

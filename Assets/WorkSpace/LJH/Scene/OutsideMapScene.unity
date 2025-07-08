@@ -1949,6 +1949,7 @@ MonoBehaviour:
   - {fileID: 6525075426294832929, guid: 92cfe7a2b5e533042a4d108b2e1068cb, type: 3}
   itemManager: {fileID: 0}
   popUp: {fileID: 1104738540}
+  player: {fileID: 1053399697}
 --- !u!1 &189385160
 GameObject:
   m_ObjectHideFlags: 0
@@ -7304,7 +7305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &645209535
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7420,6 +7421,7 @@ MonoBehaviour:
   parts: 2
   prevTextDict:
     _serializedList: []
+  createButton: {fileID: 1939588263}
   helmetStorage:
     _serializedList:
     - Key: PLATE1
@@ -13803,9 +13805,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: []
-  moveSpeed: 4
   inventories:
   - {fileID: 11400000, guid: 661bf93caee73884380586fe37ae11c3, type: 2}
+  moveSpeed: 4
   choiceItem: {fileID: 0}
 --- !u!1 &1056069646
 GameObject:
@@ -14623,7 +14625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1100016331
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14733,6 +14735,7 @@ MonoBehaviour:
   parts: 0
   prevTextDict:
     _serializedList: []
+  createButton: {fileID: 1939588263}
   weaponStorage:
     _serializedList:
     - Key: SHORT_SWORD1
@@ -14760,7 +14763,31 @@ MonoBehaviour:
     - Key: WAND3
       Value: {fileID: 11400000, guid: 55b56c48401e0144280ea50b274dee5f, type: 2}
   subWeaponStorage:
-    _serializedList: []
+    _serializedList:
+    - Key: SHIELD1
+      Value: {fileID: 11400000, guid: 79bce778f8f145a449dc4ee28c463355, type: 2}
+    - Key: SHIELD2
+      Value: {fileID: 11400000, guid: e3623a520f25aba42bbd75fbebd2367a, type: 2}
+    - Key: SHIELD3
+      Value: {fileID: 11400000, guid: e32ccce4d5770cd4698b4b049b463c27, type: 2}
+    - Key: EMBLEM1
+      Value: {fileID: 11400000, guid: ff5e2cc3a735f254485050a2d834e30b, type: 2}
+    - Key: EMBLEM2
+      Value: {fileID: 11400000, guid: 75168b47a03d20848ad6b430c747d88f, type: 2}
+    - Key: EMBLEM3
+      Value: {fileID: 11400000, guid: 932ef85166fd1c941806c9252f52609d, type: 2}
+    - Key: ARROW1
+      Value: {fileID: 11400000, guid: 661bf93caee73884380586fe37ae11c3, type: 2}
+    - Key: ARROW2
+      Value: {fileID: 11400000, guid: 54018c9664ab6a3418e75773483f5b14, type: 2}
+    - Key: ARROW3
+      Value: {fileID: 11400000, guid: 46fbd0b312a809d49ba5bbfd24d52559, type: 2}
+    - Key: BOOK1
+      Value: {fileID: 11400000, guid: 85a27be07baa1b14cb83cb759aa0b775, type: 2}
+    - Key: BOOK2
+      Value: {fileID: 11400000, guid: 30509cb222066d446bfb61a50fa91b2b, type: 2}
+    - Key: BOOK3
+      Value: {fileID: 11400000, guid: 1836107d053d9e942bf2f102f57a1226, type: 2}
   weaponType: 0
   subWeaponType: 0
 --- !u!1 &1104738540
@@ -27598,7 +27625,6 @@ GameObject:
   - component: {fileID: 1794274725}
   - component: {fileID: 1794274724}
   - component: {fileID: 1794274723}
-  - component: {fileID: 1794274726}
   m_Layer: 5
   m_Name: OkayButton
   m_TagString: Untagged
@@ -27709,19 +27735,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794274721}
   m_CullTransparentMesh: 1
---- !u!114 &1794274726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794274721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45cfda38f8acc7344887ef17c7eaf42f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curSelectedItem: {fileID: 0}
 --- !u!1 &1844241658
 GameObject:
   m_ObjectHideFlags: 0
@@ -28665,7 +28678,6 @@ GameObject:
   - component: {fileID: 1939588265}
   - component: {fileID: 1939588264}
   - component: {fileID: 1939588263}
-  - component: {fileID: 1939588266}
   m_Layer: 5
   m_Name: OkayButton
   m_TagString: Untagged
@@ -28776,19 +28788,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939588261}
   m_CullTransparentMesh: 1
---- !u!114 &1939588266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1939588261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45cfda38f8acc7344887ef17c7eaf42f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curSelectedItem: {fileID: 0}
 --- !u!1 &1945314117
 GameObject:
   m_ObjectHideFlags: 0

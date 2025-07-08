@@ -93,9 +93,9 @@ public class ArmorForgeUI : BaseForgeUI
         //AddListener Buttons
         GetUI<Button>("HelmetTab").onClick.AddListener(() => Tap_TabButton(Parts.HELMET));
         GetUI<Button>("ArmorTab").onClick.AddListener(() => Tap_TabButton(Parts.ARMOR));
-        GetUI<Button>("HelmetTab").onClick.AddListener(() => Tap_TabButton(Parts.PANTS));
-        GetUI<Button>("ArmorTab").onClick.AddListener(() => Tap_TabButton(Parts.ARM));
-        GetUI<Button>("HelmetTab").onClick.AddListener(() => Tap_TabButton(Parts.SHOES));
+        GetUI<Button>("PantsTab").onClick.AddListener(() => Tap_TabButton(Parts.PANTS));
+        GetUI<Button>("ArmTab").onClick.AddListener(() => Tap_TabButton(Parts.ARM));
+        GetUI<Button>("ShoesTab").onClick.AddListener(() => Tap_TabButton(Parts.SHOES));
 
         for (int i = 0; i < typeButtonList.Count; i++)
         {
