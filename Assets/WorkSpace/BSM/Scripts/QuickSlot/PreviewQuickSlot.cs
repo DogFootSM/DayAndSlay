@@ -1,0 +1,39 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class PreviewQuickSlot : MonoBehaviour, 
+    IPointerClickHandler
+{
+    [SerializeField] private QuickSlotType curSlotType;
+    [SerializeField] private TextMeshProUGUI slotTypeText;
+    [SerializeField] private Image skillIconImage;
+
+    private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
+
+    private void Awake()
+    {
+        slotTypeText.text = $"{curSlotType}";
+    }
+
+    public void SetPreviewSlot(SkillNode skillNode = null)
+    {
+        if (skillNode == null)
+        {
+            skillIconImage.sprite = null;
+        }
+        else
+        {
+            skillIconImage.sprite = skillNode.skillData.SkillIcon;
+        } 
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        quickSlotManager.RegisteredSkillNode(curSlotType);
+    }
+}

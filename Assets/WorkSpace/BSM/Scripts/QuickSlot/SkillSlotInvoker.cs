@@ -36,8 +36,12 @@ public class SkillSlotInvoker : MonoBehaviour
     /// <param name="quickSlotType">사용할 스킬이 등록된 퀵 슬롯 타입</param>
     /// <returns>해당 스킬의 후딜레이 시간</returns>
     public float InvokeSkillFromSlot(QuickSlotType quickSlotType)
-    {
-        SkillNode skillNode = QuickSlotData.GetQuickSlotSkillData(quickSlotType);
+    { 
+        //TODO: 수정 필요
+        SkillData skillData = new SkillData();
+        PlayerModel playerModel = new PlayerModel();
+        
+        SkillNode skillNode = new SkillNode(skillData, playerModel);
 
         if (skillNode != null)
         {

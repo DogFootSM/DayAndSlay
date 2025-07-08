@@ -5,11 +5,12 @@ using System.Data;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class SkillTree : MonoBehaviour, ISavable
 {
-    [SerializeField] private SkillTreeUI skillTreeUI;
+    [SerializeField] private SkillTreePreview skillTreePreview;
     [SerializeField] private PlayerModel playerModel;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
@@ -18,9 +19,8 @@ public class SkillTree : MonoBehaviour, ISavable
     public List<SkillData> SkillDatas = new List<SkillData>();
 
     private List<SkillNode> allskillNodes = new();
-
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
-    private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();
+    private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();            //무기 타입별 노드
     private WeaponType curWeapon;
 
     private void Awake()
@@ -92,7 +92,7 @@ public class SkillTree : MonoBehaviour, ISavable
     }
 
     /// <summary>
-    /// 노드 내 데이터 오름차순 정렬
+    /// 무기 타입별 스킬 아이디 값으로 정렬 후 각 스킬 탭 프리팹 생성
     /// </summary>
     private void SortSkillNodesByWeapon()
     {
@@ -102,7 +102,7 @@ public class SkillTree : MonoBehaviour, ISavable
         }
 
         //스킬 UI에 노드 리스트 전달
-        skillTreeUI.InstantiateSkillPrefabs(weaponTypeNodes);
+        skillTreePreview.InstantiateSkillPrefabs(weaponTypeNodes);
         NotifySkillPointChanged();
     }
 
@@ -111,7 +111,7 @@ public class SkillTree : MonoBehaviour, ISavable
     /// </summary>
     public void NotifySkillPointChanged()
     {
-        skillTreeUI.UpdateAllNodeButtonsWithPoint(playerModel.CurSkillPoint);
+        skillTreePreview.UpdateAllNodeButtonsWithPoint(playerModel.CurSkillPoint);
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public class SkillTree : MonoBehaviour, ISavable
     public void ChangedWeaponType(WeaponType weaponType)
     {
         curWeapon = weaponType;
-        skillTreeUI.OnChangedSkillTab?.Invoke(curWeapon);
+        skillTreePreview.OnChangedSkillTab?.Invoke(curWeapon);
     }
 
 

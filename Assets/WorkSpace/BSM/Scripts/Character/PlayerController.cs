@@ -16,12 +16,6 @@ public class PlayerController : MonoBehaviour
     
     [Header("무기 애니메이션 컨트롤러 컴포넌트")] public Animator WeaponAnimator;
 
-    public Rigidbody2D CharacterRb => characterRb;
-    public PlayerModel PlayerModel => playerModel;
-    public Animator BodyAnimator => bodyAnimator;
-    public Weapon CurWeapon => curWeapon;
-    public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
-
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     [Inject] private TableManager tableManager;
@@ -30,6 +24,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SkillTree curSkillTree;
     [SerializeField] private InventoryInteraction inventoryInteraction;
     
+    public Rigidbody2D CharacterRb => characterRb;
+    public PlayerModel PlayerModel => playerModel;
+    public Animator BodyAnimator => bodyAnimator;
+    public Weapon CurWeapon => curWeapon;
+    public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
+    
+    private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
@@ -130,6 +131,7 @@ public class PlayerController : MonoBehaviour
         
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
         shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
+        quickSlotManager.UpdateWeaponType(curWeaponType);
     }
 
     /// <summary>
