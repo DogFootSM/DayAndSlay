@@ -24,12 +24,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
         increaseButton.onClick.AddListener(InvestSkillPoint);
         InitSkill(); 
     }
-
-    private void OnDisable()
-    {
-        quickSlotManager.ClosePreviewAndHideRegisterPanel();
-    }
-
+    
     /// <summary>
     /// 스킬 포인트 및 선행 스킬 잠금 해제에 따라 버튼 상호작용 T/F 적용
     /// </summary>
@@ -73,12 +68,11 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
         {
             skillCurLevelText.text = "Max";
             skillMaxLevelText.gameObject.SetActive(false);
-        }
-        
+        } 
     } 
     
     public void OnPointerClick(PointerEventData eventData)
     { 
-        quickSlotManager.PreviewSkillInUI(CurSkillNode); 
+        quickSlotManager.UpdateSkillPreviewTab(CurSkillNode);
     }
 }

@@ -76,5 +76,13 @@ public class TableManager : MonoBehaviour
         registerItemPanel.SetActive(false); 
         removeInventorySlot.RemoveItem();
     }
+
+    /// <summary>
+    /// 플레이어가 범위를 벗어날 경우 아이템 등록 판넬 종료
+    /// </summary>
+    public void OnPlayerExitRangeClosePanel()
+    {
+        registerItemPanel.SetActive(false);
+    }
     
 }

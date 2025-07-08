@@ -28,7 +28,8 @@ public class DataManager : MonoBehaviour
 
     private const string audioDataPath = "AudioSetting.json";
     private const string displayDataPath = "DisplaySettings.json";
-
+    private const string quickslotSetPath = "QuickSlotSaveData.json";
+    
     private void Awake()
     {
         Init();
@@ -88,6 +89,30 @@ public class DataManager : MonoBehaviour
 
         string toJson = JsonUtility.ToJson(displaySettings);
         File.WriteAllText(path, toJson);
+    }
+
+    public void LoadQuickSlotSetting()
+    {
+        SetPath(quickslotSetPath);
+
+        if (!File.Exists(path))
+        {
+            SaveQuickSlotSetting();
+        }
+        
+        
+        
+    }
+
+    public void SaveQuickSlotSetting()
+    {
+        SetPath(quickslotSetPath);
+        
+        QuickSlotSetting quickSlotSetting = new QuickSlotSetting();
+        
+        
+        
+        
     }
     
     /// <summary>

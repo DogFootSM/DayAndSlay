@@ -76,10 +76,12 @@ public class PlayerState : PlayerStateMachine
             {
                 skillInputKey = keyCode;
 
-                if (QuickSlotData.IsSlotAssigned(keyToQuickSlotMap[skillInputKey]))
-                {
-                    playerController.ChangeState(CharacterStateType.SKILL);
-                } 
+                //TODO: Skill 상태 변경 필요
+                
+                // if (QuickSlotData.IsSlotAssigned(keyToQuickSlotMap[skillInputKey]))
+                // {
+                //     playerController.ChangeState(CharacterStateType.SKILL);
+                // } 
             } 
         } 
     }
