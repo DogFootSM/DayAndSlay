@@ -103,13 +103,14 @@ public class QuickSlotRegister : MonoBehaviour
     }
 
     /// <summary>
-    /// 퀵슬롯 데이터 로드 시 메인 화면과 스킬 창 등록 화면의 퀵슬롯 데이터 설정
+    /// 무기 변경, 데이터 로드 시 메인 화면과 스킬 창 등록 화면의 퀵슬롯 데이터 설정
     /// </summary>
     /// <param name="weaponType">현재 착용중인 무기타입</param>
     public void UpdateQuickSlotsByWeaponChange(CharacterWeaponType weaponType)
     {
         for (var i = QuickSlotType.A; i < QuickSlotType.NONE; i++)
         {
+            //퀵슬롯 타입이 등록된 상태
             if (QuickSlotData.WeaponQuickSlotDict[weaponType].ContainsKey(i))
             {
                 mainQuickSlots[(int)i].SetMainQuickSlot(QuickSlotData.WeaponQuickSlotDict[weaponType][i]); 
@@ -117,6 +118,7 @@ public class QuickSlotRegister : MonoBehaviour
             }
             else
             {
+                //등록되지 않은 퀵 슬롯 초기화
                 mainQuickSlots[(int)i].SetMainQuickSlot();
                 previewQuickSlots[(int)i].SetPreviewSlot();
             } 

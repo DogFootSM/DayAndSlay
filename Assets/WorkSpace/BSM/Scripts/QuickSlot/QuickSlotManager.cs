@@ -55,10 +55,12 @@ public class QuickSlotManager : MonoBehaviour
         quickSlotSetting = dataManager.LoadQuickSlotSetting();
 
         //TODO: 퀵슬롯 데이터 lOAD
+        //각 무기 그룹을 순회
         foreach (var weaponGroup in quickSlotSetting.WeaponGroups)
         {
             foreach (var slotGroup in weaponGroup.QuickSlotGroups)
             {
+                //무기 타입과 퀵슬롯 타입 데이터를 가져와 스킬 데이터 할당
                 QuickSlotData.WeaponQuickSlotDict[weaponGroup.WeaponType][slotGroup.QuickSlotType] =
                     skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID);
                 

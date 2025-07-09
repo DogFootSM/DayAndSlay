@@ -92,6 +92,10 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, toJson);
     }
 
+    /// <summary>
+    /// 퀵슬롯 데이터 불러오기
+    /// </summary>
+    /// <returns>퀵슬롯 매니저에서 스킬 노드 초기화에 사용할 데이터 객체</returns>
     public QuickSlotSetting LoadQuickSlotSetting()
     {
         //SetPath($"QuickSlotSaveData{SlotId}.json");
@@ -110,6 +114,9 @@ public class DataManager : MonoBehaviour
         return quickslotSetting;
     }
 
+    /// <summary>
+    /// 퀵슬롯 데이터 저장
+    /// </summary>
     public void SaveQuickSlotSetting()
     {
         //TODO:테스트 끝나면 변경하기
@@ -118,15 +125,18 @@ public class DataManager : MonoBehaviour
         
         QuickSlotSetting quickslotSetting = new QuickSlotSetting();
         
+        //각각의 무기 별 퀵슬롯 순회
         foreach (CharacterWeaponType weaponType in Enum.GetValues(typeof(CharacterWeaponType)))
         {
             if(weaponType == CharacterWeaponType.SIZE) continue;
-             
+            
+            //무기 그룹 생성 후 무기 타입 할당
             var weaponGroup = new WeaponGroup()
             {
                 WeaponType = weaponType
             };
             
+            //퀵 슬롯 그룹을 순회하면서 객체를 생성하고 키, 값 할당
             foreach (var quickSlot in QuickSlotData.WeaponQuickSlotDict[weaponType])
             {
                 var quickSlotGroup = new QuickSlotGroup()
@@ -135,9 +145,11 @@ public class DataManager : MonoBehaviour
                     SkillDataID = quickSlot.Value.skillData.SkillId
                 };
                 
+                //각각의 퀵슬롯 그룹 추가
                 weaponGroup.QuickSlotGroups.Add(quickSlotGroup);
             }
             
+            //각 무기 별 그룹 추가
             quickslotSetting.WeaponGroups.Add(weaponGroup); 
         }
           
