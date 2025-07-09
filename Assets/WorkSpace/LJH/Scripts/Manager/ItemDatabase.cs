@@ -72,4 +72,22 @@ public class ItemDatabase : ScriptableObject
         Debug.LogWarning($"아이템명 {name} 에 해당하는 아이템이 없습니다.");
         return 0;
     }    
+
+    public ItemRecipe GetRecipeByID(int id)
+    {
+        if (recipeIdToNameDict.TryGetValue(id, out string recipeName))
+        {
+            if (recipeNameToDataDict.TryGetValue(recipeName, out ItemRecipe recipe))
+            {
+                return recipeNameToDataDict[recipeIdToNameDict[id]];
+            }
+
+            Debug.LogWarning($"아이템명 {recipeName} 에 해당하는 아이템이 없습니다.");
+            return null;
+        }
+
+        Debug.LogWarning($"아이템ID {id} 에 해당하는 아이템이 없습니다.");
+        return null;
+    }
+
 }

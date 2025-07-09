@@ -33,4 +33,9 @@ public class ItemDatabaseManager : MonoBehaviour
     {
         return itemDatabase.GetItemByID(ID);
     }
+
+    public ItemRecipe GetRecipe(int Id)
+    {
+        return itemDatabase.GetRecipeByID(Id);
+    }
 }

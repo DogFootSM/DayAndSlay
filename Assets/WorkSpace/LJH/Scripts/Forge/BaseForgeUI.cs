@@ -71,6 +71,18 @@ public abstract class BaseForgeUI : BaseUI
          아이템 버튼 디폴트로 눌린거 보여주면됨
         */
         SetItemButton(typeIndex);
+
+        //아이템에 맞는 레시피 세팅
+        foreach (Button btn in itemButtonList)
+        {
+            if (btn.GetComponent<ItemButton>())
+            {
+                ItemButton itemBtn = btn.GetComponent<ItemButton>();
+                itemBtn.itemRecipe = Set_ItemRecipe(itemBtn.itemData.ItemId);
+            }
+        }
+
+
         Tap_ItemButton(defaultNum);
     }
 
@@ -91,6 +103,16 @@ public abstract class BaseForgeUI : BaseUI
         prevTextDict["hp"].text = itemData.Hp.ToString();
 
         curItem = itemData;
+    }
+
+    /// <summary>
+    /// Setting ItemRecipe in ItemButtons.
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    private ItemRecipe Set_ItemRecipe(int itemId)
+    {
+        return ItemDatabaseManager.instance.GetRecipe(itemId);
     }
 
     public void CreateItem()
