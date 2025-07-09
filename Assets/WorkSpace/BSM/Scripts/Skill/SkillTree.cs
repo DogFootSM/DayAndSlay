@@ -161,4 +161,10 @@ public class SkillTree : MonoBehaviour, ISavable
             );
         }
     }
+
+    public SkillNode GetWeaponSkillNode(WeaponType weaponType)
+    {
+        return null;
+    }
+    
 }

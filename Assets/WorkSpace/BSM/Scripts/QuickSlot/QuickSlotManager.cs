@@ -5,11 +5,14 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class QuickSlotManager : MonoBehaviour
 {
     [SerializeField] private QuickSlotRegister quickSlotRegister;
     [SerializeField] private SkillTreePreview skillTreePreview;
+    [SerializeField] private SkillTree skillTree;
+    [Inject] private DataManager dataManager;
     
     public static QuickSlotManager Instance;
     private SkillNode selectedSkillNode;
@@ -21,14 +24,15 @@ public class QuickSlotManager : MonoBehaviour
     }
 
     private CharacterWeaponType curWeaponType;
-
+    private QuickSlotSetting quickSlotSetting;
+    
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         } 
-        //TODO: 퀵슬롯 JSON 저장 필요 
+        ProjectContext.Instance.Container.Inject(this);
         Init();
     }
 
@@ -39,6 +43,11 @@ public class QuickSlotManager : MonoBehaviour
         {
             QuickSlotData.WeaponQuickSlotDict[weaponType] = new Dictionary<QuickSlotType, SkillNode>();
         }
+
+        quickSlotSetting = dataManager.LoadQuickSlotSetting();
+
+        //TODO: 퀵슬롯 데이터 lOAD
+        
     }
     
     /// <summary>
@@ -48,6 +57,7 @@ public class QuickSlotManager : MonoBehaviour
     public void UpdateWeaponType(CharacterWeaponType weaponType)
     {
         curWeaponType = weaponType;
+        Debug.Log("무기 변경됨");
     }
     
     /// <summary>

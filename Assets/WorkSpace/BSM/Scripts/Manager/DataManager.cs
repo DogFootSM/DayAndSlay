@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -23,12 +24,13 @@ public class DataManager : MonoBehaviour
     private string path;
     private AudioSettings audioSettings;
     private DisplaySettings displaySettings;
+    private QuickSlotSetting quickslotSetting;
+    
     private SoundManager soundManager => SoundManager.Instance;
     private GameManager gameManager => GameManager.Instance;
 
     private const string audioDataPath = "AudioSetting.json";
     private const string displayDataPath = "DisplaySettings.json";
-    private const string quickslotSetPath = "QuickSlotSaveData.json";
     
     private void Awake()
     {
@@ -42,6 +44,7 @@ public class DataManager : MonoBehaviour
     {
         displaySettings = new DisplaySettings();
         audioSettings = new AudioSettings(); 
+        quickslotSetting = new QuickSlotSetting();
     }
     
     /// <summary>
@@ -91,28 +94,50 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, toJson);
     }
 
-    public void LoadQuickSlotSetting()
+    public QuickSlotSetting LoadQuickSlotSetting()
     {
-        SetPath(quickslotSetPath);
+        SetPath($"QuickSlotSaveData{SlotId}.json");
 
         if (!File.Exists(path))
         {
             SaveQuickSlotSetting();
         }
-        
-        
-        
+
+        string loadQuickSlotData = File.ReadAllText(path);
+        quickslotSetting = JsonUtility.FromJson<QuickSlotSetting>(loadQuickSlotData);
+
+        return quickslotSetting;
     }
 
     public void SaveQuickSlotSetting()
     {
-        SetPath(quickslotSetPath);
-        
-        QuickSlotSetting quickSlotSetting = new QuickSlotSetting();
-        
-        
-        
-        
+        SetPath($"QuickSlotSaveData{SlotId}.json");
+
+        foreach (CharacterWeaponType weaponType in Enum.GetValues(typeof(CharacterWeaponType)))
+        {
+            if(weaponType == CharacterWeaponType.SIZE) continue;
+
+            var weaponGroup = new WeaponGroup()
+            {
+                WeaponType = weaponType
+            };
+            
+            foreach (var quickSlot in QuickSlotData.WeaponQuickSlotDict[weaponType])
+            {
+                var quickSlotGroup = new QuickSlotGroup()
+                {
+                    QuickSlotType = quickSlot.Key,
+                    SkillDataID = quickSlot.Value.skillData.SkillId
+                };
+                
+                weaponGroup.QuickSlotGroups.Add(quickSlotGroup);
+            }
+            
+            quickslotSetting.WeaponGroups.Add(weaponGroup); 
+        }
+          
+        string toJson = JsonUtility.ToJson(quickslotSetting);
+        File.WriteAllText(path, toJson);
     }
     
     /// <summary>

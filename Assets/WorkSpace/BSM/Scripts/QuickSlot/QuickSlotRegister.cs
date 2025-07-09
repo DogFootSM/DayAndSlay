@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class QuickSlotRegister : MonoBehaviour
 {
     [SerializeField] private GameObject registerCanvas;
@@ -13,12 +14,11 @@ public class QuickSlotRegister : MonoBehaviour
     [Header("메인 화면 퀵슬롯 부모")] [SerializeField]
     private GameObject mainSlotParent;
 
-    private SkillNode selectedSkillNode; //스킬 등록창에서 선택한 스킬 노드
-    private List<PreviewQuickSlot> previewQuickSlots = new(); //스킬 등록창에 있는 퀵슬롯 요소들
-    private List<MainQuickSlot> mainQuickSlots = new(); //메인 화면에 노출되는 퀵슬롯 요소들
+    private SkillNode selectedSkillNode;                                            //스킬 등록창에서 선택한 스킬 노드
+    private List<PreviewQuickSlot> previewQuickSlots = new();                       //스킬 등록창에 있는 퀵슬롯 요소들
+    private List<MainQuickSlot> mainQuickSlots = new();                             //메인 화면에 노출되는 퀵슬롯 요소들
 
-    private Dictionary<SkillNode, QuickSlotType>
-        beforeQuickSlotTypeDict = new(); //중복 스킬 노드 할당을 확인하기 위한 변경 전 스킬 노드가 할당된 슬롯 타입
+    private Dictionary<SkillNode, QuickSlotType> beforeQuickSlotTypeDict = new(); //중복 스킬 노드 할당을 확인하기 위한 변경 전 스킬 노드가 할당된 슬롯 타입
 
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class QuickSlotRegister : MonoBehaviour
             mainQuickSlots.Add(mainSlotParent.transform.GetChild(i).GetComponent<MainQuickSlot>());
         }
     }
-
+ 
     /// <summary>
     /// 퀵슬롯 등록할 캔버스 활성화
     /// </summary>
