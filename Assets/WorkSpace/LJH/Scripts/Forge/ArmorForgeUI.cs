@@ -85,9 +85,15 @@ public class ArmorForgeUI : BaseForgeUI
         {
             typeButtonList.Add(GetUI<Button>($"Type{i + 1}"));
         }
+
         for (int i = 0; i < 5; i++)
         {
             itemButtonList.Add(GetUI<Button>($"Item{i + 1}"));
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            hideList.Add(GetUI($"Hide{i + 1}"));
         }
 
         //AddListener Buttons

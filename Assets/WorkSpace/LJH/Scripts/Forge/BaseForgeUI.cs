@@ -20,6 +20,7 @@ public abstract class BaseForgeUI : BaseUI
 
     protected List<Button> typeButtonList = new List<Button>();
     protected List<Button> itemButtonList = new List<Button>();
+    protected List<GameObject> hideList = new List<GameObject>();
 
     protected ItemData curItem;
 
@@ -44,6 +45,16 @@ public abstract class BaseForgeUI : BaseUI
                 btn.gameObject.SetActive(false);
             }
         }
+
+        for (int i = 0; i < itemButtonList.Count; i++)
+        {
+            if (itemButtonList[i].gameObject.activeSelf)
+            {
+                hideList[i].gameObject.SetActive(itemButtonList[i].gameObject.activeSelf);
+            }
+        }
+
+        ItemDatabaseManager.instance.GetItemID(0000000);
     }
     protected virtual void Tap_TabButton(Parts parts)
     {
@@ -99,12 +110,14 @@ public abstract class BaseForgeUI : BaseUI
         prevTextDict.Add("atk", GetUI<TextMeshProUGUI>("ATK"));
         prevTextDict.Add("def", GetUI<TextMeshProUGUI>("DEF"));
         prevTextDict.Add("hp", GetUI<TextMeshProUGUI>("HP"));
+
         prevTextDict.Add("ingre1", GetUI<TextMeshProUGUI>("Ingrediant1"));
         prevTextDict.Add("ingre2", GetUI<TextMeshProUGUI>("Ingrediant2"));
         prevTextDict.Add("ingre3", GetUI<TextMeshProUGUI>("Ingrediant3"));
         prevTextDict.Add("ingre4", GetUI<TextMeshProUGUI>("Ingrediant4"));
 
         createButton.onClick.AddListener(() => CreateItem());
+
     }
 
 }

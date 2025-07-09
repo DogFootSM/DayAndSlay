@@ -28,4 +28,9 @@ public class ItemDatabaseManager : MonoBehaviour
             Debug.Log($"찾은 아이템: {foundItem.Name}");
         }
     }
+
+    public ItemData GetItemID(int ID)
+    {
+        return itemDatabase.GetItemByID(ID);
+    }
 }
