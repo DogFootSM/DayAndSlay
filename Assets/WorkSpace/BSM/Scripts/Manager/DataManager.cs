@@ -24,7 +24,6 @@ public class DataManager : MonoBehaviour
     private string path;
     private AudioSettings audioSettings;
     private DisplaySettings displaySettings;
-    private QuickSlotSetting quickslotSetting;
     
     private SoundManager soundManager => SoundManager.Instance;
     private GameManager gameManager => GameManager.Instance;
@@ -43,8 +42,7 @@ public class DataManager : MonoBehaviour
     private void Init()
     {
         displaySettings = new DisplaySettings();
-        audioSettings = new AudioSettings(); 
-        quickslotSetting = new QuickSlotSetting();
+        audioSettings = new AudioSettings();
     }
     
     /// <summary>
@@ -96,8 +94,11 @@ public class DataManager : MonoBehaviour
 
     public QuickSlotSetting LoadQuickSlotSetting()
     {
-        SetPath($"QuickSlotSaveData{SlotId}.json");
+        //SetPath($"QuickSlotSaveData{SlotId}.json");
+        SetPath($"QuickSlotSaveData0.json");
 
+        QuickSlotSetting quickslotSetting = new QuickSlotSetting();
+        
         if (!File.Exists(path))
         {
             SaveQuickSlotSetting();
@@ -111,12 +112,16 @@ public class DataManager : MonoBehaviour
 
     public void SaveQuickSlotSetting()
     {
-        SetPath($"QuickSlotSaveData{SlotId}.json");
-
+        //TODO:테스트 끝나면 변경하기
+        //SetPath($"QuickSlotSaveData{SlotId}.json");
+        SetPath($"QuickSlotSaveData0.json");
+        
+        QuickSlotSetting quickslotSetting = new QuickSlotSetting();
+        
         foreach (CharacterWeaponType weaponType in Enum.GetValues(typeof(CharacterWeaponType)))
         {
             if(weaponType == CharacterWeaponType.SIZE) continue;
-
+             
             var weaponGroup = new WeaponGroup()
             {
                 WeaponType = weaponType
@@ -136,7 +141,7 @@ public class DataManager : MonoBehaviour
             quickslotSetting.WeaponGroups.Add(weaponGroup); 
         }
           
-        string toJson = JsonUtility.ToJson(quickslotSetting);
+        string toJson = JsonUtility.ToJson(quickslotSetting, true);
         File.WriteAllText(path, toJson);
     }
     

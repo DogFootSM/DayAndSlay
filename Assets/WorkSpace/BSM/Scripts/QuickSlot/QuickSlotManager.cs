@@ -44,10 +44,27 @@ public class QuickSlotManager : MonoBehaviour
             QuickSlotData.WeaponQuickSlotDict[weaponType] = new Dictionary<QuickSlotType, SkillNode>();
         }
 
+        InitQuickSlotData();
+    }
+
+    /// <summary>
+    /// 퀵슬롯 데이터 Load 시 초기화 작업
+    /// </summary>
+    private void InitQuickSlotData()
+    {
         quickSlotSetting = dataManager.LoadQuickSlotSetting();
 
         //TODO: 퀵슬롯 데이터 lOAD
-        
+        foreach (var weaponGroup in quickSlotSetting.WeaponGroups)
+        {
+            foreach (var slotGroup in weaponGroup.QuickSlotGroups)
+            {
+                QuickSlotData.WeaponQuickSlotDict[weaponGroup.WeaponType][slotGroup.QuickSlotType] =
+                    skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID);
+                
+                quickSlotRegister.SetBeforeQuickSlot(skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID), slotGroup.QuickSlotType);
+            }
+        } 
     }
     
     /// <summary>
@@ -57,7 +74,7 @@ public class QuickSlotManager : MonoBehaviour
     public void UpdateWeaponType(CharacterWeaponType weaponType)
     {
         curWeaponType = weaponType;
-        Debug.Log("무기 변경됨");
+        quickSlotRegister.UpdateQuickSlotsByWeaponChange(weaponType);
     }
     
     /// <summary>

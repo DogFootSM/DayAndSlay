@@ -42,7 +42,7 @@ public class QuickSlotRegister : MonoBehaviour
     {
         registerCanvas.SetActive(true);
     }
-
+     
     /// <summary>
     /// 장착 무기에 따른 스킬 퀵슬롯 등록
     /// </summary>
@@ -99,8 +99,38 @@ public class QuickSlotRegister : MonoBehaviour
                 previewQuickSlots[(int)quickSlotType].SetPreviewSlot(skillNode);
                 mainQuickSlots[(int)quickSlotType].SetMainQuickSlot(skillNode); 
             } 
-        }
-        
-        
+        } 
     }
+
+    /// <summary>
+    /// 퀵슬롯 데이터 로드 시 메인 화면과 스킬 창 등록 화면의 퀵슬롯 데이터 설정
+    /// </summary>
+    /// <param name="weaponType">현재 착용중인 무기타입</param>
+    public void UpdateQuickSlotsByWeaponChange(CharacterWeaponType weaponType)
+    {
+        for (var i = QuickSlotType.A; i < QuickSlotType.NONE; i++)
+        {
+            if (QuickSlotData.WeaponQuickSlotDict[weaponType].ContainsKey(i))
+            {
+                mainQuickSlots[(int)i].SetMainQuickSlot(QuickSlotData.WeaponQuickSlotDict[weaponType][i]); 
+                previewQuickSlots[(int)i].SetPreviewSlot(QuickSlotData.WeaponQuickSlotDict[weaponType][i]);
+            }
+            else
+            {
+                mainQuickSlots[(int)i].SetMainQuickSlot();
+                previewQuickSlots[(int)i].SetPreviewSlot();
+            } 
+        } 
+    }
+
+    /// <summary>
+    /// 데이터 로드 시 현재 스킬 노드의 할당된 퀵슬롯 타입 설정
+    /// </summary>
+    /// <param name="skillNode">데이터 로드 시 찾은 스킬 노드</param>
+    /// <param name="quickSlotType">데이터 로드 시 찾은 퀵슬롯 타입</param>
+    public void SetBeforeQuickSlot(SkillNode skillNode, QuickSlotType quickSlotType)
+    {
+        beforeQuickSlotTypeDict[skillNode] = quickSlotType;
+    }
+    
 }
