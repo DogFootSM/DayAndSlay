@@ -49,16 +49,13 @@ public class TargetSensorInNPC : TargetSensor
 
                     if (table != null)
                     {
-                        Debug.Log("타겟 테이블로 변경");
                         target = table.gameObject;
                     }
                     else
                     {
-                        Debug.Log("타겟 플레이어로 변경");
                         //target = player.gameObject;
                     }
 
-                    Debug.Log("타겟 문으로 변경");
                     target = GameObject.Find("StoreDoor");
                 }
 
@@ -110,6 +107,7 @@ public class TargetSensorInNPC : TargetSensor
         {
             if (Time.time >= nextCheckTime)
             {
+                Debug.Log(target);
                 astar.DetectTarget(transform.position, target.transform.position);
                 nextCheckTime = Time.time + interval;
             }
@@ -124,7 +122,7 @@ public class TargetSensorInNPC : TargetSensor
         {
             return target != null ? target.transform.position : transform.position;
         }
-        else if (currentGrid.name == "StoreGrid")
+        else if (currentGrid.name == "Store1fGrid")
         {
             if (isBuying && table != null)
             {

@@ -50,28 +50,42 @@ public class GeneralMonsterMethod : MonoBehaviour
         {
             for (int i = 1; i < astarPath.path.Count; i++)
             {
-                Vector3 current = transform.position;
                 Vector3 target = astarPath.path[i];
 
-                Vector3 direction = target - current;
-                Vector3 moveDir;
-
-                // 대각선 방지: x 또는 y 중 큰 쪽만 이동
-                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-                    moveDir = (direction.x > 0) ? Vector3.right : Vector3.left;
-                else
-                    moveDir = (direction.y > 0) ? Vector3.up : Vector3.down;
-
-                Vector3 nextPos = current + moveDir;
-
-                // 타일 한 칸씩 이동
-                while (Vector2.Distance(transform.position, nextPos) > 0.01f)
+                while (Vector2.Distance(transform.position, target) > 0.01f)
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, nextPos, monsterData.MoveSpeed * Time.deltaTime);
+                    Vector3 current = transform.position;
+                    Vector3 direction = target - current;
+
+                    Vector3 moveDir = Vector3.zero;
+
+                    if (Mathf.Abs(direction.x) > 0.01f)
+                    {
+                        moveDir = (direction.x > 0) ? Vector3.right : Vector3.left;
+                    }
+                    else if (Mathf.Abs(direction.y) > 0.01f)
+                    {
+                        moveDir = (direction.y > 0) ? Vector3.up : Vector3.down;
+                    }
+                    else
+                    {
+                        break; // 목표에 도달
+                    }
+
+                    Vector3 nextPos = current + moveDir * monsterData.MoveSpeed * Time.deltaTime;
+
+                    // Clamp: 목표를 넘어가지 않도록
+                    if (Vector2.Distance(nextPos, target) > Vector2.Distance(current, target))
+                    {
+                        nextPos = target;
+                    }
+
+                    transform.position = nextPos;
+
                     yield return null;
                 }
 
-                transform.position = nextPos; // 위치 스냅
+                transform.position = target; // 위치 스냅
                 yield return new WaitForSeconds(0.05f);
             }
         }
