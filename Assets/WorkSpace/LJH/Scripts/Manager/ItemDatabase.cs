@@ -63,7 +63,6 @@ public class ItemDatabase : ScriptableObject
         if (itemIdToDataDict.TryGetValue(id, out ItemData item))
             return item;
 
-        Debug.LogWarning($"ID {id} 에 해당하는 아이템이 없습니다.");
         return null;
     }
 
@@ -72,7 +71,6 @@ public class ItemDatabase : ScriptableObject
         if (itemNameToIdDict.TryGetValue(name, out int itemId))
             return itemId;
 
-        Debug.LogWarning($"아이템명 {name} 에 해당하는 아이템이 없습니다.");
         return 0;
     }    
 

@@ -9,7 +9,7 @@ public class TargetSensor : MonoBehaviour
     [SerializeField] private CircleCollider2D findCollider; 
   
     private LayerMask targetLayer;
-    private float findRange = 5f;
+    protected float findRange = 5f;
 
     //아래로 이재호가 추가한 변수
     GameObject player;
@@ -27,6 +27,10 @@ public class TargetSensor : MonoBehaviour
 
         //이재호가 쓴 코드
         player = GameObject.FindWithTag("Player");
+
+        //임시확인용 코드
+        if (transform.GetComponentInParent<NPC>())
+            player = GameObject.Find("OutsideDoor");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -34,7 +38,7 @@ public class TargetSensor : MonoBehaviour
         lastPlayerCell = grid.WorldToCell(player.transform.position);
 
         if (((1 << other.gameObject.layer) & targetLayer) != 0)
-        {  
+        {
             astar.DetectTarget(transform.position, other.gameObject.transform.position);
         }
     }

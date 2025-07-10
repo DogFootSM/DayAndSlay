@@ -66,16 +66,13 @@ public abstract class BaseForgeUI : BaseUI
                 return;
             }
 
-            Debug.Log(btn.name);
             ItemRecipe itemRecipe = btn.GetComponent<ItemButton>().itemRecipe;
             if(player.inventories.Contains(ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_1)))
             {
-                Debug.Log("ÇÏÀÌµå ²¨Áü");
                 hideList[itemButtonList.IndexOf(btn)].SetActive(false);
             }
             else
             {
-                Debug.Log("ÇÏÀÌµå ÄÑÁü");
                 hideList[itemButtonList.IndexOf(btn)].SetActive(true);
             }
         }
