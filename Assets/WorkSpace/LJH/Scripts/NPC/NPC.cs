@@ -20,6 +20,9 @@ public class NPC : MonoBehaviour
     Coroutine moveCoroutine;
     int moveSpeed = 3;
 
+    private Table table;
+    public Table _table => table;
+
     private void Start()
     {
         Init();
@@ -109,6 +112,7 @@ public class NPC : MonoBehaviour
             if(wantItem == tables[i].CurItemDataData)
             {
                 //테이블에 아이템이 있는 경우 테이블로 이동하여 아이템 구매
+                table = tables[i];
             }
         }
     }

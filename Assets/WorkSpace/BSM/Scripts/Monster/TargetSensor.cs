@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class TargetSensor : MonoBehaviour
 {
-    [SerializeField] private AstarPath astar;
-    [SerializeField] private CircleCollider2D findCollider; 
+    [SerializeField] protected AstarPath astar;
+    [SerializeField] protected CircleCollider2D findCollider; 
   
-    private LayerMask targetLayer;
+    protected LayerMask targetLayer;
     protected float findRange = 5f;
 
     //아래로 이재호가 추가한 변수
-    GameObject player;
-    float interval = 0.2f;
-    float nextCheckTime = 0f;
+    protected GameObject player;
+    protected float interval = 0.2f;
+    protected float nextCheckTime = 0f;
     
     public Grid grid;
-    Vector3Int lastPlayerCell;
+    protected Vector3Int lastPlayerCell;
 
 
     private void Awake()
@@ -27,13 +27,14 @@ public class TargetSensor : MonoBehaviour
 
         //이재호가 쓴 코드
         player = GameObject.FindWithTag("Player");
-
-        //임시확인용 코드
-        if (transform.GetComponentInParent<NPC>())
-            player = GameObject.Find("OutsideDoor");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
+    {
+        TriggerEnterMethod(other);
+    }
+
+    protected virtual void TriggerEnterMethod(Collider2D other)
     {
         lastPlayerCell = grid.WorldToCell(player.transform.position);
 
@@ -47,6 +48,11 @@ public class TargetSensor : MonoBehaviour
     /// 이재호가 작성한 코드
     /// </summary>
     private void OnTriggerStay2D(Collider2D collision)
+    {
+        TriggerStayMethod(collision);
+    }
+
+    protected virtual void TriggerStayMethod(Collider2D collision)
     {
         Vector3Int currentCell = grid.WorldToCell(player.transform.position);
 
