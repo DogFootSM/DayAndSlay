@@ -18,11 +18,12 @@ public class SkillTree : MonoBehaviour, ISavable
 
     public List<SkillData> SkillDatas = new List<SkillData>();
 
+    private SkillParticlePooling skillParticlePooling => SkillParticlePooling.Instance;
     private List<SkillNode> allskillNodes = new();
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();            //무기 타입별 노드
     private WeaponType curWeapon;
-
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -32,6 +33,15 @@ public class SkillTree : MonoBehaviour, ISavable
         CategorizeByWeapon();
         SortSkillNodesByWeapon();
         saveManager.SavableRegister(this);
+
+        foreach (var skillNode in allskillNodes)
+        {
+            if (skillNode.CurSkillLevel > 0)
+            {
+                skillParticlePooling.InstantiateSkillParticlePool(skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
+            }
+        }
+        
     }
 
     /// <summary>
@@ -54,7 +64,7 @@ public class SkillTree : MonoBehaviour, ISavable
             {
                 prerequisiteNodeMap[skillId].LoadSkillFromDB(skillLevel, unlocked);
             }
-        }
+        } 
     }
 
     /// <summary>
