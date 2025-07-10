@@ -25,7 +25,8 @@ public class AstarPath : MonoBehaviour
 {
     [SerializeField] private Tilemap mapTileMap;
     [SerializeField] private Tilemap obstacleTileMap;
-     
+    public Grid mapGrid;
+
     private Vector2Int[] neighborsDirections = new Vector2Int[]
     {
         Vector2Int.left,
@@ -40,8 +41,6 @@ public class AstarPath : MonoBehaviour
     private List<Node> openList = new List<Node>();
     private List<Node> closedList = new List<Node>();
     public List<Vector3> path = new List<Vector3>();
-
-    public Grid mapGrid;
 
     private Node startNode;
     private Node currentNode;
@@ -246,6 +245,17 @@ public class AstarPath : MonoBehaviour
         Room room = mapGrid.GetComponent<Room>();
         mapTileMap = room.mapTilemap;
         obstacleTileMap = room.obstacleTilemap;
+    }
+
+    /// <summary>
+    /// Change grid & tilemap for Npc by LJH
+    /// </summary>
+    /// <param name="grid"></param>
+    public void SetGridAndTilemap(Grid grid)
+    {
+        mapTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
+        obstacleTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
+        this.mapGrid = grid;
     }
 
 

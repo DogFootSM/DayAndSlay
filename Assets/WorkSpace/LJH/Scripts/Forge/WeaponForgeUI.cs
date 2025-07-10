@@ -58,7 +58,7 @@ public class WeaponForgeUI : BaseForgeUI
                 if ((SubWeaponType)typeIndex == SubWeaponType.NOT_SUBWEAPON)
                     break;
 
-                ItemData itemData = weaponStorage[$"{(SubWeaponType)typeIndex}{i + 1}"];
+                ItemData itemData = subWeaponStorage[$"{(SubWeaponType)typeIndex}{i + 1}"];
                 itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
                 itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
             }
@@ -73,9 +73,15 @@ public class WeaponForgeUI : BaseForgeUI
         {
             typeButtonList.Add(GetUI<Button>($"Type{i + 1}"));
         }
+
         for (int i = 0; i < 5; i++)
         {
             itemButtonList.Add(GetUI<Button>($"Item{i + 1}"));
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            hideList.Add(GetUI($"Hide{i + 1}"));
         }
 
         //AddListener Buttons

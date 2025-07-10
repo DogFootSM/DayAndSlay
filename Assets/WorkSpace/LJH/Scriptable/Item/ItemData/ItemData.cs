@@ -37,6 +37,8 @@ public class ItemData : ScriptableObject
     public string ItemDescA;
     public string ItemDescB;
 
+    public List<ItemData> Ingrediants = new();
+
     
     
 

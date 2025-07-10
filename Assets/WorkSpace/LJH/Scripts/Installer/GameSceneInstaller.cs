@@ -20,6 +20,7 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] ItemStorage itemManager;
 
     [SerializeField] GameObject popUp;
+    [SerializeField] TestPlayer player;
 
     public override void InstallBindings()
     {
@@ -54,5 +55,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<GameObject>().WithId("PopUp")
             .FromInstance(popUp);
+
+        Container
+            .Bind<TestPlayer>()
+            .FromInstance (player);
     }
 }

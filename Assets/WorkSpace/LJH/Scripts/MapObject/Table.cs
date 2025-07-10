@@ -13,7 +13,7 @@ public class Table : InteractableObj
     [Inject(Id = "PopUp")] private GameObject popUp;
     private PopUp tableAskPopup;
     private TextMeshProUGUI tableAskText;
-    private ItemData curItemData;
+    public ItemData curItemData;
     public ItemData CurItemDataData => curItemData;
     
     public override void Interaction()
