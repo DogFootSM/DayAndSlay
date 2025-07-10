@@ -10,6 +10,7 @@ using Zenject;
 public class QuickSlotManager : MonoBehaviour
 {
     [SerializeField] private QuickSlotRegister quickSlotRegister;
+    [SerializeField] private QuickSlotSwap quickSlotSwap;
     [SerializeField] private SkillTreePreview skillTreePreview;
     [SerializeField] private SkillTree skillTree;
     [Inject] private DataManager dataManager;
@@ -23,6 +24,8 @@ public class QuickSlotManager : MonoBehaviour
         set => selectedSkillNode = value;
     }
 
+    public CharacterWeaponType CurrentWeaponType => curWeaponType;
+    
     private CharacterWeaponType curWeaponType;
     private QuickSlotSetting quickSlotSetting;
     
@@ -102,6 +105,11 @@ public class QuickSlotManager : MonoBehaviour
     public void RegisteredSkillNode(QuickSlotType quickSlotType)
     {
         quickSlotRegister.RegisterSkillNode(curWeaponType, quickSlotType, selectedSkillNode);
+    }
+
+    public void SlotSwapRequest(QuickSlotType beginSlot, QuickSlotType endSlot)
+    {
+        
     }
     
 }
