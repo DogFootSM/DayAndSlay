@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public Animator BodyAnimator => bodyAnimator;
     public Weapon CurWeapon => curWeapon;
     public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
+    public CharacterWeaponType CurrentWeaponType => curWeaponType;
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
@@ -39,8 +40,7 @@ public class PlayerController : MonoBehaviour
     private IDataReader dataReader;
     private SkillSlotInvoker skillSlotInvoker; 
     private Table tableObject;
-
-    private LayerMask tableLayer;
+    
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
      
@@ -87,7 +87,6 @@ public class PlayerController : MonoBehaviour
     private void Init()
     {
         LastMoveKey = Direction.Down;
-        tableLayer = LayerMask.GetMask("Table");
         
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();

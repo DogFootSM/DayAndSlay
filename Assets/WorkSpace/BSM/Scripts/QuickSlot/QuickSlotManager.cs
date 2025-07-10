@@ -67,7 +67,10 @@ public class QuickSlotManager : MonoBehaviour
                 QuickSlotData.WeaponQuickSlotDict[weaponGroup.WeaponType][slotGroup.QuickSlotType] =
                     skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID);
                 
-                quickSlotRegister.SetBeforeQuickSlot(skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID), slotGroup.QuickSlotType);
+                //현재 등록한 스킬에 따른 퀵슬롯 맵핑
+                QuickSlotData.BeforeQuickSlotTypeDict[
+                        skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID)] =
+                    slotGroup.QuickSlotType;
             }
         } 
     }
@@ -107,9 +110,15 @@ public class QuickSlotManager : MonoBehaviour
         quickSlotRegister.RegisterSkillNode(curWeaponType, quickSlotType, selectedSkillNode);
     }
 
+    /// <summary>
+    /// 메인 화면에서 인식한 퀵슬롯들의 스왑을 요청
+    /// </summary>
+    /// <param name="beginSlot"></param>
+    /// <param name="endSlot"></param>
     public void SlotSwapRequest(QuickSlotType beginSlot, QuickSlotType endSlot)
     {
-        
+        quickSlotSwap.QuickSlotSkillNodeSwap(beginSlot, endSlot, curWeaponType);
+        quickSlotRegister.UpdateSlotUI(beginSlot, endSlot, curWeaponType);
     }
     
 }
