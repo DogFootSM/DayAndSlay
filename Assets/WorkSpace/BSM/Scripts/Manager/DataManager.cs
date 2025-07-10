@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -23,12 +24,12 @@ public class DataManager : MonoBehaviour
     private string path;
     private AudioSettings audioSettings;
     private DisplaySettings displaySettings;
+    
     private SoundManager soundManager => SoundManager.Instance;
     private GameManager gameManager => GameManager.Instance;
 
     private const string audioDataPath = "AudioSetting.json";
     private const string displayDataPath = "DisplaySettings.json";
-    private const string quickslotSetPath = "QuickSlotSaveData.json";
     
     private void Awake()
     {
@@ -41,7 +42,7 @@ public class DataManager : MonoBehaviour
     private void Init()
     {
         displaySettings = new DisplaySettings();
-        audioSettings = new AudioSettings(); 
+        audioSettings = new AudioSettings();
     }
     
     /// <summary>
@@ -91,28 +92,69 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, toJson);
     }
 
-    public void LoadQuickSlotSetting()
+    /// <summary>
+    /// 퀵슬롯 데이터 불러오기
+    /// </summary>
+    /// <returns>퀵슬롯 매니저에서 스킬 노드 초기화에 사용할 데이터 객체</returns>
+    public QuickSlotSetting LoadQuickSlotSetting()
     {
-        SetPath(quickslotSetPath);
+        //SetPath($"QuickSlotSaveData{SlotId}.json");
+        SetPath($"QuickSlotSaveData0.json");
 
+        QuickSlotSetting quickslotSetting = new QuickSlotSetting();
+        
         if (!File.Exists(path))
         {
             SaveQuickSlotSetting();
         }
-        
-        
-        
+
+        string loadQuickSlotData = File.ReadAllText(path);
+        quickslotSetting = JsonUtility.FromJson<QuickSlotSetting>(loadQuickSlotData);
+
+        return quickslotSetting;
     }
 
+    /// <summary>
+    /// 퀵슬롯 데이터 저장
+    /// </summary>
     public void SaveQuickSlotSetting()
     {
-        SetPath(quickslotSetPath);
+        //TODO:테스트 끝나면 변경하기
+        //SetPath($"QuickSlotSaveData{SlotId}.json");
+        SetPath($"QuickSlotSaveData0.json");
         
-        QuickSlotSetting quickSlotSetting = new QuickSlotSetting();
+        QuickSlotSetting quickslotSetting = new QuickSlotSetting();
         
-        
-        
-        
+        //각각의 무기 별 퀵슬롯 순회
+        foreach (CharacterWeaponType weaponType in Enum.GetValues(typeof(CharacterWeaponType)))
+        {
+            if(weaponType == CharacterWeaponType.SIZE) continue;
+            
+            //무기 그룹 생성 후 무기 타입 할당
+            var weaponGroup = new WeaponGroup()
+            {
+                WeaponType = weaponType
+            };
+            
+            //퀵 슬롯 그룹을 순회하면서 객체를 생성하고 키, 값 할당
+            foreach (var quickSlot in QuickSlotData.WeaponQuickSlotDict[weaponType])
+            {
+                var quickSlotGroup = new QuickSlotGroup()
+                {
+                    QuickSlotType = quickSlot.Key,
+                    SkillDataID = quickSlot.Value.skillData.SkillId
+                };
+                
+                //각각의 퀵슬롯 그룹 추가
+                weaponGroup.QuickSlotGroups.Add(quickSlotGroup);
+            }
+            
+            //각 무기 별 그룹 추가
+            quickslotSetting.WeaponGroups.Add(weaponGroup); 
+        }
+          
+        string toJson = JsonUtility.ToJson(quickslotSetting, true);
+        File.WriteAllText(path, toJson);
     }
     
     /// <summary>

@@ -18,11 +18,12 @@ public class SkillTree : MonoBehaviour, ISavable
 
     public List<SkillData> SkillDatas = new List<SkillData>();
 
+    private SkillParticlePooling skillParticlePooling => SkillParticlePooling.Instance;
     private List<SkillNode> allskillNodes = new();
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();            //무기 타입별 노드
     private WeaponType curWeapon;
-
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -31,9 +32,24 @@ public class SkillTree : MonoBehaviour, ISavable
         InitializeSkillData();
         CategorizeByWeapon();
         SortSkillNodesByWeapon();
-        saveManager.SavableRegister(this);
+        InstantiateSkillEffectInPool();
+        saveManager.SavableRegister(this); 
     }
 
+    /// <summary>
+    /// 현재 스킬 레벨이 1 이상인 스킬 이펙트 스킬 풀링에 생성
+    /// </summary>
+    private void InstantiateSkillEffectInPool()
+    {
+        foreach (var skillNode in allskillNodes)
+        {
+            if (skillNode.CurSkillLevel > 0)
+            {
+                skillParticlePooling.InstantiateSkillParticlePool(skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
+            }
+        }
+    }
+    
     /// <summary>
     /// 스킬 상태를 DB에서 가져와 설정
     /// </summary>
@@ -54,7 +70,7 @@ public class SkillTree : MonoBehaviour, ISavable
             {
                 prerequisiteNodeMap[skillId].LoadSkillFromDB(skillLevel, unlocked);
             }
-        }
+        } 
     }
 
     /// <summary>
@@ -161,4 +177,24 @@ public class SkillTree : MonoBehaviour, ISavable
             );
         }
     }
+
+    /// <summary>
+    /// 현재 무기 타입 노드에서 Skill_ID에 해당하는 스킬 노드를 반환
+    /// </summary>
+    /// <param name="weaponType">현재 무기 타입</param>
+    /// <param name="skillId">찾으려는 스킬 데이터의 ID</param>
+    /// <returns></returns>
+    public SkillNode GetWeaponSkillNode(WeaponType weaponType, string skillId)
+    {
+        foreach (var skillNode in weaponTypeNodes[weaponType])
+        {
+            if (skillNode.skillData.SkillId.Equals(skillId))
+            {
+                return skillNode;
+            }
+        }
+        
+        return null;
+    }
+    
 }

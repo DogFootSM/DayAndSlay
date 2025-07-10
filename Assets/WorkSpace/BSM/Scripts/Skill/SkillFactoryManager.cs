@@ -10,6 +10,7 @@ public static class SkillFactoryManager
         {
             case "1_검" : return new TempOneSkill(skillNode);
             case "1_창" : return new TempOneSkill(skillNode);
+            case "2_창" : return new TempOneSkill(skillNode);
             
             default: return null;
         }    

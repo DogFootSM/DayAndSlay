@@ -29,24 +29,26 @@ public class SkillSlotInvoker : MonoBehaviour
     {
         curDirection = direction;
     }
-  
+
     /// <summary>
     /// 스킬 팩토리에 스킬 노드 전달
     /// </summary>
     /// <param name="quickSlotType">사용할 스킬이 등록된 퀵 슬롯 타입</param>
+    /// <param name="weaponType">현재 캐릭터가 장착하고 있는 무기의 타입을 스킬의 키값으로 사용</param>
     /// <returns>해당 스킬의 후딜레이 시간</returns>
-    public float InvokeSkillFromSlot(QuickSlotType quickSlotType)
-    { 
-        //TODO: 수정 필요
-        SkillData skillData = new SkillData();
-        PlayerModel playerModel = new PlayerModel();
-        
-        SkillNode skillNode = new SkillNode(skillData, playerModel);
-
+    public float InvokeSkillFromSlot(QuickSlotType quickSlotType, CharacterWeaponType weaponType)
+    {
+        SkillNode skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
+ 
         if (skillNode != null)
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-            slotSkill.UseSkill(curDirection, transform.position);
+
+            if (slotSkill != null)
+            {
+                slotSkill.UseSkill(curDirection, transform.position);
+            }
+            
             return skillNode.skillData.RecoveryTime;
         } 
         

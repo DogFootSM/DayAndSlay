@@ -7,6 +7,7 @@ public abstract class SkillFactory
     protected SkillNode skillNode;
     protected LayerMask monsterLayer;
     protected Vector2 overlapSize;
+    protected SkillParticlePooling particlePooling => SkillParticlePooling.Instance;
     
     public SkillFactory(SkillNode skillNode)
     {

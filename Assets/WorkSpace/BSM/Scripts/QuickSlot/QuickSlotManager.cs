@@ -5,11 +5,15 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class QuickSlotManager : MonoBehaviour
 {
     [SerializeField] private QuickSlotRegister quickSlotRegister;
+    [SerializeField] private QuickSlotSwap quickSlotSwap;
     [SerializeField] private SkillTreePreview skillTreePreview;
+    [SerializeField] private SkillTree skillTree;
+    [Inject] private DataManager dataManager;
     
     public static QuickSlotManager Instance;
     private SkillNode selectedSkillNode;
@@ -20,15 +24,18 @@ public class QuickSlotManager : MonoBehaviour
         set => selectedSkillNode = value;
     }
 
+    public CharacterWeaponType CurrentWeaponType => curWeaponType;
+    
     private CharacterWeaponType curWeaponType;
-
+    private QuickSlotSetting quickSlotSetting;
+    
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         } 
-        //TODO: 퀵슬롯 JSON 저장 필요 
+        ProjectContext.Instance.Container.Inject(this);
         Init();
     }
 
@@ -39,6 +46,33 @@ public class QuickSlotManager : MonoBehaviour
         {
             QuickSlotData.WeaponQuickSlotDict[weaponType] = new Dictionary<QuickSlotType, SkillNode>();
         }
+
+        InitQuickSlotData();
+    }
+
+    /// <summary>
+    /// 퀵슬롯 데이터 Load 시 초기화 작업
+    /// </summary>
+    private void InitQuickSlotData()
+    {
+        quickSlotSetting = dataManager.LoadQuickSlotSetting();
+
+        //TODO: 퀵슬롯 데이터 lOAD
+        //각 무기 그룹을 순회
+        foreach (var weaponGroup in quickSlotSetting.WeaponGroups)
+        {
+            foreach (var slotGroup in weaponGroup.QuickSlotGroups)
+            {
+                //무기 타입과 퀵슬롯 타입 데이터를 가져와 스킬 데이터 할당
+                QuickSlotData.WeaponQuickSlotDict[weaponGroup.WeaponType][slotGroup.QuickSlotType] =
+                    skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID);
+                
+                //현재 등록한 스킬에 따른 퀵슬롯 맵핑
+                QuickSlotData.BeforeQuickSlotTypeDict[
+                        skillTree.GetWeaponSkillNode((WeaponType)weaponGroup.WeaponType, slotGroup.SkillDataID)] =
+                    slotGroup.QuickSlotType;
+            }
+        } 
     }
     
     /// <summary>
@@ -48,6 +82,7 @@ public class QuickSlotManager : MonoBehaviour
     public void UpdateWeaponType(CharacterWeaponType weaponType)
     {
         curWeaponType = weaponType;
+        quickSlotRegister.UpdateQuickSlotsByWeaponChange(weaponType);
     }
     
     /// <summary>
@@ -73,6 +108,17 @@ public class QuickSlotManager : MonoBehaviour
     public void RegisteredSkillNode(QuickSlotType quickSlotType)
     {
         quickSlotRegister.RegisterSkillNode(curWeaponType, quickSlotType, selectedSkillNode);
+    }
+
+    /// <summary>
+    /// 메인 화면에서 인식한 퀵슬롯들의 스왑을 요청
+    /// </summary>
+    /// <param name="beginSlot"></param>
+    /// <param name="endSlot"></param>
+    public void SlotSwapRequest(QuickSlotType beginSlot, QuickSlotType endSlot)
+    {
+        quickSlotSwap.QuickSlotSkillNodeSwap(beginSlot, endSlot, curWeaponType);
+        quickSlotRegister.UpdateSlotUI(beginSlot, endSlot, curWeaponType);
     }
     
 }

@@ -16,13 +16,11 @@ public class PlayerSkill : PlayerState
 
     public override void Exit()
     {
-        Debug.Log("스킬 상태 종료");
         if (afterDelayCo != null)
         {
             playerController.StopCoroutine(afterDelayCo);
             afterDelayCo = null;
-        }
-        
+        } 
     }
 
     /// <summary>
@@ -30,7 +28,7 @@ public class PlayerSkill : PlayerState
     /// </summary>
     private void ExecuteSkillFromSlot()
     {
-        afterDelay = playerController.SkillSlotInvoker.InvokeSkillFromSlot(keyToQuickSlotMap[skillInputKey]);
+        afterDelay = playerController.SkillSlotInvoker.InvokeSkillFromSlot(keyToQuickSlotMap[skillInputKey], playerController.CurrentWeaponType);
 
         if (afterDelayCo == null)
         {
