@@ -43,13 +43,13 @@ public class SkillParticlePooling : MonoBehaviour
     }
     
     
-    public GameObject GetSkillPool(Vector2 position, Vector2 direction, string skillID, GameObject skillParticle)
+    public GameObject GetSkillPool(string skillID, GameObject skillParticle)
     {
         if (skillParticlePool.ContainsKey(skillID))
         {
             if (skillParticlePool[skillID].Count > 0)
             {
-                particleObject = skillParticlePool[skillID].Dequeue();
+                particleObject = skillParticlePool[skillID].Dequeue(); 
             }
             else
             {
@@ -61,9 +61,11 @@ public class SkillParticlePooling : MonoBehaviour
         return particleObject;
     }
 
-    public void ReturnSkillParticlePool()
+    public void ReturnSkillParticlePool(string skillId, GameObject skillParticle)
     {
-        Debug.Log("파티클 반납 완료");
+        skillParticlePool[skillId].Enqueue(skillParticle);
+        skillParticle.transform.SetParent(transform);
+        skillParticle.SetActive(false); 
     }
     
 }

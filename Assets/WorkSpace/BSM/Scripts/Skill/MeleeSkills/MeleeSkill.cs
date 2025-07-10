@@ -11,10 +11,13 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, GameObject skillEffectPrefab)
     {
-        GameObject instance = particlePooling.GetSkillPool(position, direction, skillId, skillEffectPrefab);
-        Debug.Log($"{skillId} 근접 스킬 이펙트 발동");
+        GameObject instance = particlePooling.GetSkillPool(skillId, skillEffectPrefab);
+        instance.transform.parent = null;
+        instance.transform.position = position + direction;
         
         ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+        ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
+        stopAction.SkillID = skillId;
         
         instance.SetActive(true);
         particleSystem.Play(); 
