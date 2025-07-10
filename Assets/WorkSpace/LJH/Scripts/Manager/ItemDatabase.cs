@@ -34,10 +34,13 @@ public class ItemDatabase : ScriptableObject
         {
             itemIdToDataDict[item.ItemId] = item;
             recipeIdToNameDict[item.ItemId] = item.Name;
+        }
 
-            if (ids.Count < items.Count)
+        if (ids.Count != items.Count)
+        {
+            ids.Clear();
+            foreach (ItemData item in items)
             {
-                ids.Clear();
                 ids.Add(item.ItemId);
             }
         }

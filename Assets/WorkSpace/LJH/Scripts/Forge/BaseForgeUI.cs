@@ -56,6 +56,30 @@ public abstract class BaseForgeUI : BaseUI
 
         ItemDatabaseManager.instance.GetItemID(0000000);
     }
+
+    private void UpdateHideList()
+    {
+        foreach (Button btn in itemButtonList)
+        {
+            if(!btn.GetComponent<ItemButton>())
+            {
+                return;
+            }
+
+            Debug.Log(btn.name);
+            ItemRecipe itemRecipe = btn.GetComponent<ItemButton>().itemRecipe;
+            if(player.inventories.Contains(ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_1)))
+            {
+                Debug.Log("하이드 꺼짐");
+                hideList[itemButtonList.IndexOf(btn)].SetActive(false);
+            }
+            else
+            {
+                Debug.Log("하이드 켜짐");
+                hideList[itemButtonList.IndexOf(btn)].SetActive(true);
+            }
+        }
+    }
     protected virtual void Tap_TabButton(Parts parts)
     {
         /*
@@ -93,14 +117,26 @@ public abstract class BaseForgeUI : BaseUI
         /*
          미리보기에 지금 누른 아이템 넣어줌
         */
-        Debug.Log(index);
+        UpdateHideList();
         ItemButton btn = itemButtonList[index].GetComponent<ItemButton>();
         ItemData itemData = btn.itemData;
+        ItemRecipe itemRecipe = btn.itemRecipe;
         
         prevTextDict["name"].text = itemData.Name;
         prevTextDict["atk"].text = itemData.Attack.ToString();
         prevTextDict["def"].text = itemData.Defence.ToString();
         prevTextDict["hp"].text = itemData.Hp.ToString();
+
+
+        prevTextDict["ingre1"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_1).Name.ToString();
+        prevTextDict["ingre2"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_2).Name.ToString();
+        prevTextDict["ingre3"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_3).Name.ToString();
+        prevTextDict["ingre4"].text = "";
+
+        if (ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_4) != null)
+        {
+            prevTextDict["ingre4"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_4).Name.ToString();
+        }
 
         curItem = itemData;
     }
