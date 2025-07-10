@@ -39,8 +39,7 @@ public class SkillSlotInvoker : MonoBehaviour
     public float InvokeSkillFromSlot(QuickSlotType quickSlotType, CharacterWeaponType weaponType)
     {
         SkillNode skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
-        Debug.Log(skillNode.skillData.SkillName);
-        
+ 
         if (skillNode != null)
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);

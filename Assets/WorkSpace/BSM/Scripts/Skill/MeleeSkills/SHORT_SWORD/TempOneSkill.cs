@@ -12,7 +12,7 @@ public class TempOneSkill : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-        MeleeEffect();
+        MeleeEffect(playerPosition, direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
         
         dir = direction;
         pos = playerPosition;

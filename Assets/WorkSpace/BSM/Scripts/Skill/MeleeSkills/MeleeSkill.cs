@@ -9,9 +9,14 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
-    protected void MeleeEffect()
+    protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, GameObject skillEffectPrefab)
     {
-        Debug.Log("근접 스킬 이펙트 발동");
-    }
-    
+        GameObject instance = particlePooling.GetSkillPool(position, direction, skillId, skillEffectPrefab);
+        Debug.Log($"{skillId} 근접 스킬 이펙트 발동");
+        
+        ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+        
+        instance.SetActive(true);
+        particleSystem.Play(); 
+    } 
 }

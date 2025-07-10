@@ -32,8 +32,15 @@ public class SkillTree : MonoBehaviour, ISavable
         InitializeSkillData();
         CategorizeByWeapon();
         SortSkillNodesByWeapon();
-        saveManager.SavableRegister(this);
+        InstantiateSkillEffectInPool();
+        saveManager.SavableRegister(this); 
+    }
 
+    /// <summary>
+    /// 현재 스킬 레벨이 1 이상인 스킬 이펙트 스킬 풀링에 생성
+    /// </summary>
+    private void InstantiateSkillEffectInPool()
+    {
         foreach (var skillNode in allskillNodes)
         {
             if (skillNode.CurSkillLevel > 0)
@@ -41,9 +48,8 @@ public class SkillTree : MonoBehaviour, ISavable
                 skillParticlePooling.InstantiateSkillParticlePool(skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
             }
         }
-        
     }
-
+    
     /// <summary>
     /// 스킬 상태를 DB에서 가져와 설정
     /// </summary>

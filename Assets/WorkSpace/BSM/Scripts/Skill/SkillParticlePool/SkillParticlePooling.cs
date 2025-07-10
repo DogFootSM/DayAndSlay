@@ -8,6 +8,7 @@ public class SkillParticlePooling : MonoBehaviour
     public static SkillParticlePooling Instance;
 
     private Dictionary<string, Queue<GameObject>> skillParticlePool = new Dictionary<string, Queue<GameObject>>();
+    private GameObject particleObject;
     
     private void Awake()
     {
@@ -42,16 +43,27 @@ public class SkillParticlePooling : MonoBehaviour
     }
     
     
-    public void ReturnSkillPool(string skillID, GameObject skillParticle)
+    public GameObject GetSkillPool(Vector2 position, Vector2 direction, string skillID, GameObject skillParticle)
     {
         if (skillParticlePool.ContainsKey(skillID))
         {
             if (skillParticlePool[skillID].Count > 0)
             {
+                particleObject = skillParticlePool[skillID].Dequeue();
+            }
+            else
+            {
+                particleObject = Instantiate(skillParticle);
                 
             }
         }
         
+        return particleObject;
+    }
+
+    public void ReturnSkillParticlePool()
+    {
+        Debug.Log("파티클 반납 완료");
     }
     
 }
