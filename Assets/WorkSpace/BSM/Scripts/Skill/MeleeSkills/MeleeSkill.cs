@@ -19,6 +19,15 @@ public abstract class MeleeSkill : SkillFactory
         ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
         stopAction.SkillID = skillId;
         
+        ParticleSystem.MainModule main = particleSystem.main;
+         
+        //좌 -1 90 우 1, 270 아래 -1 180 위 1 0
+ 
+        if (direction.x < 0) main.startRotationZ = 270;
+        if(direction.x > 0) main.startRotationZ = 90;
+        if (direction.y < 0) main.startRotationZ = 0;
+        if (direction.y > 0) main.startRotationZ = 180;
+
         instance.SetActive(true);
         particleSystem.Play(); 
     } 
