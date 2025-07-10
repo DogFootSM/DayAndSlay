@@ -108,7 +108,7 @@ public class QuickSlotRegister : MonoBehaviour
     /// <param name="weaponType">현재 착용중인 무기타입</param>
     public void UpdateQuickSlotsByWeaponChange(CharacterWeaponType weaponType)
     {
-        for (var i = QuickSlotType.A; i < QuickSlotType.NONE; i++)
+        for (var i = QuickSlotType.Q; i < QuickSlotType.NONE; i++)
         {
             //퀵슬롯 타입이 등록된 상태
             if (QuickSlotData.WeaponQuickSlotDict[weaponType].ContainsKey(i))
