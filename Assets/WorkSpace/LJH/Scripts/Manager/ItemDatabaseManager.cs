@@ -20,22 +20,10 @@ public class ItemDatabaseManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private void Start()
-    {
-        ItemData foundItem = itemDatabase.GetItemByID(0);
-        if (foundItem != null)
-        {
-            Debug.Log($"찾은 아이템: {foundItem.Name}");
-        }
-    }
 
-    public ItemData GetItemID(int ID)
-    {
-        return itemDatabase.GetItemByID(ID);
-    }
+    public ItemData GetItemByID(int ID) => itemDatabase.GetItemByID(ID);
 
-    public ItemRecipe GetRecipe(int Id)
-    {
-        return itemDatabase.GetRecipeByID(Id);
-    }
+    public ItemData GetItemByName(string name) => GetItemByID(itemDatabase.GetItemByName(name));
+
+    public ItemRecipe GetRecipeByID(int Id) => itemDatabase.GetRecipeByID(Id);
 }

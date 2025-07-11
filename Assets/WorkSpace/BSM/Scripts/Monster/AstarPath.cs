@@ -19,7 +19,6 @@ public class Node
     public int fCost  => gCost + hCost; 
 }
 
-[RequireComponent(typeof(TargetSensor))]
 [RequireComponent (typeof(CircleCollider2D))]
 public class AstarPath : MonoBehaviour
 {

@@ -4527,7 +4527,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430136787}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc4cebb941683624e82967b48031f65b, type: 3}
   m_Name: 
@@ -13706,8 +13706,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   astar: {fileID: 881340244}
-  findCollider: {fileID: 881340245}
-  grid: {fileID: 1338385842}
+  outsideDoor: {fileID: 5552865699634554211}
+  storeDoor: {fileID: 83739267009826729}
+  table: {fileID: 0}
+  player: {fileID: 0}
+  outsideDoorPos: {x: 0, y: 0, z: 0}
+  storeDoorPos: {x: 0, y: 0, z: 0}
+  tablePos: {x: 0, y: 0, z: 0}
+  playerPos: {x: 0, y: 0, z: 0}
 --- !u!1 &882017200
 GameObject:
   m_ObjectHideFlags: 0
@@ -17832,7 +17838,7 @@ GameObject:
   - component: {fileID: 1053399695}
   - component: {fileID: 1053399696}
   - component: {fileID: 1053399697}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -22462,6 +22468,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1506919944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506919936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ae1bb0857a13d24aa524f3437049433, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1535226285
 GameObject:
   m_ObjectHideFlags: 0
@@ -31737,6 +31755,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4711483628701645930, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
+      propertyPath: wantItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 661bf93caee73884380586fe37ae11c3, type: 2}
+    - target: {fileID: 4711483628701645930, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
+      propertyPath: targetPos
+      value: 
+      objectReference: {fileID: 1227702748956274576}
+    - target: {fileID: 4711483628701645930, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
+      propertyPath: targetSensor
+      value: 
+      objectReference: {fileID: 881340247}
+    - target: {fileID: 4711483628701645930, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
       propertyPath: wantItemList.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -31778,11 +31808,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8230202351336098664, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 52.3
+      value: 41.32
       objectReference: {fileID: 0}
     - target: {fileID: 8230202351336098664, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4
+      value: -5.64
       objectReference: {fileID: 0}
     - target: {fileID: 8230202351336098664, guid: c6a0185a52eeab443a8b32f67b7d6ac4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -38767,6 +38797,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1053399697}
+    - target: {fileID: -12812892244094699, guid: 158d5d7bb1bdad540ac16e7116679cc1, type: 3}
+      propertyPath: curItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 661bf93caee73884380586fe37ae11c3, type: 2}
     - target: {fileID: 3389625655941348129, guid: 158d5d7bb1bdad540ac16e7116679cc1, type: 3}
       propertyPath: m_Name
       value: xTable 1_2
@@ -39345,7 +39379,7 @@ GameObject:
   - component: {fileID: 83739267009826735}
   - component: {fileID: 83739267009826734}
   - component: {fileID: 83739267009826722}
-  m_Layer: 15
+  m_Layer: 0
   m_Name: StoreDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47165,6 +47199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1210131388585870265}
   - component: {fileID: 1227702748956274575}
+  - component: {fileID: 1227702748956274576}
   m_Layer: 0
   m_Name: DayManager
   m_TagString: Untagged
@@ -47185,6 +47220,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayOrNight: 0
+--- !u!114 &1227702748956274576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227702748956274574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dcfc00eb475c6445a4f649bbc45d959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toStoreDoor: {fileID: 5552865699634554211}
+  toOutsideDoor: {fileID: 83739267009826729}
+  table: {fileID: 0}
+  player: {fileID: 1053399692}
 --- !u!1 &5552865699634554211
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,135 +5,49 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
 
-public class TargetSensorInNPC : TargetSensor
+public class TargetSensorInNPC : MonoBehaviour
 {
+    [SerializeField] private AstarPath astar;
 
-    private GameObject target;
-    private GameObject table;
-    private Grid currentGrid;
-    private List<Grid> grids;
+    [SerializeField] private GameObject outsideDoor;
+    [SerializeField] private GameObject storeDoor;
+    [SerializeField] private GameObject table;
+    [SerializeField] private GameObject player;
 
-    private bool isBuying = false; // 예시용, 실제로는 NPC 상태값으로 바인딩해야 함
+    [SerializeField] private Vector3 outsideDoorPos;
+    [SerializeField] private Vector3 storeDoorPos;
+    [SerializeField] private Vector3 tablePos;
+    [SerializeField] private Vector3 playerPos;
 
     private void Start()
     {
-        findRange = 20f;
-        grids = FindObjectsOfType<Grid>().ToList();
-        SetCurrentGridAndTargets();
-    }
+        //아웃사이드 도어의 경우 그냥 고정된 값 넣어주면 됨
+        //스토어 도어의 경우 그냥 고정된 값 넣어주면 됨
+        //테이블의 경우 NPC에서 계산때려서 나온 테이블의 위치값 넣어주면 됨
+        //플레이어의 경우 플레이어 감지해서 플레이어의 위치를 계속 받아와야 함
+        
+        //테스트 코드 : 추후 더 좋은 방법이 있다면 교체할 것
+        player = GameObject.FindWithTag("Player");
 
-    private void SetCurrentGridAndTargets()
+        outsideDoorPos = outsideDoor.transform.position;
+        storeDoorPos = storeDoor.transform.position;
+        playerPos = player.transform.position;
+
+        Set_Target();
+        
+    }
+    public void InjectTable(Table table)
     {
-        Vector3 curPos = transform.position;
-
-        foreach (Grid grid in grids)
-        {
-            Tilemap tilemap = grid.GetComponentInChildren<Tilemap>();
-            if (tilemap == null) continue;
-
-            BoundsInt cellBounds = tilemap.cellBounds;
-            Vector3Int cellPos = grid.WorldToCell(curPos);
-
-            if (cellBounds.Contains(cellPos))
-            {
-                currentGrid = grid;
-
-                if (grid.name == "OutsideGrid")
-                {
-                    target = GameObject.Find("OutsideDoor");
-                }
-                else if (grid.name == "Store1fGrid")
-                {
-                    //Todo : NPC가 물건을 구매 완료함 or 시간이 지남 일땐  문으로 이동
-                    Table table = GetComponentInParent<NPC>()._table;
-
-                    if (table != null)
-                    {
-                        target = table.gameObject;
-                    }
-                    else
-                    {
-                        //target = player.gameObject;
-                    }
-
-                    target = GameObject.Find("StoreDoor");
-                }
-
-
-                ChangeGridInAstar(grid);
-                break;
-            }
-        }
+        this.table = table.gameObject;
+        tablePos = table.transform.position;
     }
 
-    private void ChangeGridInAstar(Grid grid)
+    private void Set_Target()
     {
-        astar.SetGridAndTilemap(grid);
-        this.grid = grid;
+        //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
+        Vector3 targetPos = tablePos;
+
+        astar.DetectTarget(transform.position, targetPos);
     }
 
-    protected override void TriggerEnterMethod(Collider2D other)
-    {
-        Vector3 targetPos = GetTargetPosition();
-
-        lastPlayerCell = grid.WorldToCell(targetPos);
-
-        if (((1 << other.gameObject.layer) & targetLayer) != 0)
-        {
-            Debug.Log("디텍트타겟 실행");
-            astar.DetectTarget(transform.position, other.gameObject.transform.position);
-        }
-    }
-
-    protected override void TriggerStayMethod(Collider2D collision)
-    {
-        if (target == player)
-        {
-            Vector3 targetPos = GetTargetPosition();
-            Vector3Int currentCell = grid.WorldToCell(targetPos);
-
-            if (Time.time >= nextCheckTime)
-            {
-                if (currentCell != lastPlayerCell)
-                {
-                    astar.DetectTarget(transform.position, targetPos);
-                    lastPlayerCell = currentCell;
-                }
-
-                nextCheckTime = Time.time + interval;
-            }
-        }
-        else
-        {
-            if (Time.time >= nextCheckTime)
-            {
-                Debug.Log(target);
-                astar.DetectTarget(transform.position, target.transform.position);
-                nextCheckTime = Time.time + interval;
-            }
-        }
-    }
-
-    private Vector3 GetTargetPosition()
-    {
-        if (currentGrid == null) return transform.position;
-
-        if (currentGrid.name == "OutsideGrid")
-        {
-            return target != null ? target.transform.position : transform.position;
-        }
-        else if (currentGrid.name == "Store1fGrid")
-        {
-            if (isBuying && table != null)
-            {
-                return table.transform.position;
-            }
-            else if (target != null)
-            {
-                return target.transform.position;
-            }
-        }
-
-        return transform.position;
-    }
 }

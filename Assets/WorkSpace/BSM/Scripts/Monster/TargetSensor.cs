@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections.Editor.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,9 +25,6 @@ public class TargetSensor : MonoBehaviour
     {
         findCollider.radius = findRange;
         targetLayer = LayerMask.GetMask("Player");
-
-        //이재호가 쓴 코드
-        player = GameObject.FindWithTag("Player");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -36,7 +34,7 @@ public class TargetSensor : MonoBehaviour
 
     protected virtual void TriggerEnterMethod(Collider2D other)
     {
-        lastPlayerCell = grid.WorldToCell(player.transform.position);
+        lastPlayerCell = grid.WorldToCell(other.transform.position);
 
         if (((1 << other.gameObject.layer) & targetLayer) != 0)
         {
@@ -54,13 +52,13 @@ public class TargetSensor : MonoBehaviour
 
     protected virtual void TriggerStayMethod(Collider2D collision)
     {
-        Vector3Int currentCell = grid.WorldToCell(player.transform.position);
+        Vector3Int currentCell = grid.WorldToCell(collision.transform.position);
 
         if (Time.time >= nextCheckTime)
         {
             if (currentCell != lastPlayerCell)
             {
-                astar.DetectTarget(transform.position, player.transform.position);
+                astar.DetectTarget(transform.position, collision.transform.position);
 
                 lastPlayerCell = currentCell;
             }

@@ -54,7 +54,7 @@ public abstract class BaseForgeUI : BaseUI
             }
         }
 
-        ItemDatabaseManager.instance.GetItemID(0000000);
+        ItemDatabaseManager.instance.GetItemByID(0000000);
     }
 
     private void UpdateHideList()
@@ -67,7 +67,7 @@ public abstract class BaseForgeUI : BaseUI
             }
 
             ItemRecipe itemRecipe = btn.GetComponent<ItemButton>().itemRecipe;
-            if(player.inventories.Contains(ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_1)))
+            if(player.inventories.Contains(ItemDatabaseManager.instance.GetItemByID(itemRecipe.ingredients_1)))
             {
                 hideList[itemButtonList.IndexOf(btn)].SetActive(false);
             }
@@ -125,14 +125,14 @@ public abstract class BaseForgeUI : BaseUI
         prevTextDict["hp"].text = itemData.Hp.ToString();
 
 
-        prevTextDict["ingre1"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_1).Name.ToString();
-        prevTextDict["ingre2"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_2).Name.ToString();
-        prevTextDict["ingre3"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_3).Name.ToString();
+        prevTextDict["ingre1"].text = ItemDatabaseManager.instance.GetItemByID(itemRecipe.ingredients_1).Name.ToString();
+        prevTextDict["ingre2"].text = ItemDatabaseManager.instance.GetItemByID(itemRecipe.ingredients_2).Name.ToString();
+        prevTextDict["ingre3"].text = ItemDatabaseManager.instance.GetItemByID(itemRecipe.ingredients_3).Name.ToString();
         prevTextDict["ingre4"].text = "";
 
-        if (ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_4) != null)
+        if (ItemDatabaseManager.instance.GetItemByID(itemRecipe.ingredients_4) != null)
         {
-            prevTextDict["ingre4"].text = ItemDatabaseManager.instance.GetItemID(itemRecipe.ingredients_4).Name.ToString();
+            prevTextDict["ingre4"].text = ItemDatabaseManager.instance.GetItemByID(itemRecipe.ingredients_4).Name.ToString();
         }
 
         curItem = itemData;
@@ -145,7 +145,7 @@ public abstract class BaseForgeUI : BaseUI
     /// <returns></returns>
     private ItemRecipe Set_ItemRecipe(int itemId)
     {
-        return ItemDatabaseManager.instance.GetRecipe(itemId);
+        return ItemDatabaseManager.instance.GetRecipeByID(itemId);
     }
 
     public void CreateItem()

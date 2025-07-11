@@ -9,24 +9,37 @@ public class NPC : MonoBehaviour
 
     [Inject] private ItemStorage itemManager;
 
+    public TargetSensorInNPC targetSensor;
+
     [SerializeField] private List<ItemData> wantItemList = new List<ItemData>();
 
-    [SerializeField] private ItemData wantItem;
+    public ItemData wantItem;
     [SerializeField] private List<Table> tables = new List<Table>();
+
+    //Seller (player or table)
+    GameObject seller;
+    [Inject] TestPlayer player;
 
     //이동 관련
     private bool isMoving;
     private AstarPath astarPath;
-    Coroutine moveCoroutine;
-    int moveSpeed = 3;
+    private Coroutine moveCoroutine;
+    private int moveSpeed = 3;
 
-    private Table table;
-    public Table _table => table;
+    /// <summary>
+    /// NPC가 원하는 아이템을 들고있는 테이블
+    /// </summary>
+    [SerializeField]  private Table tablewithItem;
+    public Table _table => tablewithItem;
+
+    //npc의 인내심
+    private int patience = 60;
 
     private void Start()
     {
         Init();
         NpcBehaviour();
+
     }
 
 
@@ -78,6 +91,7 @@ public class NPC : MonoBehaviour
 
         //테스트끝나면 인보크 삭제
         Invoke("NPCMove", 3f);
+        InStoreBehaviour();
 
     }
 
@@ -87,7 +101,7 @@ public class NPC : MonoBehaviour
         //상점 바깥 맵에서 이동해야함
     }
 
-    private void InStoreBehaviour()
+    public void InStoreBehaviour()
     {
         TableScan();
     }
@@ -112,10 +126,17 @@ public class NPC : MonoBehaviour
             if(wantItem == tables[i].CurItemDataData)
             {
                 //테이블에 아이템이 있는 경우 테이블로 이동하여 아이템 구매
-                table = tables[i];
+                tablewithItem = tables[i];
+
+                targetSensor.InjectTable(tablewithItem);
             }
         }
     }
+
+    private void BuyItem(ItemData item)
+    {
+    }
+
 
     private void NPCMove()
     {
@@ -166,7 +187,7 @@ public class NPC : MonoBehaviour
                     yield return null;
                 }
 
-                transform.position = target; // 위치 스냅
+                transform.position = target;
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -178,5 +199,6 @@ public class NPC : MonoBehaviour
     private void Init()
     {
         astarPath = transform.GetComponentInChildren<AstarPath>();
+        seller = player.gameObject;
     }
 }
