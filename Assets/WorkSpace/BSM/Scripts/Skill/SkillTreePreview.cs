@@ -108,6 +108,9 @@ public class SkillTreePreview : MonoBehaviour
         previewSkillNameText.text = skillNode.skillData.SkillId;
         previewSkillDescriptionText.text = skillNode.skillData.SkillDescription;
         previewSkillIcon.sprite = skillNode.skillData.SkillIcon;
+        
+        previewRegisterButton.gameObject.SetActive(selectedSkillNode.skillData.IsActive);
+        
         previewRegisterButton.interactable = selectedSkillNode.CurSkillLevel > 0;
         UpdatePrerequisiteSkillNode();
     }
