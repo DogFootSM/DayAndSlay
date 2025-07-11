@@ -23,4 +23,14 @@ public class SkillData : ScriptableObject
     public GameObject SkillEffectPrefab;
 
     public List<string> prerequisiteSkillsId = new();
+
+    /// <summary>
+    /// 스킬 이펙트 오브젝트 설정
+    /// </summary>
+    public void SetSkillEffect()
+    {
+        //TODO: 추후 스킬 경로 변경해주면 됨
+        SkillEffectPrefab = Resources.Load<GameObject>($"SkillEffect/SHORT_SWORD/SSAS001/ShortSword_VFX_1");
+    }
+    
 } 

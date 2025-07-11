@@ -8,8 +8,10 @@ public class ParticleStopAction : MonoBehaviour
     public string SkillID;
     
     private SkillParticlePooling instance => SkillParticlePooling.Instance;
-    
-    
+
+    /// <summary>
+    /// 파티클 정지 시 풀에 반환 이벤트
+    /// </summary>
     private void OnParticleSystemStopped()
     {
         instance.ReturnSkillParticlePool(SkillID, gameObject);

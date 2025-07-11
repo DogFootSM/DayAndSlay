@@ -38,11 +38,10 @@ public class SkillNode
         //TODO: 스킬 강화 로직 진행
         curSkillLevel++;
         playerModel.CurSkillPoint = -1;
-
-        if (!skillData.IsActive)
-        {
-            //TODO: 패시브 스킬 능력치 적용 필요
-        }
+        
+        //해당 스킬의 스탯 조정 진행
+        SkillFactory skillFactory = SkillFactoryManager.GetSkillFactory(this);
+        skillFactory.ApplyLevelUpStats();
     }
 
     /// <summary>
