@@ -7,8 +7,12 @@ public abstract class MeleeSkill : SkillFactory
 
     private ParticleSystem.MainModule mainModule;
     private Vector2 currentDirection;
+
+    protected float skillDamage;
     
     public MeleeSkill(SkillNode skillNode) :base(skillNode){}
+    
+    public abstract float GetSkillDamage();
     
     /// <summary>
     /// 근접 공격 이펙트

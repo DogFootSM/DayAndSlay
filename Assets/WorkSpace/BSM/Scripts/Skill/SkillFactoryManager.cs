@@ -8,6 +8,7 @@ public static class SkillFactoryManager
     {
         switch (skillNode.skillData.SkillId)
         {
+            //TODO: 스킬 아이디 값 수정 필요
             case "1_검" : return new SSAS001(skillNode);
             case "1_창" : return new SSAS001(skillNode);
             case "2_창" : return new SSAS002(skillNode);

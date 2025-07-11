@@ -21,6 +21,8 @@ public class SSAS001 : MeleeSkill
         MeleeEffect(playerPosition, direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
         SetParticleStartRotationFromDeg(leftDeg, rightDeg, downDeg, upDeg);
 
+        skillDamage = GetSkillDamage();
+        
         dir = direction;
         pos = playerPosition;
 
@@ -41,14 +43,20 @@ public class SSAS001 : MeleeSkill
         {
             if (colliders[i].TryGetComponent<Monster>(out Monster monster))
             {
-                monster.TakeDamage(skillNode.skillData.SkillDamage);
+                monster.TakeDamage((int)skillDamage);
             }
         }
     }
 
-    public override void ApplyLevelUpStats()
+    /// <summary>
+    /// 현재 스킬 레벨에 따른 데미지 적용
+    /// </summary>
+    /// <returns></returns>
+    public override float GetSkillDamage()
     {
-        Debug.Log($"{skillNode.skillData.SkillName} 스킬 스탯 조정");
+        float damage = skillNode.CurSkillLevel * skillNode.skillData.SkillDamage;
+        
+        return damage;
     }
     
     public override void Gizmos()
