@@ -7,7 +7,9 @@ using static UnityEditor.PlayerSettings;
 
 public class TargetSensorInNPC : MonoBehaviour
 {
+    [SerializeField] NPC npc;
     [SerializeField] private AstarPath astar;
+    [SerializeField] private NpcStateMachine state;
 
     [SerializeField] private GameObject outsideDoor;
     [SerializeField] private GameObject storeDoor;
@@ -19,13 +21,15 @@ public class TargetSensorInNPC : MonoBehaviour
     [SerializeField] private Vector3 tablePos;
     [SerializeField] private Vector3 playerPos;
 
+    public Vector3 targetPos;
+
     private void Start()
     {
         //아웃사이드 도어의 경우 그냥 고정된 값 넣어주면 됨
         //스토어 도어의 경우 그냥 고정된 값 넣어주면 됨
         //테이블의 경우 NPC에서 계산때려서 나온 테이블의 위치값 넣어주면 됨
         //플레이어의 경우 플레이어 감지해서 플레이어의 위치를 계속 받아와야 함
-        
+
         //테스트 코드 : 추후 더 좋은 방법이 있다면 교체할 것
         player = GameObject.FindWithTag("Player");
 
@@ -34,7 +38,7 @@ public class TargetSensorInNPC : MonoBehaviour
         playerPos = player.transform.position;
 
         Set_Target();
-        
+
     }
     public void InjectTable(Table table)
     {
@@ -44,10 +48,37 @@ public class TargetSensorInNPC : MonoBehaviour
 
     private void Set_Target()
     {
-        //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
-        Vector3 targetPos = tablePos;
+        //임시 bool 변수
+        bool npcPosisStore = true;
+
+        if (npcPosisStore)
+        {
+            //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
+            if (npc.wantItem != null)
+            {
+                if (table != null)
+                {
+                    state.ChangeState(new NpcMoveState(npc, table));
+                }
+                else if (table != null)
+                {
+                    state.ChangeState(new NpcMoveState(npc, player));
+                }
+            }
+            else
+            {
+                //if(바깥에서 문을 대상으로 해야할때
+                state.ChangeState(new NpcMoveState(npc, outsideDoor));
+            }
+        }
+        else
+        {
+            //if(상점 내부 문을 대상으로 해야할때
+            state.ChangeState(new NpcMoveState(npc, storeDoor));
+        }
 
         astar.DetectTarget(transform.position, targetPos);
+
     }
 
 }
