@@ -7,7 +7,7 @@ using static UnityEditor.PlayerSettings;
 
 public class TargetSensorInNPC : MonoBehaviour
 {
-    [SerializeField] NPC npc;
+    [SerializeField] private NPC npc;
     [SerializeField] private AstarPath astar;
     [SerializeField] private NpcStateMachine state;
 
@@ -48,37 +48,61 @@ public class TargetSensorInNPC : MonoBehaviour
 
     private void Set_Target()
     {
+        Debug.Log("셋타겟 실행");
         //임시 bool 변수
         bool npcPosisStore = true;
 
+        Debug.Log($"npc는 ? :{npc.name}");
+
         if (npcPosisStore)
-        {
+        { 
+            Debug.Log("1단게는 뚫림");
             //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
             if (npc.wantItem != null)
             {
                 if (table != null)
                 {
+                    Debug.Log("테이블 실행됨");
                     state.ChangeState(new NpcMoveState(npc, table));
                 }
-                else if (table != null)
+                else if (table == null)
                 {
+                    Debug.Log("플레이어 실행됨");
                     state.ChangeState(new NpcMoveState(npc, player));
                 }
             }
             else
             {
+                Debug.Log("바깥문 실행됨");
                 //if(바깥에서 문을 대상으로 해야할때
                 state.ChangeState(new NpcMoveState(npc, outsideDoor));
             }
         }
         else
         {
+            Debug.Log("상점문 실행됨");
             //if(상점 내부 문을 대상으로 해야할때
             state.ChangeState(new NpcMoveState(npc, storeDoor));
         }
-
+        Debug.Log(targetPos);
         astar.DetectTarget(transform.position, targetPos);
 
     }
 
+    public void TableButton()
+    {
+        state.ChangeState(new NpcMoveState(npc, table));
+    }
+    public void PlayerButton()
+    {
+        state.ChangeState(new NpcMoveState(npc, player));
+    }
+    public void storeDoorButton()
+    {
+        state.ChangeState(new NpcMoveState(npc, storeDoor));
+    }
+    public void OutDoorButton()
+    {
+        state.ChangeState(new NpcMoveState(npc, outsideDoor));
+    }
 }

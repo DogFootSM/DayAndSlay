@@ -6,16 +6,21 @@ public class NpcMoveState : INpcState
 {
     private NPC npc;
     private Vector3 targetPos;
+    private AstarPath astar;
 
     public NpcMoveState(NPC npc, GameObject targetPos)
     {
         this.npc = npc;
+        astar = npc.GetComponentInChildren<AstarPath>();
         this.targetPos = targetPos.transform.position;
     }
 
     public void Enter()
     {
+        Debug.Log($"지정된 대상의 위치 {targetPos}");
         npc.targetSensor.targetPos = this.targetPos;
+        astar.DetectTarget(npc.transform.position, targetPos);
+        npc.NPCMove();
     }
 
     public void Update()

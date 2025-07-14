@@ -90,7 +90,7 @@ public class NPC : MonoBehaviour
         // 아이템 없음 > 엔피씨 대기하다가 나감
 
         //테스트끝나면 인보크 삭제
-        Invoke("NPCMove", 3f);
+        NPCMove();
         InStoreBehaviour();
 
     }
@@ -135,10 +135,11 @@ public class NPC : MonoBehaviour
 
     private void BuyItem(ItemData item)
     {
+
     }
 
 
-    private void NPCMove()
+    public void NPCMove()
     {
         moveCoroutine = StartCoroutine(MoveCoroutine());
         Debug.Log("무브 코루틴 실행");
@@ -147,6 +148,7 @@ public class NPC : MonoBehaviour
     private IEnumerator MoveCoroutine()
     {
         isMoving = true;
+        yield return new WaitForSeconds(1f);
 
         if (astarPath.path != null && astarPath.path.Count > 1)
         {
