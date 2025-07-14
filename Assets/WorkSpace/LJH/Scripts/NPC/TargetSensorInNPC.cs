@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections.Editor.Search;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,27 @@ using static UnityEditor.PlayerSettings;
 
 public class TargetSensorInNPC : MonoBehaviour
 {
+    [Header("Grid & TileMap / 0 = outside, 1 = store")]
+    [SerializeField] private List<Grid> gridList;
+    [SerializeField] private List<Tilemap> mapTile;
+    [SerializeField] private List<Tilemap> obstacleTile;
+    private int outsideNum = 0;
+    private int storeNum = 1;
+
+    [Header("Component")]
     [SerializeField] private NPC npc;
     [SerializeField] private AstarPath astar;
     [SerializeField] private NpcStateMachine state;
 
+    [Header("Object")]
+    [SerializeField] private GameObject castleDoor;
     [SerializeField] private GameObject outsideDoor;
     [SerializeField] private GameObject storeDoor;
     [SerializeField] private GameObject table;
     [SerializeField] private GameObject player;
 
+    [Header("PosByObject")]
+    [SerializeField] private Vector3 castleDoorPos;
     [SerializeField] private Vector3 outsideDoorPos;
     [SerializeField] private Vector3 storeDoorPos;
     [SerializeField] private Vector3 tablePos;
@@ -25,19 +38,19 @@ public class TargetSensorInNPC : MonoBehaviour
 
     private void Start()
     {
-        //아웃사이드 도어의 경우 그냥 고정된 값 넣어주면 됨
-        //스토어 도어의 경우 그냥 고정된 값 넣어주면 됨
-        //테이블의 경우 NPC에서 계산때려서 나온 테이블의 위치값 넣어주면 됨
-        //플레이어의 경우 플레이어 감지해서 플레이어의 위치를 계속 받아와야 함
+        //엔피씨가 생성되는거라서 자동으로 찾아오게 해줘야함 
 
         //테스트 코드 : 추후 더 좋은 방법이 있다면 교체할 것
         player = GameObject.FindWithTag("Player");
 
+        castleDoorPos = castleDoor.transform.position;
         outsideDoorPos = outsideDoor.transform.position;
         storeDoorPos = storeDoor.transform.position;
         playerPos = player.transform.position;
 
         Set_Target();
+
+        StartCoroutine(ChangeGridCoroutine());
 
     }
     public void InjectTable(Table table)
@@ -86,6 +99,31 @@ public class TargetSensorInNPC : MonoBehaviour
         }
         Debug.Log(targetPos);
         astar.DetectTarget(transform.position, targetPos);
+
+    }
+
+    private void ChangeGrid()
+    {
+        
+        astar.SetGridAndTilemap(gridList[outsideNum], outsideNum);
+
+        astar.SetGridAndTilemap(gridList[storeNum], storeNum);
+    }
+
+    private IEnumerator ChangeGridCoroutine()
+    {
+        //시작하자마자 이거부터 확인할것 
+        int num = 0;
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            //moveDir = (direction.x > 0) ? Vector3.right : Vector3.left;
+            astar.SetGridAndTilemap(gridList[num], num);
+
+            num = (num == 0) ? 1 : 0;
+
+        }
 
     }
 
