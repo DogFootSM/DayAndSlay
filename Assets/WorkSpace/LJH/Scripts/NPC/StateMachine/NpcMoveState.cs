@@ -25,11 +25,14 @@ public class NpcMoveState : INpcState
 
     public void Update()
     {
-
+        if (Vector3.Distance(npc.transform.position, targetPos) <= 1f)
+        {
+            
+        }
     }
 
     public void Exit()
     {
-
+        npc.SetMoving(false);
     }
 }

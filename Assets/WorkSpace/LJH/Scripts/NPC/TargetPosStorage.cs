@@ -15,10 +15,14 @@ public class TargetPosStorage : MonoBehaviour
     [SerializeField] private GameObject castleDoor;
     [SerializeField] private GameObject player;
 
+    [SerializeField] private List<GameObject> randomPosList;
+    [SerializeField] private GameObject randomPos;
+
     public Vector3 StoreDoorPos => StoreDoor.transform.position;
     public Vector3 OutsideDoorPos => OutsideDoor.transform.position;
     public Vector3 CastleDoor => castleDoor.transform.position;
     public Vector3 PlayerPos => playerPos;
+    public Vector3 RandomPos => randomPos.transform.position;
 
     private Vector3 playerPos;
 
@@ -26,8 +30,8 @@ public class TargetPosStorage : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(StoreDoorPos);
         StartCoroutine(SearchPlayer());
+        StartCoroutine(ShuffleRandomPosCoroutine());
     }
 
     private IEnumerator SearchPlayer()
@@ -46,6 +50,16 @@ public class TargetPosStorage : MonoBehaviour
             {
                 playerPos = player.transform.position;
             }
+
+            yield return delay;
+        }
+    }
+
+    private IEnumerator ShuffleRandomPosCoroutine()
+    {
+        while (true)
+        {
+            randomPos = randomPosList[Random.Range(0, randomPosList.Count - 1)];
 
             yield return delay;
         }

@@ -45,15 +45,13 @@ public class NPC : MonoBehaviour
 
     private void NpcBehaviour()
     {
-        if (!IsBuyer)
+        if (IsBuyer)
         {
-            DontGoStore();
-            return;
+            ItemListSetting(itemManager.ItemDatas);
+            PickItem();
         }
-
-        ItemListSetting(itemManager.ItemDatas);
-        PickItem();
-        GoStore();
+        
+        BuyerHaviour();
     }
 
     /// <summary>
@@ -77,7 +75,7 @@ public class NPC : MonoBehaviour
     }
 
 
-    private void GoStore()
+    private void BuyerHaviour()
     {
         //Todo : 상점으로 이동하는 엔피씨
         //상점 내부로 이동해야함
@@ -90,8 +88,7 @@ public class NPC : MonoBehaviour
         // 아이템 없음 > 엔피씨 대기하다가 나감
 
         //테스트끝나면 인보크 삭제
-        NPCMove();
-        InStoreBehaviour();
+        TableScan();
 
     }
 
@@ -99,11 +96,7 @@ public class NPC : MonoBehaviour
     {
         //Todo : 상점으로 가지 않는 엔피씨
         //상점 바깥 맵에서 이동해야함
-    }
-
-    public void InStoreBehaviour()
-    {
-        TableScan();
+        Debug.Log("상점을 가지 않는 개념으로 생성됨");
     }
 
     /// <summary>
@@ -114,16 +107,9 @@ public class NPC : MonoBehaviour
         Table[] tableArray = FindObjectsOfType<Table>();
         tables = new List<Table>(tableArray);
 
-        WantItemCheck();
-    }
-    /// <summary>
-    /// 상점맵 > 상점맵에서 구매할 아이템 있는지 체크
-    /// </summary>
-    private void WantItemCheck()
-    {
-        for(int i = 0; i < tables.Count; i++)
+        for (int i = 0; i < tables.Count; i++)
         {
-            if(wantItem == tables[i].CurItemDataData)
+            if (wantItem == tables[i].CurItemDataData)
             {
                 //테이블에 아이템이 있는 경우 테이블로 이동하여 아이템 구매
                 tablewithItem = tables[i];
@@ -133,7 +119,7 @@ public class NPC : MonoBehaviour
         }
     }
 
-    private void BuyItem(ItemData item)
+    public void BuyItem(ItemData item)
     {
 
     }
@@ -175,6 +161,7 @@ public class NPC : MonoBehaviour
                     }
                     else
                     {
+                        SetMoving(false);
                         break; // 목표에 도달
                     }
 
@@ -199,6 +186,13 @@ public class NPC : MonoBehaviour
         isMoving = false;
         moveCoroutine = null;
     }
+
+    public void SetMoving(bool moved)
+    {
+        isMoving = moved;
+    }
+
+    public bool GetMoving() => isMoving;
 
     private void Init()
     {

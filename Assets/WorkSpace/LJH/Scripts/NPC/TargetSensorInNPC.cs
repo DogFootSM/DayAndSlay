@@ -31,6 +31,7 @@ public class TargetSensorInNPC : MonoBehaviour
     private Vector3 storeDoorPos;
     private Vector3 tablePos;
     private Vector3 playerPos;
+    private Vector3 randomPos;
 
     [HideInInspector] public Vector3 targetPos;
 
@@ -38,9 +39,21 @@ public class TargetSensorInNPC : MonoBehaviour
     {
         PosInit();
         astar.SetGridAndTilemap(gridList[outside]);
-        //셋타겟은 매번 실행해줘야함
-        Set_Target();
+        StartCoroutine(SetTargetCoroutine());
         StartCoroutine(ChangeGridCoroutine());
+
+    }
+
+    private IEnumerator SetTargetCoroutine()
+    {
+        while(true)
+        {
+            if(!npc.GetMoving())
+            {
+                Set_Target();
+            }
+            yield return new WaitForSeconds(1f);
+        }
     }
     public void InjectTable(Table table)
     {
@@ -50,15 +63,20 @@ public class TargetSensorInNPC : MonoBehaviour
 
     private void Set_Target()
     {
+        npc.SetMoving(true);
         Vector3 npcPos = npc.transform.position;
 
         Grid curGrid = GetCurrentGridNpc(npcPos, gridList);
 
+        Debug.Log($"{npc.name} 의 IsBuyer는 {npc.IsBuyer}");
 
         if (npc.IsBuyer)
         {
+            Debug.Log($"curGrid = {curGrid}");
+            Debug.Log($"gridList[store] = {gridList[store]}");
             if (curGrid == gridList[store])
             {
+                Debug.Log("상점 그리드");
                 //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
                 if (npc.wantItem != null)
                 {
@@ -81,6 +99,7 @@ public class TargetSensorInNPC : MonoBehaviour
             }
             else
             {
+                Debug.Log("외부 그리드");
                 if (npc.wantItem != null)
                 {
                     Debug.Log("상점 입장 실행됨");
@@ -96,7 +115,8 @@ public class TargetSensorInNPC : MonoBehaviour
         }
         else
         {
-            Debug.Log("갈곳이없습니다");
+            Debug.Log("방황함");
+            state.ChangeState(new NpcMoveState(npc, randomPos));
         }
 
     }
@@ -144,6 +164,17 @@ public class TargetSensorInNPC : MonoBehaviour
         outsideDoorPos = targetPosStorage.OutsideDoorPos;
         storeDoorPos = targetPosStorage.StoreDoorPos;
         playerPos = targetPosStorage.PlayerPos;
+
+        StartCoroutine(RandominitCoroutine());
+    }
+
+    private IEnumerator RandominitCoroutine()
+    {
+        while(true)
+        {
+            randomPos = targetPosStorage.RandomPos;
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     public void TableButton()
