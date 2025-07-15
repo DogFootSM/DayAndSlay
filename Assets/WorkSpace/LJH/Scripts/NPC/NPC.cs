@@ -141,8 +141,10 @@ public class NPC : MonoBehaviour
 
     public void NPCMove()
     {
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
         moveCoroutine = StartCoroutine(MoveCoroutine());
-        Debug.Log("公宏 内风凭 角青");
     }
 
     private IEnumerator MoveCoroutine()

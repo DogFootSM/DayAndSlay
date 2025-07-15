@@ -8,11 +8,11 @@ public class NpcMoveState : INpcState
     private Vector3 targetPos;
     private AstarPath astar;
 
-    public NpcMoveState(NPC npc, GameObject targetPos)
+    public NpcMoveState(NPC npc, Vector3 targetPos)
     {
         this.npc = npc;
         astar = npc.GetComponentInChildren<AstarPath>();
-        this.targetPos = targetPos.transform.position;
+        this.targetPos = targetPos;
     }
 
     public void Enter()

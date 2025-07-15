@@ -4,54 +4,43 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zenject.SpaceFighter;
 using static UnityEditor.PlayerSettings;
 
 public class TargetSensorInNPC : MonoBehaviour
 {
     [Header("Grid & TileMap / 0 = outside, 1 = store")]
-    [SerializeField] private List<Grid> gridList;
-    [SerializeField] private List<Tilemap> mapTile;
-    [SerializeField] private List<Tilemap> obstacleTile;
-    private int outsideNum = 0;
-    private int storeNum = 1;
+    [SerializeField] private List<Grid> gridList = new List<Grid>();
+    [SerializeField] private List<Tilemap> mapTile = new List<Tilemap>();
+    [SerializeField] private List<Tilemap> obstacleTile = new List<Tilemap>();
+    int outside = 0;
+    int store = 1;
 
     [Header("Component")]
     [SerializeField] private NPC npc;
     [SerializeField] private AstarPath astar;
     [SerializeField] private NpcStateMachine state;
 
-    [Header("Object")]
-    [SerializeField] private GameObject castleDoor;
-    [SerializeField] private GameObject outsideDoor;
-    [SerializeField] private GameObject storeDoor;
-    [SerializeField] private GameObject table;
-    [SerializeField] private GameObject player;
+    [Header("Storage")]
+    [SerializeField] private TargetPosStorage targetPosStorage;
 
-    [Header("PosByObject")]
-    [SerializeField] private Vector3 castleDoorPos;
-    [SerializeField] private Vector3 outsideDoorPos;
-    [SerializeField] private Vector3 storeDoorPos;
-    [SerializeField] private Vector3 tablePos;
-    [SerializeField] private Vector3 playerPos;
+    private GameObject table;
 
-    public Vector3 targetPos;
+    private Vector3 castleDoorPos;
+    private Vector3 outsideDoorPos;
+    private Vector3 storeDoorPos;
+    private Vector3 tablePos;
+    private Vector3 playerPos;
+
+    [HideInInspector] public Vector3 targetPos;
 
     private void Start()
     {
-        //엔피씨가 생성되는거라서 자동으로 찾아오게 해줘야함 
-
-        //테스트 코드 : 추후 더 좋은 방법이 있다면 교체할 것
-        player = GameObject.FindWithTag("Player");
-
-        castleDoorPos = castleDoor.transform.position;
-        outsideDoorPos = outsideDoor.transform.position;
-        storeDoorPos = storeDoor.transform.position;
-        playerPos = player.transform.position;
-
+        PosInit();
+        astar.SetGridAndTilemap(gridList[outside]);
+        //셋타겟은 매번 실행해줘야함
         Set_Target();
-
         StartCoroutine(ChangeGridCoroutine());
-
     }
     public void InjectTable(Table table)
     {
@@ -61,86 +50,120 @@ public class TargetSensorInNPC : MonoBehaviour
 
     private void Set_Target()
     {
-        Debug.Log("셋타겟 실행");
-        //임시 bool 변수
-        bool npcPosisStore = true;
+        Vector3 npcPos = npc.transform.position;
 
-        Debug.Log($"npc는 ? :{npc.name}");
+        Grid curGrid = GetCurrentGridNpc(npcPos, gridList);
 
-        if (npcPosisStore)
-        { 
-            Debug.Log("1단게는 뚫림");
-            //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
-            if (npc.wantItem != null)
+
+        if (npc.IsBuyer)
+        {
+            if (curGrid == gridList[store])
             {
-                if (table != null)
+                //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
+                if (npc.wantItem != null)
                 {
-                    Debug.Log("테이블 실행됨");
-                    state.ChangeState(new NpcMoveState(npc, table));
+                    if (table != null)
+                    {
+                        Debug.Log("테이블 실행됨");
+                        state.ChangeState(new NpcMoveState(npc, tablePos));
+                    }
+                    else if (table == null)
+                    {
+                        Debug.Log("플레이어 실행됨");
+                        state.ChangeState(new NpcMoveState(npc, playerPos));
+                    }
                 }
-                else if (table == null)
+                else
                 {
-                    Debug.Log("플레이어 실행됨");
-                    state.ChangeState(new NpcMoveState(npc, player));
+                    Debug.Log("상점 퇴장 실행됨");
+                    state.ChangeState(new NpcMoveState(npc, storeDoorPos));
                 }
             }
             else
             {
-                Debug.Log("바깥문 실행됨");
-                //if(바깥에서 문을 대상으로 해야할때
-                state.ChangeState(new NpcMoveState(npc, outsideDoor));
+                if (npc.wantItem != null)
+                {
+                    Debug.Log("상점 입장 실행됨");
+                    state.ChangeState(new NpcMoveState(npc, outsideDoorPos));
+                }
+
+                else
+                {
+                    Debug.Log("성문 실행됨");
+                    state.ChangeState(new NpcMoveState(npc, castleDoorPos));
+                }
             }
         }
         else
         {
-            Debug.Log("상점문 실행됨");
-            //if(상점 내부 문을 대상으로 해야할때
-            state.ChangeState(new NpcMoveState(npc, storeDoor));
+            Debug.Log("갈곳이없습니다");
         }
-        Debug.Log(targetPos);
-        astar.DetectTarget(transform.position, targetPos);
 
     }
-
-    private void ChangeGrid()
+    public Grid GetCurrentGridNpc(Vector3 npcWorldPos, List<Grid> gridList)
     {
-        
-        astar.SetGridAndTilemap(gridList[outsideNum], outsideNum);
+        foreach (Grid grid in gridList)
+        {
+            Tilemap tilemap = grid.transform.GetChild(0).GetComponent<Tilemap>(); // 타일맵
+            Vector3Int cellPos = grid.WorldToCell(npcWorldPos);
 
-        astar.SetGridAndTilemap(gridList[storeNum], storeNum);
+            if (tilemap.cellBounds.Contains(cellPos))
+            {
+                return grid; // 이 그리드가 현재 위치
+            }
+        }
+
+        return null; // 어디에도 없음
     }
 
     private IEnumerator ChangeGridCoroutine()
     {
-        //시작하자마자 이거부터 확인할것 
-        int num = 0;
+        int num = outside;
+
         while (true)
         {
             yield return new WaitForSeconds(1f);
 
-            //moveDir = (direction.x > 0) ? Vector3.right : Vector3.left;
-            astar.SetGridAndTilemap(gridList[num], num);
+            astar.SetGridAndTilemap(gridList[num]);
 
-            num = (num == 0) ? 1 : 0;
+            num = (num == store) ? store : outside;
 
         }
 
     }
 
+    private void PosInit()
+    {
+        targetPosStorage = GameObject.Find("DayManager").GetComponent<TargetPosStorage>();
+
+        gridList = targetPosStorage.SetGrid(gridList);
+        mapTile = targetPosStorage.SetMaptile(mapTile);
+        obstacleTile = targetPosStorage.SetObstacletile(obstacleTile);
+
+        castleDoorPos = targetPosStorage.CastleDoor;
+        outsideDoorPos = targetPosStorage.OutsideDoorPos;
+        storeDoorPos = targetPosStorage.StoreDoorPos;
+        playerPos = targetPosStorage.PlayerPos;
+    }
+
     public void TableButton()
     {
-        state.ChangeState(new NpcMoveState(npc, table));
+        state.ChangeState(new NpcMoveState(npc, tablePos));
     }
     public void PlayerButton()
     {
-        state.ChangeState(new NpcMoveState(npc, player));
+        state.ChangeState(new NpcMoveState(npc, playerPos));
     }
     public void storeDoorButton()
     {
-        state.ChangeState(new NpcMoveState(npc, storeDoor));
+        state.ChangeState(new NpcMoveState(npc, storeDoorPos));
     }
     public void OutDoorButton()
     {
-        state.ChangeState(new NpcMoveState(npc, outsideDoor));
+        state.ChangeState(new NpcMoveState(npc, outsideDoorPos));
+    }
+    public void CastleButton()
+    {
+        state.ChangeState(new NpcMoveState(npc, castleDoorPos));
     }
 }

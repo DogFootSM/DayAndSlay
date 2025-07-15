@@ -19,7 +19,6 @@ public class Node
     public int fCost  => gCost + hCost; 
 }
 
-[RequireComponent (typeof(CircleCollider2D))]
 public class AstarPath : MonoBehaviour
 {
     [SerializeField] private Tilemap mapTileMap;
@@ -249,7 +248,7 @@ public class AstarPath : MonoBehaviour
     /// Change grid & tilemap for Npc by LJH
     /// </summary>
     /// <param name="grid"></param>
-    public void SetGridAndTilemap(Grid grid, int gridNum)
+    public void SetGridAndTilemap(Grid grid)
     {
         mapTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
         obstacleTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
