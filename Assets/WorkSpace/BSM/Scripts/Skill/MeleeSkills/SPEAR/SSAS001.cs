@@ -48,6 +48,8 @@ public class SSAS001 : MeleeSkill
         }
     }
 
+    public override void ApplyPassiveEffects() { }
+
     /// <summary>
     /// 현재 스킬 레벨에 따른 데미지 적용
     /// </summary>

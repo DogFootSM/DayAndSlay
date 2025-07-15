@@ -13,6 +13,8 @@ public class SSAS002 : MeleeSkill
         Debug.Log($"{skillNode.skillData.SkillName} 스킬 사용");
     }
 
+    public override void ApplyPassiveEffects() {}
+
     public override float GetSkillDamage()
     {
         Debug.Log($"{skillNode.skillData.SkillName} 스킬 스탯 조정");

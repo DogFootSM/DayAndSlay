@@ -7,6 +7,8 @@ public class SkillNode
 {
     public SkillData skillData;
     public List<SkillNode> PrerequisiteSkillNode => prerequisiteSkillNode;
+    public PlayerModel PlayerModel => playerModel;
+    
     private List<SkillNode> prerequisiteSkillNode = new();
     private List<SkillNode> nextSkillNode = new();
     private PlayerModel playerModel;
@@ -42,6 +44,12 @@ public class SkillNode
         if (!skillData.IsActive && curSkillLevel > 0)
         {
             //TODO: 모델에 패시브 스킬 적용
+            PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(this) as PassiveSkill;
+
+            if (passiveSkill != null)
+            {
+                passiveSkill.ApplyPassiveEffects();
+            } 
         }
     }
 
