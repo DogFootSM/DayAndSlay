@@ -17291,7 +17291,7 @@ GameObject:
   - component: {fileID: 2550062057574649895}
   - component: {fileID: 3517727714558165166}
   - component: {fileID: 4903277373971030276}
-  - component: {fileID: 1989615068866138143}
+  - component: {fileID: 7611524421942184175}
   m_Layer: 5
   m_Name: SlotInner
   m_TagString: Untagged
@@ -17348,8 +17348,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -17358,7 +17358,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.25
---- !u!114 &1989615068866138143
+--- !u!114 &7611524421942184175
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17367,10 +17367,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5046797998049302141}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Script: {fileID: 11500000, guid: adb30198aa32dd140b5750692dd48104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
+  radius: 15
+  image: {fileID: 4903277373971030276}
 --- !u!1 &5077365607192437472
 GameObject:
   m_ObjectHideFlags: 0
