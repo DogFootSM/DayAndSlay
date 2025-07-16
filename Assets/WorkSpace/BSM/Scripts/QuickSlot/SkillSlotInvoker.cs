@@ -62,6 +62,7 @@ public class SkillSlotInvoker : MonoBehaviour
         else
         {
             //TODO: 스킬 쿨타임 사용 불가 UI 라던지 사용 불가 사운드 
+            Debug.Log($"{skillNode.skillData.SkillName} 쿨타임 초기화 x");
         } 
         
         return 0;

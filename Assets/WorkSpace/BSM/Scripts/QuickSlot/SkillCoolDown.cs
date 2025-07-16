@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,13 @@ public class SkillCoolDown : MonoBehaviour
     [SerializeField] private Image coolDownImage;
 
     private Coroutine coolDownResetCo;
-    
+    private RectTransform rectTransform;
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
+
     /// <summary>
     /// 쿨타임 UI 코루틴 호출
     /// </summary>
@@ -46,4 +53,13 @@ public class SkillCoolDown : MonoBehaviour
             coolDownResetCo = null;
         } 
     }
+
+    /// <summary>
+    /// CoolDown UI 위치 초기화
+    /// </summary>
+    public void UpdateAnchorPreset()
+    {
+        rectTransform.anchoredPosition = Vector2.zero; 
+    }
+    
 }

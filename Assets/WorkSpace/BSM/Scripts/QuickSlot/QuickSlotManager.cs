@@ -118,7 +118,24 @@ public class QuickSlotManager : MonoBehaviour
     public void SlotSwapRequest(QuickSlotType beginSlot, QuickSlotType endSlot)
     {
         quickSlotSwap.QuickSlotSkillNodeSwap(beginSlot, endSlot, curWeaponType);
-        quickSlotRegister.UpdateSlotUI(beginSlot, endSlot, curWeaponType);
+        quickSlotRegister.UpdateSlotUI(beginSlot, endSlot, curWeaponType); 
+        SkillCoolDownUIChange(beginSlot, endSlot);
+    }
+
+    private void SkillCoolDownUIChange(QuickSlotType beginSlot, QuickSlotType endSlot)
+    {
+        GameObject updateBeginParent = CoolDownUIHub.CoolDownImageMap[endSlot].transform.parent.gameObject;
+        GameObject updateEndParent = CoolDownUIHub.CoolDownImageMap[beginSlot].transform.parent.gameObject;
+        
+        CoolDownUIHub.CoolDownImageMap[beginSlot].transform.SetParent(updateBeginParent.transform);
+        CoolDownUIHub.CoolDownImageMap[endSlot].transform.SetParent(updateEndParent.transform);
+
+        SkillCoolDown temp = CoolDownUIHub.CoolDownImageMap[beginSlot];
+        CoolDownUIHub.CoolDownImageMap[beginSlot] = CoolDownUIHub.CoolDownImageMap[endSlot];
+        CoolDownUIHub.CoolDownImageMap[endSlot] = temp;
+        
+        CoolDownUIHub.CoolDownImageMap[beginSlot].UpdateAnchorPreset();
+        CoolDownUIHub.CoolDownImageMap[endSlot].UpdateAnchorPreset();
     }
     
 }

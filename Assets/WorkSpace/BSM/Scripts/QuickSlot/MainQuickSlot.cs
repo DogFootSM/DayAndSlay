@@ -5,6 +5,7 @@ using Nobi.UiRoundedCorners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MainQuickSlot : MonoBehaviour,
@@ -16,10 +17,11 @@ public class MainQuickSlot : MonoBehaviour,
     [SerializeField] private GraphicRaycaster mainQuickSlotRaycaster;
     [SerializeField] private Image beginDragImage;
     [SerializeField] private SkillCoolDown skillCoolDown;
+    [SerializeField] public Image skillIconRadiusParent;
     
     public QuickSlotType CurrentQuickSlot => curQuickSlotType;
     public Image SkillIconImage => skillIconImage;
-    public GameObject SkillIconObject;
+    
     
     private List<RaycastResult> raycastResults = new List<RaycastResult>();
     private MainQuickSlot beginSlot;
@@ -32,16 +34,20 @@ public class MainQuickSlot : MonoBehaviour,
         CoolDownUIHub.CoolDownUIRegistry(curQuickSlotType, skillCoolDown);
     }
 
+    /// <summary>
+    /// 메인 퀵슬롯 UI 정보 설정
+    /// </summary>
+    /// <param name="skillNode"></param>
     public void SetMainQuickSlot(SkillNode skillNode = null)
     {
         if (skillNode == null)
         {
-            SkillIconObject.SetActive(false);
+            skillIconRadiusParent.color = new Color(1f, 1f, 1f, 0f);
             skillIconImage.sprite = null;
         }
         else
         {
-            SkillIconObject.SetActive(true);
+            skillIconRadiusParent.color = new Color(1f, 1f, 1f, 1f);
             skillIconImage.sprite = skillNode.skillData.SkillIcon; 
         }
     }
