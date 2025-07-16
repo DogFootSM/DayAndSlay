@@ -1,38 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NpcMoveState : INpcState
+public class MoveState : INpcState
 {
-    private NPC npc;
-    private Vector3 targetPos;
-    private AstarPath astar;
+    private NpcNew npc;
+    private Vector3 target;
 
-    public NpcMoveState(NPC npc, Vector3 targetPos)
+    public MoveState(NpcNew npc, Vector3 target)
     {
         this.npc = npc;
-        astar = npc.GetComponentInChildren<AstarPath>();
-        this.targetPos = targetPos;
+        this.target = target;
     }
 
     public void Enter()
     {
-        Debug.Log($"지정된 대상의 위치 {targetPos}");
-        npc.targetSensor.targetPos = this.targetPos;
-        astar.DetectTarget(npc.transform.position, targetPos);
-        npc.NPCMove();
+        npc.MoveTo(target);
     }
 
-    public void Update()
-    {
-        if (Vector3.Distance(npc.transform.position, targetPos) <= 1f)
-        {
-            
-        }
-    }
-
-    public void Exit()
-    {
-        npc.SetMoving(false);
-    }
+    public void Update() { }
+    public void Exit() { }
 }

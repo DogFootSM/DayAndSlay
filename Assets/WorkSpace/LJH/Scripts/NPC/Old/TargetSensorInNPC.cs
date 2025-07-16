@@ -19,7 +19,7 @@ public class TargetSensorInNPC : MonoBehaviour
     [Header("Component")]
     [SerializeField] private NPC npc;
     [SerializeField] private AstarPath astar;
-    [SerializeField] private NpcStateMachine state;
+    [SerializeField] private OldNpcStateMachine state;
 
     [Header("Storage")]
     [SerializeField] private TargetPosStorage targetPosStorage;
@@ -61,40 +61,35 @@ public class TargetSensorInNPC : MonoBehaviour
         tablePos = table.transform.position;
     }
 
-    private void Set_Target()
+    public void Set_Target()
     {
         npc.SetMoving(true);
         Vector3 npcPos = npc.transform.position;
 
         Grid curGrid = GetCurrentGridNpc(npcPos, gridList);
 
-        Debug.Log($"{npc.name} 의 IsBuyer는 {npc.IsBuyer}");
 
         if (npc.IsBuyer)
         {
-            Debug.Log($"curGrid = {curGrid}");
-            Debug.Log($"gridList[store] = {gridList[store]}");
             if (curGrid == gridList[store])
             {
-                Debug.Log("상점 그리드");
-                //상태 패턴 또는 분기 전환식으로 타겟 바꿔주면 됨
                 if (npc.wantItem != null)
                 {
                     if (table != null)
                     {
                         Debug.Log("테이블 실행됨");
-                        state.ChangeState(new NpcMoveState(npc, tablePos));
+                        state.ChangeState(new OldNpcMoveState(npc, tablePos));
                     }
                     else if (table == null)
                     {
                         Debug.Log("플레이어 실행됨");
-                        state.ChangeState(new NpcMoveState(npc, playerPos));
+                        state.ChangeState(new OldNpcMoveState(npc, playerPos));
                     }
                 }
                 else
                 {
                     Debug.Log("상점 퇴장 실행됨");
-                    state.ChangeState(new NpcMoveState(npc, storeDoorPos));
+                    state.ChangeState(new OldNpcMoveState(npc, storeDoorPos));
                 }
             }
             else
@@ -103,20 +98,19 @@ public class TargetSensorInNPC : MonoBehaviour
                 if (npc.wantItem != null)
                 {
                     Debug.Log("상점 입장 실행됨");
-                    state.ChangeState(new NpcMoveState(npc, outsideDoorPos));
+                    state.ChangeState(new OldNpcMoveState(npc, outsideDoorPos));
                 }
 
                 else
                 {
                     Debug.Log("성문 실행됨");
-                    state.ChangeState(new NpcMoveState(npc, castleDoorPos));
+                    state.ChangeState(new OldNpcMoveState(npc, castleDoorPos));
                 }
             }
         }
         else
         {
-            Debug.Log("방황함");
-            state.ChangeState(new NpcMoveState(npc, randomPos));
+            state.ChangeState(new OldNpcMoveState(npc, randomPos));
         }
 
     }
@@ -142,11 +136,14 @@ public class TargetSensorInNPC : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            Vector3 npcPos = npc.transform.position;
 
+            Grid curGrid = GetCurrentGridNpc(npcPos, gridList);
+
+            yield return new WaitForSeconds(0.1f);
+
+            num = (curGrid == gridList[outside]) ? store : outside;
             astar.SetGridAndTilemap(gridList[num]);
-
-            num = (num == store) ? store : outside;
 
         }
 
@@ -179,22 +176,22 @@ public class TargetSensorInNPC : MonoBehaviour
 
     public void TableButton()
     {
-        state.ChangeState(new NpcMoveState(npc, tablePos));
+        state.ChangeState(new OldNpcMoveState(npc, tablePos));
     }
     public void PlayerButton()
     {
-        state.ChangeState(new NpcMoveState(npc, playerPos));
+        state.ChangeState(new OldNpcMoveState(npc, playerPos));
     }
     public void storeDoorButton()
     {
-        state.ChangeState(new NpcMoveState(npc, storeDoorPos));
+        state.ChangeState(new OldNpcMoveState(npc, storeDoorPos));
     }
     public void OutDoorButton()
     {
-        state.ChangeState(new NpcMoveState(npc, outsideDoorPos));
+        state.ChangeState(new OldNpcMoveState(npc, outsideDoorPos));
     }
     public void CastleButton()
     {
-        state.ChangeState(new NpcMoveState(npc, castleDoorPos));
+        state.ChangeState(new OldNpcMoveState(npc, castleDoorPos));
     }
 }

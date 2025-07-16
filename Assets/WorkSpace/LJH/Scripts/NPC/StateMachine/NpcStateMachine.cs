@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NpcStateMachine : MonoBehaviour
+public class NpcStateMachine
 {
-    public INpcState currentState;
-    
+    private INpcState currentState;
 
     public void ChangeState(INpcState newState)
     {
         currentState?.Exit();
         currentState = newState;
-        currentState.Enter();
+        currentState?.Enter();
     }
 
-    public void Update()
+    public void Tick()
     {
         currentState?.Update();
     }
+
+    public INpcState CurrentState => currentState;
 }

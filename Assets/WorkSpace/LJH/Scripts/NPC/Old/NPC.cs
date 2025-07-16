@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -34,6 +35,8 @@ public class NPC : MonoBehaviour
 
     //npc의 인내심
     private int patience = 60;
+
+    [SerializeField] PopUp talkPopUp;
 
     private void Start()
     {
@@ -71,7 +74,7 @@ public class NPC : MonoBehaviour
     {
         int itemIndex = Random.Range(0, wantItemList.Count);
         //wantItem = wantItemList[itemIndex];
-        wantItem = wantItemList[0];
+        wantItem = wantItemList[1];
     }
 
 
@@ -90,13 +93,6 @@ public class NPC : MonoBehaviour
         //테스트끝나면 인보크 삭제
         TableScan();
 
-    }
-
-    private void DontGoStore()
-    {
-        //Todo : 상점으로 가지 않는 엔피씨
-        //상점 바깥 맵에서 이동해야함
-        Debug.Log("상점을 가지 않는 개념으로 생성됨");
     }
 
     /// <summary>
@@ -119,17 +115,39 @@ public class NPC : MonoBehaviour
         }
     }
 
-    public void BuyItem(ItemData item)
+    public void BuyItem(GameObject seller, ItemData item)
     {
+        if(seller.GetComponent<Table>())
+        {
+            Table table = seller.GetComponent<Table>();
+            int gold = table.curItemData.SellPrice;
 
+            table.curItemData = null;
+            wantItem = null;
+            //Todo : 플레이어에게 골드 전달해야함
+            
+        }
+        else
+        {
+            TalkToPlayer();
+        }
+    }
+
+    private void TalkToPlayer()
+    {
+        talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem}을 구매하고 싶은데.. \n 매물이 있을까요?";
+
+        talkPopUp.gameObject.SetActive(true);
     }
 
 
     public void NPCMove()
     {
         if (moveCoroutine != null)
+        {
             StopCoroutine(moveCoroutine);
-
+            moveCoroutine = null;
+        }
         moveCoroutine = StartCoroutine(MoveCoroutine());
     }
 

@@ -22,6 +22,12 @@ public class Table : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
+        if(collision.gameObject.CompareTag("NPC"))
+        {
+            NPC npc= collision.gameObject.GetComponent<NPC>();
+            npc.BuyItem(this.gameObject, npc.wantItem);
+        }
+
         if (tableAskPopup == null)
         {
             //TODO: POPUP TEXT 구조 수정되면 GetComponent로 받아오는건 안해도 될듯

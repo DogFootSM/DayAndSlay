@@ -35,7 +35,7 @@ public class NpcSpawner : MonoBehaviour
             int npcIndex = Random.Range(0, npcPreset.Count);
             npcList.Add(container.InstantiatePrefabForComponent<NPC>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
             npcList[npcList.Count - 1].IsBuyer = Random.value < 1f / npcBuyProbability;
-            npcList[npcList.Count - 1].name = $"npc +{npcList.Count - 1}";
+            npcList[npcList.Count - 1].name = $"npc{npcList.Count - 1}";
         }
     }
 

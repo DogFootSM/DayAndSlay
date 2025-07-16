@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface INpcState
 {
-    public abstract void Enter();
-    public abstract void Update();
-    public abstract void Exit();
+    void Enter();
+    void Update();
+    void Exit();
 }
