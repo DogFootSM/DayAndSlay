@@ -10,7 +10,15 @@ public class NpcIdleState : INpcState
     public void Enter()
     {
         npc.SetMoving(false);
-        npc.SearchTable();
+
+        if (npc.IsBuyer)
+        {
+            npc.SearchTable();
+        }
+        else
+        {
+            npc.StateMachine.ChangeState(new NpcDecisionState(npc));
+        }
     }
 
     public void Update() { }

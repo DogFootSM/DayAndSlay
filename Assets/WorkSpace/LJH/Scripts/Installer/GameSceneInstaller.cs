@@ -8,6 +8,8 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] GameObject weaponForge;
     [SerializeField] GameObject armorForge;
 
+    [SerializeField] TargetPosStorage targetPosStorage;
+
     [Header("·Îµù¾À")]
     [SerializeField] SceneReference loadingScene;
     [Header("´øÁ¯¾À")]
@@ -15,7 +17,7 @@ public class GameSceneInstaller : MonoInstaller
     [Header("¿ÜºÎ¾À")]
     [SerializeField] SceneReference outsideScene;
 
-    [SerializeField] List<NPC> npc = new List<NPC>();
+    [SerializeField] List<NpcNew> npc = new List<NpcNew>();
 
     [SerializeField] ItemStorage itemManager;
 
@@ -45,7 +47,7 @@ public class GameSceneInstaller : MonoInstaller
             .FromInstance(outsideScene);
 
         Container
-            .Bind<List<NPC>>()
+            .Bind<List<NpcNew>>()
             .FromInstance(npc);
 
         Container
@@ -59,5 +61,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<TestPlayer>()
             .FromInstance (player);
+
+        Container
+            .Bind<TargetPosStorage>()
+            .FromInstance(targetPosStorage);
     }
 }

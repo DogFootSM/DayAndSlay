@@ -18,6 +18,7 @@ public class NpcNew : MonoBehaviour
     public ItemData wantItem;
     [SerializeField] private PopUp talkPopUp;
     [SerializeField] private TargetSensorNew targetSensor;
+    [SerializeField] private AstarPath astarPath;
 
     private Table tableWithItem;
     public Vector3? TargetPos => tableWithItem ? tableWithItem.transform.position : null;
@@ -25,12 +26,12 @@ public class NpcNew : MonoBehaviour
     private Coroutine moveCoroutine;
     private float moveSpeed = 3f;
     private bool isMoving;
-
+    
     private void Start()
     {
         Init();
         SetupItemWish();
-        StateMachine.ChangeState(new NpcIdleState(this));
+        StateMachine.ChangeState(new NpcDecisionState(this));
     }
 
     private void Update()
@@ -41,6 +42,8 @@ public class NpcNew : MonoBehaviour
     private void Init()
     {
         targetSensor.Init(this);
+        UpdateGrid();
+
     }
 
     private void SetupItemWish()
@@ -71,7 +74,14 @@ public class NpcNew : MonoBehaviour
 
     public void MoveTo(Vector3 targetPos)
     {
-        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+        UpdateGrid();
+        
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        
+        astarPath.DetectTarget(transform.position, targetPos);
         moveCoroutine = StartCoroutine(MoveCoroutine(targetPos));
     }
 
@@ -79,11 +89,36 @@ public class NpcNew : MonoBehaviour
     {
         isMoving = true;
 
-        while (Vector2.Distance(transform.position, target) > 0.1f)
+        var path = astarPath.path;
+
+        if (path == null || path.Count == 0)
         {
-            Vector3 dir = (target - transform.position).normalized;
-            transform.position += dir * moveSpeed * Time.deltaTime;
-            yield return null;
+            Debug.LogWarning("A* 경로 없음, 이동 중단");
+            isMoving = false;
+            yield break;
+        }
+
+        foreach (var point in path)
+        {
+            // 1. 먼저 X축 이동
+            while (Mathf.Abs(transform.position.x - point.x) > 0.05f)
+            {
+                float dirX = Mathf.Sign(point.x - transform.position.x);
+                transform.position += new Vector3(dirX * moveSpeed * Time.deltaTime, 0, 0);
+                yield return null;
+            }
+
+            // 2. 그 다음 Y축 이동
+            while (Mathf.Abs(transform.position.y - point.y) > 0.05f)
+            {
+                float dirY = Mathf.Sign(point.y - transform.position.y);
+                transform.position += new Vector3(0, dirY * moveSpeed * Time.deltaTime, 0);
+                yield return null;
+            }
+
+            // 위치 보정
+            transform.position = new Vector3(point.x, point.y, transform.position.z);
+            yield return new WaitForSeconds(0.05f);
         }
 
         isMoving = false;
@@ -92,8 +127,8 @@ public class NpcNew : MonoBehaviour
 
     public void TalkToPlayer()
     {
-        talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을 구매하고 싶은데..\n매물이 있을까요?";
         talkPopUp.gameObject.SetActive(true);
+        talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
         StateMachine.ChangeState(new WaitItemState(this));
     }
 
@@ -112,6 +147,15 @@ public class NpcNew : MonoBehaviour
     {
         Vector3 door = targetSensor.GetLeavePosition();
         StateMachine.ChangeState(new MoveState(this, door));
+    }
+
+    public void UpdateGrid()
+    {
+        Grid currentGrid = targetSensor.GetCurrentGrid(transform.position);
+        if (currentGrid != null)
+        {
+            astarPath.SetGridAndTilemap(currentGrid);
+        }
     }
 }
 

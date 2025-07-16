@@ -65,7 +65,7 @@ public class TargetPosStorage : MonoBehaviour
         }
     }
 
-    public List<Grid> SetGrid(List<Grid> gridList) => gridList = this.gridList;
-    public List<Tilemap> SetMaptile(List<Tilemap> mapTile) => mapTile = this.mapTile;
-    public List<Tilemap> SetObstacletile(List<Tilemap> obstacleTile) => obstacleTile = this.obstacleTile;
+    public List<Grid> GetGridList() => gridList;
+    public List<Tilemap> GetMapTileList() => mapTile;
+    public List<Tilemap> GetObstacleTileList() => obstacleTile;
 }

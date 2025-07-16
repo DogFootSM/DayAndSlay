@@ -153,9 +153,9 @@ public class TargetSensorInNPC : MonoBehaviour
     {
         targetPosStorage = GameObject.Find("DayManager").GetComponent<TargetPosStorage>();
 
-        gridList = targetPosStorage.SetGrid(gridList);
-        mapTile = targetPosStorage.SetMaptile(mapTile);
-        obstacleTile = targetPosStorage.SetObstacletile(obstacleTile);
+        //gridList = targetPosStorage.SetGrid(gridList);
+        //mapTile = targetPosStorage.SetMaptile(mapTile);
+        //obstacleTile = targetPosStorage.SetObstacletile(obstacleTile);
 
         castleDoorPos = targetPosStorage.CastleDoor;
         outsideDoorPos = targetPosStorage.OutsideDoorPos;
