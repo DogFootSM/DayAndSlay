@@ -17,6 +17,8 @@ public class SkillNode
     private bool unLocked; 
     public bool UnLocked => unLocked;
     public int CurSkillLevel => curSkillLevel;
+
+    public bool IsCoolDownReset;
     
     public SkillNode(SkillData skillData, PlayerModel playerModel)
     {
@@ -73,7 +75,8 @@ public class SkillNode
     {
         curSkillLevel = skillLevel;
         unLocked = lockState;
-
+        IsCoolDownReset = true;
+        
         if (!skillData.IsActive && curSkillLevel > 0)
         {
             //모델에 패시브 스킬 적용
