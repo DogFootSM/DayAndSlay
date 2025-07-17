@@ -7,7 +7,8 @@ using UnityEngine;
 public class QuickSlotRegister : MonoBehaviour
 {
     [SerializeField] private GameObject registerCanvas;
-
+    [SerializeField] private QuickSlotToastMessage quickSlotToast;
+    
     [Header("스킬창 등록 퀵슬롯 부모")] [SerializeField]
     private GameObject previewSlotsParent;
 
@@ -56,7 +57,7 @@ public class QuickSlotRegister : MonoBehaviour
         {
             if (!compareSkillNode.IsCoolDownReset)
             {
-                Debug.Log("쿨타임 진행중 바꿀수 없음");
+                quickSlotToast.ShowToast();
                 return;
             }
             
@@ -87,14 +88,12 @@ public class QuickSlotRegister : MonoBehaviour
         //해당 퀵슬롯에 스킬이 들어있지 않은 상태
         else
         {
-            
-            
             //다른 퀵슬롯에 해당 스킬이 할당되어 있는 상태
             if (QuickSlotData.BeforeQuickSlotTypeDict.ContainsKey(skillNode))
             {
                 if (!skillNode.IsCoolDownReset)
                 {
-                    Debug.Log("쿨타임 진행하고 있음");
+                    quickSlotToast.ShowToast();
                     return;
                 }
                 
@@ -115,6 +114,8 @@ public class QuickSlotRegister : MonoBehaviour
                 mainQuickSlots[(int)quickSlotType].SetMainQuickSlot(skillNode); 
             } 
         } 
+        
+        registerCanvas.SetActive(false);
     }
 
     /// <summary>
