@@ -19,8 +19,6 @@ public class Node
     public int fCost  => gCost + hCost; 
 }
 
-[RequireComponent(typeof(TargetSensor))]
-[RequireComponent (typeof(CircleCollider2D))]
 public class AstarPath : MonoBehaviour
 {
     [SerializeField] private Tilemap mapTileMap;
@@ -77,7 +75,6 @@ public class AstarPath : MonoBehaviour
     {
         this.startPos = (Vector2Int)mapGrid.WorldToCell(startPos);
         this.targetPos = (Vector2Int)mapGrid.WorldToCell(targetPos);
-        //Debug.Log("플레이어 감지, 플레이어 추적 시작");
 
         FindPath(this.startPos, this.targetPos); 
     } 

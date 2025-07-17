@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -9,38 +10,51 @@ public class NPC : MonoBehaviour
 
     [Inject] private ItemStorage itemManager;
 
+    public TargetSensorInNPC targetSensor;
+
     [SerializeField] private List<ItemData> wantItemList = new List<ItemData>();
 
-    [SerializeField] private ItemData wantItem;
+    public ItemData wantItem;
     [SerializeField] private List<Table> tables = new List<Table>();
+
+    //Seller (player or table)
+    GameObject seller;
+    [Inject] TestPlayer player;
 
     //이동 관련
     private bool isMoving;
     private AstarPath astarPath;
-    Coroutine moveCoroutine;
-    int moveSpeed = 3;
+    private Coroutine moveCoroutine;
+    private int moveSpeed = 3;
 
-    private Table table;
-    public Table _table => table;
+    /// <summary>
+    /// NPC가 원하는 아이템을 들고있는 테이블
+    /// </summary>
+    [SerializeField]  private Table tablewithItem;
+    public Table _table => tablewithItem;
+
+    //npc의 인내심
+    private int patience = 60;
+
+    [SerializeField] PopUp talkPopUp;
 
     private void Start()
     {
         Init();
         NpcBehaviour();
+
     }
 
 
     private void NpcBehaviour()
     {
-        if (!IsBuyer)
+        if (IsBuyer)
         {
-            DontGoStore();
-            return;
+            ItemListSetting(itemManager.ItemDatas);
+            PickItem();
         }
-
-        ItemListSetting(itemManager.ItemDatas);
-        PickItem();
-        GoStore();
+        
+        BuyerHaviour();
     }
 
     /// <summary>
@@ -60,11 +74,11 @@ public class NPC : MonoBehaviour
     {
         int itemIndex = Random.Range(0, wantItemList.Count);
         //wantItem = wantItemList[itemIndex];
-        wantItem = wantItemList[0];
+        wantItem = wantItemList[1];
     }
 
 
-    private void GoStore()
+    private void BuyerHaviour()
     {
         //Todo : 상점으로 이동하는 엔피씨
         //상점 내부로 이동해야함
@@ -77,19 +91,8 @@ public class NPC : MonoBehaviour
         // 아이템 없음 > 엔피씨 대기하다가 나감
 
         //테스트끝나면 인보크 삭제
-        Invoke("NPCMove", 3f);
-
-    }
-
-    private void DontGoStore()
-    {
-        //Todo : 상점으로 가지 않는 엔피씨
-        //상점 바깥 맵에서 이동해야함
-    }
-
-    private void InStoreBehaviour()
-    {
         TableScan();
+
     }
 
     /// <summary>
@@ -100,32 +103,58 @@ public class NPC : MonoBehaviour
         Table[] tableArray = FindObjectsOfType<Table>();
         tables = new List<Table>(tableArray);
 
-        WantItemCheck();
-    }
-    /// <summary>
-    /// 상점맵 > 상점맵에서 구매할 아이템 있는지 체크
-    /// </summary>
-    private void WantItemCheck()
-    {
-        for(int i = 0; i < tables.Count; i++)
+        for (int i = 0; i < tables.Count; i++)
         {
-            if(wantItem == tables[i].CurItemDataData)
+            if (wantItem == tables[i].CurItemDataData)
             {
                 //테이블에 아이템이 있는 경우 테이블로 이동하여 아이템 구매
-                table = tables[i];
+                tablewithItem = tables[i];
+
+                targetSensor.InjectTable(tablewithItem);
             }
         }
     }
 
-    private void NPCMove()
+    public void BuyItem(GameObject seller, ItemData item)
     {
+        if(seller.GetComponent<Table>())
+        {
+            Table table = seller.GetComponent<Table>();
+            int gold = table.curItemData.SellPrice;
+
+            table.curItemData = null;
+            wantItem = null;
+            //Todo : 플레이어에게 골드 전달해야함
+            
+        }
+        else
+        {
+            TalkToPlayer();
+        }
+    }
+
+    private void TalkToPlayer()
+    {
+        talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem}을 구매하고 싶은데.. \n 매물이 있을까요?";
+
+        talkPopUp.gameObject.SetActive(true);
+    }
+
+
+    public void NPCMove()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
         moveCoroutine = StartCoroutine(MoveCoroutine());
-        Debug.Log("무브 코루틴 실행");
     }
 
     private IEnumerator MoveCoroutine()
     {
         isMoving = true;
+        yield return new WaitForSeconds(1f);
 
         if (astarPath.path != null && astarPath.path.Count > 1)
         {
@@ -150,6 +179,7 @@ public class NPC : MonoBehaviour
                     }
                     else
                     {
+                        SetMoving(false);
                         break; // 목표에 도달
                     }
 
@@ -166,7 +196,7 @@ public class NPC : MonoBehaviour
                     yield return null;
                 }
 
-                transform.position = target; // 위치 스냅
+                transform.position = target;
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -175,8 +205,16 @@ public class NPC : MonoBehaviour
         moveCoroutine = null;
     }
 
+    public void SetMoving(bool moved)
+    {
+        isMoving = moved;
+    }
+
+    public bool GetMoving() => isMoving;
+
     private void Init()
     {
         astarPath = transform.GetComponentInChildren<AstarPath>();
+        seller = player.gameObject;
     }
 }
