@@ -14,6 +14,7 @@ public class NpcNew : MonoBehaviour
     [Inject] private ItemStorage itemManager;
     [Inject] private TestPlayer player;
 
+    [SerializeField] private Animator animator;
     [SerializeField] private List<ItemData> wantItemList = new();
     public ItemData wantItem;
     [SerializeField] private PopUp talkPopUp;
@@ -26,7 +27,9 @@ public class NpcNew : MonoBehaviour
     private Coroutine moveCoroutine;
     private float moveSpeed = 3f;
     private bool isMoving;
-    
+
+    private string currentAnim = "";
+
     private void Start()
     {
         Init();
@@ -95,24 +98,29 @@ public class NpcNew : MonoBehaviour
         {
             Debug.LogWarning("A* 경로 없음, 이동 중단");
             isMoving = false;
+            PlayDirectionAnimation(Vector3.zero);
             yield break;
         }
 
         foreach (var point in path)
         {
-            // 1. 먼저 X축 이동
+            // X축 먼저 이동
             while (Mathf.Abs(transform.position.x - point.x) > 0.05f)
             {
                 float dirX = Mathf.Sign(point.x - transform.position.x);
-                transform.position += new Vector3(dirX * moveSpeed * Time.deltaTime, 0, 0);
+                Vector3 moveDir = new Vector3(dirX, 0, 0);
+                transform.position += moveDir * moveSpeed * Time.deltaTime;
+                PlayDirectionAnimation(moveDir);
                 yield return null;
             }
 
-            // 2. 그 다음 Y축 이동
+            // Y축 이동
             while (Mathf.Abs(transform.position.y - point.y) > 0.05f)
             {
                 float dirY = Mathf.Sign(point.y - transform.position.y);
-                transform.position += new Vector3(0, dirY * moveSpeed * Time.deltaTime, 0);
+                Vector3 moveDir = new Vector3(0, dirY, 0);
+                transform.position += moveDir * moveSpeed * Time.deltaTime;
+                PlayDirectionAnimation(moveDir);
                 yield return null;
             }
 
@@ -122,6 +130,7 @@ public class NpcNew : MonoBehaviour
         }
 
         isMoving = false;
+        PlayDirectionAnimation(Vector3.zero); // Idle로 전환
         StateMachine.ChangeState(new NpcIdleState(this));
     }
 
@@ -155,6 +164,24 @@ public class NpcNew : MonoBehaviour
         if (currentGrid != null)
         {
             astarPath.SetGridAndTilemap(currentGrid);
+        }
+    }
+
+    private void PlayDirectionAnimation(Vector3 dir)
+    {
+        string nextAnim = "";
+
+        if (dir.x > 0) nextAnim = "RightMove";
+        else if (dir.x < 0) nextAnim = "LeftMove";
+        else if (dir.y > 0) nextAnim = "UpMove";
+        else if (dir.y < 0) nextAnim = "DownMove";
+        else nextAnim = "Idle";
+
+        // 같은 애니메이션 반복 호출 방지
+        if (nextAnim != currentAnim)
+        {
+            animator.Play(nextAnim);
+            currentAnim = nextAnim;
         }
     }
 }
