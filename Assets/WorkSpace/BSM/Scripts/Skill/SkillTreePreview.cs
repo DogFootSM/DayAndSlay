@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ public class SkillTreePreview : MonoBehaviour
     [SerializeField] private Image previewSkillIcon;
     [SerializeField] private Button previewRegisterButton;
 
-
+    
     private List<SkillSet> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;
 
@@ -77,6 +78,7 @@ public class SkillTreePreview : MonoBehaviour
 
                 SkillSet skillSet = skillInstance.GetComponent<SkillSet>();
                 skillSet.CurSkillNode = skillNode[(WeaponType)i][j];
+                skillSet.UpdateSkillPreviewPrerequisite += UpdatePrerequisiteSkillNode;
                 skillNodeButtons.Add(skillSet);
             }
         }
@@ -101,35 +103,54 @@ public class SkillTreePreview : MonoBehaviour
     public void UpdateSkillPreview(SkillNode skillNode)
     {
         if (!previewTab.activeSelf) previewTab.SetActive(true);
-
+        
         selectedSkillNode = skillNode;
         previewSkillNameText.text = skillNode.skillData.SkillId;
         previewSkillDescriptionText.text = skillNode.skillData.SkillDescription;
         previewSkillIcon.sprite = skillNode.skillData.SkillIcon;
+        
+        previewRegisterButton.gameObject.SetActive(selectedSkillNode.skillData.IsActive);
+        
         previewRegisterButton.interactable = selectedSkillNode.CurSkillLevel > 0;
+        UpdatePrerequisiteSkillNode();
+    }
 
-        int prerequisiteCount = selectedSkillNode.skillData.prerequisiteSkillsId.Count;
-
+    /// <summary>
+    /// 선행 스킬 필요 안내 UI 업데이트
+    /// </summary>
+    /// <param name="skillNode">스킬 등록창에서 선택한 스킬 노드</param>
+    public void UpdatePrerequisiteSkillNode(SkillNode skillNode = null)
+    {
+        if (selectedSkillNode == null)
+        {
+            selectedSkillNode = skillNode;
+        }
+        
+        int prerequisiteCount = selectedSkillNode.PrerequisiteSkillNode.Where(x => x.CurSkillLevel < 1).Count();
+        
         previewSkillPrerequisiteText.gameObject.SetActive(prerequisiteCount != 0);
 
         if (prerequisiteCount == 0) return;
-
+        
         string prerequisite = "";
 
-        for (int i = 0; i < selectedSkillNode.skillData.prerequisiteSkillsId.Count; i++)
+        for (int i = 0; i < selectedSkillNode.PrerequisiteSkillNode.Count; i++)
         {
-            prerequisite += selectedSkillNode.skillData.prerequisiteSkillsId[i];
-
-            if (i < prerequisiteCount - 1)
+            if (selectedSkillNode.PrerequisiteSkillNode[i].CurSkillLevel < 1)
             {
-                prerequisite += ", ";
-            }
-        }
-
+                prerequisite += selectedSkillNode.PrerequisiteSkillNode[i].skillData.SkillId;
+                
+                if (i < prerequisiteCount - 1)
+                {
+                    prerequisite += ", ";
+                }
+            } 
+        } 
+        
         prerequisite += " 스킬의 선행 조건 달성이 필요합니다.";
-        previewSkillPrerequisiteText.text = prerequisite;
+        previewSkillPrerequisiteText.text = prerequisite; 
     }
-
+    
     /// <summary>
     /// 스킬 프리뷰 항목 초기화
     /// </summary>

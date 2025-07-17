@@ -29,6 +29,11 @@ public class PlayerStats
     public int VisibleIntelligence;     //보여질 캐릭터 지능 능력치
     public int VisibleCritical;         //보여질 캐릭터 크리티컬 능력치
 
+    public int PassiveStrength;
+    public int PassiveAgility;
+    
+    
+    
     //캐릭터 체력
     public int Health => level * (int)(strength * 0.2f);
 
@@ -222,6 +227,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
 
+    public void ApplyPassiveSkillModifiers()
+    {
+        Debug.Log("패시브 스킬 능력치 적용");
+    }
+    
     /// <summary>
     /// 스킬 포인트 사용 시 스탯 증가 기능
     /// </summary>

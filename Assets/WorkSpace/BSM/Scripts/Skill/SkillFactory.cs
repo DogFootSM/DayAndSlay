@@ -17,6 +17,8 @@ public abstract class SkillFactory
 
     public abstract void UseSkill(Vector2 direction, Vector2 playerPosition);
 
+    public abstract void ApplyPassiveEffects();
+    
     //TODO: 기즈모 테스트용
     public abstract void Gizmos();
 }

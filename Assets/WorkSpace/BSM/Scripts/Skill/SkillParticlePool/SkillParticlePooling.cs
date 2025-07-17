@@ -42,7 +42,12 @@ public class SkillParticlePooling : MonoBehaviour
         }
     }
     
-    
+    /// <summary>
+    /// 파티클 풀에서 스킬 이펙트를 꺼내옴
+    /// </summary>
+    /// <param name="skillID">스킬 아이디 값을 기준으로 오브젝트를 검색</param>
+    /// <param name="skillParticle">풀에 이펙트가 없을 경우 생성</param>
+    /// <returns></returns>
     public GameObject GetSkillPool(string skillID, GameObject skillParticle)
     {
         if (skillParticlePool.ContainsKey(skillID))
@@ -53,14 +58,24 @@ public class SkillParticlePooling : MonoBehaviour
             }
             else
             {
-                particleObject = Instantiate(skillParticle);
-                
+                particleObject = Instantiate(skillParticle); 
             }
+        }
+        else
+        {
+            skillParticlePool.Add(skillID, new Queue<GameObject>());
+            
+            particleObject = Instantiate(skillParticle);
         }
         
         return particleObject;
     }
 
+    /// <summary>
+    /// 파티클이 중지될 경우 풀에 파티클 반납
+    /// </summary>
+    /// <param name="skillId">반납할 스킬의 아이디</param>
+    /// <param name="skillParticle">반납할 파티클 오브젝트</param>
     public void ReturnSkillParticlePool(string skillId, GameObject skillParticle)
     {
         skillParticlePool[skillId].Enqueue(skillParticle);

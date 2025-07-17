@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class SkillNode
 {
-    public SkillData skillData;  
+    public SkillData skillData;
+    public List<SkillNode> PrerequisiteSkillNode => prerequisiteSkillNode;
+    public PlayerModel PlayerModel => playerModel;
+    
     private List<SkillNode> prerequisiteSkillNode = new();
     private List<SkillNode> nextSkillNode = new();
     private PlayerModel playerModel;
@@ -14,6 +17,8 @@ public class SkillNode
     private bool unLocked; 
     public bool UnLocked => unLocked;
     public int CurSkillLevel => curSkillLevel;
+
+    public bool IsCoolDownReset;
     
     public SkillNode(SkillData skillData, PlayerModel playerModel)
     {
@@ -31,17 +36,22 @@ public class SkillNode
     }
 
     /// <summary>
-    /// 스킬 강화
+    /// 스킬 레벨 업그레이드 적용
     /// </summary> 
-    public void ApplyPoint()
+    public void ApplySkillLevel()
     {
-        //TODO: 스킬 강화 로직 진행
         curSkillLevel++;
         playerModel.CurSkillPoint = -1;
-
-        if (!skillData.IsActive)
+        
+        if (!skillData.IsActive && curSkillLevel > 0)
         {
-            //TODO: 패시브 스킬 능력치 적용 필요
+            //TODO: 모델에 패시브 스킬 적용
+            PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(this) as PassiveSkill;
+
+            if (passiveSkill != null)
+            {
+                passiveSkill.ApplyPassiveEffects();
+            } 
         }
     }
 
@@ -65,6 +75,12 @@ public class SkillNode
     {
         curSkillLevel = skillLevel;
         unLocked = lockState;
+        IsCoolDownReset = true;
+        
+        if (!skillData.IsActive && curSkillLevel > 0)
+        {
+            //모델에 패시브 스킬 적용
+        }
     }
     
     

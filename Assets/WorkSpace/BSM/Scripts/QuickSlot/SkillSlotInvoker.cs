@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -39,22 +40,34 @@ public class SkillSlotInvoker : MonoBehaviour
     public float InvokeSkillFromSlot(QuickSlotType quickSlotType, CharacterWeaponType weaponType)
     {
         SkillNode skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
- 
-        if (skillNode != null)
-        {
-            slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
 
-            if (slotSkill != null)
+        if (skillNode.IsCoolDownReset)
+        {
+            if (skillNode != null)
             {
-                slotSkill.UseSkill(curDirection, transform.position);
-            }
+                slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
+             
+                if (slotSkill != null)
+                {
+                    Debug.Log("스킬 사용");
+                    slotSkill.UseSkill(curDirection, transform.position);
+                    skillNode.IsCoolDownReset = false;
+                    //여기서 쿨타임 ui 재생?
+                    CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
+                }
             
-            return skillNode.skillData.RecoveryTime;
+                return skillNode.skillData.RecoveryTime;
+            }
+        }
+        else
+        {
+            //TODO: 스킬 쿨타임 사용 불가 UI 라던지 사용 불가 사운드 
+            Debug.Log($"{skillNode.skillData.SkillName} 쿨타임 초기화 x");
         } 
         
         return 0;
     }
-
+  
     private void OnDrawGizmos()
     {
         if (slotSkill == null) return;

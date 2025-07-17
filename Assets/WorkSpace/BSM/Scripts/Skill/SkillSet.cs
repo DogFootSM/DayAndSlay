@@ -18,7 +18,9 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     private List<RaycastResult> results = new List<RaycastResult>();
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     public SkillNode CurSkillNode;
-     
+    
+    public UnityAction<SkillNode> UpdateSkillPreviewPrerequisite;
+    
     private void Awake()
     {
         increaseButton.onClick.AddListener(InvestSkillPoint);
@@ -49,8 +51,9 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void InvestSkillPoint()
     {
-        CurSkillNode.ApplyPoint();
+        CurSkillNode.ApplySkillLevel();
         UpdateSkillLevelUI();
+        UpdateSkillPreviewPrerequisite?.Invoke(CurSkillNode);
     }
 
     /// <summary>

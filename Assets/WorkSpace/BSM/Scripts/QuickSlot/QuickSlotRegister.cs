@@ -7,7 +7,8 @@ using UnityEngine;
 public class QuickSlotRegister : MonoBehaviour
 {
     [SerializeField] private GameObject registerCanvas;
-
+    [SerializeField] private QuickSlotToastMessage quickSlotToast;
+    
     [Header("스킬창 등록 퀵슬롯 부모")] [SerializeField]
     private GameObject previewSlotsParent;
 
@@ -51,9 +52,21 @@ public class QuickSlotRegister : MonoBehaviour
     /// <param name="skillNode"></param>
     public void RegisterSkillNode(CharacterWeaponType weaponType, QuickSlotType quickSlotType, SkillNode skillNode)
     {
+        if (!skillNode.IsCoolDownReset)
+        {
+            quickSlotToast.ShowToast();
+            return;
+        }
+        
         //해당 퀵슬롯에 스킬이 들어있는 상태
         if (QuickSlotData.WeaponQuickSlotDict[weaponType].TryGetValue(quickSlotType, out SkillNode compareSkillNode))
         {
+            if (!compareSkillNode.IsCoolDownReset)
+            {
+                quickSlotToast.ShowToast();
+                return;
+            }
+            
             if (!compareSkillNode.Equals(skillNode))
             { 
                 if (QuickSlotData.BeforeQuickSlotTypeDict.ContainsKey(compareSkillNode))
@@ -82,7 +95,7 @@ public class QuickSlotRegister : MonoBehaviour
         {
             //다른 퀵슬롯에 해당 스킬이 할당되어 있는 상태
             if (QuickSlotData.BeforeQuickSlotTypeDict.ContainsKey(skillNode))
-            {
+            { 
                 QuickSlotData.WeaponQuickSlotDict[weaponType].Remove(QuickSlotData.BeforeQuickSlotTypeDict[skillNode]);
                 previewQuickSlots[(int)QuickSlotData.BeforeQuickSlotTypeDict[skillNode]].SetPreviewSlot();
                 mainQuickSlots[(int)QuickSlotData.BeforeQuickSlotTypeDict[skillNode]].SetMainQuickSlot();
@@ -100,6 +113,8 @@ public class QuickSlotRegister : MonoBehaviour
                 mainQuickSlots[(int)quickSlotType].SetMainQuickSlot(skillNode); 
             } 
         } 
+        
+        registerCanvas.SetActive(false);
     }
 
     /// <summary>
@@ -108,7 +123,7 @@ public class QuickSlotRegister : MonoBehaviour
     /// <param name="weaponType">현재 착용중인 무기타입</param>
     public void UpdateQuickSlotsByWeaponChange(CharacterWeaponType weaponType)
     {
-        for (var i = QuickSlotType.A; i < QuickSlotType.NONE; i++)
+        for (var i = QuickSlotType.Q; i < QuickSlotType.NONE; i++)
         {
             //퀵슬롯 타입이 등록된 상태
             if (QuickSlotData.WeaponQuickSlotDict[weaponType].ContainsKey(i))

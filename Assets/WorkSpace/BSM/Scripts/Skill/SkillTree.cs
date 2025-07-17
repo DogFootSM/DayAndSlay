@@ -26,6 +26,12 @@ public class SkillTree : MonoBehaviour, ISavable
     
     private void Awake()
     {
+        //TODO: 스킬 목록 구현 완료되면 자동으로 받아올 것
+        // for (int i = 0; i < SkillDatas.Count; i++)
+        // {
+        //     SkillDatas[i].SetSkillEffect();
+        // }
+        
         ProjectContext.Instance.Container.Inject(this);
         InitializeSkillNodes();
         LinkPrerequisites();

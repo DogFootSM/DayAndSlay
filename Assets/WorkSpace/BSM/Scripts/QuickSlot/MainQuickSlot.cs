@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Nobi.UiRoundedCorners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MainQuickSlot : MonoBehaviour,
@@ -14,9 +16,12 @@ public class MainQuickSlot : MonoBehaviour,
     [SerializeField] private QuickSlotType curQuickSlotType;
     [SerializeField] private GraphicRaycaster mainQuickSlotRaycaster;
     [SerializeField] private Image beginDragImage;
+    [SerializeField] private SkillCoolDown skillCoolDown;
+    [SerializeField] public Image skillIconRadiusParent;
     
     public QuickSlotType CurrentQuickSlot => curQuickSlotType;
     public Image SkillIconImage => skillIconImage;
+    
     
     private List<RaycastResult> raycastResults = new List<RaycastResult>();
     private MainQuickSlot beginSlot;
@@ -24,18 +29,26 @@ public class MainQuickSlot : MonoBehaviour,
     
     private void Awake()
     {
-        quickSlotTypeText.text = $"{curQuickSlotType}";
+        quickSlotTypeText.text = $"{curQuickSlotType}"; 
+        
+        CoolDownUIHub.CoolDownUIRegistry(curQuickSlotType, skillCoolDown);
     }
 
+    /// <summary>
+    /// 메인 퀵슬롯 UI 정보 설정
+    /// </summary>
+    /// <param name="skillNode"></param>
     public void SetMainQuickSlot(SkillNode skillNode = null)
     {
         if (skillNode == null)
         {
+            skillIconRadiusParent.color = new Color(1f, 1f, 1f, 0f);
             skillIconImage.sprite = null;
         }
         else
         {
-            skillIconImage.sprite = skillNode.skillData.SkillIcon;
+            skillIconRadiusParent.color = new Color(1f, 1f, 1f, 1f);
+            skillIconImage.sprite = skillNode.skillData.SkillIcon; 
         }
     }
 
@@ -49,11 +62,13 @@ public class MainQuickSlot : MonoBehaviour,
         {
             beginSlot = raycastResult.gameObject.GetComponentInParent<MainQuickSlot>();
         }
+
+        if (beginSlot == null) return;
         
         if (QuickSlotData.WeaponQuickSlotDict[quickSlotManager.CurrentWeaponType].ContainsKey(beginSlot.CurrentQuickSlot))
         {
             beginDragImage.gameObject.SetActive(true);
-            beginDragImage.sprite = beginSlot.SkillIconImage.sprite;
+            beginDragImage.sprite = beginSlot.SkillIconImage.sprite; 
         } 
     }
 
@@ -66,6 +81,8 @@ public class MainQuickSlot : MonoBehaviour,
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if(beginSlot == null) return;
+        
         if (!QuickSlotData.WeaponQuickSlotDict[quickSlotManager.CurrentWeaponType].ContainsKey(beginSlot.CurrentQuickSlot)) return;
         
         mainQuickSlotRaycaster.Raycast(eventData, raycastResults);
