@@ -1,8 +1,8 @@
 public class LeaveState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
 
-    public LeaveState(NpcNew npc)
+    public LeaveState(Npc npc)
     {
         this.npc = npc;
     }

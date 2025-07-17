@@ -1,8 +1,8 @@
 public class NpcInteractPlayerState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
 
-    public NpcInteractPlayerState(NpcNew npc)
+    public NpcInteractPlayerState(Npc npc)
     {
         this.npc = npc;
     }

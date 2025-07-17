@@ -1,8 +1,8 @@
 public class NpcIdleState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
 
-    public NpcIdleState(NpcNew npc)
+    public NpcIdleState(Npc npc)
     {
         this.npc = npc;
     }

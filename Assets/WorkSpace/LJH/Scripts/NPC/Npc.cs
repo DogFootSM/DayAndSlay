@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Zenject;
 
-public class NpcNew : MonoBehaviour
+public class Npc : MonoBehaviour
 {
     public bool IsBuyer;
     public NpcStateMachine StateMachine { get; private set; } = new();
@@ -18,7 +18,7 @@ public class NpcNew : MonoBehaviour
     [SerializeField] private List<ItemData> wantItemList = new();
     public ItemData wantItem;
     [SerializeField] private PopUp talkPopUp;
-    [SerializeField] private TargetSensorNew targetSensor;
+    [SerializeField] private TargetSensorInNpc targetSensor;
     [SerializeField] private AstarPath astarPath;
 
     private Table tableWithItem;

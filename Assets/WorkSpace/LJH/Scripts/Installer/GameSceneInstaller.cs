@@ -17,7 +17,7 @@ public class GameSceneInstaller : MonoInstaller
     [Header("¿ÜºÎ¾À")]
     [SerializeField] SceneReference outsideScene;
 
-    [SerializeField] List<NpcNew> npc = new List<NpcNew>();
+    [SerializeField] List<Npc> npc = new List<Npc>();
 
     [SerializeField] ItemStorage itemManager;
 
@@ -47,7 +47,7 @@ public class GameSceneInstaller : MonoInstaller
             .FromInstance(outsideScene);
 
         Container
-            .Bind<List<NpcNew>>()
+            .Bind<List<Npc>>()
             .FromInstance(npc);
 
         Container

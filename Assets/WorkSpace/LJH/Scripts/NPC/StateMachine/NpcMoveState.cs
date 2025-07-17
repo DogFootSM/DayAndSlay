@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class MoveState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
     private Vector3 target;
 
-    public MoveState(NpcNew npc, Vector3 target)
+    public MoveState(Npc npc, Vector3 target)
     {
         this.npc = npc;
         this.target = target;

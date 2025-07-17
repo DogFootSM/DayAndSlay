@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class WaitItemState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
     private float waitTime = 10f;
     private float elapsed = 0f;
 
-    public WaitItemState(NpcNew npc)
+    public WaitItemState(Npc npc)
     {
         this.npc = npc;
     }

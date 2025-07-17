@@ -1,8 +1,8 @@
 public class NpcSearchTableState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
 
-    public NpcSearchTableState(NpcNew npc)
+    public NpcSearchTableState(Npc npc)
     {
         this.npc = npc;
     }

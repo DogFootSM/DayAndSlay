@@ -37,8 +37,7 @@ public class Door : InteractableObj
         {
             GameObject npc = collision.gameObject;
             npc.transform.position = movePos;
-            npc.GetComponent<NPC>().SetMoving(false);
-            npc.GetComponentInChildren<TargetSensorInNPC>().Set_Target();
+            npc.GetComponent<Npc>().SetMoving(false);
             return;
         }
 

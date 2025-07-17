@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class NpcDecisionState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
 
-    public NpcDecisionState(NpcNew npc)
+    public NpcDecisionState(Npc npc)
     {
         this.npc = npc;
     }
@@ -14,13 +14,13 @@ public class NpcDecisionState : INpcState
         if (npc.IsBuyer)
         {
             //상점 문 위치로 이동
-            Vector3 storeDoorPos = npc.GetComponentInChildren<TargetSensorNew>().GetEnterPosition();
+            Vector3 storeDoorPos = npc.GetComponentInChildren<TargetSensorInNpc>().GetEnterPosition();
             npc.StateMachine.ChangeState(new MoveState(npc, storeDoorPos));
         }
         else
         {
             // 랜덤 포지션으로 이동
-            Vector3 randomPos = npc.GetComponentInChildren<TargetSensorNew>().GetRandomPosition();
+            Vector3 randomPos = npc.GetComponentInChildren<TargetSensorInNpc>().GetRandomPosition();
             npc.StateMachine.ChangeState(new MoveState(npc, randomPos));
         }
     }

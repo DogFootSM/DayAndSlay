@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
 
-public class TargetSensorNew : MonoBehaviour
+public class TargetSensorInNpc : MonoBehaviour
 {
     [Inject] private TargetPosStorage storage;
 
@@ -15,9 +15,9 @@ public class TargetSensorNew : MonoBehaviour
     [SerializeField] private Vector3 outStoreDoorPos;
     [SerializeField] private Vector3 randomPos;
 
-    private NpcNew npc;
+    private Npc npc;
 
-    public void Init(NpcNew npc)
+    public void Init(Npc npc)
     {
         gridList = new List<Grid>(storage.GetGridList());
         mapList = new List<Tilemap>(storage.GetMapTileList());
