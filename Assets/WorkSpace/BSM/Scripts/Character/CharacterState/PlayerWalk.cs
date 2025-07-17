@@ -40,7 +40,7 @@ public class PlayerWalk : PlayerState
         Vector3 dir = new Vector3(playerController.MoveDir.x, playerController.MoveDir.y, 0);
 
         playerController.CharacterRb.MovePosition(playerController.transform.position +
-                                                     dir * playerController.PlayerModel.MoveSpeed *
+                                                     dir * moveSpeed *
                                                      Time.fixedDeltaTime);
     }
 
