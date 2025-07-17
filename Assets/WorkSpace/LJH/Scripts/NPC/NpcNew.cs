@@ -35,7 +35,11 @@ public class NpcNew : MonoBehaviour
         Init();
         SetupItemWish();
         StateMachine.ChangeState(new NpcDecisionState(this));
+
+
     }
+
+
 
     private void Update()
     {
@@ -177,9 +181,12 @@ public class NpcNew : MonoBehaviour
         else if (dir.y < 0) nextAnim = "DownMove";
         else nextAnim = "Idle";
 
+        Debug.Log(nextAnim);
+
         // 같은 애니메이션 반복 호출 방지
         if (nextAnim != currentAnim)
         {
+            Debug.Log($"{nextAnim} 실행시킴");
             animator.Play(nextAnim);
             currentAnim = nextAnim;
         }
