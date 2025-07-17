@@ -10,6 +10,7 @@ public class SSAS002 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
+        MeleeEffect(playerPosition, direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
         Debug.Log($"{skillNode.skillData.SkillName} 스킬 사용");
     }
 

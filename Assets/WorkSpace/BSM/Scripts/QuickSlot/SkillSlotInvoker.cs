@@ -49,10 +49,8 @@ public class SkillSlotInvoker : MonoBehaviour
              
                 if (slotSkill != null)
                 {
-                    Debug.Log("스킬 사용");
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
-                    //여기서 쿨타임 ui 재생?
                     CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
                 }
             

@@ -80,6 +80,12 @@ public class SkillNode
         if (!skillData.IsActive && curSkillLevel > 0)
         {
             //모델에 패시브 스킬 적용
+            PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(this) as PassiveSkill;
+
+            if (passiveSkill != null)
+            {
+                passiveSkill.ApplyPassiveEffects();
+            } 
         }
     }
     

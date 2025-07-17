@@ -226,6 +226,7 @@ public class PlayerModel : MonoBehaviour, ISavable
 
     public void ApplyPassiveSkillModifiers()
     {
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
         Debug.Log("패시브 스킬 능력치 적용");
     }
     
