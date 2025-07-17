@@ -11,6 +11,7 @@ public class SystemWindowController : MonoBehaviour
 
     [SerializeField] private GameObject parentCanvas;
     [SerializeField] private GameObject menuCanvas;
+    [SerializeField] private GameObject quickSlotCanvas;
     
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
     private SystemType currentSystemType;
@@ -53,6 +54,11 @@ public class SystemWindowController : MonoBehaviour
         while (canvasStack.Count != 0)
         {
             canvasStack.Pop().SetActive(false);
+
+            if (quickSlotCanvas.activeSelf)
+            {
+                quickSlotCanvas.SetActive(false);
+            } 
         } 
     }
 
@@ -65,6 +71,11 @@ public class SystemWindowController : MonoBehaviour
         if (canvasStack.Count > 1)
         {
             canvasStack.Pop().SetActive(false);
+            
+            if (quickSlotCanvas.activeSelf)
+            {
+                quickSlotCanvas.SetActive(false);
+            }
         }
         
         canvasStack.Push(switchWindow);

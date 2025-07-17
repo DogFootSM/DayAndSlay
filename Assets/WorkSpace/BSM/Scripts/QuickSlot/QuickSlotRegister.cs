@@ -52,6 +52,12 @@ public class QuickSlotRegister : MonoBehaviour
     /// <param name="skillNode"></param>
     public void RegisterSkillNode(CharacterWeaponType weaponType, QuickSlotType quickSlotType, SkillNode skillNode)
     {
+        if (!skillNode.IsCoolDownReset)
+        {
+            quickSlotToast.ShowToast();
+            return;
+        }
+        
         //해당 퀵슬롯에 스킬이 들어있는 상태
         if (QuickSlotData.WeaponQuickSlotDict[weaponType].TryGetValue(quickSlotType, out SkillNode compareSkillNode))
         {
@@ -68,7 +74,6 @@ public class QuickSlotRegister : MonoBehaviour
                     //기존에 들어있던 스킬 제거
                     QuickSlotData.WeaponQuickSlotDict[weaponType].Remove(quickSlotType);
                     QuickSlotData.BeforeQuickSlotTypeDict.Remove(compareSkillNode); 
-                    CoolDownUIHub.CoolDownImageMap[quickSlotType].IsCooldownRunning();
                 }
                 
                 //슬롯에 덮어쓰기 전 기존 다른 슬롯에 할당되었는지 확인
@@ -90,13 +95,7 @@ public class QuickSlotRegister : MonoBehaviour
         {
             //다른 퀵슬롯에 해당 스킬이 할당되어 있는 상태
             if (QuickSlotData.BeforeQuickSlotTypeDict.ContainsKey(skillNode))
-            {
-                if (!skillNode.IsCoolDownReset)
-                {
-                    quickSlotToast.ShowToast();
-                    return;
-                }
-                
+            { 
                 QuickSlotData.WeaponQuickSlotDict[weaponType].Remove(QuickSlotData.BeforeQuickSlotTypeDict[skillNode]);
                 previewQuickSlots[(int)QuickSlotData.BeforeQuickSlotTypeDict[skillNode]].SetPreviewSlot();
                 mainQuickSlots[(int)QuickSlotData.BeforeQuickSlotTypeDict[skillNode]].SetMainQuickSlot();
