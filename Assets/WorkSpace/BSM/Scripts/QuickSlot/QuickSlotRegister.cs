@@ -54,6 +54,12 @@ public class QuickSlotRegister : MonoBehaviour
         //해당 퀵슬롯에 스킬이 들어있는 상태
         if (QuickSlotData.WeaponQuickSlotDict[weaponType].TryGetValue(quickSlotType, out SkillNode compareSkillNode))
         {
+            if (!compareSkillNode.IsCoolDownReset)
+            {
+                Debug.Log("쿨타임 진행중 바꿀수 없음");
+                return;
+            }
+            
             if (!compareSkillNode.Equals(skillNode))
             { 
                 if (QuickSlotData.BeforeQuickSlotTypeDict.ContainsKey(compareSkillNode))
@@ -61,6 +67,7 @@ public class QuickSlotRegister : MonoBehaviour
                     //기존에 들어있던 스킬 제거
                     QuickSlotData.WeaponQuickSlotDict[weaponType].Remove(quickSlotType);
                     QuickSlotData.BeforeQuickSlotTypeDict.Remove(compareSkillNode); 
+                    CoolDownUIHub.CoolDownImageMap[quickSlotType].IsCooldownRunning();
                 }
                 
                 //슬롯에 덮어쓰기 전 기존 다른 슬롯에 할당되었는지 확인
@@ -80,9 +87,17 @@ public class QuickSlotRegister : MonoBehaviour
         //해당 퀵슬롯에 스킬이 들어있지 않은 상태
         else
         {
+            
+            
             //다른 퀵슬롯에 해당 스킬이 할당되어 있는 상태
             if (QuickSlotData.BeforeQuickSlotTypeDict.ContainsKey(skillNode))
             {
+                if (!skillNode.IsCoolDownReset)
+                {
+                    Debug.Log("쿨타임 진행하고 있음");
+                    return;
+                }
+                
                 QuickSlotData.WeaponQuickSlotDict[weaponType].Remove(QuickSlotData.BeforeQuickSlotTypeDict[skillNode]);
                 previewQuickSlots[(int)QuickSlotData.BeforeQuickSlotTypeDict[skillNode]].SetPreviewSlot();
                 mainQuickSlots[(int)QuickSlotData.BeforeQuickSlotTypeDict[skillNode]].SetMainQuickSlot();

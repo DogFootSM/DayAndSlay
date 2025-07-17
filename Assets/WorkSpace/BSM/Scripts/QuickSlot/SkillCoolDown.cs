@@ -47,13 +47,20 @@ public class SkillCoolDown : MonoBehaviour
 
         skillNode.IsCoolDownReset = true;
 
+        IsCooldownRunning();
+    }
+
+    public void IsCooldownRunning()
+    {
         if (coolDownResetCo != null)
         {
             StopCoroutine(coolDownResetCo);
             coolDownResetCo = null;
-        } 
-    }
+        }
 
+        coolDownImage.fillAmount = 0f;
+    }
+    
     /// <summary>
     /// CoolDown UI 위치 초기화
     /// </summary>
