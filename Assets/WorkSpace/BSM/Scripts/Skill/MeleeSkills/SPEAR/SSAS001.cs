@@ -43,7 +43,7 @@ public class SSAS001 : MeleeSkill
         {
             if (colliders[i].TryGetComponent<Monster>(out Monster monster))
             {
-                monster.TakeDamage((int)skillDamage);
+                Hit(monster, skillDamage); 
             }
         }
     }
