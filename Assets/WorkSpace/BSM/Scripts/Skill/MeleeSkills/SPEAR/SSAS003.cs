@@ -36,7 +36,7 @@ public class SSAS003 : MeleeSkill
             Monster monster = monsterCol[i].GetComponent<Monster>();
                 
             Hit(monster, skillDamage);
-            BleedEffect(monster, 15f, 3f, 3f); 
+            DotEffect(monster, 15f, 3f, 3f); 
         } 
     }
 

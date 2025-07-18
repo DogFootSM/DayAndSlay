@@ -9,10 +9,10 @@ public class Monster : MonoBehaviour
 
     private Rigidbody2D rb;
     private Coroutine knockBackCo;
-    private Coroutine bleedDurationCo;
-    private Coroutine bleedDamageCo;
+    private Coroutine dotDurationCo;
+    private Coroutine dotDamageCo;
     
-    private bool isBleed;
+    private bool isDot;
     
     private void Awake()
     {
@@ -46,24 +46,24 @@ public class Monster : MonoBehaviour
     /// <param name="duration">출혈 효과 지속 시간</param>
     /// <param name="tick">몇 초당 데미지를 부여할지에 대한 시간</param>
     /// <param name="perSecondDamage">초당 지속 데미지</param>
-    public void ReceiveBleedDamage(float duration, float tick, float perSecondDamage)
+    public void ReceiveDotDamage(float duration, float tick, float perSecondDamage)
     {
-        if (isBleed) return;
+        if (isDot) return;
         
-        if (bleedDurationCo != null)
+        if (dotDurationCo != null)
         {
-            StopCoroutine(bleedDurationCo);
-            bleedDurationCo = null;
+            StopCoroutine(dotDurationCo);
+            dotDurationCo = null;
         }
 
-        if (bleedDamageCo != null)
+        if (dotDamageCo != null)
         {
-            StopCoroutine(bleedDamageCo);
-            bleedDamageCo = null;
+            StopCoroutine(dotDamageCo);
+            dotDamageCo = null;
         }
         
-        bleedDurationCo = StartCoroutine(BleedRoutine(duration));
-        bleedDamageCo = StartCoroutine(BleedDamageRoutine(tick, perSecondDamage));
+        dotDurationCo = StartCoroutine(DotDurationRoutine(duration));
+        dotDamageCo = StartCoroutine(DotDamageRoutine(tick, perSecondDamage));
     }
     
     /// <summary>
@@ -85,15 +85,15 @@ public class Monster : MonoBehaviour
     }
 
     /// <summary>
-    /// 출혈 지속 시간 코루틴
+    /// 도트 지속 시간 코루틴
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    private IEnumerator BleedRoutine(float duration)
+    private IEnumerator DotDurationRoutine(float duration)
     {
         float elapsedTime = 0;
 
-        isBleed = true;
+        isDot = true;
         
         while (elapsedTime < duration)
         {
@@ -101,18 +101,18 @@ public class Monster : MonoBehaviour
             yield return null; 
         }
 
-        isBleed = false;
+        isDot = false;
     }
 
     /// <summary>
-    /// 출혈 데미지 틱 계산 코루틴
+    /// 도트 데미지 틱 계산 코루틴
     /// </summary>
     /// <param name="tick"></param>
     /// <param name="perSecondDamage"></param>
     /// <returns></returns>
-    private IEnumerator BleedDamageRoutine(float tick, float perSecondDamage)
+    private IEnumerator DotDamageRoutine(float tick, float perSecondDamage)
     {
-        while (isBleed)
+        while (isDot)
         {
             yield return WaitCache.GetWait(tick);
             TakeDamage(perSecondDamage);

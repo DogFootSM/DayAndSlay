@@ -89,15 +89,15 @@ public abstract class MeleeSkill : SkillFactory
     }
 
     /// <summary>
-    /// 출혈 효과
+    /// 도트데미지 (출혈, 화상 등) 효과
     /// </summary>
-    /// <param name="monster">출혈 효과를 적용할 몬스터</param>
+    /// <param name="monster">도트 효과를 적용할 몬스터</param>
     /// <param name="duration">지속 시간</param>
     /// <param name="tick">데미지를 가할 시간 간격</param>
     /// <param name="damage">초당 데미지</param>
-    protected void BleedEffect(Monster monster, float duration, float tick, float damage)
+    protected void DotEffect(Monster monster, float duration, float tick, float damage)
     {
-        monster.ReceiveBleedDamage(duration, tick, damage);
+        monster.ReceiveDotDamage(duration, tick, damage);
     }
     
     /// <summary>
