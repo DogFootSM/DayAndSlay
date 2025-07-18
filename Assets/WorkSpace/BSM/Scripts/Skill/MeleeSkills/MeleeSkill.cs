@@ -85,6 +85,11 @@ public abstract class MeleeSkill : SkillFactory
         monster.ReceiveStun(duration);
     }
 
+    protected void SlowEffect(IEffectReceiver monster, float duration)
+    {
+        monster.ReceiveSlow(duration);
+    }
+    
     /// <summary>
     /// 몬스터에게 데미지 전달
     /// </summary>

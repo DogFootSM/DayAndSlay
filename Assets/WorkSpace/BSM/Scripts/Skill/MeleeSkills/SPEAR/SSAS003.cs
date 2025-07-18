@@ -36,7 +36,7 @@ public class SSAS003 : MeleeSkill
             IEffectReceiver monster = monsterCol[i].GetComponent<IEffectReceiver>();
 
             Hit(monster, skillDamage); 
-            StunEffect(monster, 3f);
+            SlowEffect(monster, 3f);
         } 
     }
 

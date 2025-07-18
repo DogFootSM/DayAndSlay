@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class TempGoblin : Monster, IEffectReceiver
 {
-    
-    /// <summary>
-    /// 넉백 리시버
-    /// 몬스터에 따른 넉백 효과 구현
-    /// </summary>
-    /// <param name="playerPos"></param>
-    /// <param name="playerDir"></param>
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
@@ -64,13 +57,6 @@ public class TempGoblin : Monster, IEffectReceiver
         rb.velocity = Vector2.zero;
     }
     
-    /// <summary>
-    /// 도트 데미지 리시버
-    /// 몬스터에 따른 도트 데미지 구현
-    /// </summary>
-    /// <param name="duration">도트 데미지의 지속 시간</param>
-    /// <param name="tick">몬스터에게 데미즈를 가할 시간 간격</param>
-    /// <param name="damage">도트 데미지 수치</param>
     public void ReceiveDot(float duration, float tick, float damage)
     {
         if (dotDurationCo != null)
@@ -122,12 +108,7 @@ public class TempGoblin : Monster, IEffectReceiver
             TakeDamage(perSecondDamage);
         }
     }
-
-    /// <summary>
-    /// 스턴 효과 리시버
-    /// 몬스터에 따른 스턴 효과 구현
-    /// </summary>
-    /// <param name="duration">스턴 지속 시간</param>
+    
     public void ReceiveStun(float duration)
     {
         if (stunCo != null)
@@ -138,7 +119,7 @@ public class TempGoblin : Monster, IEffectReceiver
 
         stunCo = StartCoroutine(StunRoutine(duration));
     }
-
+ 
     /// <summary>
     /// 몬스터 스턴 효과 코루틴
     /// </summary>
@@ -160,4 +141,33 @@ public class TempGoblin : Monster, IEffectReceiver
         
         isStunned = false;
     }
+    
+    public void ReceiveSlow(float duration)
+    {
+        if (slowCo != null)
+        {
+            StopCoroutine(slowCo);
+            slowCo = null;
+        }
+
+        slowCo = StartCoroutine(SlowRoutine(duration)); 
+    }
+
+    private IEnumerator SlowRoutine(float duration)
+    {
+        float elapsedTime = 0f;
+
+        float originMoveSpeed = moveSpeed;
+
+        moveSpeed -= 2f;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        moveSpeed = originMoveSpeed;
+    }
+    
 }

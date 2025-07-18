@@ -14,6 +14,7 @@ public class Monster : MonoBehaviour
     protected Coroutine dotDurationCo;
     protected Coroutine dotDamageCo;
     protected Coroutine stunCo;
+    protected Coroutine slowCo;
     
     protected Vector2 knockBackDir;
      
