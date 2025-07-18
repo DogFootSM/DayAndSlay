@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class NpcStateMachine
 {
     private INpcState currentState;

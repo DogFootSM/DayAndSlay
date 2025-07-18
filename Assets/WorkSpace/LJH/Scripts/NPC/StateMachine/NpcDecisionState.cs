@@ -11,17 +11,17 @@ public class NpcDecisionState : INpcState
 
     public void Enter()
     {
+        var targetSensor = npc.GetComponentInChildren<TargetSensorInNpc>();
+
         if (npc.IsBuyer)
         {
-            //상점 문 위치로 이동
-            Vector3 storeDoorPos = npc.GetComponentInChildren<TargetSensorInNpc>().GetEnterPosition();
-            npc.StateMachine.ChangeState(new MoveState(npc, storeDoorPos));
+            Vector3 storeDoorPos = targetSensor.GetEnterPosition();
+            npc.StateMachine.ChangeState(new MoveState(npc, storeDoorPos, new NpcIdleState(npc)));
         }
         else
         {
-            // 랜덤 포지션으로 이동
-            Vector3 randomPos = npc.GetComponentInChildren<TargetSensorInNpc>().GetRandomPosition();
-            npc.StateMachine.ChangeState(new MoveState(npc, randomPos));
+            Vector3 randomPos = targetSensor.GetRandomPosition();
+            npc.StateMachine.ChangeState(new MoveState(npc, randomPos, new NpcIdleState(npc)));
         }
     }
 

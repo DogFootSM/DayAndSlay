@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class NpcDecisionInStoreState : INpcState
 {
@@ -9,21 +6,22 @@ public class NpcDecisionInStoreState : INpcState
     private Npc npc;
     TargetSensorInNpc targetSensor;
 
-    public NpcDecisionInStoreState(Npc npc, StoreManager store)
+    public NpcDecisionInStoreState(Npc npc, StoreManager store, TargetSensorInNpc targetSensor)
     {
         this.npc = npc;
         this.store = store;
-        targetSensor = npc.GetComponentInChildren<TargetSensorInNpc>();
+        this.targetSensor = targetSensor;
     }
 
     public void Enter()
     {
         store.EnqueueInNpcQue(npc);
-        if (npc.name == store.PeekInNpcQue().gameObject.name)
+        if (npc == store.PeekInNpcQue().gameObject)
         {
             //카운터로 이동
             Vector3 deskPos = targetSensor.GetDeskPosition();
             npc.StateMachine.ChangeState(new MoveState(npc, deskPos));
+            npc.WantItemMarkOnOff();
         }
         else
         {

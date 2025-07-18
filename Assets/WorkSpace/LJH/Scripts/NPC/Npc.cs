@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.IO.LowLevel.Unsafe;
-using UnityEditor;
 using UnityEngine;
 using Zenject;
 
@@ -31,16 +29,16 @@ public class Npc : MonoBehaviour
 
     private string currentAnim = "";
 
+    public TargetSensorInNpc GetSensor() => targetSensor;
+    public StoreManager GetStoreManager() => storeManager;
+    public void SetTargetTable(Table table) => tableWithItem = table;
+
     private void Start()
     {
         Init();
         SetupItemWish();
         StateMachine.ChangeState(new NpcDecisionState(this));
-
-
     }
-
-
 
     private void Update()
     {
@@ -63,40 +61,33 @@ public class Npc : MonoBehaviour
     public void SetMoving(bool moving) => isMoving = moving;
     public bool IsMoving() => isMoving;
 
-    public void SearchTable()
+    public Table SearchTable()
     {
         Table[] tables = FindObjectsOfType<Table>();
         foreach (var table in tables)
         {
             if (table.CurItemDataData == wantItem)
             {
-                tableWithItem = table;
-                StateMachine.ChangeState(new MoveState(this, table.transform.position));
-                return;
+                return table;
             }
         }
-
-        // 없으면 플레이어로
-        StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager));
+        return null;
     }
 
-    public void MoveTo(Vector3 targetPos)
+    public void MoveTo(Vector3 targetPos, System.Action onArrive = null)
     {
         UpdateGrid();
-        
+
         if (moveCoroutine != null)
-        {
             StopCoroutine(moveCoroutine);
-        }
-        
+
         astarPath.DetectTarget(transform.position, targetPos);
-        moveCoroutine = StartCoroutine(MoveCoroutine(targetPos));
+        moveCoroutine = StartCoroutine(MoveCoroutine(targetPos, onArrive));
     }
 
-    private IEnumerator MoveCoroutine(Vector3 target)
+    private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
         isMoving = true;
-
         var path = astarPath.path;
 
         if (path == null || path.Count == 0)
@@ -109,7 +100,6 @@ public class Npc : MonoBehaviour
 
         foreach (var point in path)
         {
-            // X축 먼저 이동
             while (Mathf.Abs(transform.position.x - point.x) > 0.05f)
             {
                 float dirX = Mathf.Sign(point.x - transform.position.x);
@@ -119,7 +109,6 @@ public class Npc : MonoBehaviour
                 yield return null;
             }
 
-            // Y축 이동
             while (Mathf.Abs(transform.position.y - point.y) > 0.05f)
             {
                 float dirY = Mathf.Sign(point.y - transform.position.y);
@@ -129,14 +118,13 @@ public class Npc : MonoBehaviour
                 yield return null;
             }
 
-            // 위치 보정
             transform.position = new Vector3(point.x, point.y, transform.position.z);
             yield return new WaitForSeconds(0.05f);
         }
 
         isMoving = false;
-        PlayDirectionAnimation(Vector3.zero); // Idle로 전환
-        StateMachine.ChangeState(new NpcIdleState(this, player.gameObject));
+        PlayDirectionAnimation(Vector3.zero);
+        onArrive?.Invoke();
     }
 
     public void TalkToPlayer()
@@ -188,6 +176,12 @@ public class Npc : MonoBehaviour
             animator.Play(nextAnim);
             currentAnim = nextAnim;
         }
+    }
+
+    public void WantItemMarkOnOff()
+    {
+        GameObject mark = transform.GetChild(2).gameObject;
+        mark.SetActive(!mark.activeSelf);
     }
 }
 

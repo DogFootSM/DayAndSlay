@@ -42,7 +42,7 @@ public class Door : InteractableObj
 
             npcObj.transform.position = movePos;
             npc.SetMoving(false);
-            npc.StateMachine.ChangeState(new NpcIdleState(npc, player));
+            npc.StateMachine.ChangeState(new NpcIdleState(npc));
 
             store.EnqueueInNpcQue(npc);
             return;
