@@ -41,7 +41,7 @@ public class SSAS001 : MeleeSkill
 
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].TryGetComponent<Monster>(out Monster monster))
+            if (colliders[i].TryGetComponent<IEffectReceiver>(out IEffectReceiver monster))
             {
                 Hit(monster, skillDamage); 
             }

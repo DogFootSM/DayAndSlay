@@ -33,10 +33,10 @@ public class SSAS003 : MeleeSkill
 
         for (int i = 0; i < monsterCol.Length; i++)
         {
-            Monster monster = monsterCol[i].GetComponent<Monster>();
-                
-            Hit(monster, skillDamage);
-            DotEffect(monster, 15f, 3f, 3f); 
+            IEffectReceiver monster = monsterCol[i].GetComponent<IEffectReceiver>();
+
+            Hit(monster, skillDamage); 
+            StunEffect(monster, 3f);
         } 
     }
 
