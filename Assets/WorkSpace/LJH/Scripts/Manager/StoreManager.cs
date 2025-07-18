@@ -11,24 +11,12 @@ public class StoreManager : MonoBehaviour
     int curNpcNum = 0;
 
     public void EnqueueInNpcQue(Npc npc) => npcQue.Enqueue(npc);
-    public void DequeueInNpcQueue() => npcQue.Dequeue();
+    public Npc PeekInNpcQue() => npcQue.Peek();
+    public Npc DequeueInNpcQue() => npcQue.Dequeue();
 
     private void Update()
     {
-        if (npc == null && npcQue.Count > 0)
-        {
-            Debug.Log("데스크로 가서 줄섬");
-            GoToDesk();
-        }
-        if(npc != null)
-        {
-            Debug.Log("상점 돌아다님");
-            //npc에 안들어간 애들한테만
-            Waiting();
-        }
-
-        Debug.Log($"현재 엔피씨 큐의 인원 수{npcQue.Count}");
-
+       
     }
 
 

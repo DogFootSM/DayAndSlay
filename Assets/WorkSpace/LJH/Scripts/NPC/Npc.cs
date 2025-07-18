@@ -13,6 +13,7 @@ public class Npc : MonoBehaviour
 
     [Inject] private ItemStorage itemManager;
     [Inject] private TestPlayer player;
+    [Inject] private StoreManager storeManager;
 
     [SerializeField] private Animator animator;
     [SerializeField] private List<ItemData> wantItemList = new();
@@ -76,7 +77,7 @@ public class Npc : MonoBehaviour
         }
 
         // 없으면 플레이어로
-        StateMachine.ChangeState(new MoveState(this, GoDesk()));
+        StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager));
     }
 
     public void MoveTo(Vector3 targetPos)
@@ -156,7 +157,6 @@ public class Npc : MonoBehaviour
         }
     }
 
-    public Vector3 GoDesk() => targetSensor.GetDeskPosition();
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();

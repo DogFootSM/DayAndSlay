@@ -44,7 +44,7 @@ public class TargetSensorInNpc : MonoBehaviour
     }
 
     public Vector3 GetRandomPosition() => randomPos;
-
+    public Vector3 GetRandomPositionInStore() => randomPosInStore;
     public Vector3 GetEnterPosition() => inStoreDoorPos;
     public Vector3 GetLeavePosition() => outStoreDoorPos;
     public Vector3 GetDeskPosition() => deskPos;

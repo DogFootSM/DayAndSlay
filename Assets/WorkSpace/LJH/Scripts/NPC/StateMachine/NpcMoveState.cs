@@ -4,6 +4,7 @@ public class MoveState : INpcState
 {
     private Npc npc;
     private Vector3 target;
+    private INpcState state;
 
     public MoveState(Npc npc, Vector3 target)
     {
@@ -16,6 +17,8 @@ public class MoveState : INpcState
         npc.MoveTo(target);
     }
 
-    public void Update() { }
+    public void Update() 
+    {
+    }
     public void Exit() { }
 }
