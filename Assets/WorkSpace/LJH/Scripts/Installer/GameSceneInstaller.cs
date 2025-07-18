@@ -23,6 +23,7 @@ public class GameSceneInstaller : MonoInstaller
 
     [SerializeField] GameObject popUp;
     [SerializeField] TestPlayer player;
+    [SerializeField] StoreManager storeManager;
 
     public override void InstallBindings()
     {
@@ -65,5 +66,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<TargetPosStorage>()
             .FromInstance(targetPosStorage);
+
+        Container
+            .Bind<StoreManager>()
+            .FromInstance(storeManager);
     }
 }

@@ -13,7 +13,9 @@ public class TargetSensorInNpc : MonoBehaviour
     [SerializeField] private List<Tilemap> obstacleList = new();
     [SerializeField] private Vector3 inStoreDoorPos;
     [SerializeField] private Vector3 outStoreDoorPos;
+    [SerializeField] private Vector3 deskPos;
     [SerializeField] private Vector3 randomPos;
+    [SerializeField] private Vector3 randomPosInStore;
 
     private Npc npc;
 
@@ -24,6 +26,7 @@ public class TargetSensorInNpc : MonoBehaviour
         obstacleList = new List<Tilemap>(storage.GetObstacleTileList());
         inStoreDoorPos = storage.OutsideDoorPos;
         outStoreDoorPos = storage.StoreDoorPos;
+        deskPos = storage.DeskPos;
         StartCoroutine(RandominitCoroutine());
 
 
@@ -35,6 +38,7 @@ public class TargetSensorInNpc : MonoBehaviour
         while (true)
         {
             randomPos = storage.RandomPos;
+            randomPosInStore = storage.RandomPosInStore;
             yield return new WaitForSeconds(1f);
         }
     }
@@ -43,6 +47,7 @@ public class TargetSensorInNpc : MonoBehaviour
 
     public Vector3 GetEnterPosition() => inStoreDoorPos;
     public Vector3 GetLeavePosition() => outStoreDoorPos;
+    public Vector3 GetDeskPosition() => deskPos;
 
     public Grid GetCurrentGrid(Vector3 worldPos)
     {

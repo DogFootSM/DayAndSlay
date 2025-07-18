@@ -8,6 +8,8 @@ public class Door : InteractableObj
 
     [Inject(Id = "LoadingScene")]
     private SceneReference loadingScene;
+    [Inject]
+    private StoreManager store;
 
     [SerializeField] private Transform movePosTrans;
     private Vector2 movePos;
@@ -35,9 +37,14 @@ public class Door : InteractableObj
     {
         if(collision.gameObject.CompareTag("NPC"))
         {
-            GameObject npc = collision.gameObject;
-            npc.transform.position = movePos;
-            npc.GetComponent<Npc>().SetMoving(false);
+            GameObject npcObj = collision.gameObject;
+            Npc npc = npcObj.GetComponent<Npc>();
+
+            npcObj.transform.position = movePos;
+            npc.SetMoving(false);
+            npc.StateMachine.ChangeState(new NpcIdleState(npc, player));
+
+            store.EnqueueInNpcQue(npc);
             return;
         }
 
