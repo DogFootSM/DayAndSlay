@@ -28,7 +28,7 @@ public class StoreManager : MonoBehaviour
     private void Waiting()
     {
         Vector3 randomPos = npc.GetComponentInChildren<TargetSensorInNpc>().GetRandomPosition();
-        npc.StateMachine.ChangeState(new MoveState(npc, randomPos));
+        npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos));
     }
 
     public void GoToOutside()

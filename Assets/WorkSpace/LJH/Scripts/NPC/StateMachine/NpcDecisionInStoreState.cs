@@ -18,22 +18,21 @@ public class NpcDecisionInStoreState : INpcState
         store.EnqueueInNpcQue(npc);
         if (npc == store.PeekInNpcQue())
         {
-            Debug.Log("카운터로 이동");
             //카운터로 이동
             Vector3 deskPos = targetSensor.GetDeskPosition();
-            Debug.Log(deskPos);
-            npc.StateMachine.ChangeState(new MoveState(npc, deskPos));
-            npc.WantItemMarkOnOff();
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, deskPos));
+
         }
         else
         {
-            Debug.Log("랜덤 포지션으로 이동");
             // 랜덤 포지션으로 이동
             Vector3 randomPos = targetSensor.GetRandomPositionInStore();
-            npc.StateMachine.ChangeState(new MoveState(npc, randomPos));
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos));
         }
     }
 
-    public void Update() { }
+    public void Update() 
+    {
+    }
     public void Exit() { }
 }

@@ -1,8 +1,8 @@
-public class LeaveState : INpcState
+public class NpcLeaveState : INpcState
 {
     private Npc npc;
     private StoreManager storeManager;
-    public LeaveState(Npc npc)
+    public NpcLeaveState(Npc npc)
     {
         this.npc = npc;
         storeManager = npc.GetStoreManager();

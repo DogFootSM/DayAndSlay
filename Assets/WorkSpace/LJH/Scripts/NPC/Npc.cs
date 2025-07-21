@@ -48,6 +48,7 @@ public class Npc : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log($"현재 상태: {StateMachine.CurrentState?.GetType().Name}");
         StateMachine.Tick();
     }
 
@@ -137,7 +138,6 @@ public class Npc : MonoBehaviour
     {
         talkPopUp.gameObject.SetActive(true);
         talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
-        StateMachine.ChangeState(new WaitItemState(this));
     }
 
     public void BuyItemFromDesk()
@@ -159,7 +159,7 @@ public class Npc : MonoBehaviour
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();
-        StateMachine.ChangeState(new MoveState(this, door));
+        StateMachine.ChangeState(new NpcMoveState(this, door));
     }
 
     public void UpdateGrid()
@@ -197,7 +197,20 @@ public class Npc : MonoBehaviour
 
     public bool ArrivedDesk()
     {
-        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 0.1f;
+        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 0.5f;
+    }
+
+    public void TestCoroutine()
+    {
+        StartCoroutine(TestCo());
+    }
+
+    private IEnumerator TestCo()
+    {
+        yield return new WaitForSeconds(3f);
+
+        TalkToPlayer();
+        StateMachine.ChangeState(new NpcWaitItemState(this));
     }
 
     public void Fishing()

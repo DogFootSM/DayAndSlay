@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class MoveState : INpcState
+public class NpcMoveState : INpcState
 {
     private Npc npc;
     private Vector3 target;
     private INpcState nextState;
 
-    public MoveState(Npc npc, Vector3 target, INpcState nextState = null)
+    public NpcMoveState(Npc npc, Vector3 target, INpcState nextState = null)
     {
         this.npc = npc;
         this.target = target;
@@ -17,16 +17,21 @@ public class MoveState : INpcState
     {
         npc.MoveTo(target, () =>
         {
-            npc.StateMachine.ChangeState(nextState);
+            // 상태가 아직 MoveState일 때만 다음 상태로 전환
+            if (npc.StateMachine.CurrentState == this)
+            {
+                npc.StateMachine.ChangeState(nextState);
+            }
         });
     }
 
-    public void Update() 
+    public void Update()
     {
-        if(npc.ArrivedDesk())
+        if (npc.StateMachine.CurrentState != this)
+            return;
+
+        if (npc.ArrivedDesk())
         {
-            Debug.Log("물건 구매 상태로 전환");
-            //npc.StateMachine.ChangeState(new BuyState(item));
             npc.StateMachine.ChangeState(new WaitForPlayerState(npc));
         }
     }

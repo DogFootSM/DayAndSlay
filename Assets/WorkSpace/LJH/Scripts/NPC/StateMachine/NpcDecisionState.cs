@@ -15,15 +15,13 @@ public class NpcDecisionState : INpcState
 
         if (npc.IsBuyer)
         {
-            Debug.Log("상점으로 이동");
             Vector3 storeDoorPos = targetSensor.GetEnterPosition();
-            npc.StateMachine.ChangeState(new MoveState(npc, storeDoorPos, new NpcIdleState(npc)));
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, storeDoorPos, new NpcIdleState(npc)));
         }
         else
         {
-            Debug.Log("랜덤 포지션으로 이동");
             Vector3 randomPos = targetSensor.GetRandomPosition();
-            npc.StateMachine.ChangeState(new MoveState(npc, randomPos, new NpcIdleState(npc)));
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos, new NpcIdleState(npc)));
         }
     }
 
