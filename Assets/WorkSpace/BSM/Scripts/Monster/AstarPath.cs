@@ -73,7 +73,7 @@ public class AstarPath : MonoBehaviour
         this.startPos = (Vector2Int)mapGrid.WorldToCell(startPos);
         this.targetPos = (Vector2Int)mapGrid.WorldToCell(targetPos);
 
-        FindPath(this.startPos, this.targetPos); 
+        FindPath(this.startPos, this.targetPos);    
     } 
     
     /// <summary>
@@ -215,7 +215,7 @@ public class AstarPath : MonoBehaviour
         //for (int i = 0; i < path.Count - 1; i++)
         //{
         //    Debug.Log($"경로 :path{i} 위치 {path[i]} / 타겟 위치 :{targetPos}");
-        //    Debug.DrawLine(path[i], path[i + 1], Color.red, 0.1f);
+        //    Debug.DrawLine(path[i], path[i + 1], Color.red, 1f);
         //}
     } 
     

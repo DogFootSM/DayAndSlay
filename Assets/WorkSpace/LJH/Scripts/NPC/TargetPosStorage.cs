@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -24,7 +25,7 @@ public class TargetPosStorage : MonoBehaviour
     public Vector3 OutsideDoorPos => OutsideDoor.transform.position;
     public Vector3 CastleDoor => castleDoor.transform.position;
     public Vector3 PlayerPos => playerPos;
-    public Vector3 DeskPos => desk.transform.position + new Vector3(-1.5f, 0, 0);
+    public Vector3 DeskPos => desk.transform.position + new Vector3(-1.5f, 0.5f, 0);
     public Vector3 RandomPos => randomPos.transform.position;
     public Vector3 RandomPosInStore => randomPosInStore.transform.position;
 

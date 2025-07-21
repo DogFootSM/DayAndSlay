@@ -199,6 +199,15 @@ public class Npc : MonoBehaviour
     {
         return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 0.1f;
     }
+
+    public void Fishing()
+    { 
+    
+    }
+    public void Logging()
+    { 
+
+    }
 }
 
 

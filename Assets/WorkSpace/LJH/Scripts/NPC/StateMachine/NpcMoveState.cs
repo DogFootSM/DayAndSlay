@@ -27,7 +27,7 @@ public class MoveState : INpcState
         {
             Debug.Log("물건 구매 상태로 전환");
             //npc.StateMachine.ChangeState(new BuyState(item));
-            npc.StateMachine.ChangeState(new LeaveState(npc));
+            npc.StateMachine.ChangeState(new WaitForPlayerState(npc));
         }
     }
     public void Exit() { }
