@@ -21,6 +21,14 @@ public class MoveState : INpcState
         });
     }
 
-    public void Update() { }
+    public void Update() 
+    {
+        if(npc.ArrivedDesk())
+        {
+            Debug.Log("물건 구매 상태로 전환");
+            //npc.StateMachine.ChangeState(new BuyState(item));
+            npc.StateMachine.ChangeState(new LeaveState(npc));
+        }
+    }
     public void Exit() { }
 }

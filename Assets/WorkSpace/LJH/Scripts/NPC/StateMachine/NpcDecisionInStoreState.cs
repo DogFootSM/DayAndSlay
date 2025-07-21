@@ -16,7 +16,7 @@ public class NpcDecisionInStoreState : INpcState
     public void Enter()
     {
         store.EnqueueInNpcQue(npc);
-        if (npc == store.PeekInNpcQue().gameObject)
+        if (npc == store.PeekInNpcQue())
         {
             //카운터로 이동
             Vector3 deskPos = targetSensor.GetDeskPosition();

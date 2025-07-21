@@ -33,6 +33,12 @@ public class Npc : MonoBehaviour
     public StoreManager GetStoreManager() => storeManager;
     public void SetTargetTable(Table table) => tableWithItem = table;
 
+    public bool IsInOutsideGrid()
+    {
+        Grid grid = targetSensor.GetCurrentGrid(transform.position);
+        return grid != null && grid.name == "OutsideGrid";
+    }
+
     private void Start()
     {
         Init();
@@ -134,6 +140,11 @@ public class Npc : MonoBehaviour
         StateMachine.ChangeState(new WaitItemState(this));
     }
 
+    public void BuyItemFromDesk()
+    {
+
+    }
+
     public void BuyItemFromTable()
     {
         if (tableWithItem != null)
@@ -182,6 +193,11 @@ public class Npc : MonoBehaviour
     {
         GameObject mark = transform.GetChild(2).gameObject;
         mark.SetActive(!mark.activeSelf);
+    }
+
+    public bool ArrivedDesk()
+    {
+        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 0.1f;
     }
 }
 

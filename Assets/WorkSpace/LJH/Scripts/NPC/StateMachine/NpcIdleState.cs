@@ -19,13 +19,17 @@ public class NpcIdleState : INpcState
 
     private IEnumerator WaitAndDecide()
     {
-        grid = npc.GetComponentInChildren<TargetSensorInNpc>().GetCurrentGrid(npc.transform.position);
+        //1등은 카운터로 나머지만 가게 뺑뺑이 로직 추가해야함
 
-        yield return new WaitForSeconds(1f); // 또는 랜덤 시간
-        if (grid.name == "OutsideGrid")
+        yield return new WaitForSeconds(1f);
+        if (npc.IsInOutsideGrid())
+        {
             npc.StateMachine.ChangeState(new NpcDecisionState(npc));
+        }
         else
+        {
             npc.StateMachine.ChangeState(new NpcSearchTableState(npc));
+        }
     }
 
     public void Update() { }
