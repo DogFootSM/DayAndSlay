@@ -21,6 +21,8 @@ public class NpcIdleState : INpcState
     {
         //1등은 카운터로 나머지만 가게 뺑뺑이 로직 추가해야함
 
+        //템 사고 나온놈은 캐슬도어로 가서 사라져야함
+
         yield return new WaitForSeconds(1f);
         if (npc.IsInOutsideGrid())
         {

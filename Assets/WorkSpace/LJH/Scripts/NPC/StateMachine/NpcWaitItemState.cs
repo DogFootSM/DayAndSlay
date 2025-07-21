@@ -3,7 +3,7 @@ using UnityEngine;
 public class NpcWaitItemState : INpcState
 {
     private Npc npc;
-    private float waitTime = 10f;
+    private float waitTime = 2f;
     private float elapsed = 0f;
 
     public NpcWaitItemState(Npc npc)
@@ -21,6 +21,7 @@ public class NpcWaitItemState : INpcState
         elapsed += Time.deltaTime;
         if (elapsed >= waitTime)
         {
+            npc.BuyItemFromDesk();
             npc.StateMachine.ChangeState(new NpcLeaveState(npc));
         }
     }

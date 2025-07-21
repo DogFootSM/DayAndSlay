@@ -48,7 +48,6 @@ public class Npc : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"현재 상태: {StateMachine.CurrentState?.GetType().Name}");
         StateMachine.Tick();
     }
 
@@ -137,12 +136,16 @@ public class Npc : MonoBehaviour
     public void TalkToPlayer()
     {
         talkPopUp.gameObject.SetActive(true);
-        talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
+        if (wantItem != null)
+        {
+            talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
+        }
     }
 
     public void BuyItemFromDesk()
     {
-
+        int gold = wantItem.SellPrice;
+        wantItem = null;
     }
 
     public void BuyItemFromTable()

@@ -17,12 +17,12 @@ public class NpcMoveState : INpcState
     {
         npc.MoveTo(target, () =>
         {
-            // 상태가 아직 MoveState일 때만 다음 상태로 전환
             if (npc.StateMachine.CurrentState == this)
             {
                 npc.StateMachine.ChangeState(nextState);
             }
         });
+
     }
 
     public void Update()

@@ -13,6 +13,7 @@ public class TargetSensorInNpc : MonoBehaviour
     [SerializeField] private List<Tilemap> obstacleList = new();
     [SerializeField] private Vector3 inStoreDoorPos;
     [SerializeField] private Vector3 outStoreDoorPos;
+    [SerializeField] private Vector3 castleDoorPos;
     [SerializeField] private Vector3 deskPos;
     [SerializeField] private Vector3 randomPos;
     [SerializeField] private Vector3 randomPosInStore;
@@ -26,6 +27,7 @@ public class TargetSensorInNpc : MonoBehaviour
         obstacleList = new List<Tilemap>(storage.GetObstacleTileList());
         inStoreDoorPos = storage.OutsideDoorPos;
         outStoreDoorPos = storage.StoreDoorPos;
+        castleDoorPos = storage.CastleDoorPos;
         deskPos = storage.DeskPos;
         StartCoroutine(RandominitCoroutine());
 
@@ -47,13 +49,14 @@ public class TargetSensorInNpc : MonoBehaviour
     public Vector3 GetRandomPositionInStore() => randomPosInStore;
     public Vector3 GetEnterPosition() => inStoreDoorPos;
     public Vector3 GetLeavePosition() => outStoreDoorPos;
+    public Vector3 GetCastleDoorPosition() => castleDoorPos;
     public Vector3 GetDeskPosition() => deskPos;
 
     public Grid GetCurrentGrid(Vector3 worldPos)
     {
         foreach (var grid in gridList)
         {
-            var tilemap = grid.transform.GetChild(0).GetComponent<UnityEngine.Tilemaps.Tilemap>();
+            Tilemap tilemap = grid.transform.GetChild(0).GetComponent<UnityEngine.Tilemaps.Tilemap>();
             Vector3Int cell = grid.WorldToCell(worldPos);
             if (tilemap.cellBounds.Contains(cell)) return grid;
         }
