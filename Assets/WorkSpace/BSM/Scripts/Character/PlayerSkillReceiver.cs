@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerSkillReceiver : MonoBehaviour
@@ -8,11 +10,26 @@ public class PlayerSkillReceiver : MonoBehaviour
     [SerializeField] private PlayerModel playerModel;
     [SerializeField] private Image tempCastingEffect;
     [SerializeField] private GameObject tempShieldEffect;
+
+    public UnityAction<IEffectReceiver> MonsterCounterEvent;
     
     private Coroutine castingCo;
     private Coroutine shieldSkillCo;
     private Coroutine movementBlockCo;
+    private Coroutine counterWhileImmobileCo;
     
+    private Queue<IEffectReceiver> monsterQueue = new Queue<IEffectReceiver>();
+
+    private void OnEnable()
+    {
+        MonsterCounterEvent += MonsterCounterRegister;
+    }
+
+    private void OnDisable()
+    {
+        MonsterCounterEvent -= MonsterCounterRegister;
+    }
+
     /// <summary>
     /// 보호막 쉴드 스킬 리시버
     /// </summary>
@@ -124,6 +141,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         
         while (elapsedTime < duraiton)
         {
+            Debug.Log("이동 불가 상태중");
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -133,17 +151,35 @@ public class PlayerSkillReceiver : MonoBehaviour
 
     public void ReceiveCounterWhileImmobile()
     {
-        
-        
+        if (counterWhileImmobileCo != null)
+        {
+            StopCoroutine(counterWhileImmobileCo);
+            counterWhileImmobileCo = null;
+        }
+
+        playerModel.IsCountering = true;
+        counterWhileImmobileCo = StartCoroutine(CounterWhileImmobileRoutine());
     }
 
     private IEnumerator CounterWhileImmobileRoutine()
     {
         while (playerModel.IsMovementBlocked)
         {
+            if (monsterQueue.Count > 0)
+            {
+                Debug.Log("반격 진행");
+                monsterQueue.Dequeue().ReceiveStun(5f);
+            } 
             
+            yield return null;
         }
-
-        yield return null;
+        
+        playerModel.IsCountering = false; 
     }
+
+    private void MonsterCounterRegister(IEffectReceiver monster)
+    {
+        monsterQueue.Enqueue(monster);
+    }
+    
 }

@@ -139,6 +139,13 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => isMovementBlocked = value;
     }
 
+    private bool isCountering;
+    public bool IsCountering
+    {
+        get => isCountering;
+        set => isCountering = value;
+    }
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);

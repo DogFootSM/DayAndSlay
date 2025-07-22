@@ -28,9 +28,9 @@ public class SSAS003 : MeleeSkill
             overlapSize = new Vector2(1f, 3f);
         }
         
-        ShieldEffect(2f, 3, 5f, 10f);
-        //ApplyMovementBlock(3f);
-        //CounterWhileImmobile();
+        Collider2D[] overlaps = Physics2D.OverlapBoxAll(playerPosition + (direction.normalized) , overlapSize, 0, monsterLayer);
+        
+        KnockBackEffect(playerPosition, direction, overlaps[0].GetComponent<IEffectReceiver>());
     }
 
     public override void ApplyPassiveEffects()

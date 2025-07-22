@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject shieldObject;
     [SerializeField] private SkillTree curSkillTree;
     [SerializeField] private InventoryInteraction inventoryInteraction;
+    [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -216,10 +217,16 @@ public class PlayerController : MonoBehaviour
     /// 캐릭터 피격 시 데미지 호출
     /// </summary>
     /// <param name="damage"></param>
-    public void TakeDamage(float damage)
+    public void TakeDamage(IEffectReceiver monsterReceiver, float damage)
     {
         //TODO: 보호막 쉴드에 따른 데미지 계산ㄱㄱ
         playerModel.ShieldCount--;
+
+        if (playerModel.IsCountering)
+        {
+            PlayerSkillReceiver.MonsterCounterEvent?.Invoke(monsterReceiver);
+        }
+        
     }
     
     private void OnCollisionEnter2D(Collision2D collision)
