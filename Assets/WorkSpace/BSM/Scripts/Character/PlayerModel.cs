@@ -6,6 +6,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Zenject;
 
 [Serializable]
@@ -95,7 +96,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     
     private PlayerStats playerStats;
     public PlayerStats PlayerStats => playerStats;
-    
+
     public int CurSkillPoint
     {
         get => playerStats.skillPoints;
@@ -109,6 +110,34 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     private int slotId;
+    
+    private int shieldCount;
+    public int ShieldCount
+    {
+        get => shieldCount;
+        set => shieldCount = value;
+    }
+
+    private float defenseBoostMultiplier;
+    public float DefenseBoostMultiplier
+    {
+        get => defenseBoostMultiplier;
+        set => defenseBoostMultiplier = value;
+    }
+
+    private bool isCastingDone;
+    public bool IsCastingDone
+    {
+        get => isCastingDone;
+        set => isCastingDone = value;
+    }
+    
+    private bool isMovementBlocked;
+    public bool IsMovementBlocked
+    {
+        get => isMovementBlocked;
+        set => isMovementBlocked = value;
+    }
 
     private void Awake()
     {
@@ -182,7 +211,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         if (Input.GetKeyDown(KeyCode.V))
         {
             GainExperience(50);
-        }
+        } 
     }
 
     /// <summary>
@@ -293,4 +322,5 @@ public class PlayerModel : MonoBehaviour, ISavable
 
         Debug.Log("스탯 저장 진행");
     }
+
 }

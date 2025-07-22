@@ -8,10 +8,14 @@ public class PlayerWalk : PlayerState
     
     public override void Enter()
     {
-        playerController.BodyAnimator.Play(walkBlendTreeHash);
-        playerController.WeaponAnimator.Play(walkBlendTreeHash);
-
+        if (playerController.PlayerModel.IsMovementBlocked)
+        {
+            playerController.ChangeState(CharacterStateType.IDLE);
+            return;
+        }
         
+        playerController.BodyAnimator.Play(walkBlendTreeHash);
+        playerController.WeaponAnimator.Play(walkBlendTreeHash); 
     }
 
     public override void Update()

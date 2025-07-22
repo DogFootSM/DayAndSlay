@@ -12,6 +12,7 @@ public class SkillTree : MonoBehaviour, ISavable
 {
     [SerializeField] private SkillTreePreview skillTreePreview;
     [SerializeField] private PlayerModel playerModel;
+    [SerializeField] private PlayerSkillReceiver playerSkillReceiver;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     [Inject] private SaveManager saveManager;
@@ -87,7 +88,7 @@ public class SkillTree : MonoBehaviour, ISavable
         foreach (SkillData data in SkillDatas)
         {
             //노드 생성 후 전체 스킬 노드 리스트에 추가
-            allskillNodes.Add(new SkillNode(data, playerModel));
+            allskillNodes.Add(new SkillNode(data, playerModel, playerSkillReceiver));
         }
     }
 

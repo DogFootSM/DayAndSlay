@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 public abstract class MeleeSkill : SkillFactory
 {
@@ -85,9 +86,40 @@ public abstract class MeleeSkill : SkillFactory
         monster.ReceiveStun(duration);
     }
 
+    /// <summary>
+    /// 적 둔화 효과 호출
+    /// </summary>
+    /// <param name="monster">감지한 몬스터</param>
+    /// <param name="duration">둔화 지속 시간</param>
     protected void SlowEffect(IEffectReceiver monster, float duration)
     {
         monster.ReceiveSlow(duration);
+    }
+
+    /// <summary>
+    /// 쉴드 스킬 호출
+    /// </summary>
+    /// <param name="castingTime">스킬 사용에 걸리는 시간</param>
+    /// <param name="shieldCount">스킬 사용 시 충전할 쉴드 개수</param>
+    /// <param name="defenseBoostMultiplier">쉴드 사용 시 증가할 방어력</param>
+    /// <param name="duration">스킬 지속 시간</param>
+    protected void ShieldEffect(float castingTime, int shieldCount, float defenseBoostMultiplier, float duration)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveShield(castingTime, shieldCount, defenseBoostMultiplier, duration);
+    }
+
+    /// <summary>
+    /// 스킬 사용 시 이동 불가 상태 효과 호출
+    /// </summary>
+    /// <param name="duration">이동 불가할 지속 시간</param>
+    protected void ApplyMovementBlock(float duration)
+    {
+        skillNode.PlayerModel.ReceiveMovementBlock(duration);
+    }
+
+    protected void CounterWhileImmobile()
+    {
+        skillNode.PlayerModel.ReceiveCounterWhileImmobile();
     }
     
     /// <summary>

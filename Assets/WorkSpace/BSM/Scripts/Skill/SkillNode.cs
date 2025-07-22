@@ -8,10 +8,12 @@ public class SkillNode
     public SkillData skillData;
     public List<SkillNode> PrerequisiteSkillNode => prerequisiteSkillNode;
     public PlayerModel PlayerModel => playerModel;
+    public PlayerSkillReceiver PlayerSkillReceiver => playerSkillReceiver;
     
     private List<SkillNode> prerequisiteSkillNode = new();
     private List<SkillNode> nextSkillNode = new();
     private PlayerModel playerModel;
+    private PlayerSkillReceiver playerSkillReceiver;
     
     private int curSkillLevel = 0;
     private bool unLocked; 
@@ -20,10 +22,11 @@ public class SkillNode
 
     public bool IsCoolDownReset;
     
-    public SkillNode(SkillData skillData, PlayerModel playerModel)
+    public SkillNode(SkillData skillData, PlayerModel playerModel, PlayerSkillReceiver playerSkillReceiver)
     {
         this.skillData = skillData;
         this.playerModel = playerModel;
+        this.playerSkillReceiver = playerSkillReceiver;
     }
  
     /// <summary>

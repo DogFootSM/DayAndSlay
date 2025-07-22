@@ -41,6 +41,7 @@ public class SkillSlotInvoker : MonoBehaviour
     {
         SkillNode skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
 
+        //TODO: 캐스팅 완료되기 전이면 스킬 사용x?
         if (skillNode.IsCoolDownReset)
         {
             if (skillNode != null)

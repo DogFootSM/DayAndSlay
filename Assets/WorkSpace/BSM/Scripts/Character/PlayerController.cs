@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         KeyInput();
         characterStates[(int)curState].Update();   
-        
         InventoryToTableItem();
     }
 
@@ -98,6 +97,7 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
         characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
+        characterStates[(int)CharacterStateType.HIT] = new PlayerHit(this);
     }
     
     /// <summary>
@@ -212,6 +212,16 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
+    /// <summary>
+    /// 캐릭터 피격 시 데미지 호출
+    /// </summary>
+    /// <param name="damage"></param>
+    public void TakeDamage(float damage)
+    {
+        //TODO: 보호막 쉴드에 따른 데미지 계산ㄱㄱ
+        playerModel.ShieldCount--;
+    }
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Table"))
@@ -227,5 +237,5 @@ public class PlayerController : MonoBehaviour
             tableManager.OnPlayerExitRangeClosePanel();
             tableObject = null;
         } 
-    }
+    } 
 }

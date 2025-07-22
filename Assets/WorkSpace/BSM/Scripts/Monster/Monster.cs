@@ -54,7 +54,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void Update()
+    protected void Update()
     {
         if (isStunned) return;
         

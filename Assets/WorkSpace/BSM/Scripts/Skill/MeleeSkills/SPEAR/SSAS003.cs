@@ -27,17 +27,10 @@ public class SSAS003 : MeleeSkill
         {
             overlapSize = new Vector2(1f, 3f);
         }
-
-
-        Collider2D[] monsterCol = Physics2D.OverlapBoxAll(playerPosition + (direction.normalized * 1f), overlapSize, 0,monsterLayer);
-
-        for (int i = 0; i < monsterCol.Length; i++)
-        {
-            IEffectReceiver monster = monsterCol[i].GetComponent<IEffectReceiver>();
-
-            Hit(monster, skillDamage); 
-            SlowEffect(monster, 3f);
-        } 
+        
+        ShieldEffect(2f, 3, 5f, 10f);
+        //ApplyMovementBlock(3f);
+        //CounterWhileImmobile();
     }
 
     public override void ApplyPassiveEffects()
