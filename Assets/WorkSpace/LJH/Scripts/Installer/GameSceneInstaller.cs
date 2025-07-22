@@ -17,12 +17,13 @@ public class GameSceneInstaller : MonoInstaller
     [Header("¿ÜºÎ¾À")]
     [SerializeField] SceneReference outsideScene;
 
-    [SerializeField] List<NpcNew> npc = new List<NpcNew>();
+    [SerializeField] List<Npc> npc = new List<Npc>();
 
     [SerializeField] ItemStorage itemManager;
 
     [SerializeField] GameObject popUp;
     [SerializeField] TestPlayer player;
+    [SerializeField] StoreManager storeManager;
 
     public override void InstallBindings()
     {
@@ -47,7 +48,7 @@ public class GameSceneInstaller : MonoInstaller
             .FromInstance(outsideScene);
 
         Container
-            .Bind<List<NpcNew>>()
+            .Bind<List<Npc>>()
             .FromInstance(npc);
 
         Container
@@ -65,5 +66,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<TargetPosStorage>()
             .FromInstance(targetPosStorage);
+
+        Container
+            .Bind<StoreManager>()
+            .FromInstance(storeManager);
     }
 }

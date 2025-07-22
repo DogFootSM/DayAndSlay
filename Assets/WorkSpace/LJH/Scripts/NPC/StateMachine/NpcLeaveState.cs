@@ -1,14 +1,16 @@
-public class LeaveState : INpcState
+public class NpcLeaveState : INpcState
 {
-    private NpcNew npc;
-
-    public LeaveState(NpcNew npc)
+    private Npc npc;
+    private StoreManager storeManager;
+    public NpcLeaveState(Npc npc)
     {
         this.npc = npc;
+        storeManager = npc.GetStoreManager();
     }
 
     public void Enter()
     {
+        storeManager.DequeueInNpcQue();
         npc.LeaveStore();
     }
 

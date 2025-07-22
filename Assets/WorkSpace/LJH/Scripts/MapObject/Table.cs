@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -24,8 +21,8 @@ public class Table : InteractableObj
     {
         if(collision.gameObject.CompareTag("NPC"))
         {
-            NPC npc= collision.gameObject.GetComponent<NPC>();
-            npc.BuyItem(this.gameObject, npc.wantItem);
+            Npc npc= collision.gameObject.GetComponent<Npc>();
+            npc.BuyItemFromTable();
         }
 
         if (tableAskPopup == null)

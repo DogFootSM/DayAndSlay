@@ -9,6 +9,7 @@ public class NpcStateMachine
         currentState?.Exit();
         currentState = newState;
         currentState?.Enter();
+
     }
 
     public void Tick()

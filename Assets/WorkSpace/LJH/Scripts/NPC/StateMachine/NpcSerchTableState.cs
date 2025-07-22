@@ -1,15 +1,25 @@
 public class NpcSearchTableState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
 
-    public NpcSearchTableState(NpcNew npc)
+    public NpcSearchTableState(Npc npc)
     {
         this.npc = npc;
     }
 
     public void Enter()
     {
-        npc.SearchTable();
+        Table table = npc.SearchTable();
+
+        if (table != null)
+        {
+            npc.SetTargetTable(table);
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position));
+        }
+        else
+        {
+            npc.StateMachine.ChangeState(new NpcDecisionInStoreState(npc, npc.GetStoreManager(), npc.GetSensor()));
+        }
     }
 
     public void Update() { }

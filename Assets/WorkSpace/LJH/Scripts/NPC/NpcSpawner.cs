@@ -16,8 +16,8 @@ public class NpcSpawner : MonoBehaviour
     private WaitForSeconds delayTime;
 
     [Inject]
-    private List<NpcNew> npcPreset = new List<NpcNew>();
-    private List<NpcNew> npcList = new List<NpcNew>();
+    private List<Npc> npcPreset = new List<Npc>();
+    private List<Npc> npcList = new List<Npc>();
     void Start()
     {
         Init();
@@ -33,7 +33,7 @@ public class NpcSpawner : MonoBehaviour
             yield return delayTime;
 
             int npcIndex = Random.Range(0, npcPreset.Count);
-            npcList.Add(container.InstantiatePrefabForComponent<NpcNew>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
+            npcList.Add(container.InstantiatePrefabForComponent<Npc>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
             npcList[npcList.Count - 1].IsBuyer = Random.value < 1f / npcBuyProbability;
             npcList[npcList.Count - 1].name = $"npc{npcList.Count - 1}";
         }

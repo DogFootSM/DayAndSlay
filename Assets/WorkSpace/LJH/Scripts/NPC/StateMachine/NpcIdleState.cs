@@ -1,8 +1,12 @@
+using System.Collections;
+using UnityEngine;
+
 public class NpcIdleState : INpcState
 {
-    private NpcNew npc;
+    private Npc npc;
+    private Grid grid;
 
-    public NpcIdleState(NpcNew npc)
+    public NpcIdleState(Npc npc)
     {
         this.npc = npc;
     }
@@ -10,14 +14,23 @@ public class NpcIdleState : INpcState
     public void Enter()
     {
         npc.SetMoving(false);
+        npc.StartCoroutine(WaitAndDecide());
+    }
 
-        if (npc.IsBuyer)
+    private IEnumerator WaitAndDecide()
+    {
+        //1등은 카운터로 나머지만 가게 뺑뺑이 로직 추가해야함
+
+        //템 사고 나온놈은 캐슬도어로 가서 사라져야함
+
+        yield return new WaitForSeconds(1f);
+        if (npc.IsInOutsideGrid())
         {
-            npc.SearchTable();
+            npc.StateMachine.ChangeState(new NpcDecisionState(npc));
         }
         else
         {
-            npc.StateMachine.ChangeState(new NpcDecisionState(npc));
+            npc.StateMachine.ChangeState(new NpcSearchTableState(npc));
         }
     }
 

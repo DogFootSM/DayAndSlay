@@ -70,7 +70,7 @@ public class ItemParser
                 item.SellPrice = int.Parse(values[16]);
                 item.ItemDescA = values[17];
 
-                string assetPath = $"{assetFolder}/{item.Tier}T_{item.Name}.asset";
+                string assetPath = $"{assetFolder}/{item.Name}.asset";
                 Debug.Log($"ScriptableObject »ý¼º ¡æ {assetPath}");
 
                 AssetDatabase.CreateAsset(item, assetPath);

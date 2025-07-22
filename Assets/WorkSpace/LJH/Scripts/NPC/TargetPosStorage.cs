@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,19 +11,23 @@ public class TargetPosStorage : MonoBehaviour
     [SerializeField] private List<Tilemap> mapTile;
     [SerializeField] private List<Tilemap> obstacleTile;
 
-    [SerializeField] private GameObject StoreDoor;
-    [SerializeField] private GameObject OutsideDoor;
+    [SerializeField] private GameObject storeDoor;
+    [SerializeField] private GameObject outsideDoor;
     [SerializeField] private GameObject castleDoor;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject desk;
 
     [SerializeField] private List<GameObject> randomPosList;
     [SerializeField] private GameObject randomPos;
-
-    public Vector3 StoreDoorPos => StoreDoor.transform.position;
-    public Vector3 OutsideDoorPos => OutsideDoor.transform.position;
-    public Vector3 CastleDoor => castleDoor.transform.position;
+    [SerializeField] private List<GameObject> randomPosInStoreList;
+    [SerializeField] private GameObject randomPosInStore;
+    public Vector3 StoreDoorPos => storeDoor.transform.position;
+    public Vector3 OutsideDoorPos => outsideDoor.transform.position;
+    public Vector3 CastleDoorPos => castleDoor.transform.position + new Vector3(0, -4, 0);
     public Vector3 PlayerPos => playerPos;
+    public Vector3 DeskPos => desk.transform.position + new Vector3(-1.5f, 0.5f, 0);
     public Vector3 RandomPos => randomPos.transform.position;
+    public Vector3 RandomPosInStore => randomPosInStore.transform.position;
 
     private Vector3 playerPos;
 
@@ -60,6 +65,7 @@ public class TargetPosStorage : MonoBehaviour
         while (true)
         {
             randomPos = randomPosList[Random.Range(0, randomPosList.Count - 1)];
+            randomPosInStore = randomPosInStoreList[Random.Range(0, randomPosInStoreList.Count - 1)];
 
             yield return delay;
         }
