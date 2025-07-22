@@ -114,12 +114,12 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="duration">이동 불가할 지속 시간</param>
     protected void ApplyMovementBlock(float duration)
     {
-        skillNode.PlayerModel.ReceiveMovementBlock(duration);
+        skillNode.PlayerSkillReceiver.ReceiveMovementBlock(duration);
     }
 
     protected void CounterWhileImmobile()
     {
-        skillNode.PlayerModel.ReceiveCounterWhileImmobile();
+        skillNode.PlayerSkillReceiver.ReceiveCounterWhileImmobile();
     }
     
     /// <summary>
