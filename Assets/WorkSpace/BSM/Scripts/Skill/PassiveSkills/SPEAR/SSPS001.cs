@@ -16,11 +16,11 @@ public class SSPS001 : PassiveSkill
     {
         PassiveEffect();
         Debug.Log($"{skillNode.skillData.SkillName} 패시브 스킬");
-        skillNode.PlayerModel.ApplyPassiveSkillModifiers(); 
         
-        //TODO: 패시브 스킬 효과 적용을 여기서 구현? PlayerStats를 반환 받아서 작업?
-        //레벨업 능력치 투자처럼 playerStat과 Visible 스탯을 조정?
-        //statusWindow.OnChangedAllStats?.Invoke(playerStats); 이벤트 발동시켜줘야 하나?
+        //TODO: 패시브 스킬 공식 수정 필요
+        skillNode.PlayerModel.PlayerStats.CriticalDamage +=
+            (1 + (skillNode.skillData.SkillCooldown * skillNode.CurSkillLevel));
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
     public override void Gizmos()

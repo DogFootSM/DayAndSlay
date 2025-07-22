@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHit : MonoBehaviour
+public class PlayerHit : PlayerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerHit(PlayerController playerController) : base(playerController)
+    {
+    }
+
+    public override void Enter()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Exit()
     {
         
     }
+    
 }

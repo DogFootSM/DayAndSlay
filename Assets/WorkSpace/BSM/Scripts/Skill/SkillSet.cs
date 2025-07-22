@@ -54,6 +54,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
         CurSkillNode.ApplySkillLevel();
         UpdateSkillLevelUI();
         UpdateSkillPreviewPrerequisite?.Invoke(CurSkillNode);
+        quickSlotManager.UpdateSkillPreviewTab(CurSkillNode);
     }
 
     /// <summary>

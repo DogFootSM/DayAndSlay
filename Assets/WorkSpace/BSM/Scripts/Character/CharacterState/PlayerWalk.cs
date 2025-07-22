@@ -8,10 +8,14 @@ public class PlayerWalk : PlayerState
     
     public override void Enter()
     {
-        playerController.BodyAnimator.Play(walkBlendTreeHash);
-        playerController.WeaponAnimator.Play(walkBlendTreeHash);
-
+        if (playerController.PlayerModel.IsMovementBlocked)
+        {
+            playerController.ChangeState(CharacterStateType.IDLE);
+            return;
+        }
         
+        playerController.BodyAnimator.Play(walkBlendTreeHash);
+        playerController.WeaponAnimator.Play(walkBlendTreeHash); 
     }
 
     public override void Update()
@@ -40,7 +44,7 @@ public class PlayerWalk : PlayerState
         Vector3 dir = new Vector3(playerController.MoveDir.x, playerController.MoveDir.y, 0);
 
         playerController.CharacterRb.MovePosition(playerController.transform.position +
-                                                     dir * playerController.PlayerModel.MoveSpeed *
+                                                     dir * moveSpeed *
                                                      Time.fixedDeltaTime);
     }
 

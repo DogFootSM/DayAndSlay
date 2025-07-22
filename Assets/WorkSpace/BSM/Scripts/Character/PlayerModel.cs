@@ -6,6 +6,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Zenject;
 
 [Serializable]
@@ -20,18 +21,23 @@ public class PlayerStats
     public int strength;                //캐릭터 힘 능력치
     public int agility;                 //캐릭터 민첩 능력치
     public int intelligence;            //캐릭터 지능 능력치
-    public int critical;                //캐릭터 크리티컬 능력치
+    public float criticalPer;                //캐릭터 크리티컬 능력치
     public int statsPoints;             //캐릭터 보유 스탯 포인트
     public int skillPoints;             //캐릭터 보유 스킬 포인트
-
+    public int moveSpeed;               //캐릭터의 기본 이동속도
+    public float attackSpeed;           //캐릭터의 기본 공격 속도
+    
     public int VisibleStrength;         //보여질 캐릭터 힘 능력치 
     public int VisibleAgility;          //보여질 캐릭터 민첩 능력치
     public int VisibleIntelligence;     //보여질 캐릭터 지능 능력치
-    public int VisibleCritical;         //보여질 캐릭터 크리티컬 능력치
+    public float VisibleCritical;         //보여질 캐릭터 크리티컬 능력치
 
-    public int PassiveStrength;
-    public int PassiveAgility;
-    
+    public float CriticalDamage;
+    public float IncreaseMoveSpeedPer;
+    public float InCreaseAttackSpeedPer;
+    public float CoolDown;
+    public float CastingSpeed;
+    public float Resistance;
     
     
     //캐릭터 체력
@@ -57,7 +63,6 @@ public class PlayerStats
         VisibleStrength = strength;
         VisibleAgility = agility;
         VisibleIntelligence = intelligence;
-        VisibleCritical = critical;
     }
     
     /// <summary>
@@ -70,7 +75,6 @@ public class PlayerStats
         VisibleStrength += itemData.Strength * sign;
         VisibleAgility += itemData.Agility * sign;
         VisibleIntelligence += itemData.Intelligence * sign;
-        VisibleCritical += (int)itemData.Critical * sign; 
     }
 }
 
@@ -89,24 +93,9 @@ public class PlayerModel : MonoBehaviour, ISavable
 
     private IDataReader dataReader;
     private GameManager gameManager => GameManager.Instance;
-
-    //이동 속도
-    private float moveSpeed = 3f;
-
-    public float MoveSpeed
-    {
-        get => moveSpeed;
-    }
-
+    
     private PlayerStats playerStats;
-
-    //공격 스피드
-    private float atkSpeed = 0.5f;
-
-    public float AtkSpeed
-    {
-        get => atkSpeed;
-    }
+    public PlayerStats PlayerStats => playerStats;
 
     public int CurSkillPoint
     {
@@ -121,6 +110,34 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     private int slotId;
+    
+    private int shieldCount;
+    public int ShieldCount
+    {
+        get => shieldCount;
+        set => shieldCount = value;
+    }
+
+    private float defenseBoostMultiplier;
+    public float DefenseBoostMultiplier
+    {
+        get => defenseBoostMultiplier;
+        set => defenseBoostMultiplier = value;
+    }
+
+    private bool isCastingDone;
+    public bool IsCastingDone
+    {
+        get => isCastingDone;
+        set => isCastingDone = value;
+    }
+    
+    private bool isMovementBlocked;
+    public bool IsMovementBlocked
+    {
+        get => isMovementBlocked;
+        set => isMovementBlocked = value;
+    }
 
     private void Awake()
     {
@@ -168,6 +185,15 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.agility = dataReader.GetInt32(4);
             playerStats.intelligence = dataReader.GetInt32(5);
             playerStats.skillPoints = dataReader.GetInt32(6);
+            playerStats.moveSpeed = 3;
+            playerStats.attackSpeed = 0.5f;
+            playerStats.IncreaseMoveSpeedPer = 1f;
+            playerStats.InCreaseAttackSpeedPer = 1f;
+            playerStats.CoolDown = 0f;
+            playerStats.CastingSpeed = 0f;
+            playerStats.Resistance = 0f;
+            playerStats.criticalPer = 0f;
+            playerStats.CriticalDamage = 1.5f;
         }
         
         playerStats.InitVisibleStats();
@@ -185,7 +211,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         if (Input.GetKeyDown(KeyCode.V))
         {
             GainExperience(50);
-        }
+        } 
     }
 
     /// <summary>
@@ -229,6 +255,7 @@ public class PlayerModel : MonoBehaviour, ISavable
 
     public void ApplyPassiveSkillModifiers()
     {
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
         Debug.Log("패시브 스킬 능력치 적용");
     }
     
@@ -295,4 +322,5 @@ public class PlayerModel : MonoBehaviour, ISavable
 
         Debug.Log("스탯 저장 진행");
     }
+
 }

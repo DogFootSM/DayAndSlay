@@ -52,7 +52,8 @@ public class RangeAttackHandler : IAttackHandler
         //TODO: 활 공격같은 경우에는 화살 Pool에 타겟을 전달해주고 Pool에서 데미지를 주는 방식
         if (targetMonster != null)
         { 
-            targetMonster.TakeDamage(5);
+            targetMonster.
+                TakeDamage(5);
         }
         
     }

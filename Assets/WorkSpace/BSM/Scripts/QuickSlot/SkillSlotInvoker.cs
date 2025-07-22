@@ -41,6 +41,7 @@ public class SkillSlotInvoker : MonoBehaviour
     {
         SkillNode skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
 
+        //TODO: 캐스팅 완료되기 전이면 스킬 사용x?
         if (skillNode.IsCoolDownReset)
         {
             if (skillNode != null)
@@ -49,10 +50,8 @@ public class SkillSlotInvoker : MonoBehaviour
              
                 if (slotSkill != null)
                 {
-                    Debug.Log("스킬 사용");
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
-                    //여기서 쿨타임 ui 재생?
                     CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
                 }
             

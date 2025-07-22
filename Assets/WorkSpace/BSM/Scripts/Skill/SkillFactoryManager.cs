@@ -12,6 +12,7 @@ public static class SkillFactoryManager
             case "1_검" : return new SSAS001(skillNode);
             case "1_창" : return new SSAS001(skillNode);
             case "2_창" : return new SSAS002(skillNode);
+            case "3_창" : return new SSAS003(skillNode);
             case "4_창" : return new SSPS001(skillNode);
             
             default: return null;
