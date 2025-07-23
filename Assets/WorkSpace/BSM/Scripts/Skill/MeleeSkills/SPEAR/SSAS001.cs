@@ -22,9 +22,6 @@ public class SSAS001 : MeleeSkill
         SetParticleStartRotationFromDeg(leftDeg, rightDeg, downDeg, upDeg);
 
         skillDamage = GetSkillDamage();
-        
-        dir = direction;
-        pos = playerPosition;
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
@@ -35,17 +32,8 @@ public class SSAS001 : MeleeSkill
         {
             overlapSize = new Vector2(1f, 3f);
         }
-
-        Collider2D[] colliders =
-            Physics2D.OverlapBoxAll(playerPosition + (direction.normalized * 1f), overlapSize, 0f, monsterLayer);
-
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].TryGetComponent<IEffectReceiver>(out IEffectReceiver monster))
-            {
-                Hit(monster, skillDamage); 
-            }
-        }
+ 
+        ShieldEffect(0.5f, 3, 2.5f, 5f);
     }
 
     public override void ApplyPassiveEffects() { }

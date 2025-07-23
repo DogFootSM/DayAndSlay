@@ -9,15 +9,15 @@ public class SSAS003 : MeleeSkill
     }
 
     private Vector2 dir;
-    private Vector2 pos; 
-    
+    private Vector2 pos;
+
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         MeleeEffect(playerPosition, direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
 
         dir = direction;
         pos = playerPosition;
-        
+
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             //TODO: 감지 모양 및 크기는 추후 수정
@@ -27,22 +27,10 @@ public class SSAS003 : MeleeSkill
         {
             overlapSize = new Vector2(1f, 3f);
         }
- 
-        
-        Collider2D[] overlaps = Physics2D.OverlapBoxAll(playerPosition + (direction.normalized) , overlapSize, 0, monsterLayer);
-
-        skillDamage = GetSkillDamage();
-        ApplyNextSkillDamageBuff( 3f);
-        
-        if (overlaps.Length > 0)
-        {
-            Hit(overlaps[0].GetComponent<IEffectReceiver>(), skillDamage);
-        } 
     }
 
     public override void ApplyPassiveEffects()
     {
-         
     }
 
     public override void Gizmos()

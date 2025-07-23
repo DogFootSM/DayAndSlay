@@ -159,6 +159,12 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerModel.NextSkillDamageMultiplier = multiplier;
         skillNode.PlayerModel.NextSkillBuffActive = true;
     }
+
+    protected void ExecuteChargeSkill(Vector2 dir, Vector2 playerPos, Vector2 overlapSize)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveExecuteCharge(dir, playerPos, overlapSize);
+        
+    }
     
     /// <summary>
     /// 몬스터에게 데미지 전달
