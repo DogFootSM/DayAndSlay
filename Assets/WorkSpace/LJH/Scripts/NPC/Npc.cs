@@ -29,10 +29,16 @@ public class Npc : MonoBehaviour
 
     private string currentAnim = "";
 
+    //Emoji
+    [SerializeField] List<Sprite> extensions;
+    [SerializeField] private bool isAngry;
+
     public TargetSensorInNpc GetSensor() => targetSensor;
     public StoreManager GetStoreManager() => storeManager;
     public void SetTargetTable(Table table) => tableWithItem = table;
 
+    public void HeIsAngry() => isAngry = true;
+    public bool CheckHeIsAngry() => isAngry;
     public bool IsInOutsideGrid()
     {
         Grid grid = targetSensor.GetCurrentGrid(transform.position);
@@ -161,6 +167,7 @@ public class Npc : MonoBehaviour
 
     public void LeaveStore()
     {
+        HeIsAngry();
         Vector3 door = targetSensor.GetLeavePosition();
         StateMachine.ChangeState(new NpcMoveState(this, door));
     }
@@ -192,11 +199,12 @@ public class Npc : MonoBehaviour
         }
     }
 
-    public void WantItemMarkOnOff()
+    public void WantItemMarkOnOff(Emoji num)
     {
-        GameObject mark = transform.GetChild(2).gameObject;
+        GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
     }
+
 
     public bool ArrivedDesk()
     {

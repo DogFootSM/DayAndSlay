@@ -16,6 +16,13 @@ public class TargetPosStorage : MonoBehaviour
     [SerializeField] private GameObject castleDoor;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject desk;
+    [SerializeField] private GameObject fishingPos;
+    [SerializeField] private GameObject loggingPos;
+
+    [SerializeField] private List<GameObject> fishingRandomPosList;
+    [SerializeField] private GameObject fishingRandomPos;
+    [SerializeField] private List<GameObject> loggingRandomPosList;
+    [SerializeField] private GameObject loggingRandomPos;
 
     [SerializeField] private List<GameObject> randomPosList;
     [SerializeField] private GameObject randomPos;
@@ -26,6 +33,8 @@ public class TargetPosStorage : MonoBehaviour
     public Vector3 CastleDoorPos => castleDoor.transform.position + new Vector3(0, -4, 0);
     public Vector3 PlayerPos => playerPos;
     public Vector3 DeskPos => desk.transform.position + new Vector3(-1.5f, 0.5f, 0);
+    public Vector3 FishingPos => fishingPos.transform.position;
+    public Vector3 LoggingPos => loggingPos.transform.position;
     public Vector3 RandomPos => randomPos.transform.position;
     public Vector3 RandomPosInStore => randomPosInStore.transform.position;
 

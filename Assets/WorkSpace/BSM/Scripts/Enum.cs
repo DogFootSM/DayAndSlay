@@ -353,8 +353,16 @@ public enum DoorType
     LADDER,
 }
 
+[Serializable]
 public enum DayAndNight
 {
     DAY,
     NIGHT,
+}
+
+[Serializable]
+public enum Emoji
+{
+    EXCLAMATION = 2,
+    ANGRY,
 }

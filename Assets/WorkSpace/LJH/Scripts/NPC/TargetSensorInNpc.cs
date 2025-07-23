@@ -14,6 +14,8 @@ public class TargetSensorInNpc : MonoBehaviour
     [SerializeField] private Vector3 inStoreDoorPos;
     [SerializeField] private Vector3 outStoreDoorPos;
     [SerializeField] private Vector3 castleDoorPos;
+    [SerializeField] private Vector3 fishingPos;
+    [SerializeField] private Vector3 loggingPos;
     [SerializeField] private Vector3 deskPos;
     [SerializeField] private Vector3 randomPos;
     [SerializeField] private Vector3 randomPosInStore;
@@ -28,6 +30,8 @@ public class TargetSensorInNpc : MonoBehaviour
         inStoreDoorPos = storage.OutsideDoorPos;
         outStoreDoorPos = storage.StoreDoorPos;
         castleDoorPos = storage.CastleDoorPos;
+        fishingPos = storage.FishingPos;
+        loggingPos = storage.LoggingPos;
         deskPos = storage.DeskPos;
         StartCoroutine(RandominitCoroutine());
 
@@ -50,6 +54,8 @@ public class TargetSensorInNpc : MonoBehaviour
     public Vector3 GetEnterPosition() => inStoreDoorPos;
     public Vector3 GetLeavePosition() => outStoreDoorPos;
     public Vector3 GetCastleDoorPosition() => castleDoorPos;
+    public Vector3 GetFishingPosition() => fishingPos;
+    public Vector3 GetLoggingPosition() => loggingPos;
     public Vector3 GetDeskPosition() => deskPos;
 
     public Grid GetCurrentGrid(Vector3 worldPos)

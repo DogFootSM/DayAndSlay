@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoreManager : MonoBehaviour
+public class StoreManager : InteractableObj
 {
     [SerializeField] private Queue<Npc> npcQue = new Queue<Npc>();
     [SerializeField] private List<Npc> npcList = new List<Npc>();
     [SerializeField] private Npc npc;
+
+    [SerializeField] GameObject popUp;
 
     int curNpcNum = 0;
 
@@ -13,9 +15,18 @@ public class StoreManager : MonoBehaviour
     public Npc PeekInNpcQue() => npcQue.Peek();
     public Npc DequeueInNpcQue() => npcQue.Dequeue();
 
-    private void Update()
+    public override void Interaction()
     {
-       
+        PeekInNpcQue().TalkToPlayer();
+        PeekInNpcQue().StateMachine.ChangeState(new NpcWaitItemState(npc));
+    }
+    public override void UiOnOffMethod(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            popUp.GetComponent<PopUp>().objName = "д╚©Нем";
+            popUp.SetActive(!popUp.gameObject.activeSelf);
+        }
     }
 
 

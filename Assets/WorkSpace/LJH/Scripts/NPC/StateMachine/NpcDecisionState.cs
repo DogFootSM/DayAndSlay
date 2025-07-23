@@ -16,7 +16,7 @@ public class NpcDecisionState : INpcState
         if (npc.IsBuyer)
         {
 
-            if (npc.wantItem == null)
+            if (npc.CheckHeIsAngry())
             {
                 Debug.Log("성문으로 이동");
                 Vector3 castlePos = targetSensor.GetCastleDoorPosition();
