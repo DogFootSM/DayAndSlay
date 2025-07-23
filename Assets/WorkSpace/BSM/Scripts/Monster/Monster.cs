@@ -6,6 +6,9 @@ using UnityEngine;
 public class Monster : MonoBehaviour, IEffectReceiver
 {
     [NonSerialized] public float hp = 100;
+
+    private float defense = 15f;
+    
     protected float moveSpeed = 3f;
     protected float knockBackPower = 3f;
     
@@ -15,6 +18,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
     protected Coroutine dotDamageCo;
     protected Coroutine stunCo;
     protected Coroutine slowCo;
+    protected Coroutine defenseDeBuffCo;
     
     protected Vector2 knockBackDir;
      
@@ -23,6 +27,9 @@ public class Monster : MonoBehaviour, IEffectReceiver
 
     protected bool isStunned;
     protected bool isDot;
+    protected bool isDefenseDeBuffed;
+
+    private float defenseDeBuffRatio;
     
     private void Awake()
     {
@@ -64,10 +71,30 @@ public class Monster : MonoBehaviour, IEffectReceiver
     //-----------------------------------------------
     public void TakeDamage(float damage)
     {
+        float calcDefense = defense;
+        
+        //TODO: 임시 디버프 방어력 계산
+        if (isDefenseDeBuffed)
+        {
+            calcDefense -= CalculateDefenseDeBuff();
+        }
+        
+        Debug.Log($"방어력 :{calcDefense}");
+        
+        //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
         Debug.Log($"{gameObject.name} 남은 hp :{hp}");
     }
 
+    /// <summary>
+    /// 디버프에 따른 방어력 계산
+    /// </summary>
+    /// <returns></returns>
+    private float CalculateDefenseDeBuff()
+    {
+        return defense * defenseDeBuffRatio;
+    }
+    
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         KnockBack(playerPos, playerDir);
@@ -102,10 +129,43 @@ public class Monster : MonoBehaviour, IEffectReceiver
     {
         Slow(duration);
     }
-
+    
     protected virtual void Slow(float duration)
     {
         //몬스터에 따른 특성 구현
+    }
+    
+    public void ReceiveDefenseDeBuff(float duration, float deBuffPercent)
+    {
+        defenseDeBuffRatio = deBuffPercent;
+        
+        DefenseDeBuff(duration);
+    }
+
+    protected virtual void DefenseDeBuff(float duration)
+    {
+        if (defenseDeBuffCo != null)
+        {
+            StopCoroutine(defenseDeBuffCo);
+            defenseDeBuffCo = null;
+        }
+
+        defenseDeBuffCo = StartCoroutine(DefenseDeBuffRoutine(duration));
+    }
+
+    protected virtual IEnumerator DefenseDeBuffRoutine(float duration)
+    {
+        float elaspedTime = 0f;
+    
+        isDefenseDeBuffed = true;
+        
+        while (elaspedTime < duration)
+        {
+            elaspedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        isDefenseDeBuffed = false;
     }
     
     /// <summary>

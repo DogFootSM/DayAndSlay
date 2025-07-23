@@ -160,7 +160,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         playerModel.IsCountering = true;
         counterWhileImmobileCo = StartCoroutine(CounterWhileImmobileRoutine());
     }
-
+    
     private IEnumerator CounterWhileImmobileRoutine()
     {
         while (playerModel.IsMovementBlocked)
@@ -181,5 +181,4 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         monsterQueue.Enqueue(monster);
     }
-    
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TempGoblin : Monster, IEffectReceiver
+public class TempGoblin : Monster
 {
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -12,8 +12,6 @@ public class TempGoblin : Monster, IEffectReceiver
 
     protected override void KnockBack(Vector2 playerPos, Vector2 playerDir)
     {
-        Debug.Log("자식에서 구현함");
-        
         Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
         
         if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))

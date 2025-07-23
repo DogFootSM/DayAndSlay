@@ -15,7 +15,21 @@ public abstract class MeleeSkill : SkillFactory
     {
     }
 
-    public abstract float GetSkillDamage();
+    /// <summary>
+    /// 현재 스킬의 데미지 반환
+    /// </summary>
+    /// <returns></returns>
+    protected float GetSkillDamage()
+    {
+        //다음 스킬의 데미지 증가 버프가 걸려있는 상태
+        if (skillNode.PlayerModel.NextSkillBuffActive)
+        {
+            skillNode.PlayerModel.NextSkillBuffActive = false;
+            return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel * skillNode.PlayerModel.NextSkillDamageMultiplier;
+        } 
+        
+        return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel;
+    }
 
     /// <summary>
     /// 근접 공격 이펙트
@@ -117,9 +131,33 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveMovementBlock(duration);
     }
 
+    /// <summary>
+    /// 반격 효과 호출
+    /// </summary>
     protected void CounterWhileImmobile()
     {
         skillNode.PlayerSkillReceiver.ReceiveCounterWhileImmobile();
+    }
+
+    /// <summary>
+    /// 몬스터 방어력 감소 디버프 효과 호출
+    /// </summary>
+    /// <param name="monster">감지한 몬스터</param>
+    /// <param name="duration">디버프 지속 시간</param>
+    /// <param name="deBuffPercent">방어력 감소 비율</param>
+    protected void ApplyDefenseDeBuff(IEffectReceiver monster, float duration, float deBuffPercent)
+    {
+        monster.ReceiveDefenseDeBuff(duration, deBuffPercent);
+    }
+
+    /// <summary>
+    /// 다음 스킬 데미지 버프 적용
+    /// </summary>
+    /// <param name="multiplier"></param>
+    protected void ApplyNextSkillDamageBuff(float multiplier)
+    {
+        skillNode.PlayerModel.NextSkillDamageMultiplier = multiplier;
+        skillNode.PlayerModel.NextSkillBuffActive = true;
     }
     
     /// <summary>

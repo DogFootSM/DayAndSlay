@@ -27,10 +27,17 @@ public class SSAS003 : MeleeSkill
         {
             overlapSize = new Vector2(1f, 3f);
         }
+ 
         
         Collider2D[] overlaps = Physics2D.OverlapBoxAll(playerPosition + (direction.normalized) , overlapSize, 0, monsterLayer);
+
+        skillDamage = GetSkillDamage();
+        ApplyNextSkillDamageBuff( 3f);
         
-        KnockBackEffect(playerPosition, direction, overlaps[0].GetComponent<IEffectReceiver>());
+        if (overlaps.Length > 0)
+        {
+            Hit(overlaps[0].GetComponent<IEffectReceiver>(), skillDamage);
+        } 
     }
 
     public override void ApplyPassiveEffects()
@@ -43,10 +50,5 @@ public class SSAS003 : MeleeSkill
         UnityEngine.Gizmos.color = Color.blue;
 
         UnityEngine.Gizmos.DrawWireCube(pos + (dir.normalized * 1f), overlapSize);
-    }
-
-    public override float GetSkillDamage()
-    {
-        return 0;
     }
 }

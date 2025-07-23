@@ -49,17 +49,6 @@ public class SSAS001 : MeleeSkill
     }
 
     public override void ApplyPassiveEffects() { }
-
-    /// <summary>
-    /// 현재 스킬 레벨에 따른 데미지 적용
-    /// </summary>
-    /// <returns></returns>
-    public override float GetSkillDamage()
-    {
-        float damage = skillNode.CurSkillLevel * skillNode.skillData.SkillDamage;
-        
-        return damage;
-    }
     
     public override void Gizmos()
     {
