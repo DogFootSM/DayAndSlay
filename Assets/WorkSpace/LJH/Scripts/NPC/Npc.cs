@@ -36,7 +36,6 @@ public class Npc : MonoBehaviour
     public TargetSensorInNpc GetSensor() => targetSensor;
     public StoreManager GetStoreManager() => storeManager;
     public void SetTargetTable(Table table) => tableWithItem = table;
-
     public void HeIsAngry() => isAngry = true;
     public bool CheckHeIsAngry() => isAngry;
     public bool IsInOutsideGrid()
@@ -61,7 +60,6 @@ public class Npc : MonoBehaviour
     {
         targetSensor.Init(this);
         UpdateGrid();
-
     }
 
     private void SetupItemWish()
@@ -85,6 +83,14 @@ public class Npc : MonoBehaviour
         }
         return null;
     }
+    public void StopMove()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+    }
 
     public void MoveTo(Vector3 targetPos, System.Action onArrive = null)
     {
@@ -93,6 +99,7 @@ public class Npc : MonoBehaviour
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
+        Debug.Log(targetPos);
         astarPath.DetectTarget(transform.position, targetPos);
         moveCoroutine = StartCoroutine(MoveCoroutine(targetPos, onArrive));
     }
@@ -100,7 +107,8 @@ public class Npc : MonoBehaviour
     private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
         isMoving = true;
-        var path = astarPath.path;
+        List<Vector3> path = astarPath.path;
+        Debug.Log($"경로 포인트 수: {path?.Count}");
 
         if (path == null || path.Count == 0)
         {
@@ -225,12 +233,13 @@ public class Npc : MonoBehaviour
     }
 
     public void Fishing()
-    { 
-    
+    {
+        StateMachine.ChangeState(new NpcFishingState(this));
     }
-    public void Logging()
-    { 
 
+    public void Logging()
+    {
+        StateMachine.ChangeState(new NpcLoggingState(this));
     }
 }
 

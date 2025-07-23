@@ -34,7 +34,9 @@ public class NpcDecisionState : INpcState
         else
         {
             Debug.Log("랜덤 구역으로 이동");
-            Vector3 randomPos = targetSensor.GetRandomPosition();
+            //Vector3 randomPos = targetSensor.GetRandomPosition();
+            Vector3 randomPos = targetSensor.GetFishingPosition();
+
             npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos, new NpcIdleState(npc)));
         }
     }

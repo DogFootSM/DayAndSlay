@@ -34,6 +34,19 @@ public class NpcMoveState : INpcState
         {
             npc.StateMachine.ChangeState(new WaitForPlayerState(npc));
         }
+
+        //현재 이 위치에서 벗어나지 않으니 낚시 포인트와 이 포인트를 반복하느라 안움직임
+        if(Vector3.Distance(npc.transform.position, npc.GetSensor().GetFishingPosition()) <= 1f)
+        {
+            Debug.Log("낚시");
+            npc.StateMachine.ChangeState(new NpcPreFishingState(npc));
+        }
+
+        if(Vector3.Distance(npc.transform.position, npc.GetSensor().GetLoggingPosition()) <= 1f)
+        {
+            Debug.Log("벌목");
+            npc.StateMachine.ChangeState(new NpcPreLoggingState(npc));
+        }
     }
     public void Exit() { }
 }
