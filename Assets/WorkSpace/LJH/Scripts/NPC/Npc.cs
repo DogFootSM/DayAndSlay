@@ -29,6 +29,7 @@ public class Npc : MonoBehaviour
 
     private string currentAnim = "";
 
+    int testNum = 0;
     //Emoji
     [SerializeField] List<Sprite> extensions;
     [SerializeField] private bool isAngry;
@@ -99,7 +100,6 @@ public class Npc : MonoBehaviour
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
-        Debug.Log(targetPos);
         astarPath.DetectTarget(transform.position, targetPos);
         moveCoroutine = StartCoroutine(MoveCoroutine(targetPos, onArrive));
     }
@@ -108,7 +108,6 @@ public class Npc : MonoBehaviour
     {
         isMoving = true;
         List<Vector3> path = astarPath.path;
-        Debug.Log($"경로 포인트 수: {path?.Count}");
 
         if (path == null || path.Count == 0)
         {

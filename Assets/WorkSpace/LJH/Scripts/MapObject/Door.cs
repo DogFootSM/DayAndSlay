@@ -42,7 +42,8 @@ public class Door : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("NPC"))
+
+        if (collision.gameObject.CompareTag("NPC"))
         {
             GameObject npcObj = collision.gameObject;
             Npc npc = npcObj.GetComponent<Npc>();

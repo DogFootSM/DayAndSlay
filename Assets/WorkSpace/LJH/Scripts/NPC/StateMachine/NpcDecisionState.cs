@@ -20,7 +20,6 @@ public class NpcDecisionState : INpcState
             {
                 Debug.Log("성문으로 이동");
                 Vector3 castlePos = targetSensor.GetCastleDoorPosition();
-                Debug.Log(castlePos);
                 npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos));
             }
 
@@ -34,8 +33,7 @@ public class NpcDecisionState : INpcState
         else
         {
             Debug.Log("랜덤 구역으로 이동");
-            //Vector3 randomPos = targetSensor.GetRandomPosition();
-            Vector3 randomPos = targetSensor.GetFishingPosition();
+            Vector3 randomPos = targetSensor.GetRandomPosition();
 
             npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos, new NpcIdleState(npc)));
         }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class NpcLeaveState : INpcState
 {
     private Npc npc;

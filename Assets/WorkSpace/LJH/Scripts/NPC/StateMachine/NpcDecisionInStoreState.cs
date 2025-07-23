@@ -15,7 +15,7 @@ public class NpcDecisionInStoreState : INpcState
 
     public void Enter()
     {
-        store.EnqueueInNpcQue(npc);
+        //store.EnqueueInNpcQue(npc);
         if (npc == store.PeekInNpcQue())
         {
             //카운터로 이동

@@ -11,9 +11,16 @@ public class StoreManager : InteractableObj
 
     int curNpcNum = 0;
 
-    public void EnqueueInNpcQue(Npc npc) => npcQue.Enqueue(npc);
+    public void EnqueueInNpcQue(Npc npc)
+    {
+        if (!npcQue.Contains(npc))
+        {
+            npcQue.Enqueue(npc);
+        }
+    }
     public Npc PeekInNpcQue() => npcQue.Peek();
     public Npc DequeueInNpcQue() => npcQue.Dequeue();
+
 
     public override void Interaction()
     {

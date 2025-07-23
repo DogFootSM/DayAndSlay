@@ -30,6 +30,11 @@ public class NpcIdleState : INpcState
         }
         else
         {
+            if(npc.GetStoreManager().PeekInNpcQue() == npc)
+            {
+                npc.StateMachine.ChangeState(new NpcMoveState(npc, npc.GetSensor().GetDeskPosition()));
+            }
+
             npc.StateMachine.ChangeState(new NpcSearchTableState(npc));
         }
     }
