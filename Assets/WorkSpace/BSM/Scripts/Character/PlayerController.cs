@@ -41,8 +41,10 @@ public class PlayerController : MonoBehaviour
     private IDataReader dataReader;
     private SkillSlotInvoker skillSlotInvoker; 
     private Table tableObject;
-
-    private LayerMask tableMask;
+    private StoreManager informationDeskObject;
+    
+    private LayerMask tableLayerMask;
+    private LayerMask informationDeskLayerMask;
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
      
@@ -58,7 +60,6 @@ public class PlayerController : MonoBehaviour
         // InitSlotData();
         // ChangedWeaponType(curWeaponType);
         characterStates[(int)curState].Enter();
-        tableMask = LayerMask.NameToLayer("Table");
     }
 
     private void Start()
@@ -86,6 +87,9 @@ public class PlayerController : MonoBehaviour
 
     private void Init()
     {
+        tableLayerMask = LayerMask.NameToLayer("Table");
+        informationDeskLayerMask = LayerMask.GetMask("InformationDesk");
+        
         LastMoveKey = Direction.Down;
         
         playerModel = GetComponent<PlayerModel>();
@@ -200,15 +204,22 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void InventoryToTableItem()
     {
-        if (Input.GetKeyDown(KeyCode.E) && tableObject != null)
-        { 
-            if (tableObject.CurItemDataData == null)
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (tableObject != null)
             {
-                tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
-            }
-            else
+                if (tableObject.CurItemDataData == null)
+                {
+                    tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
+                }
+                else
+                {
+                    tableManager.WithdrawItem(inventoryInteraction, tableObject);
+                }
+            } 
+            else if (informationDeskObject != null)
             {
-                tableManager.WithdrawItem(inventoryInteraction, tableObject);
+                tableManager.OpenRegisterItemPanel(inventoryInteraction, informationDeskObject);
             }
         } 
     }
@@ -231,18 +242,27 @@ public class PlayerController : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == tableMask)
+        if (collision.gameObject.layer == tableLayerMask)
         {
             tableObject = collision.gameObject.GetComponent<Table>();
         } 
+        else if ((1 << collision.gameObject.layer & informationDeskLayerMask) != 0)
+        {
+            informationDeskObject = collision.gameObject.GetComponent<StoreManager>();
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.layer == tableMask)
+        if (other.gameObject.layer == tableLayerMask)
         {
             tableManager.OnPlayerExitRangeClosePanel();
             tableObject = null;
         } 
+        else if ((1 << other.gameObject.layer & informationDeskLayerMask) != 0)
+        {
+            tableManager.OnPlayerExitRangeClosePanel();
+            informationDeskObject = null;
+        }
     } 
 }

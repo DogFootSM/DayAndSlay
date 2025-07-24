@@ -14,7 +14,7 @@ public class RegisterTableSlot : MonoBehaviour, IPointerClickHandler
     
     [Inject] private TableManager tableManager;
     
-    private ItemData itemData;
+    [SerializeField] private ItemData itemData;
     private InventorySlot inventoryToTableSlot;
     private void Awake()
     {
@@ -30,12 +30,19 @@ public class RegisterTableSlot : MonoBehaviour, IPointerClickHandler
         this.itemData = itemData;
         itemImage.sprite = itemData.ItemImage; 
         inventoryToTableSlot = inventorySlot;
+
     }
 
+    public void ResetRegisterItem()
+    {
+        itemData = null;
+        itemImage.sprite = null;
+        inventoryToTableSlot = null;
+    }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         if (itemData == null) return;
-        
         //선택한 아이템 전달
         tableManager.SelectRegisterTableSlot(itemData, inventoryToTableSlot);
     }
