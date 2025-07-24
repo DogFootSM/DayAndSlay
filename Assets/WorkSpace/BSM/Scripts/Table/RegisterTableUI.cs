@@ -17,7 +17,8 @@ public class RegisterTableUI : MonoBehaviour
     [Inject] private TableManager tableManager;
     
     public UnityAction<ItemData> OnRegisterItemEvents;
-
+    public UnityAction OnRegisterUIResetEvents;
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -29,11 +30,13 @@ public class RegisterTableUI : MonoBehaviour
     private void OnEnable()
     {
         OnRegisterItemEvents += OnRegisterItem;
+        OnRegisterUIResetEvents += ResetRegisterTableUI;
     }
 
     private void OnDisable()
     {
         OnRegisterItemEvents -= OnRegisterItem; 
+        OnRegisterUIResetEvents -= ResetRegisterTableUI;
     }
     
     /// <summary>
@@ -44,5 +47,11 @@ public class RegisterTableUI : MonoBehaviour
     { 
         registerItemImage.sprite = item.ItemImage;
         registerItemText.text = item.Name;
-    } 
+    }
+
+    private void ResetRegisterTableUI()
+    {
+        registerItemImage.sprite = null;
+        registerItemText.text = "";
+    }
 }

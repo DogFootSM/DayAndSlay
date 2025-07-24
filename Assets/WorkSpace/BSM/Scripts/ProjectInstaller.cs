@@ -10,6 +10,7 @@ public class ProjectInstaller : MonoInstaller
     public MapManager MapManager;
     public SaveManager SaveManager;
     public TableManager TableManager;
+    public PlayerContext PlayerContext;
     
     public override void InstallBindings()
     {
@@ -17,6 +18,7 @@ public class ProjectInstaller : MonoInstaller
         Container.Bind<MapManager>().FromComponentInNewPrefab(MapManager).AsSingle().NonLazy();
         Container.Bind<SaveManager>().FromComponentInNewPrefab(SaveManager).AsSingle().NonLazy();
         Container.Bind<TableManager>().FromComponentInNewPrefab(TableManager).AsSingle().NonLazy();
+        Container.Bind<PlayerContext>().FromComponentInNewPrefab(PlayerContext).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<SqlManager>().AsSingle().NonLazy();
     }
 }
