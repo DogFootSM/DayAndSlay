@@ -39,6 +39,11 @@ public class Npc : MonoBehaviour
     public void SetTargetTable(Table table) => tableWithItem = table;
     public void HeIsAngry() => isAngry = true;
     public bool CheckHeIsAngry() => isAngry;
+
+    /// <summary>
+    /// True = Outside / False = Store
+    /// </summary>
+    /// <returns></returns>
     public bool IsInOutsideGrid()
     {
         Grid grid = targetSensor.GetCurrentGrid(transform.position);
@@ -154,6 +159,10 @@ public class Npc : MonoBehaviour
             talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
         }
     }
+    public void TalkExit()
+    {
+        talkPopUp.gameObject?.SetActive(false);
+    }
 
     public void BuyItemFromDesk()
     {
@@ -210,6 +219,7 @@ public class Npc : MonoBehaviour
     {
         GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
+        Debug.Log($"{num} 켜졌음");
     }
 
 
@@ -226,9 +236,10 @@ public class Npc : MonoBehaviour
     private IEnumerator TestCo()
     {
         yield return new WaitForSeconds(3f);
-
         TalkToPlayer();
         StateMachine.ChangeState(new NpcWaitItemState(this));
+        yield return new WaitForSeconds(2f);
+        TalkExit();
     }
 
     public void Fishing()

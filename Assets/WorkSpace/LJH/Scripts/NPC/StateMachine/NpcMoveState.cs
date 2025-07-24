@@ -30,7 +30,7 @@ public class NpcMoveState : INpcState
         if (npc.StateMachine.CurrentState != this)
             return;
 
-        if (npc.ArrivedDesk())
+        if (npc.ArrivedDesk() && npc.GetStoreManager().PeekInNpcQue() == npc)
         {
             npc.StateMachine.ChangeState(new WaitForPlayerState(npc));
         }

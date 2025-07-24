@@ -23,6 +23,8 @@ public class Table : InteractableObj
         {
             Npc npc= collision.gameObject.GetComponent<Npc>();
             npc.BuyItemFromTable();
+
+            return;
         }
 
         if (tableAskPopup == null)

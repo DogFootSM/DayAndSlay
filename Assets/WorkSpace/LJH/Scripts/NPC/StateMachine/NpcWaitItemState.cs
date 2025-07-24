@@ -24,6 +24,7 @@ public class NpcWaitItemState : INpcState
         {
             //아이템 판매 실패한 경우
             npc.BuyItemFromDesk();
+            npc.WantItemMarkOnOff(Emoji.EXCLAMATION);
             npc.WantItemMarkOnOff(Emoji.ANGRY);
             npc.StateMachine.ChangeState(new NpcLeaveState(npc));
         }
