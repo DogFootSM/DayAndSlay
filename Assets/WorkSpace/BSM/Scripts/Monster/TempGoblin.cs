@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TempGoblin : Monster, IEffectReceiver
+public class TempGoblin : Monster
 {
-    public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        player.TakeDamage(this, 3f);
+    }
+
+    protected override void KnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
         
@@ -45,20 +50,7 @@ public class TempGoblin : Monster, IEffectReceiver
         knockBackCo = StartCoroutine(KnockBackRoutine());
     }
 
-    /// <summary>
-    /// 넉백 코루틴
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator KnockBackRoutine()
-    {
-        rb.AddForce(knockBackDir * knockBackPower, ForceMode2D.Impulse);
-
-        yield return WaitCache.GetWait(0.3f);
-
-        rb.velocity = Vector2.zero;
-    }
-    
-    public void ReceiveDot(float duration, float tick, float damage)
+    protected override void Dot(float duration, float tick, float damage)
     {
         if (dotDurationCo != null)
         {
@@ -76,41 +68,8 @@ public class TempGoblin : Monster, IEffectReceiver
         dotDamageCo = StartCoroutine(DotDamageRoutine(tick, damage));
     }
 
-    /// <summary>
-    /// 도트 지속 시간 코루틴
-    /// </summary>
-    /// <param name="duration"></param>
-    private IEnumerator DotDurationRoutine(float duration)
-    {
-        float elapsedTime = 0f;
 
-        isDot = true;
-        
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        isDot = false;
-    }
-
-    /// <summary>
-    /// 도트 데미지 틱 계산 코루틴
-    /// </summary>
-    /// <param name="tick"></param>
-    /// <param name="perSecondDamage"></param>
-    /// <returns></returns>
-    private IEnumerator DotDamageRoutine(float tick, float perSecondDamage)
-    {
-        while (isDot)
-        {
-            yield return WaitCache.GetWait(tick);
-            TakeDamage(perSecondDamage);
-        }
-    }
-    
-    public void ReceiveStun(float duration)
+    protected override void Stun(float duration)
     {
         if (stunCo != null)
         {
@@ -120,30 +79,8 @@ public class TempGoblin : Monster, IEffectReceiver
 
         stunCo = StartCoroutine(StunRoutine(duration));
     }
- 
-    /// <summary>
-    /// 몬스터 스턴 효과 코루틴
-    /// </summary>
-    /// <param name="duration"></param>
-    /// <returns></returns>
-    private IEnumerator StunRoutine(float duration)
-    {
-        float elapsedTime = 0f;
-
-        isStunned = true;
-        
-        rb.velocity = Vector2.zero;
-        
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        isStunned = false;
-    }
-    
-    public void ReceiveSlow(float duration)
+   
+    protected override void Slow(float duration)
     {
         if (slowCo != null)
         {
@@ -152,23 +89,5 @@ public class TempGoblin : Monster, IEffectReceiver
         }
 
         slowCo = StartCoroutine(SlowRoutine(duration)); 
-    }
-
-    private IEnumerator SlowRoutine(float duration)
-    {
-        float elapsedTime = 0f;
-
-        float originMoveSpeed = moveSpeed;
-
-        moveSpeed -= 2f;
-        
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        moveSpeed = originMoveSpeed;
-    }
-    
+    } 
 }

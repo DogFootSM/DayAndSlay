@@ -366,3 +366,12 @@ public enum Emoji
     EXCLAMATION = 2,
     ANGRY,
 }
+public enum GenderType
+{
+    MALE, FEMALE
+}
+
+public enum AgeType
+{
+    CHILD, ADULT, SENIOR
+}

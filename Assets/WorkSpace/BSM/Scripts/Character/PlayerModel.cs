@@ -96,7 +96,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     
     private PlayerStats playerStats;
     public PlayerStats PlayerStats => playerStats;
-
+    
     public int CurSkillPoint
     {
         get => playerStats.skillPoints;
@@ -139,6 +139,28 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => isMovementBlocked = value;
     }
 
+    private bool isCountering;
+    public bool IsCountering
+    {
+        get => isCountering;
+        set => isCountering = value;
+    }
+
+    private bool nextSkillBuffActive;
+    public bool NextSkillBuffActive
+    {
+        get => nextSkillBuffActive;
+        set => nextSkillBuffActive = value;
+    }
+
+    private float nextSkillDamageMultiplier = 1f;
+
+    public float NextSkillDamageMultiplier
+    {
+        get => nextSkillDamageMultiplier;
+        set => nextSkillDamageMultiplier = value;
+    }
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -322,5 +344,4 @@ public class PlayerModel : MonoBehaviour, ISavable
 
         Debug.Log("스탯 저장 진행");
     }
-
 }
