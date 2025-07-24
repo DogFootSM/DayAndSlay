@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSaveInteractor : MonoBehaviour
+public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] private PlayerController playerController;
 
-    private LayerMask savePointLayerMask; 
+    private LayerMask detectionLayerMask; 
     private RaycastHit2D hit;
     private Vector2 curDir;
     
@@ -15,7 +15,7 @@ public class PlayerSaveInteractor : MonoBehaviour
      
     private void Awake()
     {
-        savePointLayerMask = LayerMask.GetMask("SavePoint");
+        detectionLayerMask = LayerMask.GetMask("SavePoint", "NPC");
         ignorePlayerLayer = ~(1 << LayerMask.NameToLayer("Player")); 
     }
 
@@ -23,14 +23,20 @@ public class PlayerSaveInteractor : MonoBehaviour
     {
         SetRayDirection();
         
-        hit = Physics2D.Raycast(transform.position, curDir, 1.5f, savePointLayerMask & ignorePlayerLayer);
+        hit = Physics2D.Raycast(transform.position, curDir, 1.5f, detectionLayerMask & ignorePlayerLayer);
 
         if (hit.collider != null)
         { 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                GameSaveHandler gameSaveHandler = hit.collider.gameObject.GetComponent<GameSaveHandler>();
-                gameSaveHandler.OpenSaveAlert(); 
+                if (hit.collider.TryGetComponent<GameSaveHandler>(out GameSaveHandler saveHandler))
+                {
+                    saveHandler.OpenSaveAlert();
+                }
+                else if (hit.collider.TryGetComponent<NpcTalk>(out NpcTalk npcTalk))
+                {
+                    npcTalk.OnTalkPrintEvent?.Invoke();
+                }
             } 
         } 
     }

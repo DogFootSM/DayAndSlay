@@ -358,3 +358,13 @@ public enum DayAndNight
     DAY,
     NIGHT,
 }
+
+public enum GenderType
+{
+    MALE, FEMALE
+}
+
+public enum AgeType
+{
+    CHILD, ADULT, SENIOR
+}

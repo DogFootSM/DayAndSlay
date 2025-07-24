@@ -40,5 +40,13 @@ public interface IEffectReceiver
     /// </summary>
     /// <param name="duration"></param>
     public void ReceiveSlow(float duration);
+
+    /// <summary>
+    /// 몬스터 방어력 감소 효과 리시버
+    /// 지속 시간에 따른 몬스터 방어력 감소
+    /// </summary>
+    /// <param name="duration">스킬 효과 지속 시간</param>
+    /// <param name="deBuffPercent">방어력 감소할 비율</param>
+    public void ReceiveDefenseDeBuff(float duration, float deBuffPercent);
     
 }
