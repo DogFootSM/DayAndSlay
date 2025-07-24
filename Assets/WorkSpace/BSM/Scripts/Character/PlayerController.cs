@@ -41,7 +41,8 @@ public class PlayerController : MonoBehaviour
     private IDataReader dataReader;
     private SkillSlotInvoker skillSlotInvoker; 
     private Table tableObject;
-    
+
+    private LayerMask tableMask;
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
      
@@ -50,11 +51,6 @@ public class PlayerController : MonoBehaviour
     private float posX;
     private float posY;
 
-    
-
-    
-
-
     private void Awake()
     {
         // ProjectContext.Instance.Container.Inject(this);
@@ -62,6 +58,7 @@ public class PlayerController : MonoBehaviour
         // InitSlotData();
         // ChangedWeaponType(curWeaponType);
         characterStates[(int)curState].Enter();
+        tableMask = LayerMask.NameToLayer("Table");
     }
 
     private void Start()
@@ -77,6 +74,9 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         characterStates[(int)curState].Update();   
         InventoryToTableItem();
+        
+        Debug.DrawRay(transform.position, MoveDir * 10f, Color.red);
+        
     }
 
     private void FixedUpdate()
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Table"))
+        if (collision.gameObject.layer == tableMask)
         {
             tableObject = collision.gameObject.GetComponent<Table>();
         } 
@@ -239,7 +239,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Table"))
+        if (other.gameObject.layer == tableMask)
         {
             tableManager.OnPlayerExitRangeClosePanel();
             tableObject = null;
