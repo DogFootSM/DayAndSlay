@@ -12,18 +12,15 @@ public class WaitForPlayerState : INpcState
 
     public void Enter()
     {
-        npc.WantItemMarkOnOff();
-        npc.TestCoroutine();
+        if (npc.GetStoreManager().PeekInNpcQue() == npc)
+        {
+            npc.WantItemMarkOnOff(Emoji.EXCLAMATION);
+            npc.TestCoroutine();
+        }
     }
 
     public void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    //플레이어에서 호출하는 것으로 구조 변경 필요
-        //    npc.TalkToPlayer();
-        //    npc.StateMachine.ChangeState(new NpcWaitItemState(npc));
-        //}
     }
     public void Exit() { }
 }

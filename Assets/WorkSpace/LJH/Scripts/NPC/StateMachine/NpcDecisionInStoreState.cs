@@ -15,7 +15,6 @@ public class NpcDecisionInStoreState : INpcState
 
     public void Enter()
     {
-        store.EnqueueInNpcQue(npc);
         if (npc == store.PeekInNpcQue())
         {
             //카운터로 이동
@@ -27,7 +26,7 @@ public class NpcDecisionInStoreState : INpcState
         {
             // 랜덤 포지션으로 이동
             Vector3 randomPos = targetSensor.GetRandomPositionInStore();
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos));
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos, new NpcDecisionInStoreState(npc, store, targetSensor)));
         }
     }
 
