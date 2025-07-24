@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     [Inject] private TableManager tableManager;
+    [Inject] private PlayerContext playerContext;
     
     [SerializeField] private GameObject shieldObject;
     [SerializeField] private SkillTree curSkillTree;
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour
         informationDeskLayerMask = LayerMask.GetMask("InformationDesk");
         
         LastMoveKey = Direction.Down;
-        
+         
         playerModel = GetComponent<PlayerModel>();
         characterRb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
@@ -120,7 +121,7 @@ public class PlayerController : MonoBehaviour
         {
             curWeaponType = (CharacterWeaponType)dataReader.GetInt32(0);
         }
-
+        playerContext.Setup(this);
     }
     
     /// <summary>
