@@ -123,7 +123,12 @@ public class TableManager : MonoBehaviour
         {
             targetTable.TakeItem(itemToRegister); 
         }
-        
+
+        if (targetNpc != null)
+        {
+            targetNpc.StateMachine.ChangeState(new NpcLeaveState(targetNpc));
+        }
+
         removeInventorySlot.RemoveItem();
         OnPlayerExitRangeClosePanel();
     }
