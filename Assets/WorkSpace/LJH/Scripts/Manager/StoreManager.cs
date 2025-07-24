@@ -18,8 +18,24 @@ public class StoreManager : InteractableObj
             npcQue.Enqueue(npc);
         }
     }
-    public Npc PeekInNpcQue() => npcQue.Peek();
-    public Npc DequeueInNpcQue() => npcQue.Dequeue();
+    public Npc PeekInNpcQue()
+    {
+        if (npcQue.Count > 0)
+        { 
+            return npcQue.Peek();
+        }
+
+        return null;
+    }
+    public Npc DequeueInNpcQue()
+    {
+        if (npcQue.Count > 0)
+        {
+            return npcQue.Dequeue();
+        }
+
+        return null;
+    }
 
 
     public override void Interaction()
