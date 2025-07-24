@@ -42,13 +42,10 @@ public class Door : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-
         if (collision.gameObject.CompareTag("NPC"))
         {
-            GameObject npcObj = collision.gameObject;
-            Npc npc = npcObj.GetComponent<Npc>();
-            npcObj.transform.position = movePos;
-            npc.SetMoving(false);
+            Npc npc = collision.gameObject.GetComponent<Npc>();
+            npc.transform.position = movePos;
             npc.StateMachine.ChangeState(new NpcIdleState(npc));
 
             if (grid == gridList[0])

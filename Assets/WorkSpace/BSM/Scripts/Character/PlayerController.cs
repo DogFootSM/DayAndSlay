@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && tableObject != null)
         { 
-            if (tableObject.CurItemDataData == null)
+            if (tableObject.CurItemData == null)
             {
                 tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
             }
