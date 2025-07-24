@@ -22,6 +22,7 @@ public class TableManager : MonoBehaviour
     
     private int notRegisterToastMessageAnimHash;
     private int notWantToastMessageAnimHash;
+    private int missingToastMessageAnimHash;
     
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class TableManager : MonoBehaviour
 
         notRegisterToastMessageAnimHash = Animator.StringToHash("NotRegisterToastMessage");
         notWantToastMessageAnimHash = Animator.StringToHash("NotWantToastMessage");
+        missingToastMessageAnimHash = Animator.StringToHash("MissingToastMessage");
     }
 
     /// <summary>
@@ -50,6 +52,11 @@ public class TableManager : MonoBehaviour
         else if (target is StoreManager storeManager)
         {
             this.targetNpc = storeManager.PeekInNpcQue();
+
+            if (targetNpc == null)
+            {
+                return;
+            } 
         }
         
         registerItemPanel.SetActive(true);
@@ -100,7 +107,8 @@ public class TableManager : MonoBehaviour
         {
             if (targetNpc.wantItem == null)
             {
-                Debug.Log("손님이 사라졌어요.");
+                selectItemToastMessageAnimator.SetTrigger(missingToastMessageAnimHash);
+                OnPlayerExitRangeClosePanel();
                 return;
             }
             
@@ -108,13 +116,12 @@ public class TableManager : MonoBehaviour
             {
                 selectItemToastMessageAnimator.SetTrigger(notWantToastMessageAnimHash);
                 return;
-            }
-            
+            } 
         }
         
         if (targetTable != null)
         {
-            targetTable.TakeItem(itemToRegister);
+            targetTable.TakeItem(itemToRegister); 
         }
         
         removeInventorySlot.RemoveItem();

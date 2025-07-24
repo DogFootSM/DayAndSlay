@@ -14,7 +14,7 @@ public class RegisterTableSlot : MonoBehaviour, IPointerClickHandler
     
     [Inject] private TableManager tableManager;
     
-    [SerializeField] private ItemData itemData;
+    private ItemData itemData;
     private InventorySlot inventoryToTableSlot;
     private void Awake()
     {

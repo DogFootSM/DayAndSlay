@@ -15,7 +15,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private GameObject equippedMark;
    
     public ItemData CurSlotItem => curSlotItem;
-    [SerializeField] private ItemData curSlotItem;
+    private ItemData curSlotItem;
 
     private bool isEquip;
 
