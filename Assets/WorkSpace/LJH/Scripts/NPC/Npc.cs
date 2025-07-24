@@ -248,6 +248,12 @@ public class Npc : MonoBehaviour
     {
         StateMachine.ChangeState(new NpcLoggingState(this));
     }
+
+    public void NpcGone()
+    {
+        WantItemMarkOnOff(Emoji.ANGRY);
+        gameObject.SetActive(false);
+    }
 }
 
 

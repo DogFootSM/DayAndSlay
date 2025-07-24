@@ -19,7 +19,7 @@ public class NpcDecisionState : INpcState
             if (npc.CheckHeIsAngry())
             {
                 Vector3 castlePos = targetSensor.GetCastleDoorPosition();
-                npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos));
+                npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
             }
 
             else

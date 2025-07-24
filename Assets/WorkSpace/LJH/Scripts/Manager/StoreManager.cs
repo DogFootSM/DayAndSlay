@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class StoreManager : InteractableObj
@@ -7,10 +8,20 @@ public class StoreManager : InteractableObj
     [SerializeField] private List<Npc> npcList = new List<Npc>();
     [SerializeField] private Npc npc;
 
-    [SerializeField] GameObject popUp;
+    [SerializeField] private GameObject popUp;
+    [SerializeField] private TextMeshProUGUI reputationTextObj;
+
+    private int reputation = 0;
 
     int curNpcNum = 0;
 
+    public void PlusRepu(int plus) => reputationTextObj.text = $"평판 점수 : {reputation += plus}";
+    public void MinusRepu(int minus) => reputationTextObj.text = $"평판 점수 : {reputation -= minus}";
+
+    private void Start()
+    {
+        reputationTextObj.text = $"평판 점수 : {reputation}";
+    }
     public void EnqueueInNpcQue(Npc npc)
     {
         if (!npcQue.Contains(npc))
