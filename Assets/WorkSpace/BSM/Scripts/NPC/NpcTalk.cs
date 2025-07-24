@@ -1,24 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class NpcTalk : MonoBehaviour
 {
     [SerializeField] private NpcTalkData npcTalkData;
-
+    [SerializeField] private Animator bubbleAnimator;
+    [SerializeField] private TextMeshProUGUI speechText;
+    
     public UnityAction OnTalkPrintEvent;
     
     private List<string> npcTalks = new List<string>();
+    private Coroutine talkPrintCo;
+    
+    private int bubbleAnimHash;
+    private bool canTalkState = true;
     
     private void Awake()
     {
         npcTalkData = Resources.Load<NpcTalkData>("TalkData/NPCTalkData");
+        bubbleAnimHash = Animator.StringToHash("PlayTalk");
         
-        npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "이거 진짜 미친놈이네");
+        //TODO: 테스트용 대사 데이터 설정
+        npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "씨발새끼");
         npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "개패고싶다 진짜");
-        npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "ㅋㅋ또 쳐늦네");
-        npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "밤에 뭘 하는거지 도대체?");
+        npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "뿌꾸");
+        npcTalkData.SetParseTalkData(GenderType.MALE, AgeType.CHILD, "빢빡");
         npcTalkData.SetParseTalkData(GenderType.FEMALE, AgeType.CHILD, "하 씨발");
         npcTalkData.SetParseTalkData(GenderType.FEMALE, AgeType.SENIOR, "뻑");
 
@@ -36,11 +45,60 @@ public class NpcTalk : MonoBehaviour
         OnTalkPrintEvent -= TalkPrint;
     }
 
+    /// <summary>
+    /// NPC 대사 출력
+    /// </summary>
     private void TalkPrint()
     {
         int randIndex = Random.Range(0, npcTalks.Count);
+
+        if (canTalkState)
+        {
+            if (talkPrintCo != null)
+            {
+                StopCoroutine(talkPrintCo);
+                talkPrintCo = null;
+            }
+
+            talkPrintCo = StartCoroutine(TalkPrintRoutine(randIndex));
+        }
+         
+    }
+
+    /// <summary>
+    /// NPC 대사 출력 코루틴
+    /// </summary>
+    /// <param name="randIndex">대사 리스트 중 출력할 대사 리스트의 인덱스</param>
+    /// <returns></returns>
+    private IEnumerator TalkPrintRoutine(int randIndex)
+    {
+        bubbleAnimator.SetBool(bubbleAnimHash, true);
+        canTalkState = false;
+        speechText.text = "";
+        int talkIndex = 0;
         
-        Debug.Log(npcTalks[randIndex]);
+        yield return new WaitUntil(() => bubbleAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f);
+        speechText.color = new Color(speechText.color.r, speechText.color.g, speechText.color.b, 1);  
+        
+        while (talkIndex < npcTalks[randIndex].Length)
+        {
+            speechText.text += npcTalks[randIndex][talkIndex++];
+            yield return WaitCache.GetWait(0.1f);
+        }
+        
+        yield return WaitCache.GetWait(1.5f);
+
+        float elapsedTime = 0.5f;
+
+        while (elapsedTime >= 0f)
+        {
+            elapsedTime -= Time.deltaTime;
+            yield return null;
+            speechText.color = new Color(speechText.color.r, speechText.color.g, speechText.color.b, elapsedTime / 0.5f);
+        }
+        
+        bubbleAnimator.SetBool(bubbleAnimHash, false);
+        canTalkState = true;
     }
     
 }
