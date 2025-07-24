@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Npc 이동 이후 멈춤 상태 > 이후 현재 위치 및 특이사항에 따라 어디로 이동할지 다시 결정
+/// </summary>
 public class NpcIdleState : INpcState
 {
     private Npc npc;

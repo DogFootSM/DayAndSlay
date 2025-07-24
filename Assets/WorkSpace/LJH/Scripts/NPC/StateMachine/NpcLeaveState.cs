@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 상점을 떠나는 상태
+/// </summary>
 public class NpcLeaveState : INpcState
 {
     private Npc npc;

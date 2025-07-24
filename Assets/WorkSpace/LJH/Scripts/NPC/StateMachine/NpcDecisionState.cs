@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 구매 희망 여부에 따른 행동 선택
+/// </summary>
 public class NpcDecisionState : INpcState
 {
     private Npc npc;

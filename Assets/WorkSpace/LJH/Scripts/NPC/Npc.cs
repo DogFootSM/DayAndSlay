@@ -149,6 +149,9 @@ public class Npc : MonoBehaviour
         onArrive?.Invoke();
     }
 
+    /// <summary>
+    /// 느낌표 뜬 엔피씨가 있을때 플레이어가 호출할 함수
+    /// </summary>
     public void TalkToPlayer()
     {
         talkPopUp.gameObject.SetActive(true);
@@ -157,15 +160,30 @@ public class Npc : MonoBehaviour
             talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
         }
     }
+
+    /// <summary>
+    /// 대화 이후 호출할 함수
+    /// </summary>
+    public void AcceptTransaction()
+    {
+        StateMachine.ChangeState(new NpcWaitItemState(this));
+    }
+    /// <summary>
+    /// 거래 수락시에 호출할 함수
+    /// </summary>
     public void TalkExit()
     {
         talkPopUp.gameObject?.SetActive(false);
     }
 
+    /// <summary>
+    /// 아이템 판매 후 처리용 함수
+    /// </summary>
     public void BuyItemFromDesk()
     {
         int gold = wantItem.SellPrice;
-        wantItem = null;
+        
+        WantItemClear();
     }
 
     public void BuyItemFromTable()
@@ -173,10 +191,16 @@ public class Npc : MonoBehaviour
         if (tableWithItem != null)
         {
             int gold = tableWithItem.curItemData.SellPrice;
+            
             tableWithItem.curItemData = null;
-            wantItem = null;
+            WantItemClear();
             // 골드 플레이어에게 지급 로직 필요
         }
+    }
+
+    private void WantItemClear()
+    {
+        wantItem = null;
     }
 
     public void LeaveStore()

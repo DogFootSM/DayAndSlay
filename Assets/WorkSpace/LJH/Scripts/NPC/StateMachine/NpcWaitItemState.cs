@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 플레이어가 거래를 수락한 후 아이템을 전달받길 기다리는 상태
+/// </summary>
 public class NpcWaitItemState : INpcState
 {
     private Npc npc;
@@ -31,10 +34,10 @@ public class NpcWaitItemState : INpcState
         }
         //아이템 판매 성공한 경우
         //if(아이템 판매 성공)
-        npc.BuyItemFromDesk();
-        npc.WantItemMarkOnOff(Emoji.ANGRY);
-        npc.GetStoreManager().PlusRepu(10);
-        npc.StateMachine.ChangeState(new NpcLeaveState(npc));
+        //npc.BuyItemFromDesk();
+        //npc.WantItemMarkOnOff(Emoji.ANGRY);
+        //npc.GetStoreManager().PlusRepu(10);
+        //npc.StateMachine.ChangeState(new NpcLeaveState(npc));
     }
 
     public void Exit() { }

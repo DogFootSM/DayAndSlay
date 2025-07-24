@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 낚시 준비 상태
+/// </summary>
 public class NpcPreFishingState : INpcState
 {
     private Npc npc;
