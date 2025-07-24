@@ -37,13 +37,11 @@ public class NpcMoveState : INpcState
 
         if(Vector3.Distance(npc.transform.position, npc.GetSensor().GetFishingPosition()) <= 1f)
         {
-            Debug.Log("³¬½Ã");
             npc.StateMachine.ChangeState(new NpcPreFishingState(npc));
         }
 
         if(Vector3.Distance(npc.transform.position, npc.GetSensor().GetLoggingPosition()) <= 1f)
         {
-            Debug.Log("¹ú¸ñ");
             npc.StateMachine.ChangeState(new NpcPreLoggingState(npc));
         }
     }

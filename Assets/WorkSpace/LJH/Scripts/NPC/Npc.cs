@@ -28,8 +28,6 @@ public class Npc : MonoBehaviour
     private bool isMoving;
 
     private string currentAnim = "";
-
-    int testNum = 0;
     //Emoji
     [SerializeField] List<Sprite> extensions;
     [SerializeField] private bool isAngry;
@@ -219,7 +217,6 @@ public class Npc : MonoBehaviour
     {
         GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
-        Debug.Log($"{num} ÄÑÁ³À½");
     }
 
 
