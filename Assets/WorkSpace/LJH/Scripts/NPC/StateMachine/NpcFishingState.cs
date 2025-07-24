@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Ё╛╫ц ╩Себ
+/// </summary>
 public class NpcFishingState : INpcState
 {
     private Npc npc;

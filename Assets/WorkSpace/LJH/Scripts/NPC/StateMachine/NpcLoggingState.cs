@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ╧З╦Я ╩Себ
+/// </summary>
 public class NpcLoggingState : INpcState
 {
     private Npc npc;

@@ -1,3 +1,6 @@
+/// <summary>
+/// NPC가 테이블을 탐색하여 원하는 아이템이 테이블에 있는지 확인하는 상태
+/// </summary>
 public class NpcSearchTableState : INpcState
 {
     private Npc npc;

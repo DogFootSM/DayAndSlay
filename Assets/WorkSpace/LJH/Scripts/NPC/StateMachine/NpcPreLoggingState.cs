@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 벌목 준비 상태
+/// </summary>
 public class NpcPreLoggingState : INpcState
 {
     private Npc npc;

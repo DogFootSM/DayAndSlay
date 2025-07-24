@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// NPC 이동 상태
+/// </summary>
 public class NpcMoveState : INpcState
 {
     private Npc npc;

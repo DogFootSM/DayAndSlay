@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 상점 내부에서 행동을 결정하는 상태
+/// </summary>
 public class NpcDecisionInStoreState : INpcState
 {
     StoreManager store;
