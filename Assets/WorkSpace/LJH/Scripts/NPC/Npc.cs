@@ -6,14 +6,15 @@ using Zenject;
 
 public class Npc : MonoBehaviour
 {
+    private PlayerController player;
     public bool IsBuyer;
     public NpcStateMachine StateMachine { get; private set; } = new();
 
     [Inject] private ItemStorage itemManager;
-    [Inject] private TestPlayer player;
     [Inject] private StoreManager storeManager;
 
     [SerializeField] private Animator animator;
+
     [SerializeField] private List<ItemData> wantItemList = new();
     public ItemData wantItem;
     [SerializeField] private PopUp talkPopUp;
@@ -25,17 +26,35 @@ public class Npc : MonoBehaviour
 
     private Coroutine moveCoroutine;
     private float moveSpeed = 3f;
-    private bool isMoving;
 
     private string currentAnim = "";
-    //Emoji
-    [SerializeField] List<Sprite> extensions;
+
     [SerializeField] private bool isAngry;
 
+    /// <summary>
+    /// TargetSeneorInNpc 따오기
+    /// </summary>
+    /// <returns></returns>
     public TargetSensorInNpc GetSensor() => targetSensor;
+
+    /// <summary>
+    /// StoreManager 따오기
+    /// </summary>
+    /// <returns></returns>
     public StoreManager GetStoreManager() => storeManager;
+    /// <summary>
+    /// Target이 될 테이블 설정하기
+    /// </summary>
+    /// <param name="table"></param>
     public void SetTargetTable(Table table) => tableWithItem = table;
+    /// <summary>
+    /// Npc 불만족 상태로 변경
+    /// </summary>
     public void HeIsAngry() => isAngry = true;
+    /// <summary>
+    /// Npc가 불만족 상태인지 확인
+    /// </summary>
+    /// <returns></returns>
     public bool CheckHeIsAngry() => isAngry;
 
     /// <summary>
@@ -72,15 +91,13 @@ public class Npc : MonoBehaviour
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
     }
 
-    public void SetMoving(bool moving) => isMoving = moving;
-    public bool IsMoving() => isMoving;
 
     public Table SearchTable()
     {
         Table[] tables = FindObjectsOfType<Table>();
         foreach (var table in tables)
         {
-            if (table.CurItemDataData == wantItem)
+            if (table.CurItemData == wantItem)
             {
                 return table;
             }
@@ -109,18 +126,16 @@ public class Npc : MonoBehaviour
 
     private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
-        isMoving = true;
         List<Vector3> path = astarPath.path;
 
         if (path == null || path.Count == 0)
         {
             Debug.LogWarning("A* 경로 없음, 이동 중단");
-            isMoving = false;
             PlayDirectionAnimation(Vector3.zero);
             yield break;
         }
 
-        foreach (var point in path)
+        foreach (Vector3 point in path)
         {
             while (Mathf.Abs(transform.position.x - point.x) > 0.05f)
             {
@@ -144,7 +159,6 @@ public class Npc : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        isMoving = false;
         PlayDirectionAnimation(Vector3.zero);
         onArrive?.Invoke();
     }
@@ -190,9 +204,9 @@ public class Npc : MonoBehaviour
     {
         if (tableWithItem != null)
         {
-            int gold = tableWithItem.curItemData.SellPrice;
+            int gold = tableWithItem.CurItemData.SellPrice;
             
-            tableWithItem.curItemData = null;
+            tableWithItem.CurItemData = null;
             WantItemClear();
             // 골드 플레이어에게 지급 로직 필요
         }
@@ -203,13 +217,29 @@ public class Npc : MonoBehaviour
         wantItem = null;
     }
 
+    /// <summary>
+    /// 판매 실패하여 불만족한 상태로 상점 떠남
+    /// </summary>
     public void LeaveStore()
     {
         HeIsAngry();
         Vector3 door = targetSensor.GetLeavePosition();
         StateMachine.ChangeState(new NpcMoveState(this, door));
     }
+    
+    /// <summary>
+    /// 판매 성공하여 만족한 상태로 상점 떠남
+    /// </summary>
+    public void LeaveStore_Sell()
+    {
+        player.GrantExperience(wantItem.SellPrice);
+        Vector3 door = targetSensor.GetLeavePosition();
+        StateMachine.ChangeState(new NpcMoveState(this, door));
+    }
 
+    /// <summary>
+    /// 현재 Npc가 서있는 그리드를 업데이트 해줌
+    /// </summary>
     public void UpdateGrid()
     {
         Grid currentGrid = targetSensor.GetCurrentGrid(transform.position);

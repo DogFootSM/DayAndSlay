@@ -25,7 +25,6 @@ public class NpcLoggingState : INpcState
         time -= Time.deltaTime;
         if (time <= 0)
         {
-            npc.SetMoving(false);
             npc.StateMachine.ChangeState(new NpcDecisionState(npc));
         }
     }

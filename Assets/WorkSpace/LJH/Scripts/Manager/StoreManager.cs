@@ -5,15 +5,12 @@ using UnityEngine;
 public class StoreManager : InteractableObj
 {
     [SerializeField] private Queue<Npc> npcQue = new Queue<Npc>();
-    [SerializeField] private List<Npc> npcList = new List<Npc>();
     [SerializeField] private Npc npc;
 
     [SerializeField] private GameObject popUp;
     [SerializeField] private TextMeshProUGUI reputationTextObj;
 
     private int reputation = 0;
-
-    int curNpcNum = 0;
 
     public void PlusRepu(int plus) => reputationTextObj.text = $"평판 점수 : {reputation += plus}";
     public void MinusRepu(int minus) => reputationTextObj.text = $"평판 점수 : {reputation -= minus}";
@@ -51,8 +48,10 @@ public class StoreManager : InteractableObj
 
     public override void Interaction()
     {
-        PeekInNpcQue().TalkToPlayer();
-        PeekInNpcQue().StateMachine.ChangeState(new NpcWaitItemState(npc));
+        Debug.Log("얘 쓰이고 있나?");
+        npc = PeekInNpcQue();
+        npc.TalkToPlayer();
+        npc.StateMachine.ChangeState(new NpcWaitItemState(npc));
     }
     public override void UiOnOffMethod(Collision2D collision)
     {
@@ -63,22 +62,4 @@ public class StoreManager : InteractableObj
         }
     }
 
-
-    private void GoToDesk()
-    {
-        Npc curNpc = npcQue.Peek();
-        npc = curNpc;
-    }
-
-    private void Waiting()
-    {
-        Vector3 randomPos = npc.GetComponentInChildren<TargetSensorInNpc>().GetRandomPosition();
-        npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos));
-    }
-
-    public void GoToOutside()
-    {
-        npc.LeaveStore();
-        npc = null;
-    }
 }

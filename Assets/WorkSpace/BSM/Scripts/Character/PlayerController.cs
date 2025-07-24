@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             if (tableObject != null)
             {
-                if (tableObject.CurItemDataData == null)
+                if (tableObject.CurItemData == null)
                 {
                     tableManager.OpenRegisterItemPanel(inventoryInteraction, tableObject);
                 }

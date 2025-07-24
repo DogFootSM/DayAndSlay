@@ -35,7 +35,7 @@ public class NpcWaitItemState : INpcState
         //아이템 판매 성공한 경우
         //if(아이템 판매 성공)
         //npc.BuyItemFromDesk();
-        //npc.WantItemMarkOnOff(Emoji.ANGRY);
+        //npc.WantItemMarkOnOff(Emoji.EXCLAMATION);
         //npc.GetStoreManager().PlusRepu(10);
         //npc.StateMachine.ChangeState(new NpcLeaveState(npc));
     }

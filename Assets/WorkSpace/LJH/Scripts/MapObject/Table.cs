@@ -10,9 +10,12 @@ public class Table : InteractableObj
     [Inject(Id = "PopUp")] private GameObject popUp;
     private PopUp tableAskPopup;
     private TextMeshProUGUI tableAskText;
-    public ItemData curItemData;
-    public ItemData CurItemDataData => curItemData;
-    
+    private ItemData curItemData;
+    public ItemData CurItemData
+    {
+        get => curItemData;
+        set => curItemData = value;
+    }
     public override void Interaction()
     {
     }
