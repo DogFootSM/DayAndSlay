@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public CharacterWeaponType CurrentWeaponType => curWeaponType;
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
+    private ArrowPool arrowPool => ArrowPool.Instance;
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
@@ -133,6 +134,11 @@ public class PlayerController : MonoBehaviour
     public void ChangedWeaponType(CharacterWeaponType weaponType)
     { 
         curWeaponType = weaponType;
+
+        if (weaponType == CharacterWeaponType.BOW)
+        {
+            arrowPool.SetupArrowPoolOnEquip();
+        }
         
         //웨폰 핸들러 변경
         curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);

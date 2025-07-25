@@ -40,5 +40,34 @@ public class ArrowPool : MonoBehaviour
             } 
         } 
     }
+
+    /// <summary>
+    /// 화살 오브젝트를 꺼내 플레이어에게 반환
+    /// </summary>
+    /// <returns></returns>
+    public GameObject GetPoolArrow()
+    {
+        GameObject poolArrow;
+        
+        if (arrowPool.Count > 0)
+        {
+            poolArrow = arrowPool.Dequeue();
+        }
+        else
+        {
+            poolArrow = Instantiate(arrowPrefab);
+        }
+
+        poolArrow.SetActive(true);
+        
+        return poolArrow;
+    }
+
+    public void ReturnPoolArrow(GameObject arrowObject)
+    {
+        arrowPool.Enqueue(arrowObject);
+        arrowObject.SetActive(false);
+        arrowObject.transform.SetParent(transform);
+    }
     
 }
