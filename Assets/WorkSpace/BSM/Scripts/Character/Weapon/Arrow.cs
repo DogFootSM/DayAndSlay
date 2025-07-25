@@ -56,8 +56,9 @@ public class Arrow : MonoBehaviour
         
         //공격 방향에 따른 화살의 rotation z값 수정
         transform.rotation = arrowRotation[dir];
-
-        arrowRb.AddForce(dir * 10f, ForceMode2D.Impulse);
+        
+        //TODO: 화살은 모두 속도 동일로, 적정 속도 찾아서 상수값으로 박기
+        arrowRb.AddForce(dir * 15f, ForceMode2D.Impulse);
 
         if (returnCo != null)
         {
