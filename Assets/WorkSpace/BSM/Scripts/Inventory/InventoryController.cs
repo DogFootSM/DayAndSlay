@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using Zenject;
-using ITEM_MANAGER = BSM_ItemManager.ItemManager;
 using BSM_ItemData = BSM_ITEM.ItemData;
 
 namespace BSM_ITEM
