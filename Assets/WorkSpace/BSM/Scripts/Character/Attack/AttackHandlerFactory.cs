@@ -19,7 +19,7 @@ public static class AttackHandlerFactory
         { 
             attackHandlerDict[weaponType] = weaponType switch
             {
-                CharacterWeaponType.BOW => new RangeAttackHandler(),
+                CharacterWeaponType.BOW => new ProjectileAttackHandler(),
                 CharacterWeaponType.WAND => new MeleeAttackHandler(),
                 CharacterWeaponType.SHORT_SWORD => new MeleeAttackHandler(),
                 CharacterWeaponType.LONG_SWORD => new MeleeAttackHandler(),

@@ -22,9 +22,11 @@ public class PlayerController : MonoBehaviour
     [Inject] private PlayerContext playerContext;
     
     [SerializeField] private GameObject shieldObject;
+    [SerializeField] private GameObject quiverObject;
     [SerializeField] private SkillTree curSkillTree;
     [SerializeField] private InventoryInteraction inventoryInteraction;
     [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
+    [SerializeField] private CharacterAnimatorController characterAnimatorController;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -132,10 +134,21 @@ public class PlayerController : MonoBehaviour
     { 
         curWeaponType = weaponType;
         
+        //웨폰 핸들러 변경
         curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
         
+        //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
+        characterAnimatorController.WeaponAnimatorChange((int)weaponType);
+        
+        //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
+        
+        //장착 무기가 ShortSword 외엔 방패 오브젝트 비활성화
         shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
+        //장착 무기가 bow 외엔 화살통 오브젝트 비활성화
+        quiverObject.SetActive(curWeaponType == CharacterWeaponType.BOW);
+        
+        //현재 무기에 따른 퀵슬롯 설정 변경
         quickSlotManager.UpdateWeaponType(curWeaponType);
     }
 
