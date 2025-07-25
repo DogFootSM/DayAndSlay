@@ -63,6 +63,10 @@ public class ArrowPool : MonoBehaviour
         return poolArrow;
     }
 
+    /// <summary>
+    /// 화살 사용 후 화살 풀에 반환
+    /// </summary>
+    /// <param name="arrowObject">반환할 화살 오브젝트</param>
     public void ReturnPoolArrow(GameObject arrowObject)
     {
         arrowPool.Enqueue(arrowObject);

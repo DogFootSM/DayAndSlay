@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
     /// 현재 무기 타입을 무기에 전달
     /// </summary>
     /// <param name ="weaponType">변경할 무기 타입</param>
-    public void ChangedWeaponType(CharacterWeaponType weaponType)
+    public void ChangedWeaponType(CharacterWeaponType weaponType, ItemData itemData = null)
     { 
         curWeaponType = weaponType;
 
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
         }
         
         //웨폰 핸들러 변경
-        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
+        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData);
         
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);

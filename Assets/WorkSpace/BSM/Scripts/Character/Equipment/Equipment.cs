@@ -35,7 +35,7 @@ public class Equipment : MonoBehaviour
 
         if (equipSlotDict[key].WeaponType == WeaponType.NOT_WEAPON) return;
         //새로 착용한 무기 타입을 캐릭터에게 전달 
-        playerController.ChangedWeaponType((CharacterWeaponType)equipSlotDict[key].WeaponType);
+        playerController.ChangedWeaponType((CharacterWeaponType)equipSlotDict[key].WeaponType, itemData);
     }
 
     /// <summary>

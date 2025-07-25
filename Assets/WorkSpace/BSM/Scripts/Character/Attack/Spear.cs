@@ -22,10 +22,11 @@ public class Spear : IAttackHandler
     /// </summary>
     /// <param name="direction">공격 방향</param>
     /// <param name="position">캐릭터 위치</param>
-    public void NormalAttack(Vector2 direction, Vector2 position)
+    public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData)
     {
         pos = position;
         dir = direction;
+        Debug.Log(itemData.Name);
         Debug.Log("창 일반 공격");
         Collider2D[] monsterCol = Physics2D.OverlapCircleAll(position + (direction.normalized * 3f), 3f, monsterLayer);
         
