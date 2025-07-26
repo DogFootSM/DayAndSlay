@@ -18,7 +18,8 @@ public class MonsterModel : MonoBehaviour
 
     private void Start()
     {
-        monsterData = GetComponent<GeneralMonsterAI>().monsterData;
+        //monsterData = GetComponent<GeneralMonsterAI>().monsterData;
+        monsterData = GetComponent<BossMonsterAI>().GetMonsterData();
 
         Id = monsterData.Id;
         Name = monsterData.Name;
