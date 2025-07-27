@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Bellus : NepenthesAI
 {
+    [SerializeField] private GameObject heal;
+    [SerializeField] private GameObject poison;
     private float healCooldown = 10f;
     private float poisonCooldown = 10f;
     private float biteCooldown = 2f;
@@ -38,6 +40,7 @@ public class Bellus : NepenthesAI
         //animator.Play("Heal");
         ResetCooldown(PerformHeal);
         //StartCoroutine(AttackEndDelay());
+        heal.SetActive(true);
     }
 
     private void PerformPoison()
@@ -46,6 +49,7 @@ public class Bellus : NepenthesAI
         //animator.Play("Poison");
         ResetCooldown(PerformPoison);
         //StartCoroutine(AttackEndDelay());
+        poison.SetActive(true);
     }
 
     private void PerformBite()
@@ -57,7 +61,7 @@ public class Bellus : NepenthesAI
     }
 
     // =============== 비헤이비어 트리 빌드 ===============
-    protected override List<BTNode> SequenceMethod()
+    protected override List<BTNode> SelectorMethod()
     {
         return new List<BTNode>
         {

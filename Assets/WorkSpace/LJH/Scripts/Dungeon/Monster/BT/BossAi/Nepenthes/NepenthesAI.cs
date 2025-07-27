@@ -24,14 +24,42 @@ public class NepenthesAI : BossMonsterAI
     // 각 개체별 공격 패턴은 BuildAttackSelector()에서 구현.
 
     // Bellus, Malus에서 Override 할 Attack Selector를 호출
+   //protected override List<BTNode> BuildAttackSelector()
+   //{
+   //    //return SequenceMethod() ?? new List<BTNode>();
+   //    List<BTNode> attackSelector = BuildAttackSelector() ?? new List<BTNode>();
+   //    return new List<BTNode>
+   //    {
+   //        new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
+   //        new Selector(attackSelector)
+   //    };
+   //}
+   
+   protected override List<BTNode> BuildChaseSequence()
+   {
+       List<BTNode> attackPatterns = SelectorMethod() ?? new List<BTNode>();
+
+       return new List<BTNode>
+       {
+           //new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
+           new Selector(attackPatterns)
+       };
+   }
     protected override List<BTNode> BuildAttackSelector()
     {
-        return SequenceMethod() ?? new List<BTNode>();
+        //해당 셀렉터의 역할 : 힐장판, 독장판, 물기 중에 골라주는 역할
+        List<BTNode> attackPatterns = SelectorMethod() ?? new List<BTNode>();
+
+        return new List<BTNode>
+        {
+            //new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
+            new Selector(attackPatterns)
+        };
     }
 
     // 기본적으로 빈 리스트 반환
     // Bellus, Malus가 이 메서드를 Override해서 공격 시퀀스를 채움
-    protected virtual List<BTNode> SequenceMethod()
+    protected virtual List<BTNode> SelectorMethod()
     {
         return new List<BTNode>();
     }

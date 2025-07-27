@@ -54,6 +54,17 @@ public abstract class BossMonsterAI : MonoBehaviour
         };
     }
 
+    protected virtual List<BTNode> BuildSkillSequence()
+    {
+        List<BTNode> attackSelector = BuildSkillSequence() ?? new List<BTNode>();
+        
+        return new List<BTNode>
+        {
+            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+            new Selector(attackSelector)
+        };
+    }
+
     protected virtual List<BTNode> BuildAttackSequence()
     {
         List<BTNode> attackSelector = BuildAttackSelector() ?? new List<BTNode>();

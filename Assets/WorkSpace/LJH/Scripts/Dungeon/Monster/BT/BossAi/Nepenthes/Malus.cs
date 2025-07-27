@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Malus : NepenthesAI
 {
-    protected override List<BTNode> SequenceMethod()
+    protected override List<BTNode> SelectorMethod()
     {
         return new List<BTNode>
         {
