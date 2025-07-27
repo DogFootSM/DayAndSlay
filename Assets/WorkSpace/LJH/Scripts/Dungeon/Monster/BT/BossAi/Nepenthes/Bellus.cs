@@ -5,58 +5,57 @@ using UnityEngine;
 
 public class Bellus : NepenthesAI
 {
-    [SerializeField] private GameObject heal;
-    [SerializeField] private GameObject poison;
-    private float healCooldown = 10f;
-    private float poisonCooldown = 10f;
-    private float biteCooldown = 2f;
+    private float skillCooldown = 10f;
+    private float rangeAttackCooldown = 10f;
+    private float attackCooldown = 2f;
 
-    private float healTimer = 0f;
-    private float poisonTimer = 0f;
-    private float biteTimer = 0f;
+    private float skillTimer = 0f;
+    private float rangeAttackTimer = 0f;
+    private float attackTimer = 0f;
 
     private void UpdateCooldowns()
     {
-        healTimer -= Time.deltaTime;
-        poisonTimer -= Time.deltaTime;
-        biteTimer -= Time.deltaTime;
+        skillTimer -= Time.deltaTime;
+        rangeAttackTimer -= Time.deltaTime;
+        attackTimer -= Time.deltaTime;
     }
 
-    private bool CanHeal() => healTimer <= 0f;
-    private bool CanPoison() => poisonTimer <= 0f;
-    private bool CanBite() => biteTimer <= 0f;
+    private bool CanSkill() => skillTimer <= 0f;
+    private bool CanRangeAttack() => rangeAttackTimer <= 0f;
+    private bool CanAttack() => attackTimer <= 0f;
 
     private void ResetCooldown(Action action)
     {
-        if (action == PerformHeal) healTimer = healCooldown;
-        else if (action == PerformPoison) poisonTimer = poisonCooldown;
-        else if (action == PerformBite) biteTimer = biteCooldown;
+        if (action == PerformSkill) skillTimer = skillCooldown;
+        else if (action == PerformRangeAttack) rangeAttackTimer = rangeAttackCooldown;
+        else if (action == PerformAttack) attackTimer = attackCooldown;
     }
 
     // =============== 실제 스킬 메서드 ===============
-    private void PerformHeal()
+    private void PerformSkill()
     {
+        animator.PlayAttack();
         Debug.Log("Bellus: 힐 사용!");
         //animator.Play("Heal");
-        ResetCooldown(PerformHeal);
+        ResetCooldown(PerformSkill);
         //StartCoroutine(AttackEndDelay());
-        heal.SetActive(true);
     }
 
-    private void PerformPoison()
+    private void PerformRangeAttack()
     {
+        animator.PlayAttack();
         Debug.Log("Bellus: 독장판 설치!");
         //animator.Play("Poison");
-        ResetCooldown(PerformPoison);
+        ResetCooldown(PerformRangeAttack);
         //StartCoroutine(AttackEndDelay());
-        poison.SetActive(true);
     }
 
-    private void PerformBite()
+    private void PerformAttack()
     {
+        animator.PlayAttack();
         Debug.Log("Bellus: 물기 공격!");
         //animator.Play("Bite");
-        ResetCooldown(PerformBite);
+        ResetCooldown(PerformAttack);
         //StartCoroutine(AttackEndDelay());
     }
 
@@ -69,24 +68,24 @@ public class Bellus : NepenthesAI
             new Sequence(new List<BTNode>
             {
                 new IsAttackRangeNode(transform, player.transform, 12f),
-                new IsPreparedCooldownNode(CanHeal),
-                new ActionNode(PerformHeal)
+                new IsPreparedCooldownNode(CanSkill),
+                new ActionNode(PerformSkill)
             }),
 
             // 원거리 공격(독장판)
             new Sequence(new List<BTNode>
             {
                 new IsAttackRangeNode(transform, player.transform, 7f),
-                new IsPreparedCooldownNode(CanPoison),
-                new ActionNode(PerformPoison)
+                new IsPreparedCooldownNode(CanRangeAttack),
+                new ActionNode(PerformRangeAttack)
             }),
 
             // 근거리 공격(물기)
             new Sequence(new List<BTNode>
             {
                 new IsAttackRangeNode(transform, player.transform, 2f),
-                new IsPreparedCooldownNode(CanBite),
-                new ActionNode(PerformBite)
+                new IsPreparedCooldownNode(CanAttack),
+                new ActionNode(PerformAttack)
             })
         };
     }
