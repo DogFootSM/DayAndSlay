@@ -1,27 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public abstract class BossMonsterAI : MonoBehaviour
 {
     [SerializeField] protected TestPlayer player;
     [SerializeField] protected MonsterData monsterData;
     [SerializeField] protected BossAnimator animator;
+    [SerializeField] protected BossMonsterMethod method;
 
     protected BehaviourTree tree;
 
-    protected MonsterStateMachine stateMachine;
     protected MonsterModel model;
-    protected GeneralMonsterMethod method;
-
-    public M_State monsterState;
 
     protected virtual void Awake()
     {
         model = GetComponent<MonsterModel>();
-        method = GetComponent<GeneralMonsterMethod>();
-        if (animator == null)
-            animator = GetComponent<BossAnimator>();
+        if (animator == null) animator = GetComponent<BossAnimator>();
+        if (method == null) method = GetComponent<BossMonsterMethod>();
     }
 
     protected virtual void Start()
@@ -31,7 +26,10 @@ public abstract class BossMonsterAI : MonoBehaviour
 
     protected virtual void Update()
     {
-        tree?.Tick();
+        if (tree != null)
+        {
+            tree.Tick();
+        }
     }
 
     protected virtual BTNode BuildRoot()
@@ -57,26 +55,29 @@ public abstract class BossMonsterAI : MonoBehaviour
 
     protected virtual List<BTNode> BuildSkillSequence()
     {
-        List<BTNode> skillSelector = BuildSkillSelector() ?? new List<BTNode>();
-        
+        List<BTNode> patterns = BuildSkillSelector();
+        if (patterns == null) patterns = new List<BTNode>();
+
         return new List<BTNode>
         {
-            new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
-            new Selector(skillSelector)
+            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+            new Selector(patterns)
         };
     }
 
     protected virtual List<BTNode> BuildAttackSequence()
     {
-        List<BTNode> attackSelector = BuildAttackSelector() ?? new List<BTNode>();
+        List<BTNode> patterns = BuildAttackSelector();
+        if (patterns == null) patterns = new List<BTNode>();
+
         return new List<BTNode>
         {
             new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
-            new Selector(attackSelector)
+            new Selector(patterns)
         };
     }
 
-    protected List<BTNode> BuildIdleSequence()
+    protected virtual List<BTNode> BuildIdleSequence()
     {
         return new List<BTNode>
         {
@@ -84,9 +85,9 @@ public abstract class BossMonsterAI : MonoBehaviour
             new ActionNode(Idle)
         };
     }
+
     protected virtual List<BTNode> BuildDieSequence()
     {
-        // 죽음 체크 시퀀스
         return new List<BTNode>
         {
             new IsDieNode(() => model.Hp),
@@ -95,32 +96,37 @@ public abstract class BossMonsterAI : MonoBehaviour
     }
 
     protected abstract List<BTNode> BuildSkillSelector();
-
     protected abstract List<BTNode> BuildAttackSelector();
 
     protected virtual void Idle()
     {
-        Debug.Log($"{name} -> Idle");
-        animator.stateMachine.ChangeState(new BossMonsterIdleState());
-        //animator.PlayIdle();
+        Debug.Log(name + " -> Idle");
+        animator.PlayIdle();
     }
 
     protected virtual void Move()
     {
-        Debug.Log($"{name} -> Move");
+        Debug.Log(name + " -> Move");
+        animator.PlayMove();
+        method.Move();
     }
 
-    protected virtual void Attack()
+    protected virtual void AttackCommonStart()
     {
-        Debug.Log($"{name} -> Attack");
+        animator.PlayAttack();
+        method.BeforeAttack();
     }
 
-    public virtual void Die()
+    protected virtual void AttackCommonEnd()
     {
-        Debug.Log($"{name} -> Die");
-        // 실제 사망 로직 (애니메이션, 상태 전환 등)
-        // method?.DieMethod();
-        // stateMachine?.ChangeState(new MonsterDieState());
+        method.AfterAttack();
+    }
+
+    protected virtual void Die()
+    {
+        Debug.Log(name + " -> Die");
+        animator.PlayDie();
+        method.Die();
     }
 
     public MonsterData GetMonsterData()

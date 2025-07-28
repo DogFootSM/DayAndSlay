@@ -1,105 +1,162 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bellus : NepenthesAI
 {
-    private float skillCooldown = 10f;
-    private float rangeAttackCooldown = 10f;
-    private float attackCooldown = 2f;
+    [Header("힐 조건 조정")]
+    [SerializeField] private float healThresholdPercent = 20f;
+    [SerializeField] private float healCooldown = 8f;
 
-    private float skillTimer = 0f;
-    private float rangeAttackTimer = 0f;
-    private float attackTimer = 0f;
+    [Header("독 쿨타임 조절")]
+    [SerializeField] private float poisonCooldown = 10f;
 
-    private void UpdateCooldowns()
-    {
-        skillTimer -= Time.deltaTime;
-        rangeAttackTimer -= Time.deltaTime;
-        attackTimer -= Time.deltaTime;
-    }
+    [Header("공격 쿨타임 조정")]
+    [SerializeField] private float attackCooldown = 2f;
 
-    private bool CanSkill() => skillTimer <= 0f;
-    private bool CanRangeAttack() => rangeAttackTimer <= 0f;
-    private bool CanAttack() => attackTimer <= 0f;
+    [Header("Malus")]
+    [SerializeField] private BossMonsterAI partner;
 
-    private void ResetCooldown(Action action)
-    {
-        if (action == PerformSkill) skillTimer = skillCooldown;
-        else if (action == PerformRangeAttack) rangeAttackTimer = rangeAttackCooldown;
-        else if (action == PerformAttack) attackTimer = attackCooldown;
-    }
-
-    // =============== 실제 스킬 메서드 ===============
-    private void PerformSkill()
-    {
-        animator.PlayAttack();
-        Debug.Log("Bellus: 힐 사용!");
-        //animator.Play("Heal");
-        ResetCooldown(PerformSkill);
-        //StartCoroutine(AttackEndDelay());
-    }
-
-    private void PerformRangeAttack()
-    {
-        animator.PlayAttack();
-        Debug.Log("Bellus: 독장판 설치!");
-        //animator.Play("Poison");
-        ResetCooldown(PerformRangeAttack);
-        //StartCoroutine(AttackEndDelay());
-    }
-
-    private void PerformAttack()
-    {
-        animator.PlayAttack();
-        Debug.Log("Bellus: 물기 공격!");
-        //animator.Play("Bite");
-        ResetCooldown(PerformAttack);
-        //StartCoroutine(AttackEndDelay());
-    }
-
-    // =============== 비헤이비어 트리 빌드 ===============
-    protected override List<BTNode> SelectorMethod()
-    {
-        return new List<BTNode>
-        {
-            // 특수 스킬(힐)
-            new Sequence(new List<BTNode>
-            {
-                new IsAttackRangeNode(transform, player.transform, 12f),
-                new IsPreparedCooldownNode(CanSkill),
-                new ActionNode(PerformSkill)
-            }),
-
-            // 원거리 공격(독장판)
-            new Sequence(new List<BTNode>
-            {
-                new IsAttackRangeNode(transform, player.transform, 7f),
-                new IsPreparedCooldownNode(CanRangeAttack),
-                new ActionNode(PerformRangeAttack)
-            }),
-
-        };
-    }
-
-    protected override List<BTNode> AttackMethod()
-    {
-        return new List<BTNode>
-        {
-            // 근거리 공격(물기)
-            new Sequence(new List<BTNode>
-            {
-                new IsAttackRangeNode(transform, player.transform, 2f),
-                new IsPreparedCooldownNode(CanAttack),
-                new ActionNode(PerformAttack)
-            })
-        };
-    }
+    private float healTimer;
+    private float poisonTimer;
+    private float attackTimer;
 
     protected override void Update()
     {
         base.Update();
-        UpdateCooldowns();  // 쿨타임 갱신
+        UpdateCooldowns();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            model.SetMonsterHp(-10);
+            
+            Debug.Log($"벨루스의 체력 -10 되어 현재 체력 {model.GetMonsterHp()}");
+        }
+    }
+
+    private void UpdateCooldowns()
+    {
+        healTimer -= Time.deltaTime;
+        poisonTimer -= Time.deltaTime;
+        attackTimer -= Time.deltaTime;
+    }
+
+    private bool CanHeal()
+    {
+        if (partner == null) return false;
+        if (healTimer > 0f) return false;
+
+        MonsterModel myModel = model;
+        MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
+        if (myModel == null || partnerModel == null) return false;
+
+        float myHpPercent = (float)myModel.GetMonsterHp() / (float)myModel.GetMonsterMaxHp() * 100f;
+        float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
+        float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
+
+        Debug.Log(myHpPercent);
+        Debug.Log(partnerHpPercent);
+        return diff >= healThresholdPercent;
+    }
+
+    private bool CanPoison()
+    {
+        return poisonTimer <= 0f;
+    }
+
+    private bool CanAttack()
+    {
+        return attackTimer <= 0f;
+    }
+
+    private void ResetHealCooldown()
+    {
+        healTimer = healCooldown;
+    }
+
+    private void ResetPoisonCooldown()
+    {
+        poisonTimer = poisonCooldown;
+    }
+
+    private void ResetAttackCooldown()
+    {
+        attackTimer = attackCooldown;
+    }
+
+    // ---------------- actual actions ----------------
+
+    private void PerformHeal()
+    {
+        Debug.Log("Bellus: Heal Zone Skill (hp percent diff trigger)");
+        AttackCommonStart();
+        ResetHealCooldown();
+    }
+
+    private void PerformPoison()
+    {
+        Debug.Log("Bellus: Poison Zone Skill (every 10 sec)");
+        AttackCommonStart();
+
+        // Example: spawn position near player
+        Vector3 spawnPos = player.transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle * 1.5f);
+        // Instantiate poison prefab here if needed
+
+        ResetPoisonCooldown();
+    }
+
+    private void PerformBite()
+    {
+        Debug.Log("Bellus: Bite Attack");
+        AttackCommonStart();
+        ResetAttackCooldown();
+    }
+
+    private void EndAction()
+    {
+        AttackCommonEnd();
+    }
+
+    // ---------------- BT patterns ----------------
+
+    protected override List<BTNode> BuildSkillPatterns()
+    {
+        List<BTNode> list = new List<BTNode>();
+
+        // Heal zone by hp percent diff
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsPreparedCooldownNode(CanHeal),
+            new ActionNode(PerformHeal),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+
+        // Poison zone every 10 seconds
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsPreparedCooldownNode(CanPoison),
+            new ActionNode(PerformPoison),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+
+        return list;
+    }
+
+    protected override List<BTNode> BuildAttackPatterns()
+    {
+        List<BTNode> list = new List<BTNode>();
+
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsAttackRangeNode(transform, player.transform, 2f),
+            new IsPreparedCooldownNode(CanAttack),
+            new ActionNode(PerformBite),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+
+        return list;
     }
 }
