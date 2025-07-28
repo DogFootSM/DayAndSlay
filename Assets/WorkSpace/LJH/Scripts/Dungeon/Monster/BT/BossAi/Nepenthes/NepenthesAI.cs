@@ -45,10 +45,23 @@ public class NepenthesAI : BossMonsterAI
            new Selector(attackPatterns)
        };
    }
+   
+   protected override List<BTNode> BuildSkillSelector()
+   {
+       animator.stateMachine.ChangeState(new BossMonsterAttackState());
+       List<BTNode> skillPatterns = SelectorMethod() ?? new List<BTNode>();
+
+       return new List<BTNode>
+       {
+           //new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
+           new Selector(skillPatterns)
+       };
+   }
     protected override List<BTNode> BuildAttackSelector()
     {
+        animator.stateMachine.ChangeState(new BossMonsterAttackState());
         //해당 셀렉터의 역할 : 힐장판, 독장판, 물기 중에 골라주는 역할
-        List<BTNode> attackPatterns = SelectorMethod() ?? new List<BTNode>();
+        List<BTNode> attackPatterns = AttackMethod() ?? new List<BTNode>();
 
         return new List<BTNode>
         {
@@ -60,6 +73,11 @@ public class NepenthesAI : BossMonsterAI
     // 기본적으로 빈 리스트 반환
     // Bellus, Malus가 이 메서드를 Override해서 공격 시퀀스를 채움
     protected virtual List<BTNode> SelectorMethod()
+    {
+        return new List<BTNode>();
+    }
+    
+    protected virtual List<BTNode> AttackMethod()
     {
         return new List<BTNode>();
     }

@@ -61,8 +61,9 @@ public class BossAnimator : MonoBehaviour
         return Animator.StringToHash("Base Layer." + currentAttack);
     }
 
-    public void PlayIdle() 
+    public void PlayIdle()
     {
+		Debug.Log("아이들 재생");
         spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
         animator.Play("MonsterIdle");
     }

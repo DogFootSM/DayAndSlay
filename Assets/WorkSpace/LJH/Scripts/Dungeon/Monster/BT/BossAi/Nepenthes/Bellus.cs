@@ -80,6 +80,13 @@ public class Bellus : NepenthesAI
                 new ActionNode(PerformRangeAttack)
             }),
 
+        };
+    }
+
+    protected override List<BTNode> AttackMethod()
+    {
+        return new List<BTNode>
+        {
             // 근거리 공격(물기)
             new Sequence(new List<BTNode>
             {
