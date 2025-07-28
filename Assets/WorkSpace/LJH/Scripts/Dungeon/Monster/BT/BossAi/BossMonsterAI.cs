@@ -25,6 +25,7 @@ public abstract class BossMonsterAI : MonoBehaviour
     {
         tree = new BehaviourTree(BuildRoot());
         method.MonsterDataInit(monsterData);
+        method.PlayerInit(player.gameObject);
     }
 
     protected virtual void Update()

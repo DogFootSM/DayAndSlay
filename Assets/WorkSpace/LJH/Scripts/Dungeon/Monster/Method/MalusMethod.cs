@@ -12,10 +12,15 @@ public class MalusMethod : BossMonsterMethod
         bellus = GetComponent<Bellus>();
         malus = ((Bellus)bellus).GetPartner();
     }
-    public override void Skill()
+    public override void Skill_First()
     {
         //Èú ½ºÅ³
         bellus.GetMonsterModel().SetMonsterHp(10);
         malus.GetMonsterModel().SetMonsterHp(10);
+    }
+
+    public override void Skill_Second()
+    {
+        
     }
 }

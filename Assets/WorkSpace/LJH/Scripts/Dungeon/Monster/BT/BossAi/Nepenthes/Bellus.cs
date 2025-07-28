@@ -107,23 +107,15 @@ public class Bellus : NepenthesAI
 
     private void PerformHeal()
     {
-        
-        heal.SetActive(true);
-        Invoke("TestSetActiveHeal", 2f);
-        method.Skill();
+        method.Skill_First();
         SkillCommonStart();
         ResetHealCooldown();
     }
 
     private void PerformPoison()
     {
+        method.Skill_Second();
         SkillCommonStart();
-        
-        poison.SetActive(true);
-        Invoke("TestSetActivePoison", 2f);
-        
-        Vector3 spawnPos = player.transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle * 1.5f);
-
         ResetPoisonCooldown();
     }
 

@@ -6,12 +6,14 @@ public abstract class BossMonsterMethod : MonoBehaviour
     [Inject]
     private DungeonManager dungeonManager;
 
-    [SerializeField]
-    private MonsterData monsterData;
+    [SerializeField] protected GameObject player;
+    [SerializeField] private MonsterData monsterData;
+    [SerializeField] private BoxCollider2D rangeCollider;
 
-    [SerializeField]
-    private BoxCollider2D rangeCollider;
-
+    public void PlayerInit(GameObject player)
+    {
+        this.player = player;
+    }
     public void MonsterDataInit(MonsterData data)
     {
         monsterData = data;
@@ -48,7 +50,8 @@ public abstract class BossMonsterMethod : MonoBehaviour
         }
     }
 
-    public abstract void Skill();
+    public abstract void Skill_First();
+    public abstract void Skill_Second();
 
     public void Die()
     {

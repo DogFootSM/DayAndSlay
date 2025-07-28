@@ -6,16 +6,46 @@ public class BellusMethod : BossMonsterMethod
 {
     private BossMonsterAI bellus;
     private BossMonsterAI malus;
+    
+    [SerializeField] private GameObject bellusHealEffect;
+    [SerializeField] private GameObject malusHealEffect;
+    [SerializeField] private GameObject poisonWarnigEffect;
+    [SerializeField] private GameObject poisonEffect;
 
     private void Start()
     {
         bellus = GetComponent<Bellus>();
         malus = ((Bellus)bellus).GetPartner();
     }
-    public override void Skill()
+    public override void Skill_First()
     {
         //힐 스킬
+        SetEffectActiver(bellusHealEffect);
+        SetEffectActiver(malusHealEffect);
+        
         bellus.GetMonsterModel().SetMonsterHp(10);
         malus.GetMonsterModel().SetMonsterHp(10);
     }
+
+    public override void Skill_Second()
+    {
+        //독 장판 설치
+        SetPosEffect(poisonWarnigEffect);
+        SetEffectActiver(poisonWarnigEffect);
+        
+        SetPosEffect(poisonEffect);
+        SetEffectActiver(poisonEffect);
+    }
+
+    private void SetPosEffect(GameObject effect)
+    {
+        effect.transform.position = player.transform.position;
+    }
+
+    private void SetEffectActiver(GameObject effect)
+    {
+        effect.SetActive(true);
+    }
+    
 }
+
