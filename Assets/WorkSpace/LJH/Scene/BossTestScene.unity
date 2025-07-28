@@ -206,6 +206,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &591187164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7439626506249827491, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+  m_PrefabInstance: {fileID: 7439626505416857923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &591187171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+  m_PrefabInstance: {fileID: 7439626505416857923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591187164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcdf8275a2dc1a479163d548437ef13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &591187174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591187164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7843662f347e94da74149a6270651a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  monsterData: {fileID: 0}
+  rangeCollider: {fileID: 0}
+  bellusHealEffect: {fileID: 0}
+  malusHealEffect: {fileID: 0}
+  poisonWarnigEffect: {fileID: 0}
+  poisonEffect: {fileID: 0}
 --- !u!1 &593692743
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +287,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &646938740 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4014306058948159737, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+  m_PrefabInstance: {fileID: 4014306060176611339}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2567f9ec041cc4cbc1479e1aa12b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &883399903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1857685260661089847, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+  m_PrefabInstance: {fileID: 7439626505416857923}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1576367551
 GameObject:
   m_ObjectHideFlags: 0
@@ -10019,6 +10070,8 @@ GameObject:
   - component: {fileID: 1680596868}
   - component: {fileID: 1680596867}
   - component: {fileID: 1680596866}
+  - component: {fileID: 1680596870}
+  - component: {fileID: 1680596869}
   m_Layer: 15
   m_Name: Square
   m_TagString: Player
@@ -10102,13 +10155,50 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680596865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 92.25, y: -65.37, z: 0}
+  m_LocalPosition: {x: 92.02, y: -68.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1680596869
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680596865}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!50 &1680596870
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680596865}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1726965781
 GameObject:
   m_ObjectHideFlags: 0
@@ -10154,6 +10244,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2047629708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8785059028050783136, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+  m_PrefabInstance: {fileID: 7439626505416857923}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4014306060176611339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10165,10 +10260,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Malus
       objectReference: {fileID: 0}
+    - target: {fileID: 4014306058948159716, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4014306058948159737, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1680596866}
+    - target: {fileID: 4014306058948159737, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+      propertyPath: partner
+      value: 
+      objectReference: {fileID: 591187171}
+    - target: {fileID: 4014306058948159737, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4014306058948159738, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -10213,7 +10320,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4014306058948159741, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+      propertyPath: monsterData
+      value: 
+      objectReference: {fileID: 11400000, guid: 683b038b7c0ba77488029b5f12275cc1, type: 2}
+    - target: {fileID: 4163150367317462427, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4014306058948159741, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
 --- !u!1001 &7439626505416857923
 PrefabInstance:
@@ -10222,6 +10338,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2751346033396355821, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759029333352082846, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: m_Color.a
+      value: 0.38431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759029333352082846, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759029333352082846, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759029333352082846, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4701633116112534104, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_labelHash
       value: 0.00000040954276
@@ -10231,9 +10367,21 @@ PrefabInstance:
       value: 0.005482587
       objectReference: {fileID: 0}
     - target: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: heal
+      value: 
+      objectReference: {fileID: 883399903}
+    - target: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1680596866}
+    - target: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: poison
+      value: 
+      objectReference: {fileID: 2047629708}
+    - target: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: partner
+      value: 
+      objectReference: {fileID: 646938740}
     - target: {fileID: 7439626506249827489, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -10286,5 +10434,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Belus
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7439626506249827492, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
