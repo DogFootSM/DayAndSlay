@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4014306058948159738}
   - component: {fileID: 4014306058948159739}
   - component: {fileID: 4014306058948159737}
-  - component: {fileID: 4014306058948159741}
   - component: {fileID: 4014306058948159742}
   - component: {fileID: 4014306058948159743}
   - component: {fileID: 4014306058948159736}
+  - component: {fileID: 4163150367317462427}
   m_Layer: 0
   m_Name: Malus
   m_TagString: Untagged
@@ -104,20 +104,12 @@ MonoBehaviour:
   player: {fileID: 0}
   monsterData: {fileID: 11400000, guid: 683b038b7c0ba77488029b5f12275cc1, type: 2}
   animator: {fileID: 0}
-  monsterState: 0
---- !u!114 &4014306058948159741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4014306058948159716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34c59be5008c13248bd53693a40715b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rangeCollider: {fileID: 0}
+  method: {fileID: 0}
+  healThresholdPercent: 20
+  healCooldown: 8
+  poisonCooldown: 10
+  attackCooldown: 2
+  partner: {fileID: 0}
 --- !u!95 &4014306058948159742
 Animator:
   serializedVersion: 5
@@ -167,9 +159,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   Name: 
+  MaxHp: 0
   Hp: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+--- !u!114 &4163150367317462427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014306058948159716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ceb511e113c1949bc3a627dddc8598, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

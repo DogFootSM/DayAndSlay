@@ -11,6 +11,8 @@ public abstract class BossMonsterAI : MonoBehaviour
     protected BehaviourTree tree;
 
     protected MonsterModel model;
+    
+    public MonsterModel GetMonsterModel() => model;
 
     protected virtual void Awake()
     {
@@ -22,6 +24,7 @@ public abstract class BossMonsterAI : MonoBehaviour
     protected virtual void Start()
     {
         tree = new BehaviourTree(BuildRoot());
+        method.MonsterDataInit(monsterData);
     }
 
     protected virtual void Update()
@@ -67,8 +70,8 @@ public abstract class BossMonsterAI : MonoBehaviour
         if (patterns == null) patterns = new List<BTNode>();
 
         return new List<BTNode>
-        {
-            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+        {   
+            new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
             new Selector(patterns)
         };
     }
@@ -143,6 +146,7 @@ public abstract class BossMonsterAI : MonoBehaviour
     {
         animator.stateMachine.ChangeState(new BossMonsterAttackState());
         method.BeforeAttack();
+        method.Attack();
     }
 
     protected virtual void SkillCommonStart()

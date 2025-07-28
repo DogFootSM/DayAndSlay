@@ -26,12 +26,17 @@ public class IsPreparedIdleNode : BTNode
     public override NodeState Tick()
     {
         float distance = Vector3.Distance(self.position, target.position);
-        
-        //거리 벗어나거나 모든 액션이 쿨타임일 때
-        if (distance > range || (cooldown != null && cooldown()))
+
+        if (distance > range)
         {
             return NodeState.Success;
         }
+
+        if (cooldown != null && cooldown())
+        {
+            return NodeState.Success;
+        }
+
         return NodeState.Failure;
     }
 }

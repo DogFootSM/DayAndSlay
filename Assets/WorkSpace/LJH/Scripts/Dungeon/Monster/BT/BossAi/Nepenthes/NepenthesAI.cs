@@ -12,11 +12,16 @@ public abstract class NepenthesAI : BossMonsterAI
     {
         return BuildAttackPatterns();
     }
-
-    protected override void Move()
+    
+    //네펜데스의 경우는 움직임이 없기에 오버라이딩하여 상태 넘겨줌
+    protected override List<BTNode> BuildChaseSequence()
     {
-        Debug.Log(name + " -> Move");
+        return new List<BTNode>
+        {
+            new AlwaysFailNode()
+        };
     }
+
 
     protected abstract List<BTNode> BuildSkillPatterns();
     protected abstract List<BTNode> BuildAttackPatterns();

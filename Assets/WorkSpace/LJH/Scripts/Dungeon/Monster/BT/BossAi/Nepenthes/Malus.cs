@@ -14,8 +14,12 @@ public class Malus : NepenthesAI
     [Header("공격 쿨타임 조정")]
     [SerializeField] private float attackCooldown = 2f;
 
-    [Header("Bellus")]
+    [Header("Malus")]
     [SerializeField] private BossMonsterAI partner;
+
+    [Header("스킬용 테스트 오브젝트")] 
+    [SerializeField] private GameObject heal;
+    [SerializeField] private GameObject poison;
 
     private float healTimer;
     private float poisonTimer;
@@ -25,6 +29,13 @@ public class Malus : NepenthesAI
     {
         base.Update();
         UpdateCooldowns();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            model.SetMonsterHp(-10);
+            
+            Debug.Log($"벨루스의 체력 -10 되어 현재 체력 {model.GetMonsterHp()}");
+        }
     }
 
     private void UpdateCooldowns()
@@ -33,12 +44,27 @@ public class Malus : NepenthesAI
         poisonTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
     }
-
+    
     protected override bool IsAllOnCooldown()
     {
-        return !CanHeal() && !CanPoison() && !CanAttack();
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distance > monsterData.ChaseRange)
+        {
+            Debug.Log("거리 멀어서 트루");
+            return true;
+        }
+
+        if (distance > monsterData.AttackRange)
+        {
+            Debug.Log("거리 중간에 스킬들 쿨이라 트루");
+            return !CanPoison() && !CanHeal();
+        }
+
+        Debug.Log("다 만족해서 트루");
+        return !CanPoison() && !CanHeal() && !CanAttack();
     }
-    
+
     private bool CanHeal()
     {
         if (partner == null) return false;
@@ -48,8 +74,8 @@ public class Malus : NepenthesAI
         MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
         if (myModel == null || partnerModel == null) return false;
 
-        float myHpPercent = (float)myModel.Hp / (float)myModel.Hp * 100f;
-        float partnerHpPercent = (float)partnerModel.Hp / (float)partnerModel.Hp * 100f;
+        float myHpPercent = (float)myModel.GetMonsterHp() / (float)myModel.GetMonsterMaxHp() * 100f;
+        float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
 
         return diff >= healThresholdPercent;
@@ -84,26 +110,38 @@ public class Malus : NepenthesAI
 
     private void PerformHeal()
     {
-        Debug.Log("Bellus: Heal Zone Skill (hp percent diff trigger)");
-        AttackCommonStart();
+        
+        heal.SetActive(true);
+        Invoke("TestSetActiveHeal", 2f);
+        method.Skill();
+        SkillCommonStart();
         ResetHealCooldown();
     }
 
     private void PerformPoison()
     {
-        Debug.Log("Bellus: Poison Zone Skill (every 10 sec)");
-        AttackCommonStart();
-
-        // Example: spawn position near player
+        SkillCommonStart();
+        
+        poison.SetActive(true);
+        Invoke("TestSetActivePoison", 2f);
+        
         Vector3 spawnPos = player.transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle * 1.5f);
-        // Instantiate poison prefab here if needed
 
         ResetPoisonCooldown();
     }
 
+    private void TestSetActiveHeal()
+    {
+        heal.SetActive(false);
+    }
+
+    private void TestSetActivePoison()
+    {
+        poison.SetActive(false);
+    }
+
     private void PerformBite()
     {
-        Debug.Log("Bellus: Bite Attack");
         AttackCommonStart();
         ResetAttackCooldown();
     }
@@ -113,12 +151,12 @@ public class Malus : NepenthesAI
         AttackCommonEnd();
     }
 
+    // ---------------- BT patterns ----------------
 
     protected override List<BTNode> BuildSkillPatterns()
     {
         List<BTNode> list = new List<BTNode>();
 
-        // Heal zone by hp percent diff
         list.Add(new Sequence(new List<BTNode>
         {
             new IsPreparedCooldownNode(CanHeal),
@@ -127,7 +165,6 @@ public class Malus : NepenthesAI
             new ActionNode(EndAction)
         }));
 
-        // Poison zone every 10 seconds
         list.Add(new Sequence(new List<BTNode>
         {
             new IsPreparedCooldownNode(CanPoison),
@@ -154,4 +191,6 @@ public class Malus : NepenthesAI
 
         return list;
     }
+
+    public BossMonsterAI GetPartner() => partner;
 }

@@ -47,7 +47,19 @@ public class Bellus : NepenthesAI
     
     protected override bool IsAllOnCooldown()
     {
-        return !CanHeal() && !CanPoison() && !CanAttack();
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distance > monsterData.ChaseRange)
+        {
+            return true;
+        }
+
+        if (distance > monsterData.AttackRange)
+        {
+            return !CanPoison() && !CanHeal();
+        }
+
+        return !CanPoison() && !CanHeal() && !CanAttack();
     }
 
     private bool CanHeal()
@@ -63,8 +75,6 @@ public class Bellus : NepenthesAI
         float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
 
-        Debug.Log(myHpPercent);
-        Debug.Log(partnerHpPercent);
         return diff >= healThresholdPercent;
     }
 
@@ -97,26 +107,22 @@ public class Bellus : NepenthesAI
 
     private void PerformHeal()
     {
-        Debug.Log("Bellus: 힐 사용");
         
         heal.SetActive(true);
         Invoke("TestSetActiveHeal", 2f);
-        
+        method.Skill();
         SkillCommonStart();
         ResetHealCooldown();
     }
 
     private void PerformPoison()
     {
-        Debug.Log("Bellus: 독 사용");
         SkillCommonStart();
         
         poison.SetActive(true);
         Invoke("TestSetActivePoison", 2f);
         
-        // Example: spawn position near player
         Vector3 spawnPos = player.transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle * 1.5f);
-        // Instantiate poison prefab here if needed
 
         ResetPoisonCooldown();
     }
@@ -133,7 +139,6 @@ public class Bellus : NepenthesAI
 
     private void PerformBite()
     {
-        Debug.Log("Bellus: Bite Attack");
         AttackCommonStart();
         ResetAttackCooldown();
     }
@@ -149,7 +154,6 @@ public class Bellus : NepenthesAI
     {
         List<BTNode> list = new List<BTNode>();
 
-        // Heal zone by hp percent diff
         list.Add(new Sequence(new List<BTNode>
         {
             new IsPreparedCooldownNode(CanHeal),
@@ -158,7 +162,6 @@ public class Bellus : NepenthesAI
             new ActionNode(EndAction)
         }));
 
-        // Poison zone every 10 seconds
         list.Add(new Sequence(new List<BTNode>
         {
             new IsPreparedCooldownNode(CanPoison),
@@ -185,4 +188,6 @@ public class Bellus : NepenthesAI
 
         return list;
     }
+
+    public BossMonsterAI GetPartner() => partner;
 }

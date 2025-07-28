@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class BossMonsterMethod : MonoBehaviour
+public abstract class BossMonsterMethod : MonoBehaviour
 {
     [Inject]
     private DungeonManager dungeonManager;
@@ -29,7 +29,7 @@ public class BossMonsterMethod : MonoBehaviour
     public void Attack()
     {
         // Implement damage logic to player
-        Debug.Log("Boss attacks");
+        Debug.Log("АјАн");
     }
 
     public void BeforeAttack()
@@ -47,6 +47,8 @@ public class BossMonsterMethod : MonoBehaviour
             rangeCollider.enabled = false;
         }
     }
+
+    public abstract void Skill();
 
     public void Die()
     {
