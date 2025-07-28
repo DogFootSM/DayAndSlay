@@ -44,6 +44,10 @@ public abstract class BossMonsterAI : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// BT 추격 시퀀스 생성
+    /// </summary>
+    /// <returns></returns>
     protected virtual List<BTNode> BuildChaseSequence()
     {
         return new List<BTNode>
@@ -53,6 +57,10 @@ public abstract class BossMonsterAI : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// BT 스킬 시퀀스 생성
+    /// </summary>
+    /// <returns></returns>
     protected virtual List<BTNode> BuildSkillSequence()
     {
         List<BTNode> patterns = BuildSkillSelector();
@@ -65,6 +73,10 @@ public abstract class BossMonsterAI : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// BT 공격 시퀀스 생성
+    /// </summary>
+    /// <returns></returns>
     protected virtual List<BTNode> BuildAttackSequence()
     {
         List<BTNode> patterns = BuildAttackSelector();
@@ -77,15 +89,23 @@ public abstract class BossMonsterAI : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// BT 대기 시퀀스 생성
+    /// </summary>
+    /// <returns></returns>
     protected virtual List<BTNode> BuildIdleSequence()
     {
         return new List<BTNode>
         {
-            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange),
+            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, IsAllOnCooldown),
             new ActionNode(Idle)
         };
     }
 
+    /// <summary>
+    /// BT 사망 시퀀스 생성
+    /// </summary>
+    /// <returns></returns>
     protected virtual List<BTNode> BuildDieSequence()
     {
         return new List<BTNode>
@@ -98,29 +118,46 @@ public abstract class BossMonsterAI : MonoBehaviour
     protected abstract List<BTNode> BuildSkillSelector();
     protected abstract List<BTNode> BuildAttackSelector();
 
+    // ============================ 동작 메서드 =============================
+    
+    /// <summary>
+    /// 각 몬스터별 클래스에서 쿨타임 체크 넣어줘야 함
+    /// </summary>
+    /// <returns></returns>
+    protected abstract bool IsAllOnCooldown();
+    
     protected virtual void Idle()
     {
         Debug.Log(name + " -> Idle");
-        animator.PlayIdle();
+        animator.stateMachine.ChangeState(new BossMonsterIdleState());
     }
 
     protected virtual void Move()
     {
         Debug.Log(name + " -> Move");
-        animator.PlayMove();
+        animator.stateMachine.ChangeState(new BossMonsterMoveState());
         method.Move();
     }
 
     protected virtual void AttackCommonStart()
     {
-        animator.PlayAttack();
+        animator.stateMachine.ChangeState(new BossMonsterAttackState());
         method.BeforeAttack();
     }
 
+    protected virtual void SkillCommonStart()
+    {
+        animator.stateMachine.ChangeState(new BossMonsterSkillState());
+        method.BeforeAttack();
+    }
+
+    //엔드의 경우 스킬과 공격 공통
     protected virtual void AttackCommonEnd()
     {
         method.AfterAttack();
     }
+
+    
 
     protected virtual void Die()
     {

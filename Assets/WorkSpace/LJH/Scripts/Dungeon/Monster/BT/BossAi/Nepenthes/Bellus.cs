@@ -17,6 +17,10 @@ public class Bellus : NepenthesAI
     [Header("Malus")]
     [SerializeField] private BossMonsterAI partner;
 
+    [Header("스킬용 테스트 오브젝트")] 
+    [SerializeField] private GameObject heal;
+    [SerializeField] private GameObject poison;
+
     private float healTimer;
     private float poisonTimer;
     private float attackTimer;
@@ -39,6 +43,11 @@ public class Bellus : NepenthesAI
         healTimer -= Time.deltaTime;
         poisonTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
+    }
+    
+    protected override bool IsAllOnCooldown()
+    {
+        return !CanHeal() && !CanPoison() && !CanAttack();
     }
 
     private bool CanHeal()
@@ -88,21 +97,38 @@ public class Bellus : NepenthesAI
 
     private void PerformHeal()
     {
-        Debug.Log("Bellus: Heal Zone Skill (hp percent diff trigger)");
-        AttackCommonStart();
+        Debug.Log("Bellus: 힐 사용");
+        
+        heal.SetActive(true);
+        Invoke("TestSetActiveHeal", 2f);
+        
+        SkillCommonStart();
         ResetHealCooldown();
     }
 
     private void PerformPoison()
     {
-        Debug.Log("Bellus: Poison Zone Skill (every 10 sec)");
-        AttackCommonStart();
-
+        Debug.Log("Bellus: 독 사용");
+        SkillCommonStart();
+        
+        poison.SetActive(true);
+        Invoke("TestSetActivePoison", 2f);
+        
         // Example: spawn position near player
         Vector3 spawnPos = player.transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle * 1.5f);
         // Instantiate poison prefab here if needed
 
         ResetPoisonCooldown();
+    }
+
+    private void TestSetActiveHeal()
+    {
+        heal.SetActive(false);
+    }
+
+    private void TestSetActivePoison()
+    {
+        poison.SetActive(false);
     }
 
     private void PerformBite()

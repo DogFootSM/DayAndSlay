@@ -1,11 +1,9 @@
-using UnityEngine;
-
-public class BossMonsterIdleState : IBossMonsterState
+public class BossMonsterSkillState : IBossMonsterState
 {
 
     public void Enter(BossAnimator animator)
     {
-        animator.PlayIdle();
+        animator.PlaySkill();
     }
     public void Update()
     { 

@@ -34,6 +34,11 @@ public class Malus : NepenthesAI
         attackTimer -= Time.deltaTime;
     }
 
+    protected override bool IsAllOnCooldown()
+    {
+        return !CanHeal() && !CanPoison() && !CanAttack();
+    }
+    
     private bool CanHeal()
     {
         if (partner == null) return false;
