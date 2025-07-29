@@ -68,7 +68,6 @@ public class InventoryController : MonoBehaviour
 
         for (int i = 0; i < itemDatas.Count; i++)
         {  
-            Debug.Log($"data:{itemManager.GetItemByID(itemDatas[i].itemId) == null}, manager:{itemManager == null}");
             inventorySlots[itemDatas[i].inventorySlotId].AddItem(
                 itemManager.GetItemByID(itemDatas[i].itemId),
                 itemDatas[i].itemAmount);

@@ -55,7 +55,7 @@ public class SkillSlotInvoker : MonoBehaviour
                     CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
                 }
             
-                return skillNode.skillData.RecoveryTime;
+                return skillNode.skillData.UseSkillDelay;
             }
         }
         else
