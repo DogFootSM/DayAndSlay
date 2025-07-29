@@ -7,20 +7,25 @@ public class MalusMethod : BossMonsterMethod
     private BossMonsterAI malus;
     private BossMonsterAI bellus;
 
+    [SerializeField] private GameObject warningRoot;
+    [SerializeField] private GameObject root;
+
     private void Start()
     {
-        bellus = GetComponent<Bellus>();
-        malus = ((Bellus)bellus).GetPartner();
+        malus = GetComponent<Malus>();
+        bellus = ((Malus)malus).GetPartner();
     }
     public override void Skill_First()
     {
-        //Èú ½ºÅ³
-        bellus.GetMonsterModel().SetMonsterHp(10);
-        malus.GetMonsterModel().SetMonsterHp(10);
+        //¼ÒÈ¯? ¹»·ÎÇÏÁö?
     }
 
     public override void Skill_Second()
     {
+        SetPosEffect(warningRoot);
+        SetPosEffect(root);
         
+        SetEffectActiver(warningRoot);
+        SetEffectActiver(root);
     }
 }

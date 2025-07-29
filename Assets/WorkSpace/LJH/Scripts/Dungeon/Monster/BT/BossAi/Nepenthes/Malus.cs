@@ -6,24 +6,20 @@ public class Malus : NepenthesAI
 {
     [Header("힐 조건 조정")]
     [SerializeField] private float healThresholdPercent = 20f;
-    [SerializeField] private float healCooldown = 8f;
+    [SerializeField] private float skillFirstCooldown = 8f;
 
-    [Header("독 쿨타임 조절")]
-    [SerializeField] private float poisonCooldown = 10f;
+    [Header("뿌리 공격 쿨타임 조정")]
+    [SerializeField] private float rootCooldown = 5f;
 
     [Header("공격 쿨타임 조정")]
     [SerializeField] private float attackCooldown = 2f;
 
-    [Header("Malus")]
+    [Header("Bellus")]
     [SerializeField] private BossMonsterAI partner;
 
-    [Header("스킬용 테스트 오브젝트")] 
-    [SerializeField] private GameObject heal;
-    [SerializeField] private GameObject poison;
-
     private float healTimer;
-    private float poisonTimer;
-    private float attackTimer;
+    private float skillFirstTimer;
+    private float rootTimer;
 
     protected override void Update()
     {
@@ -41,8 +37,8 @@ public class Malus : NepenthesAI
     private void UpdateCooldowns()
     {
         healTimer -= Time.deltaTime;
-        poisonTimer -= Time.deltaTime;
-        attackTimer -= Time.deltaTime;
+        skillFirstTimer -= Time.deltaTime;
+        rootTimer -= Time.deltaTime;
     }
     
     protected override bool IsAllOnCooldown()
@@ -58,14 +54,14 @@ public class Malus : NepenthesAI
         if (distance > monsterData.AttackRange)
         {
             Debug.Log("거리 중간에 스킬들 쿨이라 트루");
-            return !CanPoison() && !CanHeal();
+            return !CanRoot() && !CanSkillFirst();
         }
 
         Debug.Log("다 만족해서 트루");
-        return !CanPoison() && !CanHeal() && !CanAttack();
+        return !CanRoot() && !CanSkillFirst() && !CanAttack();
     }
 
-    private bool CanHeal()
+    private bool CanSkillFirst()
     {
         if (partner == null) return false;
         if (healTimer > 0f) return false;
@@ -81,55 +77,45 @@ public class Malus : NepenthesAI
         return diff >= healThresholdPercent;
     }
 
-    private bool CanPoison()
+    private bool CanRoot()
     {
-        return poisonTimer <= 0f;
+        return skillFirstTimer <= 0f;
     }
 
     private bool CanAttack()
     {
-        return attackTimer <= 0f;
+        return rootTimer <= 0f;
     }
 
-    private void ResetHealCooldown()
+    private void ResetSkillFirstCooldown()
     {
-        healTimer = healCooldown;
+        healTimer = skillFirstCooldown;
     }
 
-    private void ResetPoisonCooldown()
+    private void ResetRootCooldown()
     {
-        poisonTimer = poisonCooldown;
+        skillFirstTimer = rootCooldown;
     }
 
     private void ResetAttackCooldown()
     {
-        attackTimer = attackCooldown;
+        rootTimer = attackCooldown;
     }
 
     // ---------------- actual actions ----------------
 
-    private void PerformHeal()
+    private void PerformSkillFirst()
     {
         method.Skill_First();
         SkillCommonStart();
-        ResetHealCooldown();
+        ResetSkillFirstCooldown();
     }
 
-    private void PerformPoison()
+    private void PerformRoot()
     {
         method.Skill_Second();
         SkillCommonStart();
-        ResetPoisonCooldown();
-    }
-
-    private void TestSetActiveHeal()
-    {
-        heal.SetActive(false);
-    }
-
-    private void TestSetActivePoison()
-    {
-        poison.SetActive(false);
+        ResetRootCooldown();
     }
 
     private void PerformBite()
@@ -151,16 +137,16 @@ public class Malus : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanHeal),
-            new ActionNode(PerformHeal),
+            new IsPreparedCooldownNode(CanSkillFirst),
+            new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanPoison),
-            new ActionNode(PerformPoison),
+            new IsPreparedCooldownNode(CanRoot),
+            new ActionNode(PerformRoot),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));

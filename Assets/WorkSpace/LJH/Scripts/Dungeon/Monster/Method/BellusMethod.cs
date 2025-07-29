@@ -31,20 +31,10 @@ public class BellusMethod : BossMonsterMethod
     {
         //독 장판 설치
         SetPosEffect(poisonWarnigEffect);
-        SetEffectActiver(poisonWarnigEffect);
-        
         SetPosEffect(poisonEffect);
+        
+        SetEffectActiver(poisonWarnigEffect);
         SetEffectActiver(poisonEffect);
-    }
-
-    private void SetPosEffect(GameObject effect)
-    {
-        effect.transform.position = player.transform.position;
-    }
-
-    private void SetEffectActiver(GameObject effect)
-    {
-        effect.SetActive(true);
     }
     
 }

@@ -63,4 +63,14 @@ public abstract class BossMonsterMethod : MonoBehaviour
     {
         // Implement drop logic
     }
+    
+    protected void SetPosEffect(GameObject effect)
+    {
+        effect.transform.position = player.transform.position;
+    }
+
+    protected void SetEffectActiver(GameObject effect)
+    {
+        effect.SetActive(true);
+    }
 }

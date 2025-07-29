@@ -12,7 +12,7 @@ public abstract class Effect : MonoBehaviour
     private bool _startedDuration;
 
     protected abstract void Tick();
-    private void OnEnable()
+    protected void OnEnable()
     {
         _delay = delay;
         _duration = duration;

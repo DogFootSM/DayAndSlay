@@ -8,7 +8,7 @@ public class Bellus : NepenthesAI
     [SerializeField] private float healThresholdPercent = 20f;
     [SerializeField] private float healCooldown = 8f;
 
-    [Header("독 쿨타임 조절")]
+    [Header("독 쿨타임 조정")]
     [SerializeField] private float poisonCooldown = 10f;
 
     [Header("공격 쿨타임 조정")]
@@ -16,10 +16,6 @@ public class Bellus : NepenthesAI
 
     [Header("Malus")]
     [SerializeField] private BossMonsterAI partner;
-
-    [Header("스킬용 테스트 오브젝트")] 
-    [SerializeField] private GameObject heal;
-    [SerializeField] private GameObject poison;
 
     private float healTimer;
     private float poisonTimer;
@@ -117,16 +113,6 @@ public class Bellus : NepenthesAI
         method.Skill_Second();
         SkillCommonStart();
         ResetPoisonCooldown();
-    }
-
-    private void TestSetActiveHeal()
-    {
-        heal.SetActive(false);
-    }
-
-    private void TestSetActivePoison()
-    {
-        poison.SetActive(false);
     }
 
     private void PerformBite()
