@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class BossMonsterAI : MonoBehaviour
 {
-    [SerializeField] protected PlayerController player;
+    [SerializeField] protected TestPlayer player;
     [SerializeField] protected MonsterData monsterData;
     [SerializeField] protected BossAnimator animator;
     [SerializeField] protected BossMonsterMethod method;
@@ -23,10 +23,10 @@ public abstract class BossMonsterAI : MonoBehaviour
 
     protected virtual void Start()
     {
+        player = GameObject.FindWithTag("Player").GetComponent<TestPlayer>();
         tree = new BehaviourTree(BuildRoot());
         method.MonsterDataInit(monsterData);
         method.PlayerInit(player.gameObject);
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
 
     protected virtual void Update()
