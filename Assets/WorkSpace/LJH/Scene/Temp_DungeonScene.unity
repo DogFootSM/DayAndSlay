@@ -759,8 +759,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: []
-  moveSpeed: 5
   inventories: []
+  moveSpeed: 5
   choiceItem: {fileID: 0}
 --- !u!1 &902402923
 GameObject:
@@ -1591,9 +1591,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9196023733418952640, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: monsterList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196023733418952640, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
       propertyPath: spawnerList.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9196023733418952640, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: monsterList.Array.data[0]
+      value: 
+      objectReference: {fileID: 7439626506249827491, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+    - target: {fileID: 9196023733418952640, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
+      propertyPath: monsterList.Array.data[1]
+      value: 
+      objectReference: {fileID: 4014306058948159716, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cef81081c4b8e304cb93e1d85debc52a, type: 3}
 --- !u!156049354 &1388535608 stripped
