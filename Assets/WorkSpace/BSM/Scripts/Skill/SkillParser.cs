@@ -27,9 +27,11 @@ public class SheetDownButton : Editor
  
 public class SkillParser : MonoBehaviour
 {
-    [FormerlySerializedAs("skillData")] [SerializeField] private List<SkillData> skillDatas;
+    [SerializeField] private List<SkillData> skillDatas;
 
     private string folderPath = "Assets/WorkSpace/BSM/Data/SkillData";
+    private Dictionary<string, List<string>> rowData = new Dictionary<string, List<string>>();
+    private Dictionary<string, int> headerMap = new Dictionary<string, int>();
     
     //구글 시트 주소
     private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:S10&gid=117661071";
@@ -47,13 +49,33 @@ public class SkillParser : MonoBehaviour
         //Request 결과를 정상적으로 받아왔을 경우
         if (req.result == UnityWebRequest.Result.Success)
         {
-            string tsvText = req.downloadHandler.text;
- 
-            string json = ConvertTsvToJson(tsvText);
-  
-            JArray jsonData = JArray.Parse(json);
+            ClearAllData();
+            skillDatas.Clear();
+            rowData.Clear();
             
-            ApplyDataToSO(jsonData, renameFiles); 
+            string tsvText = req.downloadHandler.text;
+            
+            string[] lines = tsvText.Split('\n');
+
+            string[] headers = lines[0].Split('\t');
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                string[] value = lines[i].Split('\t');
+            
+                if (!rowData.ContainsKey(value[0]))
+                {
+                    rowData.Add(value[0], new List<string>());
+                }
+                
+                for (int j = 0; j < headers.Length && j < value.Length; j++)
+                {
+                    rowData[value[0]].Add(value[j]);
+                    headerMap[headers[j].Trim()] = j;
+                }
+                
+                ApplySoData(rowData[value[0]], renameFiles);
+            }
         }
         else
         {
@@ -61,113 +83,69 @@ public class SkillParser : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 파싱한 구글 시트 정보 Json으로 변경
-    /// </summary>
-    /// <param name="tsvText"></param>
-    /// <returns></returns>
-    private string ConvertTsvToJson(string tsvText)
+    private void ApplySoData(List<string> rowData, bool renameFiles)
     {
-        string[] lines = tsvText.Split('\n');
-
-        if (lines.Length < 2) return "[]";
-        
-        string[] headers = lines[0].Split('\t');
-        JArray jsonArray = new JArray();
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            string[] values = lines[i].Split('\t');
-            JObject jObject = new JObject();
-
-            for (int j = 0; j < headers.Length && j < values.Length; j++)
-            {
-                string value = values[j].Trim();
-                 
-                jObject[headers[j].Trim()] = value;
-            }
-            
-            jsonArray.Add(jObject);
-        }
-
-        return jsonArray.ToString();
-    }
-
-    /// <summary>
-    /// JArray에 추가된 파싱 데이터 값 추출 후 SO 데이터에 설정
-    /// </summary>
-    /// <param name="jsonData"></param>
-    /// <param name="renameFiles"></param>
-    private void ApplyDataToSO(JArray jsonData, bool renameFiles)
-    {
-        ClearAllData();
-        skillDatas.Clear();
-
-        for (int i = 0; i < jsonData.Count; i++)
-        {
-            //스킬 데이터 값 추출
-            JObject row = (JObject)jsonData[i];
-                
-            string skillId = row.Value<string>("ID") ?? string.Empty;
+        string skillId = rowData[headerMap["ID"]] ?? string.Empty;
               
-            string skillName = row.Value<string?>("Name") ?? string.Empty;
+        string skillName = rowData[headerMap["Name"]] ?? string.Empty;
             
-            string skillDescription= row.Value<string?>("Description") ?? string.Empty;
+        string skillDescription= rowData[headerMap["Description"]] ?? string.Empty;
 
-            string skillEffect = row.Value<string?>("Effect") ?? string.Empty;
-            
-            float skillCoolDown = row.Value<float?>("CoolDown") ?? 0f;
+        string skillEffect = rowData[headerMap["Effect"]] ?? string.Empty;
 
-            int skillMaxLevel = row.Value<int?>("MaxLevel") ?? 0;
-            
-            float skillDamage = row.Value<float?>("Damage") ?? 0f;
-            
-            float skillDamageIncreaseRate = row.Value<float?>("DamageIncreaseRate") ?? 0f;
-            
-            string skillIcon = row.Value<string>("Icon") ?? string.Empty;
-            
-            int weaponType = row.Value<int?>("WeaponType") ?? 4;
-            
-            float skillDelay = row.Value<float?>("Delay") ?? 0f;
-            
-            float skillDelayDecreaseRate = row.Value<float?>("DecreaseDelayRate") ?? 0f;
-            
-            float skillRange = row.Value<float?>("Range") ?? 0f;
-            
-            float castingTime = row.Value<float?>("CastingTime") ?? 0f;
-            
-            int skillHitCount = row.Value<int?>("HitCount") ?? 0;
+        float skillCoolDown = 0f;
+        float.TryParse(rowData[headerMap["CoolDown"]], out skillCoolDown);
 
-            int active = row.Value<int?>("isActive") ?? 0;
-            
-            SkillData skillData = new SkillData();
-            
-            if (i < this.skillDatas.Count)
-            {
-                skillData = this.skillDatas[i];
-            }
-            else
-            {
-                skillData = CreateSkillData(skillId);
-                skillDatas.Add(skillData);
-            }
-            
-            //파일 이름을 변경 여부
-            if (renameFiles)
-            {
-                RenameScriptableObjectFile(skillData, skillId);
-            }
-            
-            //추출한 데이터 값으로 SO 데이터 설정
-            skillData.SetData(skillId, skillName, skillDescription, skillEffect, skillCoolDown, skillMaxLevel, skillDamage, skillDamageIncreaseRate,
-                skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount, active);
-            EditorUtility.SetDirty(skillData);
+        int skillMaxLevel = 0;
+        int.TryParse(rowData[headerMap["MaxLevel"]], out skillMaxLevel);    
+         
+        float skillDamage = 0f;
+        float.TryParse(rowData[headerMap["Damage"]], out skillDamage);    
+        
+        float skillDamageIncreaseRate = 0f;
+        float.TryParse(rowData[headerMap["DamageIncreaseRate"]], out skillDamageIncreaseRate);
+        
+        string skillIcon = rowData[headerMap["Icon"]];
+
+        int weaponType = 0;
+        int.TryParse(rowData[headerMap["WeaponType"]], out weaponType);    
+        
+        int active = 0;
+        int.TryParse(rowData[headerMap["isActive"]], out active);
+        
+        float skillDelay = 0f;
+        float.TryParse(rowData[headerMap["Delay"]], out skillDelay);    
+        
+        float skillDelayDecreaseRate = 0f;
+        float.TryParse(rowData[headerMap["DecreaseDelayRate"]], out skillDelayDecreaseRate);    
+         
+        float skillRange = 0f;
+        float.TryParse(rowData[headerMap["Range"]], out skillRange);    
+        
+        float castingTime = 0f;
+        float.TryParse(rowData[headerMap["CastingTime"]], out castingTime);
+        
+        int skillHitCount = 0;
+        int.TryParse(rowData[headerMap["HitCount"]], out skillHitCount);
+        
+        SkillData skillData = new SkillData();
+        skillData = CreateSkillData(skillId);
+        
+        //파일 이름을 변경 여부
+        if (renameFiles)
+        {
+            RenameScriptableObjectFile(skillData, skillId);
         }
+        
+        //추출한 데이터 값으로 SO 데이터 설정
+        skillData.SetData(skillId, skillName, skillDescription, skillEffect, skillCoolDown, skillMaxLevel, skillDamage, skillDamageIncreaseRate,
+            skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount, active);
+        EditorUtility.SetDirty(skillData);
         
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh(); 
+        AssetDatabase.Refresh();
     }
-
+    
     /// <summary>
     /// SO 데이터 파일 이름 수정
     /// </summary>
