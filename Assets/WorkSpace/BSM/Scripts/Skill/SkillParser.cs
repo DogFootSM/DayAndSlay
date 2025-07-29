@@ -24,7 +24,7 @@ public class SheetDownButton : Editor
         
     }
 }
-
+ 
 public class SkillParser : MonoBehaviour
 {
     [FormerlySerializedAs("skillData")] [SerializeField] private List<SkillData> skillDatas;
@@ -32,23 +32,8 @@ public class SkillParser : MonoBehaviour
     private string folderPath = "Assets/WorkSpace/BSM/Data/SkillData";
     
     //구글 시트 주소
-    private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:S44&gid=117661071";
-    
-    private void Awake()
-    {
-        StartDownload(false);
-    }
+    private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:S10&gid=117661071";
 
-    private void Start()
-    {
-        Invoke(nameof(SetActiveDisable), 10f);
-    }
-
-    private void SetActiveDisable()
-    {
-        gameObject.SetActive(false);
-    }
-    
     public void StartDownload(bool renameFiles)
     {
         StartCoroutine(DownloadSkillDataRoutine(renameFiles));
@@ -58,15 +43,17 @@ public class SkillParser : MonoBehaviour
     {
         UnityWebRequest req = UnityWebRequest.Get(skillDataUrlPath);
         yield return req.SendWebRequest();
-
+        
+        //Request 결과를 정상적으로 받아왔을 경우
         if (req.result == UnityWebRequest.Result.Success)
         {
             string tsvText = req.downloadHandler.text;
+ 
             string json = ConvertTsvToJson(tsvText);
-
+  
             JArray jsonData = JArray.Parse(json);
-            ApplyDataToSO(jsonData, renameFiles);
-
+            
+            ApplyDataToSO(jsonData, renameFiles); 
         }
         else
         {
@@ -74,6 +61,11 @@ public class SkillParser : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 파싱한 구글 시트 정보 Json으로 변경
+    /// </summary>
+    /// <param name="tsvText"></param>
+    /// <returns></returns>
     private string ConvertTsvToJson(string tsvText)
     {
         string[] lines = tsvText.Split('\n');
@@ -91,6 +83,7 @@ public class SkillParser : MonoBehaviour
             for (int j = 0; j < headers.Length && j < values.Length; j++)
             {
                 string value = values[j].Trim();
+                 
                 jObject[headers[j].Trim()] = value;
             }
             
@@ -100,6 +93,11 @@ public class SkillParser : MonoBehaviour
         return jsonArray.ToString();
     }
 
+    /// <summary>
+    /// JArray에 추가된 파싱 데이터 값 추출 후 SO 데이터에 설정
+    /// </summary>
+    /// <param name="jsonData"></param>
+    /// <param name="renameFiles"></param>
     private void ApplyDataToSO(JArray jsonData, bool renameFiles)
     {
         ClearAllData();
@@ -107,56 +105,43 @@ public class SkillParser : MonoBehaviour
 
         for (int i = 0; i < jsonData.Count; i++)
         {
+            //스킬 데이터 값 추출
             JObject row = (JObject)jsonData[i];
                 
-            string skillId = "";
-            skillId = row["ID"].ToString();
+            string skillId = row.Value<string>("ID") ?? string.Empty;
               
-            string skillName = "";
-            skillName = row["Name"].ToString();
+            string skillName = row.Value<string?>("Name") ?? string.Empty;
             
-            string skillDescription= "";
-            skillDescription = row["Description"].ToString();
-            
-            string skillEffect = "";
-            skillEffect = row["Effect"].ToString();
-            
-            float skillCoolDown = 0f;
-            float.TryParse(row["CoolDown"].ToString(), out skillCoolDown);
-            
-            int skillMaxLevel = 0;
-            int.TryParse(row["MaxLevel"].ToString(), out skillMaxLevel);
-            
-            float skillDamage = 0f;
-            float.TryParse(row["Damage"].ToString(), out skillDamage);
-            
-            float skillDamageIncreaseRate = 0f;
-            float.TryParse(row["DamageIncreaseRate"].ToString(), out skillDamageIncreaseRate);
-            
-            string skillIcon = "";
-            skillIcon = row["Icon"].ToString();
+            string skillDescription= row.Value<string?>("Description") ?? string.Empty;
 
-            int weaponType = 4;
-            int.TryParse(row["WeaponType"].ToString(), out weaponType);
+            string skillEffect = row.Value<string?>("Effect") ?? string.Empty;
             
+            float skillCoolDown = row.Value<float?>("CoolDown") ?? 0f;
+
+            int skillMaxLevel = row.Value<int?>("MaxLevel") ?? 0;
             
-            float skillDelay = 0f;
-            float.TryParse(row["Delay"].ToString(), out skillDelay);
+            float skillDamage = row.Value<float?>("Damage") ?? 0f;
             
-            float skillDelayDecreaseRate = 0f;
-            float.TryParse(row["DecreaseDelayRate"].ToString(), out skillDelayDecreaseRate);
+            float skillDamageIncreaseRate = row.Value<float?>("DamageIncreaseRate") ?? 0f;
             
-            float skillRange = 0f;
-            float.TryParse(row["Range"].ToString(), out skillRange);
+            string skillIcon = row.Value<string>("Icon") ?? string.Empty;
             
-            float castingTime = 0f;
-            float.TryParse(row["CastingTime"].ToString(), out castingTime);
+            int weaponType = row.Value<int?>("WeaponType") ?? 4;
             
-            int skillHitCount = 0;
-            int.TryParse(row["HitCount"].ToString(), out skillHitCount);
+            float skillDelay = row.Value<float?>("Delay") ?? 0f;
+            
+            float skillDelayDecreaseRate = row.Value<float?>("DecreaseDelayRate") ?? 0f;
+            
+            float skillRange = row.Value<float?>("Range") ?? 0f;
+            
+            float castingTime = row.Value<float?>("CastingTime") ?? 0f;
+            
+            int skillHitCount = row.Value<int?>("HitCount") ?? 0;
+
+            int active = row.Value<int?>("isActive") ?? 0;
             
             SkillData skillData = new SkillData();
-
+            
             if (i < this.skillDatas.Count)
             {
                 skillData = this.skillDatas[i];
@@ -166,22 +151,28 @@ public class SkillParser : MonoBehaviour
                 skillData = CreateSkillData(skillId);
                 skillDatas.Add(skillData);
             }
-
+            
+            //파일 이름을 변경 여부
             if (renameFiles)
             {
                 RenameScriptableObjectFile(skillData, skillId);
             }
-                
+            
+            //추출한 데이터 값으로 SO 데이터 설정
             skillData.SetData(skillId, skillName, skillDescription, skillEffect, skillCoolDown, skillMaxLevel, skillDamage, skillDamageIncreaseRate,
-                skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount);
+                skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount, active);
             EditorUtility.SetDirty(skillData);
         }
         
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-    
+        AssetDatabase.Refresh(); 
     }
 
+    /// <summary>
+    /// SO 데이터 파일 이름 수정
+    /// </summary>
+    /// <param name="skillData"></param>
+    /// <param name="newFileName"></param>
     private void RenameScriptableObjectFile(SkillData skillData, string newFileName)
     {
         string path = AssetDatabase.GetAssetPath(skillData);
@@ -195,6 +186,9 @@ public class SkillParser : MonoBehaviour
         } 
     }
 
+    /// <summary>
+    /// GoogleSheets 파싱 시 기존 데이터들 삭제
+    /// </summary>
     private void ClearAllData()
     {
         if (!Directory.Exists(folderPath))
@@ -207,14 +201,18 @@ public class SkillParser : MonoBehaviour
 
         foreach (string file in files)
         {
-            AssetDatabase.DeleteAsset(file);
-            Debug.Log($"파일 삭제 :{file}");
+            AssetDatabase.DeleteAsset(file); 
         }
         
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
 
+    /// <summary>
+    /// 파싱한 데이터 정보들을 설정하기 위한 SO 데이터 생성
+    /// </summary>
+    /// <param name="skillId"></param>
+    /// <returns></returns>
     private SkillData CreateSkillData(string skillId)
     {
         SkillData skillData = ScriptableObject.CreateInstance<SkillData>();

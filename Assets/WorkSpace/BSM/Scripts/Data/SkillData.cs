@@ -77,7 +77,7 @@ public class SkillData : ScriptableObject
         this.SkillHitCount = skillHitCount;
         SetSkillEffect(this.RequiredWeapon, this.SkillId, skillEffect);
         
-        this.IsActive = isActive 
+        this.IsActive = isActive == 0;
     }
     
 } 
