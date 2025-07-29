@@ -5,8 +5,6 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json.Linq;
-using UnityEngine.Serialization;
 
 [CustomEditor(typeof(SkillParser))]
 public class SheetDownButton : Editor
