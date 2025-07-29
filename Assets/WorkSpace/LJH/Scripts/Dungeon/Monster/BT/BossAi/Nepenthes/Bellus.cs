@@ -21,6 +21,11 @@ public class Bellus : NepenthesAI
     private float poisonTimer;
     private float attackTimer;
 
+    protected void Start()
+    {
+        base.Start();
+        partner = FindObjectOfType<Malus>();
+    }
     protected override void Update()
     {
         base.Update();

@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 6158955908396098429}
   m_Layer: 0
   m_Name: Belus
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -232,7 +232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7439626506249827491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 103.4542, y: -57.08, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -315,8 +315,6 @@ MonoBehaviour:
   poisonCooldown: 10
   attackCooldown: 2
   partner: {fileID: 0}
-  heal: {fileID: 0}
-  poison: {fileID: 0}
 --- !u!95 &7439626506249827493
 Animator:
   serializedVersion: 5

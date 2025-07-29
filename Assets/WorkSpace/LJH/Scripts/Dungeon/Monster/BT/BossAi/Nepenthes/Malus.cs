@@ -21,6 +21,11 @@ public class Malus : NepenthesAI
     private float skillFirstTimer;
     private float rootTimer;
 
+    protected void Start()
+    {
+        base.Start();
+        partner = FindObjectOfType<Bellus>();
+    }
     protected override void Update()
     {
         base.Update();
