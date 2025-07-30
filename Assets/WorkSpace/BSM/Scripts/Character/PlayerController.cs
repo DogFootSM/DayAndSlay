@@ -22,9 +22,11 @@ public class PlayerController : MonoBehaviour
     [Inject] private PlayerContext playerContext;
     
     [SerializeField] private GameObject shieldObject;
+    [SerializeField] private GameObject quiverObject;
     [SerializeField] private SkillTree curSkillTree;
     [SerializeField] private InventoryInteraction inventoryInteraction;
     [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
+    [SerializeField] private CharacterAnimatorController characterAnimatorController;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public CharacterWeaponType CurrentWeaponType => curWeaponType;
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
+    private ArrowPool arrowPool => ArrowPool.Instance;
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
     private PlayerModel playerModel;
     private Rigidbody2D characterRb;
@@ -128,14 +131,30 @@ public class PlayerController : MonoBehaviour
     /// 현재 무기 타입을 무기에 전달
     /// </summary>
     /// <param name ="weaponType">변경할 무기 타입</param>
-    public void ChangedWeaponType(CharacterWeaponType weaponType)
+    public void ChangedWeaponType(CharacterWeaponType weaponType, ItemData itemData = null)
     { 
         curWeaponType = weaponType;
+
+        if (weaponType == CharacterWeaponType.BOW)
+        {
+            arrowPool.SetupArrowPoolOnEquip();
+        }
         
-        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType);
+        //웨폰 핸들러 변경
+        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData);
         
+        //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
+        characterAnimatorController.WeaponAnimatorChange((int)weaponType);
+        
+        //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
+        
+        //장착 무기가 ShortSword 외엔 방패 오브젝트 비활성화
         shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
+        //장착 무기가 bow 외엔 화살통 오브젝트 비활성화
+        quiverObject.SetActive(curWeaponType == CharacterWeaponType.BOW);
+        
+        //현재 무기에 따른 퀵슬롯 설정 변경
         quickSlotManager.UpdateWeaponType(curWeaponType);
     }
 

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using Zenject;
-using ITEM_MANAGER = BSM_ItemManager.ItemManager;
 using BSM_ItemData = BSM_ITEM.ItemData;
 
 namespace BSM_ITEM
@@ -33,8 +32,8 @@ public class InventoryController : MonoBehaviour
     private List<BSM_ItemData> itemDatas = new List<BSM_ItemData>();
     private IDataReader dataReader;
     protected Dictionary<Parts, InventorySlot> equipSlotDict = new Dictionary<Parts, InventorySlot>();
-    
-    private ITEM_MANAGER itemManager => ITEM_MANAGER.instance;
+
+    private ItemDatabaseManager itemManager => ItemDatabaseManager.instance;
     
     protected void Awake()
     {
@@ -70,7 +69,7 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < itemDatas.Count; i++)
         {  
             inventorySlots[itemDatas[i].inventorySlotId].AddItem(
-                itemManager.GetItemData(itemDatas[i].itemId),
+                itemManager.GetItemByID(itemDatas[i].itemId),
                 itemDatas[i].itemAmount);
             
             //장비 착용 여부 설정

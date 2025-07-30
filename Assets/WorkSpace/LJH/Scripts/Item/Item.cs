@@ -7,10 +7,10 @@ public class Item : MonoBehaviour
     [SerializeField] public ItemData itemData;
 
     public int ItemId;
- 
+    
     private void Start()
     {
-        itemData = BSM_ItemManager.ItemManager.instance.GetItemData(ItemId);
+        itemData = ItemDatabaseManager.instance.GetItemByID(ItemId);
     }
 
 }

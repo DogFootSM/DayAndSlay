@@ -8,14 +8,15 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject playerObject;
     
-    public UnityAction<CharacterWeaponType> OnWeaponTypeChanged;
+    public UnityAction<CharacterWeaponType, ItemData> OnWeaponTypeChanged;
     public UnityAction<Vector2> OnDirectionChanged; 
     
     private IAttackHandler attackHandler;
     private CharacterWeaponType curWeaponType;
 
     private Vector2 curDirection;
- 
+    private ItemData curEquippedItem;
+    
     private void Awake()
     {
         curDirection = Vector2.down;
@@ -37,9 +38,10 @@ public class Weapon : MonoBehaviour
     /// 무기 타입 변경에 따른 무기 핸들러 변경
     /// </summary>
     /// <param name="weaponType"></param>
-    private void GetCurrentWeaponType(CharacterWeaponType weaponType)
+    private void GetCurrentWeaponType(CharacterWeaponType weaponType, ItemData itemData)
     {
-        attackHandler = AttackHandlerFactory.ChangeAttackType(weaponType); 
+        attackHandler = AttackHandlerFactory.ChangeAttackType(weaponType);
+        curEquippedItem = itemData;
     }
 
     /// <summary>
@@ -56,11 +58,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void NormalAttack()
     {
-        attackHandler.NormalAttack(curDirection, playerObject.transform.position);
+        attackHandler.NormalAttack(curDirection, playerObject.transform.position, curEquippedItem);
     }
 
     private void OnDrawGizmos()
     {  
-        //attackHandler.DrawGizmos(); 
+        attackHandler.DrawGizmos(); 
     }
 }

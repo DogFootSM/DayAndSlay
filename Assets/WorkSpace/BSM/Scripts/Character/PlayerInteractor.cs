@@ -33,7 +33,7 @@ public class PlayerInteractor : MonoBehaviour
                 {
                     saveHandler.OpenSaveAlert();
                 }
-                else if (hit.collider.TryGetComponent<NpcTalk>(out NpcTalk npcTalk))
+                else if (hit.collider.transform.GetChild(0).TryGetComponent<NpcTalk>(out NpcTalk npcTalk))
                 {
                     npcTalk.OnTalkPrintEvent?.Invoke();
                 }

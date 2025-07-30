@@ -1,10 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic;using Unity.VisualScripting;
 using UnityEngine;
 
 public static class AttackHandlerFactory
 {
-
+    
     private static Dictionary<CharacterWeaponType, IAttackHandler> attackHandlerDict =
         new Dictionary<CharacterWeaponType, IAttackHandler>();
     
@@ -19,16 +19,15 @@ public static class AttackHandlerFactory
         { 
             attackHandlerDict[weaponType] = weaponType switch
             {
-                CharacterWeaponType.BOW => new RangeAttackHandler(),
-                CharacterWeaponType.WAND => new MeleeAttackHandler(),
-                CharacterWeaponType.SHORT_SWORD => new MeleeAttackHandler(),
-                CharacterWeaponType.LONG_SWORD => new MeleeAttackHandler(),
-                CharacterWeaponType.SPEAR => new MeleeAttackHandler(),
+                CharacterWeaponType.BOW => new Bow(),
+                CharacterWeaponType.WAND => new Wand(),
+                CharacterWeaponType.SHORT_SWORD => new ShortSword(),
+                CharacterWeaponType.LONG_SWORD => new ShortSword(),
+                CharacterWeaponType.SPEAR => new Spear(),
                 _ => null
             };
         }
 
         return attackHandlerDict[weaponType]; 
-    }
-    
+    } 
 }

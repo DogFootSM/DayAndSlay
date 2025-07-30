@@ -27,12 +27,6 @@ public class SkillTree : MonoBehaviour, ISavable
     
     private void Awake()
     {
-        //TODO: 스킬 목록 구현 완료되면 자동으로 받아올 것
-        // for (int i = 0; i < SkillDatas.Count; i++)
-        // {
-        //     SkillDatas[i].SetSkillEffect();
-        // }
-        
         ProjectContext.Instance.Container.Inject(this);
         InitializeSkillNodes();
         LinkPrerequisites();
@@ -103,7 +97,7 @@ public class SkillTree : MonoBehaviour, ISavable
         foreach (SkillNode node in allskillNodes)
         {
             //해당 노드의 선행 스킬 리스트 이름 추출
-            foreach (string prerequisite in node.skillData.prerequisiteSkillsId)
+            foreach (string prerequisite in node.skillData.PrerequisiteSkillsId)
             {
                 //딕셔너리에 해당 이름의 노드를 찾아서 선행 스킬 노드 연결
                 if (prerequisiteNodeMap.TryGetValue(prerequisite, out SkillNode skillNode))
