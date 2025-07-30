@@ -118,7 +118,7 @@ public abstract class BaseForgeUI : BaseUI
         ItemButton btn = itemButtonList[index].GetComponent<ItemButton>();
         ItemData itemData = btn.itemData;
         ItemRecipe itemRecipe = btn.itemRecipe;
-        
+
         prevTextDict["name"].text = itemData.Name;
         prevTextDict["atk"].text = itemData.Attack.ToString();
         prevTextDict["def"].text = itemData.Defence.ToString();

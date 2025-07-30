@@ -8,17 +8,19 @@ public class Npc : MonoBehaviour
 {
     private Rigidbody2D rb;
     [Inject] PlayerContext playerContext;
-    private PlayerController player;
-    public bool IsBuyer;
-    public NpcStateMachine StateMachine { get; private set; } = new();
-
     [Inject] private ItemStorage itemManager;
     [Inject] private StoreManager storeManager;
+    private PlayerController player;
+
+    [SerializeField] private GenderType gender;
+    [SerializeField] private AgeType age;
+    
+    public bool IsBuyer;
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] private List<ItemData> wantItemList = new();
     public ItemData wantItem;
+    [SerializeField] private List<ItemData> wantItemList = new();
     [SerializeField] private PopUp talkPopUp;
     [SerializeField] private TargetSensorInNpc targetSensor;
     [SerializeField] private AstarPath astarPath;
@@ -32,6 +34,7 @@ public class Npc : MonoBehaviour
     private string currentAnim = "";
 
     [SerializeField] private bool isAngry;
+    public NpcStateMachine StateMachine { get; private set; } = new();
 
     /// <summary>
     /// TargetSeneorInNpc µû¿À±â
@@ -58,6 +61,12 @@ public class Npc : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public bool CheckHeIsAngry() => isAngry;
+
+    public void SetNpcType(GenderType gender, AgeType age)
+    {
+        this.gender = gender;
+        this.age = age;
+    }
 
     /// <summary>
     /// True = Outside / False = Store

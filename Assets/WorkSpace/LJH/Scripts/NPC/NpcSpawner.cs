@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Zenject;
 
 public class NpcSpawner : MonoBehaviour
@@ -34,8 +35,17 @@ public class NpcSpawner : MonoBehaviour
 
             int npcIndex = Random.Range(0, npcPreset.Count);
             npcList.Add(container.InstantiatePrefabForComponent<Npc>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
-            npcList[npcList.Count - 1].IsBuyer = Random.value < 1f / npcBuyProbability;
-            npcList[npcList.Count - 1].name = $"npc{npcList.Count - 1}";
+            
+            Npc npc = npcList[npcList.Count - 1];
+            
+            //npc의 타입 설정
+            GenderType gender = (GenderType)Random.Range(0, 3);
+            AgeType age = (AgeType)Random.Range(0, 4);
+            npc.SetNpcType(gender, age);
+            
+            //npc의 바이어 y/n 설정
+            npc.IsBuyer = Random.value < 1f / npcBuyProbability;
+            npc.name = $"npc{npcList.Count - 1}";
         }
     }
 
