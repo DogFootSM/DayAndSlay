@@ -77,9 +77,17 @@ public class NpcTalk : MonoBehaviour
         speechText.text = "";
         int talkIndex = 0;
         
-        yield return new WaitUntil(() => bubbleAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f);
-        speechText.color = new Color(speechText.color.r, speechText.color.g, speechText.color.b, 1);  
+        yield return new WaitUntil(() => bubbleAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+
+        float elapsedTime = 0f;
         
+        while (elapsedTime <= 0.5f)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+            speechText.color = new Color(speechText.color.r, speechText.color.g, speechText.color.b, elapsedTime / 0.5f);  
+        }
+         
         while (talkIndex < npcTalks[randIndex].Length)
         {
             speechText.text += npcTalks[randIndex][talkIndex++];
@@ -88,7 +96,7 @@ public class NpcTalk : MonoBehaviour
         
         yield return WaitCache.GetWait(1.5f);
 
-        float elapsedTime = 0.5f;
+        elapsedTime = 0.5f;
 
         while (elapsedTime >= 0f)
         {
