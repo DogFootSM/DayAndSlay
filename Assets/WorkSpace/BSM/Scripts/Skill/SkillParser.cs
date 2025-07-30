@@ -126,6 +126,8 @@ public class SkillParser : MonoBehaviour
         int skillHitCount = 0;
         int.TryParse(rowData[headerMap["HitCount"]], out skillHitCount);
         
+        //TODO: 선행 스킬 리스트 추가 필요
+        
         SkillData skillData = new SkillData();
         skillData = CreateSkillData(skillId);
         
