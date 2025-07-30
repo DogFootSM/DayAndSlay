@@ -48,9 +48,7 @@ public class TalkManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public List<string> GetTalkData(GenderType gender, AgeType age)
-    {
-        Debug.Log($"{gender} - {age}");
-        
+    { 
         var key = (gender, age);
 
         if (!talkMaps.ContainsKey(key))
