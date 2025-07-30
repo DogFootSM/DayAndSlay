@@ -1,27 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NepenthesAI : BossMonsterAI
+public abstract class NepenthesAI : BossMonsterAI
 {
+    protected override List<BTNode> BuildSkillSelector()
+    {
+        return BuildSkillPatterns();
+    }
+
     protected override List<BTNode> BuildAttackSelector()
     {
-        return new List<BTNode>
+        return BuildAttackPatterns();
+    }
+    
+    //네펜데스의 경우는 움직임이 없기에 오버라이딩하여 상태 넘겨줌
+    protected override List<BTNode> BuildChaseSequence()
     {
-        new Sequence(new List<BTNode>
+        return new List<BTNode>
         {
-            //원거리 공격용 시퀀스
-            
-            new IsAttackRangeNode(transform, player.transform, 5f),
-            //new SetAnimatorStateNode(animator.stateMachine, new MonsterAttackState()),
-            //new ShootProjectileNode(transform, player.transform)
-        }),
-        new Sequence(new List<BTNode>
-        {
-            //근거리 공격용 시퀀스
-
-            //new PlayAnimationNode(animator, "Bite"),
-            //new DealDamageNode(player)
-        })
+            new AlwaysFailNode()
         };
     }
+
+
+    protected abstract List<BTNode> BuildSkillPatterns();
+    protected abstract List<BTNode> BuildAttackPatterns();
 }

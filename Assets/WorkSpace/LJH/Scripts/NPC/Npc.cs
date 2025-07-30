@@ -6,17 +6,21 @@ using Zenject;
 
 public class Npc : MonoBehaviour
 {
-    private PlayerController player;
-    public bool IsBuyer;
-    public NpcStateMachine StateMachine { get; private set; } = new();
-
+    private Rigidbody2D rb;
+    [Inject] PlayerContext playerContext;
     [Inject] private ItemStorage itemManager;
     [Inject] private StoreManager storeManager;
+    private PlayerController player;
+
+    [SerializeField] private GenderType gender;
+    [SerializeField] private AgeType age;
+    
+    public bool IsBuyer;
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] private List<ItemData> wantItemList = new();
     public ItemData wantItem;
+    [SerializeField] private List<ItemData> wantItemList = new();
     [SerializeField] private PopUp talkPopUp;
     [SerializeField] private TargetSensorInNpc targetSensor;
     [SerializeField] private AstarPath astarPath;
@@ -30,6 +34,7 @@ public class Npc : MonoBehaviour
     private string currentAnim = "";
 
     [SerializeField] private bool isAngry;
+    public NpcStateMachine StateMachine { get; private set; } = new();
 
     /// <summary>
     /// TargetSeneorInNpc 따오기
@@ -57,6 +62,12 @@ public class Npc : MonoBehaviour
     /// <returns></returns>
     public bool CheckHeIsAngry() => isAngry;
 
+    public void SetNpcType(GenderType gender, AgeType age)
+    {
+        this.gender = gender;
+        this.age = age;
+    }
+
     /// <summary>
     /// True = Outside / False = Store
     /// </summary>
@@ -71,6 +82,7 @@ public class Npc : MonoBehaviour
     {
         Init();
         SetupItemWish();
+        rb = GetComponent<Rigidbody2D>();
         StateMachine.ChangeState(new NpcDecisionState(this));
     }
 
@@ -83,6 +95,7 @@ public class Npc : MonoBehaviour
     {
         targetSensor.Init(this);
         UpdateGrid();
+        player = playerContext.GetPlayerController();
     }
 
     private void SetupItemWish()
@@ -121,7 +134,7 @@ public class Npc : MonoBehaviour
             StopCoroutine(moveCoroutine);
 
         astarPath.DetectTarget(transform.position, targetPos);
-        moveCoroutine = StartCoroutine(MoveCoroutine(targetPos, onArrive));
+        moveCoroutine = StartCoroutine(NewMoveCoroutine(targetPos, onArrive));
     }
 
     private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
@@ -162,6 +175,47 @@ public class Npc : MonoBehaviour
         PlayDirectionAnimation(Vector3.zero);
         onArrive?.Invoke();
     }
+    
+    private IEnumerator NewMoveCoroutine(Vector3 target, System.Action onArrive)
+    {
+        List<Vector3> path = astarPath.path;
+
+        if (path == null || path.Count == 0)
+        {
+            Debug.LogWarning("A* 경로 없음, 이동 중단");
+            PlayDirectionAnimation(Vector3.zero);
+            yield break;
+        }
+
+        foreach (Vector3 point in path)
+        {
+            // X축 이동
+            while (Mathf.Abs(rb.position.x - point.x) > 0.05f)
+            {
+                float dirX = Mathf.Sign(point.x - rb.position.x);
+                Vector3 moveDir = new Vector3(dirX, 0, 0);
+                rb.MovePosition(rb.position + (Vector2)moveDir * moveSpeed * Time.fixedDeltaTime);
+                PlayDirectionAnimation(moveDir);
+                yield return new WaitForFixedUpdate();
+            }
+
+            // Y축 이동
+            while (Mathf.Abs(rb.position.y - point.y) > 0.05f)
+            {
+                float dirY = Mathf.Sign(point.y - rb.position.y);
+                Vector3 moveDir = new Vector3(0, dirY, 0);
+                rb.MovePosition(rb.position + (Vector2)moveDir * moveSpeed * Time.fixedDeltaTime);
+                PlayDirectionAnimation(moveDir);
+                yield return new WaitForFixedUpdate();
+            }
+
+            rb.MovePosition(new Vector2(point.x, point.y)); // 최종 위치 보정
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        PlayDirectionAnimation(Vector3.zero);
+        onArrive?.Invoke();
+    }
 
     /// <summary>
     /// 느낌표 뜬 엔피씨가 있을때 플레이어가 호출할 함수
@@ -190,24 +244,33 @@ public class Npc : MonoBehaviour
         talkPopUp.gameObject?.SetActive(false);
     }
 
+    public void FailBuyItem()
+    {
+        WantItemClear();
+        HeIsAngry();
+    }
+
     /// <summary>
     /// 아이템 판매 후 처리용 함수
     /// </summary>
     public void BuyItemFromDesk()
     {
-        int gold = wantItem.SellPrice;
-        
+        //player.GrantExperience(wantItem.SellPrice);
         WantItemClear();
+        WantItemMarkOnOff(Emoji.EXCLAMATION);
+        GetStoreManager().PlusRepu(10);
+        StateMachine.ChangeState(new NpcLeaveState(this));
     }
 
     public void BuyItemFromTable()
     {
         if (tableWithItem != null)
         {
-            int gold = tableWithItem.CurItemData.SellPrice;
-            
+            //player.GrantExperience(wantItem.SellPrice);
             tableWithItem.CurItemData = null;
             WantItemClear();
+            GetStoreManager().PlusRepu(10);
+            StateMachine.ChangeState(new NpcLeaveState(this));
             // 골드 플레이어에게 지급 로직 필요
         }
     }
@@ -218,24 +281,14 @@ public class Npc : MonoBehaviour
     }
 
     /// <summary>
-    /// 판매 실패하여 불만족한 상태로 상점 떠남
+    /// 상점 떠남
     /// </summary>
     public void LeaveStore()
     {
-        HeIsAngry();
         Vector3 door = targetSensor.GetLeavePosition();
         StateMachine.ChangeState(new NpcMoveState(this, door));
     }
     
-    /// <summary>
-    /// 판매 성공하여 만족한 상태로 상점 떠남
-    /// </summary>
-    public void LeaveStore_Sell()
-    {
-        player.GrantExperience(wantItem.SellPrice);
-        Vector3 door = targetSensor.GetLeavePosition();
-        StateMachine.ChangeState(new NpcMoveState(this, door));
-    }
 
     /// <summary>
     /// 현재 Npc가 서있는 그리드를 업데이트 해줌

@@ -46,7 +46,7 @@ public class WeaponForgeUI : BaseForgeUI
                     break;
 
                 ItemData itemData = weaponStorage[$"{(WeaponType)typeIndex}{i + 1}"];
-                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.Name;
                 itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
             }
 
@@ -59,7 +59,7 @@ public class WeaponForgeUI : BaseForgeUI
                     break;
 
                 ItemData itemData = subWeaponStorage[$"{(SubWeaponType)typeIndex}{i + 1}"];
-                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.name;
+                itemButtonList[i].GetComponentInChildren<TextMeshProUGUI>().text = itemData.Name;
                 itemButtonList[i].GetComponent<ItemButton>().itemData = itemData;
             }
         }
