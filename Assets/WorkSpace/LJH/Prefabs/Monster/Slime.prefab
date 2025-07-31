@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: bb6e56230b4e5184bac5cd40af541aaa, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 523a0a2e7a33eaf4a819c64503da6813, type: 3}
 --- !u!114 &2915400258908273984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   Name: 
+  MaxHp: 0
   Hp: 0
   Attack: 0
   AttackRange: 0
@@ -292,6 +293,7 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
   player: {fileID: 0}
   monsterState: 0
+  isAttacking: 0
 --- !u!1 &7090935891435310245
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,5 +373,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
-  path: []
   mapGrid: {fileID: 0}
+  path: []

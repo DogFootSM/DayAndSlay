@@ -99,10 +99,9 @@ public abstract class BaseForgeUI : BaseUI
             if (btn.GetComponent<ItemButton>())
             {
                 ItemButton itemBtn = btn.GetComponent<ItemButton>();
-                itemBtn.itemRecipe = Set_ItemRecipe(itemBtn.itemData.ItemId);
+                itemBtn.itemData = ItemDatabaseManager.instance.GetItemByID(itemBtn.itemData.ItemId);
             }
         }
-
 
         Tap_ItemButton(defaultNum);
     }
@@ -138,15 +137,6 @@ public abstract class BaseForgeUI : BaseUI
         curItem = itemData;
     }
 
-    /// <summary>
-    /// Setting ItemRecipe in ItemButtons.
-    /// </summary>
-    /// <param name="itemId"></param>
-    /// <returns></returns>
-    private ItemRecipe Set_ItemRecipe(int itemId)
-    {
-        return ItemDatabaseManager.instance.GetRecipeByID(itemId);
-    }
 
     public void CreateItem()
     {

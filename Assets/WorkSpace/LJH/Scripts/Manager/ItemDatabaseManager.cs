@@ -26,5 +26,4 @@ public class ItemDatabaseManager : MonoBehaviour
 
     public ItemData GetItemByName(string name) => GetItemByID(itemDatabase.GetItemByName(name));
 
-    public ItemRecipe GetRecipeByID(int Id) => itemDatabase.GetRecipeByID(Id);
 }

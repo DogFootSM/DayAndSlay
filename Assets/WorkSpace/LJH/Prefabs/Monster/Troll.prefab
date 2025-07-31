@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
+  m_CategoryHash: 2.516169e-21
+  m_labelHash: 7.3059373e-35
   m_SpriteKey: 1.26328e-15
 --- !u!95 &6993985779795122813
 Animator:
@@ -271,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   Name: 
+  MaxHp: 0
   Hp: 0
   Attack: 0
   AttackRange: 0
@@ -292,6 +293,7 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: c1b02e61a5be85042a35d3575a684214, type: 2}
   player: {fileID: 0}
   monsterState: 0
+  isAttacking: 0
 --- !u!1 &7918180105952010082
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,5 +373,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
-  path: []
   mapGrid: {fileID: 0}
+  path: []

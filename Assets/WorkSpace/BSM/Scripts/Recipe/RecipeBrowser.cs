@@ -10,7 +10,7 @@ public class RecipeBrowser : MonoBehaviour
     [SerializeField] private TMP_Dropdown subCategoryDropdown;
     
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
-    private List<ItemRecipe> recipeList => itemDatabase.ItemDatabase.recipes;
+    //private List<ItemRecipe> recipeList => itemDatabase.ItemDatabase.recipes;
     
     private List<string> mainWeaponSubCategoryOptions = new List<string>()
     {

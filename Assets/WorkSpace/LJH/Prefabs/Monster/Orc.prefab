@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6087783516721240178}
   - component: {fileID: 4542563170354638787}
   - component: {fileID: 1267680729230137572}
+  - component: {fileID: 3646640323488330428}
   - component: {fileID: -4089047552206157527}
   - component: {fileID: 1583439449573798401}
   m_Layer: 0
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: ad6545c2fe74b3f4fb92c2896f6013cd, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: bbf168bfe7952544fac57dab28eba03c, type: 3}
 --- !u!114 &4425910556373969110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 8.1929586e-13
-  m_labelHash: 0.0031869207
-  m_SpriteKey: 1.2813606e-28
+  m_CategoryHash: 1.1539892e-23
+  m_labelHash: 0.00000040954276
+  m_SpriteKey: 1.7671197e-23
 --- !u!95 &5386918725613994773
 Animator:
   serializedVersion: 5
@@ -235,6 +236,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
+--- !u!50 &3646640323488330428
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206897382857518734}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &-4089047552206157527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   Name: 
+  MaxHp: 0
   Hp: 0
   Attack: 0
   AttackRange: 0
@@ -270,6 +293,7 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: 70d4f973e3ca5704ba0a7db1f4cd0286, type: 2}
   player: {fileID: 0}
   monsterState: 0
+  isAttacking: 0
 --- !u!1 &7981083056191550358
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,5 +373,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
-  path: []
   mapGrid: {fileID: 0}
+  path: []
