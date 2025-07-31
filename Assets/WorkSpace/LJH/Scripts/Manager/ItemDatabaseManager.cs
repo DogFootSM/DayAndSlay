@@ -5,9 +5,10 @@ using UnityEngine;
 public class ItemDatabaseManager : MonoBehaviour
 {
     public static ItemDatabaseManager instance;
-
+    public ItemDatabase ItemDatabase { get => itemDatabase; }
+    
     [SerializeField] private ItemDatabase itemDatabase;
-
+ 
     private void Awake()
     {
         if (instance == null)

@@ -63,6 +63,6 @@ public class Weapon : MonoBehaviour
 
     private void OnDrawGizmos()
     {  
-        attackHandler.DrawGizmos(); 
+        //attackHandler.DrawGizmos(); 
     }
 }
