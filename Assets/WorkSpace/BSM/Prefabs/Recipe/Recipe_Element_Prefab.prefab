@@ -238,8 +238,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8043429777847412582}
-  - component: {fileID: 1367261620638356112}
   - component: {fileID: 5954471059163146145}
+  - component: {fileID: 5233646581299119030}
   m_Layer: 5
   m_Name: Recipe_Element_Prefab
   m_TagString: Untagged
@@ -268,21 +268,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 450, y: 100}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1367261620638356112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7619565992735581433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637c1d38aa98a5f4b8d601df583a700a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 7795078285886066997}
-  itemName: {fileID: 6753890446086486398}
-  itemDescription: {fileID: 3129167362796073007}
 --- !u!114 &5954471059163146145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,6 +288,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5233646581299119030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7619565992735581433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637c1d38aa98a5f4b8d601df583a700a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 7795078285886066997}
+  itemName: {fileID: 6753890446086486398}
+  itemDescription: {fileID: 3129167362796073007}
 --- !u!1 &7748534877208699254
 GameObject:
   m_ObjectHideFlags: 0
