@@ -59,7 +59,6 @@ public class GeneralAnimator : MonoBehaviour
 
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                Debug.Log($"공격 끝나고 isAction");
                 isAction = false;
             }
 
@@ -67,10 +66,19 @@ public class GeneralAnimator : MonoBehaviour
 
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                Debug.Log($"피격 끝나고 isAction");
                 isAction = false;
             }
+            
+            currentAnimationHash = SetAnimationHash(hitAction[SetDirection()]);
+            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+            {
+                isAction = false;
+
+                PlayIdle();
+            }
         }
+        
+        
     }
 
     IEnumerator dirCoroutine()

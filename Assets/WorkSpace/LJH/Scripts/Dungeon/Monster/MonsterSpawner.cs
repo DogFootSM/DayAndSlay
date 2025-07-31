@@ -75,6 +75,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         if (IsBossRoom()) return;
 
+        Debug.Log("몬스터스폰포즈셋");
         foreach (GameObject spawner in spawnerList)
         {
             checkNum = 0;

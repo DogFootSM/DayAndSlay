@@ -13,9 +13,10 @@ public class GeneralMonsterMethod : MonoBehaviour
     [Inject]
     ItemStorage itemStorage;
 
-    [SerializeField] BoxCollider2D attackHitBox;
-    [SerializeField] AstarPath astarPath;
-    [SerializeField] GameObject player;
+    [SerializeField] protected BoxCollider2D attackHitBox;
+    [SerializeField] protected AstarPath astarPath;
+    [SerializeField] protected GameObject player;
+    protected MonsterModel monster;
 
     public Coroutine moveCoroutine;
     public bool isMoving;
@@ -24,6 +25,7 @@ public class GeneralMonsterMethod : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
+        monster = GetComponent<MonsterModel>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -134,9 +136,10 @@ public class GeneralMonsterMethod : MonoBehaviour
         //Todo : 실제 데미지 처리 해야함
     }
 
-    public void HitMethod()
+    public void HitMethod(int damage)
     {
         Debug.Log("몬스터 맞았음");
+        monster.SetMonsterHp(damage);
     }
 
 

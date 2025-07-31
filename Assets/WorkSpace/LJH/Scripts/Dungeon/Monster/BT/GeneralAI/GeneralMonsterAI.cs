@@ -56,13 +56,13 @@ public class GeneralMonsterAI : MonoBehaviour
         /// </summary>
         if (Input.GetKeyDown(KeyCode.Space))
             //    model.Hp = 0;
-            Hit();
+            Hit(1);
     }
 
-    public virtual void Hit()
+    public virtual void Hit(int damage)
     {
         //Todo : 히트 만들어줘야함
-        method.HitMethod();
+        method.HitMethod(damage);
         stateMachine.ChangeState(new MonsterHitState());
     }
     public virtual void Die()
