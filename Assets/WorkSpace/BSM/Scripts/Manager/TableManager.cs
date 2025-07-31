@@ -126,7 +126,7 @@ public class TableManager : MonoBehaviour
 
         if (targetNpc != null)
         {
-            targetNpc.StateMachine.ChangeState(new NpcLeaveState(targetNpc));
+            targetNpc.BuyItemFromDesk();
         }
 
         removeInventorySlot.RemoveItem();

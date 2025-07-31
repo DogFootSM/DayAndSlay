@@ -32,14 +32,14 @@ public class TalkManager : MonoBehaviour
     {
         for (int i = 0; i < npcTalkData.Count; i++)
         {
-            var key = (npcTalkData[i].genderType, npcTalkData[i].ageType);
+            var key = (genderType: npcTalkData[i].CurGenderType, ageType: npcTalkData[i].CurAgeType);
             
             if (!talkMaps.ContainsKey(key))
             {
                 talkMaps[key] = new List<string>();
             }
             
-            talkMaps[key].Add(npcTalkData[i].talk);
+            talkMaps[key].Add(npcTalkData[i].Talk);
         } 
     }
     
