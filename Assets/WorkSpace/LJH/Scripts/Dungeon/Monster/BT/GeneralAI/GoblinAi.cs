@@ -13,7 +13,7 @@ public class GoblinAi : GeneralMonsterAI
     // 공격중이 아닐때에만 Attack을 실행하고
 
 
-    public override void Idle()
+    protected override void Idle()
     {
         if (monsterState == M_State.IDLE)
         {
@@ -23,7 +23,7 @@ public class GoblinAi : GeneralMonsterAI
         stateMachine.ChangeState(new MonsterIdleState());
         monsterState = M_State.IDLE;
     }
-    public override void Attack()
+    protected override void Attack()
     {
         if (monsterState == M_State.ATTACK)
         {
@@ -38,7 +38,7 @@ public class GoblinAi : GeneralMonsterAI
         StartCoroutine(AttackEndDelay()); // 공격 종료 타이밍 처리
     }
 
-    public override void Move()
+    protected override void Move()
     {
         if (!method.isMoving)
         {

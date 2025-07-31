@@ -59,18 +59,20 @@ public class GeneralAnimator : MonoBehaviour
 
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                Debug.Log($"공격 끝나고 isAction");
                 isAction = false;
             }
 
             currentAnimationHash = SetAnimationHash(hitAction[SetDirection()]);
-
+            
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                Debug.Log($"피격 끝나고 isAction");
                 isAction = false;
+                PlayIdle();
             }
+            
         }
+        
+        
     }
 
     IEnumerator dirCoroutine()
@@ -145,7 +147,7 @@ public class GeneralAnimator : MonoBehaviour
         isAction = true;
 
         spriteLibrary.spriteLibraryAsset = spriteDict["Hit"];
-        animator.Play(hitAction[Direction.Left]);
+        animator.Play(hitAction[SetDirection()]);
     }
     public void PlayDie()
     {

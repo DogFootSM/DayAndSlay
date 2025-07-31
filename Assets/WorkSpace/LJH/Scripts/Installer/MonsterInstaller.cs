@@ -5,18 +5,22 @@ using Zenject;
 
 public class MonsterInstaller : MonoInstaller
 {
-    [SerializeField] List<GameObject> monsters;
-    [SerializeField] DungeonPathfinder dfs;
+    [SerializeField] private List<GameObject> monsters;
+    [SerializeField] private List<GameObject> bossMonsters;
+    [SerializeField] private DungeonPathfinder dfs;
     //[SerializeField] PlayerController player;
-    [SerializeField] TestPlayer player;
-    [SerializeField] DungeonManager dungeonManager;
-    [SerializeField] ItemStorage itemStorage;
+    [SerializeField] private TestPlayer player;
+    [SerializeField] private DungeonManager dungeonManager;
+    [SerializeField] private ItemStorage itemStorage;
 
     public override void InstallBindings()
     {
         Container
-            .Bind<List<GameObject>>()
+            .Bind<List<GameObject>>().WithId("MONSTER")
             .FromInstance(monsters);
+        Container
+            .Bind<List<GameObject>>().WithId("BOSS")
+            .FromInstance(bossMonsters);
 
 
         Container

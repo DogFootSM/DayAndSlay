@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 2069853359, guid: 46a89591b4f54a346a414f5621c0a50d, type: 3}
+  m_Sprite: {fileID: 55446074, guid: 46a89591b4f54a346a414f5621c0a50d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 015d570c53533c54e826c4f197679946, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 569835f0e7ce0f84a965c31dede624b4, type: 3}
 --- !u!114 &7292523102532748534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 2.4377812e-11
   m_labelHash: 3.991422e-13
-  m_SpriteKey: 0
+  m_SpriteKey: 5.3085376e-29
 --- !u!95 &5436609772685449269
 Animator:
   serializedVersion: 5
@@ -271,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   Name: 
+  MaxHp: 0
   Hp: 0
   Attack: 0
   AttackRange: 0
@@ -292,6 +293,7 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: b3a5b81b43bc7bc4dbd17dd484121520, type: 2}
   player: {fileID: 0}
   monsterState: 0
+  isAttacking: 0
 --- !u!1 &3501327773029655152
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,5 +373,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
-  path: []
   mapGrid: {fileID: 0}
+  path: []

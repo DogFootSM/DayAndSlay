@@ -1,200 +1,154 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using UnityEditor;
 using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(GeneralMonsterMethod))]
 [RequireComponent(typeof(GeneralAnimator))]
-[RequireComponent (typeof(MonsterModel))]
+[RequireComponent(typeof(MonsterModel))]
 public class GeneralMonsterAI : MonoBehaviour
 {
-    [SerializeField]
-    public MonsterData monsterData;
-    
-    //테스트씬 테스트용
-    [SerializeField]
-    protected GameObject player;
+    [SerializeField] protected MonsterData monsterData;
+    [SerializeField] protected TestPlayer player;
 
     protected BehaviourTree tree;
-
-    protected BTNode die;
-    protected BTNode attack;
-    protected BTNode idle;
-    protected BTNode chase;
-
-    protected BTNode dieCheck;
-    protected BTNode attackCheck;
-    protected BTNode chaseCheck;
-
-    protected BTNode selector;
-    protected BTNode dieSequence;
-    protected BTNode attackSequence;
-    protected BTNode chaseSequence;
-
-    protected MonsterStateMachine stateMachine;
     protected MonsterModel model;
     protected GeneralMonsterMethod method;
+    protected GeneralAnimator animator;
+
+    protected MonsterStateMachine stateMachine;
 
     public M_State monsterState;
+    public bool isAttacking = false;
 
-
-    private void Start()
+    protected virtual void Awake()
     {
-        Init();
-        NodeInit();
-        ExternalInit();
+        model = GetComponent<MonsterModel>();
+        method = GetComponent<GeneralMonsterMethod>();
+        animator = GetComponent<GeneralAnimator>();
     }
 
-    private void Update()
+    protected virtual void Start()
+    {
+        player = GameObject.FindWithTag("Player")?.GetComponent<TestPlayer>();
+        tree = new BehaviourTree(BuildRoot());
+        stateMachine = new MonsterStateMachine(animator);
+
+        method.MonsterDataInit(monsterData);
+    }
+
+    protected virtual void Update()
     {
         tree.Tick();
 
-        /// <summary>
-        /// 테스트용 : 몬스터 죽이기 코드
-        /// </summary>
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
-            //    model.Hp = 0;
-            Hit();
-    }
-
-    public virtual void Hit()
-    {
-        //Todo : 히트 만들어줘야함
-        method.HitMethod();
-        stateMachine.ChangeState(new MonsterHitState());
-    }
-    public virtual void Die()
-    {
-        Debug.Log("몬스터가 사망했습니다");
-        method.DieMethod();
-        stateMachine.ChangeState(new MonsterDieState());
-    }
-
-    public virtual void Idle()
-    {
-        if (monsterState == M_State.IDLE)
         {
-            return;
+            Hit(1); // 테스트용
         }
+#endif
+    }
+
+    protected virtual BTNode BuildRoot()
+    {
+        return new Selector(new List<BTNode>
+        {
+            new Sequence(BuildDieSequence()),
+            new Sequence(BuildAttackSequence()),
+            new Sequence(BuildChaseSequence()),
+            new Sequence(BuildIdleSequence())
+        });
+    }
+
+    protected virtual List<BTNode> BuildDieSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsDieNode(() => model.Hp),
+            new ActionNode(Die)
+        };
+    }
+
+    protected virtual List<BTNode> BuildAttackSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+            new ActionNode(Attack)
+        };
+    }
+
+    protected virtual List<BTNode> BuildChaseSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange),
+            new ActionNode(Move)
+        };
+    }
+
+    protected virtual List<BTNode> BuildIdleSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, () => !isAttacking),
+            new ActionNode(Idle)
+        };
+    }
+
+    // ========== 상태 메서드 ==========
+    protected virtual void Idle()
+    {
+        if (monsterState == M_State.IDLE) return;
 
         stateMachine.ChangeState(new MonsterIdleState());
         monsterState = M_State.IDLE;
     }
 
-    public virtual void Attack()
+    protected virtual void Move()
     {
-        if (monsterState == M_State.ATTACK)
-        {
-            return;
-        }
+        if (monsterState == M_State.MOVE || method.isMoving) return;
 
-        monsterState = M_State.ATTACK;
+        stateMachine.ChangeState(new MonsterMoveState());
+        method.MoveMethod();
+        monsterState = M_State.MOVE;
+    }
+
+    protected virtual void Attack()
+    {
+        if (monsterState == M_State.ATTACK) return;
+
         stateMachine.ChangeState(new MonsterAttackState());
         method.StopMoveCo();
         method.isAttacking = true;
+        isAttacking = true;
+        monsterState = M_State.ATTACK;
 
-        StartCoroutine(AttackEndDelay()); // 공격 종료 타이밍 처리
+        StartCoroutine(AttackEndDelay());
     }
 
-    public virtual void Move()
+    protected virtual void Die()
     {
-        if (!method.isMoving)
-        {
-            stateMachine.ChangeState(new MonsterMoveState());
-            monsterState = M_State.MOVE;
-            method.MoveMethod();
-        }
+        Debug.Log($"{name} → Die");
+        method.DieMethod();
+        stateMachine.ChangeState(new MonsterDieState());
     }
 
-    protected List<BTNode> RootSelector()
+    public virtual void Hit(int damage)
     {
-        List<BTNode> nodes = new List<BTNode>();
-        //Die를 맨 앞에 놔야함
-        nodes.Add(dieSequence);
-        nodes.Add(attackSequence);
-        nodes.Add(chaseSequence);
-        nodes.Add(idle);
-
-        return nodes;
+        method.HitMethod(damage);
+        stateMachine.ChangeState(new MonsterHitState());
     }
 
-    protected List<BTNode> DieSequence()
+    protected IEnumerator AttackEndDelay()
     {
-        //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
-        List<BTNode> nodes = new List<BTNode>();
-        nodes.Add(dieCheck);
-        nodes.Add(die);
+        yield return new WaitForSeconds(0.5f); // 애니메이션 길이
 
-        return nodes;
-    }
-
-    protected List<BTNode> ChaseSequence()
-    {
-        //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
-        List<BTNode> nodes = new List<BTNode>();
-        nodes.Add(chaseCheck);
-        nodes.Add(chase);
-
-        return nodes;
-    }
-
-    protected List<BTNode> AttackSequence()
-    {
-        //Todo : 현재는 예시용으로 넣은 것 추후 수정 필요
-        List<BTNode> nodes = new List<BTNode>();
-        nodes.Add(attackCheck);
-        nodes.Add(attack);
-        //nodes.Add(new WaitNode(() => !method.isAttacking));
-        
-        return nodes;
-    }
-
-    public IEnumerator AttackEndDelay()
-    {
-        //임시로 시간 지정
-        float animeLength = 0.5f; 
-        yield return new WaitForSeconds(animeLength);
-
+        isAttacking = false;
         method.isAttacking = false;
         monsterState = M_State.IDLE;
-
     }
 
-
-    void NodeInit()
-    {
-        die = new ActionNode(this.Die);
-        attack = new ActionNode(this.Attack);
-        idle = new ActionNode(this.Idle);
-        chase = new ActionNode(this.Move);
-
-        dieCheck = new IsDieNode(() => model.Hp);
-        attackCheck = new IsPreparedAttackNode(gameObject.transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown);
-        chaseCheck = new IsPreparedChaseNode(gameObject.transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange);
-
-
-        //예시 용
-        attackSequence = new Sequence(AttackSequence());
-        chaseSequence = new Sequence(ChaseSequence());
-        dieSequence = new Sequence(DieSequence());
-
-        selector = new Selector(RootSelector());
-        tree = new BehaviourTree(selector);
-    }
-
-    void ExternalInit()
-    {
-        stateMachine = new MonsterStateMachine(GetComponent<GeneralAnimator>());
-        method = GetComponent<GeneralMonsterMethod>();
-        method.MonsterDataInit(monsterData);
-    }
-
-    void Init()
-    {
-        player = GameObject.FindWithTag("Player");
-        model = GetComponent<MonsterModel>();
-    }
-
+    public MonsterData GetMonsterData() => monsterData;
+    public MonsterModel GetMonsterModel() => model;
 }

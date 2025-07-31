@@ -7,7 +7,8 @@ using Zenject;
 public class MonsterSpawner : MonoBehaviour
 {
     [Inject] protected DiContainer container;
-    [Inject] protected List<GameObject> monsters;
+    [Inject(Id = "MONSTER")] protected List<GameObject> monsters;
+    [Inject(Id = "BOSS")] protected List<GameObject> bossMonsters;
 
     [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
     [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
@@ -25,8 +26,13 @@ public class MonsterSpawner : MonoBehaviour
 
     private Dictionary<Direction, int> xPos = new Dictionary<Direction, int>();
     private Dictionary<Direction, int> yPos = new Dictionary<Direction, int>();
-
-
+    
+    private Vector3Int prevPlayerCellPos;
+    
+    private bool IsBossRoom()
+    {
+        return grid.name == "Grid 5";
+    }
 
     private void Start()
     {
@@ -44,7 +50,14 @@ public class MonsterSpawner : MonoBehaviour
 
     private void Update()
     {
-        MonsterActiver();
+        if (player == null) return;
+        
+        Vector3Int currentCell = grid.WorldToCell(player.transform.position);
+        if (currentCell != prevPlayerCellPos)
+        {
+            prevPlayerCellPos = currentCell;
+            MonsterActiver(); // 위치 바뀌었을 때만 호출
+        }
         
     }
 
@@ -60,6 +73,9 @@ public class MonsterSpawner : MonoBehaviour
     int checkNum;
     virtual public void MonsterSpawnPosSet()
     {
+        if (IsBossRoom()) return;
+
+        Debug.Log("몬스터스폰포즈셋");
         foreach (GameObject spawner in spawnerList)
         {
             checkNum = 0;
@@ -86,15 +102,27 @@ public class MonsterSpawner : MonoBehaviour
 
     virtual public void MonsterSpawn()
     {
-        for(int i = 0; i < spawnerList.Count; i++)
+        for (int i = 0; i < spawnerList.Count; i++)
         {
-            //젠젝트로 사용해야 하기에 컨테이너를 이용한 Instantiate 사용
-            monsterList.Add(container.InstantiatePrefab
-                (monsters[Random.Range(0, monsters.Count)], spawnerList[i].transform.position, Quaternion.identity, null));
+            GameObject prefabToSpawn;
 
-            //초기 생성시 플레이어가 없는 방에서는 몬스터 비활성화
-            MonsterActiver();
+            if (IsBossRoom())
+            {
+                prefabToSpawn = bossMonsters[Random.Range(0, bossMonsters.Count)];
+            }
+            else
+            {
+                prefabToSpawn = monsters[Random.Range(0, monsters.Count)];
+            }
+
+            GameObject monster = container.InstantiatePrefab(
+                prefabToSpawn, spawnerList[i].transform.position, Quaternion.identity, null);
+
+            monsterList.Add(monster);
         }
+        
+        MonsterActiver();
+
 
         
     }
@@ -142,16 +170,16 @@ public class MonsterSpawner : MonoBehaviour
 
     private void Init()
     {
-        //플레이어 참조용 테스트 코드
         player = GameObject.FindWithTag("Player");
         grid = GetComponentInParent<Grid>();
         localBounds = floor.cellBounds;
 
-        xPos[Direction.Right] = -mapSize;
-        xPos[Direction.Left] = mapSize;
-        yPos[Direction.Up] = mapSize;
+        xPos[Direction.Left] = -mapSize;
+        xPos[Direction.Right] = mapSize;
         yPos[Direction.Down] = -mapSize;
+        yPos[Direction.Up] = mapSize;
 
+        prevPlayerCellPos = grid.WorldToCell(player.transform.position); // 초기 위치 저장
     }
 
 
