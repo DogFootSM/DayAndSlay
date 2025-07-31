@@ -41,9 +41,9 @@ public class ItemParser
 
             Debug.Log($"[라인 {i}] 필드 수: {values.Length} / 내용: {line}");
 
-            if (values.Length < 18)
+            if (values.Length < 23)
             {
-                Debug.LogWarning($"라인 {i} 필드 부족: {values.Length}개 (필요: 18개)");
+                Debug.LogWarning($"라인 {i} 필드 부족: {values.Length}개 (필요: 23개)");
                 continue;
             }
 
@@ -67,8 +67,25 @@ public class ItemParser
                 item.Hp = int.Parse(values[13]);
                 item.Attack = int.Parse(values[14]);
                 item.Defence = int.Parse(values[15]);
-                item.SellPrice = int.Parse(values[16]);
-                item.ItemDescA = values[17];
+                item.Range = float.Parse(values[16]);
+                item.SellPrice = int.Parse(values[17]);
+                item.ItemDescA = values[18];
+                //장비 아이템일 경우에만 재료 영역 파싱
+                if (item.IsEquipment)
+                {
+                    item.ingredients_1 = int.Parse(values[19]);
+                    item.ingredients_2 = int.Parse(values[20]);
+                    item.ingredients_3 = int.Parse(values[21]);
+                    item.ingredients_4 = int.Parse(values[22]);
+                }
+
+                else
+                {
+                    item.ingredients_1 = 000000;
+                    item.ingredients_2 = 000000;
+                    item.ingredients_3 = 000000;
+                    item.ingredients_4 = 000000;
+                }
 
                 string assetPath = $"{assetFolder}/{item.Name}.asset";
                 Debug.Log($"ScriptableObject 생성 → {assetPath}");

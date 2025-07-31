@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class RatAi : GeneralMonsterAI
 {
-    public override void Idle()
+    protected override void Idle()
     {
         stateMachine.ChangeState(new MonsterIdleState());
     }
-    public override void Attack()
+    protected override void Attack()
     {
         stateMachine.ChangeState(new MonsterAttackState());
     }
 
-    public override void Move()
+    protected override void Move()
     {
         stateMachine.ChangeState(new MonsterMoveState());
     }

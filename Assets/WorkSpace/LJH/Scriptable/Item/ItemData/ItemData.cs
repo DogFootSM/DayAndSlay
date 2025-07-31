@@ -30,12 +30,18 @@ public class ItemData : ScriptableObject
     public int Hp;
     public int Attack;
     public int Defence;
+    public float Range;
 
     public int BuyPrice;
     public int SellPrice;
 
     public string ItemDescA;
     public string ItemDescB;
+    
+    public int ingredients_1;
+    public int ingredients_2;
+    public int ingredients_3;
+    public int ingredients_4;
 
     public List<ItemData> Ingrediants = new();
 

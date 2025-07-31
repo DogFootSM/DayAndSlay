@@ -63,19 +63,13 @@ public class GeneralAnimator : MonoBehaviour
             }
 
             currentAnimationHash = SetAnimationHash(hitAction[SetDirection()]);
-
-            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
-            {
-                isAction = false;
-            }
             
-            currentAnimationHash = SetAnimationHash(hitAction[SetDirection()]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
                 isAction = false;
-
                 PlayIdle();
             }
+            
         }
         
         
@@ -153,7 +147,7 @@ public class GeneralAnimator : MonoBehaviour
         isAction = true;
 
         spriteLibrary.spriteLibraryAsset = spriteDict["Hit"];
-        animator.Play(hitAction[Direction.Left]);
+        animator.Play(hitAction[SetDirection()]);
     }
     public void PlayDie()
     {

@@ -25,7 +25,7 @@ public class MonsterModel : MonoBehaviour
         }
         else
         {
-            monsterData = GetComponent<GeneralMonsterAI>().monsterData;
+            monsterData = GetComponent<GeneralMonsterAI>().GetMonsterData();
         }
 
         Id = monsterData.Id;
