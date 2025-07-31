@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RecipeBrowser : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class RecipeBrowser : MonoBehaviour
     [SerializeField] private GameObject recipeListParent;
     [SerializeField] private GameObject recipeListElementPrefab;
     [SerializeField] private RecipeObserver recipeObserver;
+    [SerializeField] private TMP_InputField recipeSearchInputField;
+    [SerializeField] private Button searchButton;
+    [SerializeField] private Button deleteButton;
     
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
     private List<ItemData> recipeList => itemDatabase.ItemDatabase.items;
@@ -51,7 +55,29 @@ public class RecipeBrowser : MonoBehaviour
     {
         mainCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryOption(x));
         subCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryRecipeList(x));
+        deleteButton.onClick.AddListener(() => recipeSearchInputField.text = string.Empty);
+        searchButton.onClick.AddListener(RecipeSearch);
         
+        InitRecipeList();
+    }
+ 
+    private void OnDisable()
+    {   
+        mainCategoryDropdown.value = 0;
+        recipeSearchInputField.text = string.Empty;
+    }
+
+    private void ChangedSubCategoryRecipeList(int value)
+    {
+        subCategoryValue = value;
+        recipeObserver.ChangeSubCategory(subCategoryValue);
+    }
+    
+    /// <summary>
+    /// 레시피 리스트 초기화
+    /// </summary>
+    private void InitRecipeList()
+    {
         for (int i = 0; i < recipeList.Count; i++)
         {
             if (!searchRecipeMap.ContainsKey(recipeList[i].Parts))
@@ -66,15 +92,18 @@ public class RecipeBrowser : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {   
-        mainCategoryDropdown.value = 0;
-    }
-
-    private void ChangedSubCategoryRecipeList(int value)
+    /// <summary>
+    /// 아이템 이름 검색
+    /// </summary>
+    private void RecipeSearch()
     {
-        subCategoryValue = value;
-        recipeObserver.ChangeSubCategory(subCategoryValue);
+        if (recipeSearchInputField.text == string.Empty)
+        {
+            //검색어 입력 안내 토스트 메시지
+            return;
+        }
+        
+        recipeObserver.SearchItemName(recipeSearchInputField.text);
     }
     
     /// <summary>

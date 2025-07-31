@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class RecipeElement : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class RecipeElement : MonoBehaviour
     private Parts curParts;
     private WeaponType weaponType;
     private SubWeaponType subWeaponType;
-
+    private string curItemName;
+    
     private void Awake()
     {
         layoutElement = GetComponent<LayoutElement>();
@@ -35,12 +37,14 @@ public class RecipeElement : MonoBehaviour
     {
         RecipeObserver.OnChangedMainCategory += UpdateVisibilityByMainCategory;
         RecipeObserver.OnChangedSubCategory += UpdateVisibilityBySubCategory;
+        RecipeObserver.OnSearchItemName += UpdateVisibilityBySearch;
     }
 
     private void OnDisable()
     {
         RecipeObserver.OnChangedMainCategory -= UpdateVisibilityByMainCategory;
         RecipeObserver.OnChangedSubCategory -= UpdateVisibilityBySubCategory;
+        RecipeObserver.OnSearchItemName -= UpdateVisibilityBySearch;
         
         //레시피 창 종료 시 초기화 작업 진행
         transform.localScale = Vector3.one;
@@ -58,6 +62,7 @@ public class RecipeElement : MonoBehaviour
         curParts = itemData.Parts;
         weaponType = itemData.WeaponType;
         subWeaponType = itemData.SubWeaponType;
+        curItemName = itemData.Name;
     }
 
     /// <summary>
@@ -97,7 +102,7 @@ public class RecipeElement : MonoBehaviour
     private void UpdateVisibilityBySubCategory(int value)
     {
         //대분류가 주무기 상태
-        if (RecipeObserver.mainCategory == 1)
+        if (RecipeObserver.MainCategory == 1)
         {
             //현재 파츠가 웨폰
             if (curParts == Parts.WEAPON)
@@ -115,7 +120,7 @@ public class RecipeElement : MonoBehaviour
             }
         }
         //대분류가 보조무기 상태
-        else if (RecipeObserver.mainCategory == 2)
+        else if (RecipeObserver.MainCategory == 2)
         {
             //파츠가 보조 무기
             if (curParts == Parts.SUBWEAPON)
@@ -133,7 +138,7 @@ public class RecipeElement : MonoBehaviour
             }
         }
         //대분류가 방어구인 상태
-        else if (RecipeObserver.mainCategory == 3)
+        else if (RecipeObserver.MainCategory == 3)
         {
             //파츠가 방어 아이템 옵션 중 속함
             if (armorTypeOptions.Contains(curParts))
@@ -146,15 +151,49 @@ public class RecipeElement : MonoBehaviour
                 else
                 { 
                     //파츠 타입을 정수로 변환 후 Armor타입의 시작 값에 맞춰 -2를 뺀 값과 비교
-                    transform.localScale = (int)(curParts - 2) == value - 1 ? Vector3.one : Vector3.zero;
-                    layoutElement.ignoreLayout = (int)(curParts - 2) != value - 1;
+                    transform.localScale = (ArmorType)(curParts - 2) == (ArmorType)value - 1 ? Vector3.one : Vector3.zero;
+                    layoutElement.ignoreLayout = (ArmorType)(curParts - 2) != (ArmorType)value - 1;
                 }
             } 
         }
-        else if (RecipeObserver.mainCategory == 4)
+        else if (RecipeObserver.MainCategory == 4)
         {
             //TODO:악세 타입
-        }
-        
+        } 
     }
+
+    /// <summary>
+    /// 입력한 검색어에 대한 리스트 탐색 후 필터링
+    /// </summary>
+    /// <param name="itemName"></param>
+    private void UpdateVisibilityBySearch(string itemName)
+    {
+        if (!curItemName.Contains(itemName))
+        {
+            transform.localScale = Vector3.zero;
+            layoutElement.ignoreLayout = true;
+        }
+        else
+        {
+            if (RecipeObserver.MainCategory == 0)
+            {
+                transform.localScale = Vector3.one;
+                layoutElement.ignoreLayout = false;
+            }
+            else
+            {
+                if (!RecipeObserver.MainCategoryType.Contains(curParts))
+                {
+                    if (!RecipeObserver.SubCategoryType.Contains((ArmorType)curParts - 2)
+                        && !RecipeObserver.SubCategoryType.Contains(weaponType)
+                        && !RecipeObserver.SubCategoryType.Contains(subWeaponType))
+                    {
+                        transform.localScale = Vector3.zero;
+                        layoutElement.ignoreLayout = true;
+                    } 
+                }
+            }
+        } 
+    }
+    
 }
