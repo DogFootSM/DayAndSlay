@@ -65,7 +65,12 @@ public class RecipeBrowser : MonoBehaviour
             CreateRecipes(recipeList[i]);
         }
     }
- 
+
+    private void OnDisable()
+    {   
+        mainCategoryDropdown.value = 0;
+    }
+
     private void ChangedSubCategoryRecipeList(int value)
     {
         subCategoryValue = value;
@@ -79,7 +84,6 @@ public class RecipeBrowser : MonoBehaviour
     private void ChangedSubCategoryOption(int value)
     {
         subCategoryDropdown.ClearOptions();
-        
         switch (value)
         {
             case 0:

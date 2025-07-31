@@ -41,6 +41,10 @@ public class RecipeElement : MonoBehaviour
     {
         RecipeObserver.OnChangedMainCategory -= UpdateVisibilityByMainCategory;
         RecipeObserver.OnChangedSubCategory -= UpdateVisibilityBySubCategory;
+        
+        //레시피 창 종료 시 초기화 작업 진행
+        transform.localScale = Vector3.one;
+        layoutElement.ignoreLayout = false;
     }
 
     /// <summary>
@@ -62,15 +66,6 @@ public class RecipeElement : MonoBehaviour
     /// <param name="selectedCategory"></param>
     private void UpdateVisibilityByMainCategory(int selectedCategory)
     {
-        //메인 카테고리
-        // 0: 전체, 1: 주무기 , 2: 보조무기, 3: 방어구, 4: 악세
-        //서브 카테고리
-        // 0: 전체, 1.
-        // if (selectedCategory == 0)
-        // {
-        //     gameObject.SetActive(true);
-        //     return;
-        // } 
         switch (selectedCategory)
         {
             case 0:
