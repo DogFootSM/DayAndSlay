@@ -16,6 +16,8 @@ public class RecipeBrowser : MonoBehaviour
     [SerializeField] private Button searchButton;
     [SerializeField] private Button deleteButton;
     [SerializeField] private Animator recipeToastAnimator;
+    [SerializeField] private Button refreshButton;
+    
     private static GameObject mismatchText;
     
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
@@ -59,8 +61,9 @@ public class RecipeBrowser : MonoBehaviour
         subCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryRecipeList(x));
         deleteButton.onClick.AddListener(() => recipeSearchInputField.text = string.Empty);
         searchButton.onClick.AddListener(RecipeSearch);
+        refreshButton.onClick.AddListener(RefreshRecipeList);
         recipeInputToastHash = Animator.StringToHash("ShowToast");
-        mismatchText = transform.GetChild(2).GetChild(4).GetChild(0).GetChild(2).gameObject;
+        mismatchText = transform.GetChild(2).GetChild(5).GetChild(0).GetChild(2).gameObject;
         
         InitRecipeList();
     }
@@ -141,6 +144,22 @@ public class RecipeBrowser : MonoBehaviour
         subCategoryDropdown.RefreshShownValue();
     }
 
+    /// <summary>
+    /// 레시피 리스트 새로고침
+    /// </summary>
+    private void RefreshRecipeList()
+    {
+        //현재 메인 카테고리가 '전체' 인 상태에서 새로고침
+        if (mainCategoryValue == 0)
+        {
+            recipeObserver.ChangeMainCategory(mainCategoryValue);    
+        }
+        
+        //메인 카테고리가 그 외인 상태일 경우
+        mainCategoryDropdown.value = 0;
+        mismatchText.gameObject.SetActive(false);
+    }
+    
     /// <summary>
     /// 초기 전체 아이템 레시피 리스트 생성
     /// </summary>
