@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 105, y: -50}
-  m_SizeDelta: {x: 300, y: 25}
+  m_SizeDelta: {x: 280, y: 25}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4891545981496561365
 CanvasRenderer:
@@ -66,9 +66,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uACE0\uBE14\uB9B0\uB4E4\uC774 \uC0AC\uC6A9\uD55C \uBB34\uAE30\uB2E4\uACE0\uBE14\uB9B0\uB4E4\uC774
-    \uC0AC\uC6A9\uD55C \uBB34\uAE30\uB2E4\uACE0\uBE14\uB9B0\uB4E4\uC774 \uC0AC\uC6A9\uD55C
-    \uBB34\uAE30\uB2E4\uACE0\uBE14\uB9B0\uB4E4\uC774 \uC0AC\uC6A9\uD55C \uBB34\uAE30\uB2E4"
+  m_text: "\uC2E0\uBE44\uD55C \uD798\uC774 \uD750\uB974\uB294 \uC9C0\uD321\uC774.
+    \uAE30\uBCF8\uC801\uC778 \uC8FC\uBB38\uC5D0 \uC801\uD569\uD558\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f1eee1fc121c3764ea668f433182c108, type: 2}
   m_sharedMaterial: {fileID: 7745794698920754173, guid: f1eee1fc121c3764ea668f433182c108, type: 2}
@@ -240,6 +239,7 @@ GameObject:
   - component: {fileID: 8043429777847412582}
   - component: {fileID: 5954471059163146145}
   - component: {fileID: 5233646581299119030}
+  - component: {fileID: 2508046156914410844}
   m_Layer: 5
   m_Name: Recipe_Element_Prefab
   m_TagString: Untagged
@@ -303,6 +303,28 @@ MonoBehaviour:
   itemImage: {fileID: 7795078285886066997}
   itemName: {fileID: 6753890446086486398}
   itemDescription: {fileID: 3129167362796073007}
+  recipeAnimator: {fileID: 2508046156914410844}
+--- !u!95 &2508046156914410844
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7619565992735581433}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a51b3f0307f4b7b4187301c7903ceab1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7748534877208699254
 GameObject:
   m_ObjectHideFlags: 0

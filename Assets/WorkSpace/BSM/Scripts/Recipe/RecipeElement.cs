@@ -12,7 +12,8 @@ public class RecipeElement : MonoBehaviour
     [SerializeField] private Image itemImage;
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private TextMeshProUGUI itemDescription;
-
+    [SerializeField] private Animator recipeAnimator;
+    
     private ItemData itemData;
     private LayoutElement layoutElement;
     private Parts curParts;
@@ -23,13 +24,15 @@ public class RecipeElement : MonoBehaviour
     private bool isWeaponCheck;
     private bool isSubWeaponCheck;
     private bool isMainCategoryCheck;
-
+    private int expandAniHash;
+    
     private RectTransform rect;
     
     private void Awake()
     {
         layoutElement = GetComponent<LayoutElement>(); 
         rect = GetComponent<RectTransform>();
+        expandAniHash = Animator.StringToHash("isExpand");
     }
 
     private void OnEnable()
@@ -157,17 +160,15 @@ public class RecipeElement : MonoBehaviour
     /// </summary>
     public void PanelExpandHeight()
     {
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, 150f);
-        layoutElement.preferredHeight = 150f;
+        recipeAnimator.SetBool(expandAniHash, true);
     }
-
+    
     /// <summary>
     /// 레시피 영역 축소
     /// </summary>
     public void PanelShrinkHeight()
     {
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, 100f);
-        layoutElement.preferredHeight = 100f;
+        recipeAnimator.SetBool(expandAniHash, false);
     }
     
 }

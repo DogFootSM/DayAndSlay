@@ -199,21 +199,23 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         { 
-            //이전에 활성화 된 요소가 있다면 축소
-            if (recipeElement != null)
-            {                    
-                Debug.Log("클릭");
-                recipeElement.PanelShrinkHeight();
-                //recipeDetail.ReturnRecipeMaterialPool();
-            } 
-            
             recipeResults.Clear();
             recipeRaycaster.Raycast(eventData, recipeResults);
             
             foreach (var data in recipeResults)
             {
-                if (data.gameObject.transform.parent.TryGetComponent<RecipeElement>(out recipeElement))
-                { 
+                RecipeElement compare = data.gameObject.GetComponentInParent<RecipeElement>();
+                
+                if (compare != null && !compare.Equals(recipeElement))
+                {
+                    //이전에 활성화 된 요소가 있다면 축소
+                    if (recipeElement != null)
+                    {
+                        recipeElement.PanelShrinkHeight();
+                    }
+                    
+                    recipeElement = compare;
+                        
                     recipeDetail.SetActiveDetailPanel(true);
                     recipeDetail.UpdateRecipeDetail(recipeElement.GetItemData());
                     recipeElement.PanelExpandHeight();
