@@ -10,73 +10,69 @@ public class RecipeObserver : MonoBehaviour
     public static event Action<string> OnSearchItemName; 
     
     public static int MainCategory;
-    
-    public static List<Parts> MainCategoryType = new List<Parts>();
-    public static List<Enum> SubCategoryType = new List<Enum>();
+
+    public static HashSet<Parts> MainCategoryTypeSet = new HashSet<Parts>();
+    public static HashSet<Enum> SubCategoryTypeSet = new HashSet<Enum>();
     
     /// <summary>
     /// 메인 카테고리 변경 시 각 요소들에 전달
     /// </summary>
-    /// <param name="mainCategory"></param>
-    public void ChangeMainCategory(int mainCategory)
+    /// <param name="mainCategoryValue"></param>
+    public void ChangeMainCategory(int mainCategoryValue)
     {
-        MainCategoryType.Clear();
-        MainCategory = mainCategory;
+        MainCategory = mainCategoryValue;
+        MainCategoryTypeSet.Clear();
         
-        if (mainCategory == 1)
-        { 
-            MainCategoryType.Add(Parts.WEAPON);
+        if (mainCategoryValue == 1)
+        {
+            MainCategoryTypeSet.Add(Parts.WEAPON);
         }
-        else if (mainCategory == 2)
+        else if (mainCategoryValue == 2)
         { 
-            MainCategoryType.Add(Parts.SUBWEAPON);
+            MainCategoryTypeSet.Add(Parts.SUBWEAPON);
         }
-        else if (mainCategory == 3)
+        else if (mainCategoryValue == 3)
         { 
-            MainCategoryType.Add(Parts.SUBWEAPON);
-            MainCategoryType.Add(Parts.ARM);
-            MainCategoryType.Add(Parts.ARMOR);
-            MainCategoryType.Add(Parts.PANTS);
-            MainCategoryType.Add(Parts.SHOES);
+            MainCategoryTypeSet.Add(Parts.HELMET);
+            MainCategoryTypeSet.Add(Parts.ARM);
+            MainCategoryTypeSet.Add(Parts.ARMOR);
+            MainCategoryTypeSet.Add(Parts.PANTS);
+            MainCategoryTypeSet.Add(Parts.SHOES);
         }
-        else if (mainCategory == 4)
+        else if (mainCategoryValue == 4)
         {
             //TODO: 악세
         } 
         
-        OnChangedMainCategory?.Invoke(mainCategory);
+        OnChangedMainCategory?.Invoke(mainCategoryValue);
     }
 
     /// <summary>
     /// 서브 카테고리 변경 시 각 요소들에 전달
     /// </summary>
-    /// <param name="subCategory"></param>
-    public void ChangeSubCategory(int subCategory)
+    /// <param name="subCategoryValue"></param>
+    public void ChangeSubCategory(int subCategoryValue)
     {
-        SubCategoryType.Clear();
+        SubCategoryTypeSet.Clear();
         
         if (MainCategory == 1)
         {
-            SubCategoryType.Add((WeaponType)subCategory -1); 
+            SubCategoryTypeSet.Add((WeaponType)subCategoryValue - 1);
         }
         else if (MainCategory == 2)
         {
-            SubCategoryType.Add((SubWeaponType)subCategory - 1);
+            SubCategoryTypeSet.Add((SubWeaponType)subCategoryValue - 1);
         }
         else if (MainCategory == 3)
         {
-            SubCategoryType.Add(ArmorType.HELMET);
-            SubCategoryType.Add(ArmorType.ARMOR);
-            SubCategoryType.Add(ArmorType.ARM);
-            SubCategoryType.Add(ArmorType.PANTS);
-            SubCategoryType.Add(ArmorType.SHOES);
+            SubCategoryTypeSet.Add((ArmorType)subCategoryValue -1);
         }
         else if (MainCategory == 4)
         {
             //TODO: 악세
         }
         
-        OnChangedSubCategory?.Invoke(subCategory);    
+        OnChangedSubCategory?.Invoke(subCategoryValue);    
     }
     
     /// <summary>

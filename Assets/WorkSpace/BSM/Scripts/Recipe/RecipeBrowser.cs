@@ -53,7 +53,7 @@ public class RecipeBrowser : MonoBehaviour
     
     private void Awake()
     {
-        mainCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryOption(x));
+        mainCategoryDropdown.onValueChanged.AddListener(x => ChangedMainCategoryOption(x));
         subCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryRecipeList(x));
         deleteButton.onClick.AddListener(() => recipeSearchInputField.text = string.Empty);
         searchButton.onClick.AddListener(RecipeSearch);
@@ -110,7 +110,7 @@ public class RecipeBrowser : MonoBehaviour
     /// 대분류 변경에 따른 중분류 카테고리 변경
     /// </summary>
     /// <param name="value"></param>
-    private void ChangedSubCategoryOption(int value)
+    private void ChangedMainCategoryOption(int value)
     {
         subCategoryDropdown.ClearOptions();
         switch (value)

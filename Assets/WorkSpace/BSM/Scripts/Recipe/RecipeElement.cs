@@ -13,20 +13,14 @@ public class RecipeElement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemDescription;
 
     private LayoutElement layoutElement;
-
-    private List<Parts> armorTypeOptions = new List<Parts>()
-    {
-        Parts.ARM,
-        Parts.ARMOR,
-        Parts.PANTS,
-        Parts.SHOES,
-        Parts.HELMET,
-    };
-
     private Parts curParts;
     private WeaponType weaponType;
     private SubWeaponType subWeaponType;
     private string curItemName;
+    private bool isArmorCheck;
+    private bool isWeaponCheck;
+    private bool isSubWeaponCheck;
+    private bool isMainCategoryCheck;
     
     private void Awake()
     {
@@ -71,28 +65,16 @@ public class RecipeElement : MonoBehaviour
     /// <param name="selectedCategory"></param>
     private void UpdateVisibilityByMainCategory(int selectedCategory)
     {
-        switch (selectedCategory)
+        if (selectedCategory == 0)
         {
-            case 0:
-                transform.localScale = Vector3.one;
-                layoutElement.ignoreLayout = false;
-                break;
-            case 1:
-                transform.localScale = curParts == Parts.WEAPON ? Vector3.one : Vector3.zero;
-                layoutElement.ignoreLayout = curParts != Parts.WEAPON;
-                break;
-            case 2:
-                transform.localScale = curParts == Parts.SUBWEAPON ? Vector3.one : Vector3.zero;
-                layoutElement.ignoreLayout = curParts != Parts.SUBWEAPON;
-                break;
-            case 3:
-                transform.localScale = armorTypeOptions.Contains(curParts) ? Vector3.one : Vector3.zero;
-                layoutElement.ignoreLayout = !armorTypeOptions.Contains(curParts);
-                break;
-            case 4:
-                //TODO: 악세서리 타입에 대해 정의 필요
-                break;
+            transform.localScale = Vector3.one;
+            layoutElement.ignoreLayout = false;
         }
+        else
+        {
+            isMainCategoryCheck = RecipeObserver.MainCategoryTypeSet.Contains(curParts);
+            ApplyVisibilityResult(isMainCategoryCheck);
+        } 
     }
 
     /// <summary>
@@ -100,100 +82,56 @@ public class RecipeElement : MonoBehaviour
     /// </summary>
     /// <param name="value"></param>
     private void UpdateVisibilityBySubCategory(int value)
-    {
-        //대분류가 주무기 상태
-        if (RecipeObserver.MainCategory == 1)
+    { 
+        if (value == 0)
         {
-            //현재 파츠가 웨폰
-            if (curParts == Parts.WEAPON)
-            {
-                if (value == 0)
-                {
-                    transform.localScale = Vector3.one;
-                    layoutElement.ignoreLayout = false;
-                }
-                else
-                {
-                    transform.localScale = weaponType == (WeaponType)value - 1 ? Vector3.one : Vector3.zero;
-                    layoutElement.ignoreLayout = weaponType != (WeaponType)value - 1;
-                }
-            }
+            bool isCheck = RecipeObserver.MainCategoryTypeSet.Contains(curParts);
+            ApplyVisibilityResult(isCheck);
         }
-        //대분류가 보조무기 상태
-        else if (RecipeObserver.MainCategory == 2)
+        else
         {
-            //파츠가 보조 무기
-            if (curParts == Parts.SUBWEAPON)
-            {
-                if (value == 0)
-                {
-                    transform.localScale = Vector3.one;
-                    layoutElement.ignoreLayout = false;
-                }
-                else
-                {
-                    transform.localScale = subWeaponType == (SubWeaponType)value - 1 ? Vector3.one : Vector3.zero;
-                    layoutElement.ignoreLayout = subWeaponType != (SubWeaponType)value - 1;
-                }
-            }
-        }
-        //대분류가 방어구인 상태
-        else if (RecipeObserver.MainCategory == 3)
-        {
-            //파츠가 방어 아이템 옵션 중 속함
-            if (armorTypeOptions.Contains(curParts))
-            {
-                if (value == 0)
-                {
-                    transform.localScale = Vector3.one;
-                    layoutElement.ignoreLayout = false;
-                }
-                else
-                { 
-                    //파츠 타입을 정수로 변환 후 Armor타입의 시작 값에 맞춰 -2를 뺀 값과 비교
-                    transform.localScale = (ArmorType)(curParts - 2) == (ArmorType)value - 1 ? Vector3.one : Vector3.zero;
-                    layoutElement.ignoreLayout = (ArmorType)(curParts - 2) != (ArmorType)value - 1;
-                }
-            } 
-        }
-        else if (RecipeObserver.MainCategory == 4)
-        {
-            //TODO:악세 타입
+            isArmorCheck = RecipeObserver.SubCategoryTypeSet.Contains((ArmorType)(curParts - 2));
+            isWeaponCheck = RecipeObserver.SubCategoryTypeSet.Contains(weaponType);
+            isSubWeaponCheck = RecipeObserver.SubCategoryTypeSet.Contains(subWeaponType);
+            
+            bool isCheck = isMainCategoryCheck && (isArmorCheck || isWeaponCheck || isSubWeaponCheck);
+            ApplyVisibilityResult(isCheck);
         } 
     }
-
+ 
     /// <summary>
     /// 입력한 검색어에 대한 리스트 탐색 후 필터링
     /// </summary>
     /// <param name="itemName"></param>
     private void UpdateVisibilityBySearch(string itemName)
     {
-        if (!curItemName.Contains(itemName))
+        bool isCheck = isMainCategoryCheck && (isArmorCheck || isWeaponCheck || isSubWeaponCheck);
+        bool searchNameCheck = curItemName.Contains(itemName);
+        
+        if (RecipeObserver.MainCategory == 0)
         {
-            transform.localScale = Vector3.zero;
-            layoutElement.ignoreLayout = true;
+            ApplyVisibilityResult(searchNameCheck);
         }
         else
         {
-            if (RecipeObserver.MainCategory == 0)
+            if (RecipeObserver.SubCategoryTypeSet.Count > 0)
             {
-                transform.localScale = Vector3.one;
-                layoutElement.ignoreLayout = false;
+                ApplyVisibilityResult(searchNameCheck && isCheck);
             }
             else
             {
-                if (!RecipeObserver.MainCategoryType.Contains(curParts))
-                {
-                    if (!RecipeObserver.SubCategoryType.Contains((ArmorType)curParts - 2)
-                        && !RecipeObserver.SubCategoryType.Contains(weaponType)
-                        && !RecipeObserver.SubCategoryType.Contains(subWeaponType))
-                    {
-                        transform.localScale = Vector3.zero;
-                        layoutElement.ignoreLayout = true;
-                    } 
-                }
-            }
+                ApplyVisibilityResult(searchNameCheck && isMainCategoryCheck);
+            } 
         } 
     }
     
+    /// <summary>
+    /// 결과에 따른 오브젝트 노출 여부 설정
+    /// </summary>
+    /// <param name="visibility"></param>
+    private void ApplyVisibilityResult(bool visibility)
+    {
+        transform.localScale = visibility ? Vector3.one : Vector3.zero;
+        layoutElement.ignoreLayout = !visibility;
+    }
 }
