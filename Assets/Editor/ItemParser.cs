@@ -77,6 +77,11 @@ public class ItemParser
                     item.ingredients_2 = int.Parse(values[20]);
                     item.ingredients_3 = int.Parse(values[21]);
                     item.ingredients_4 = int.Parse(values[22]);
+                    
+                    item.Ingrediants.Add(item.ingredients_1);
+                    item.Ingrediants.Add(item.ingredients_2);
+                    item.Ingrediants.Add(item.ingredients_3);
+                    item.Ingrediants.Add(item.ingredients_4);
                 }
 
                 else
