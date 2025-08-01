@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RecipeBrowser : MonoBehaviour
+public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TMP_Dropdown mainCategoryDropdown;
     [SerializeField] private TMP_Dropdown subCategoryDropdown;
@@ -17,9 +18,12 @@ public class RecipeBrowser : MonoBehaviour
     [SerializeField] private Button deleteButton;
     [SerializeField] private Animator recipeToastAnimator;
     [SerializeField] private Button refreshButton;
+    [SerializeField] private GraphicRaycaster recipeRaycaster;
+    [SerializeField] private RecipeDetail recipeDetail;
     
     private static GameObject mismatchText;
     
+    private List<RaycastResult> recipeResults = new List<RaycastResult>();
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
     private List<ItemData> recipeList => itemDatabase.ItemDatabase.items;
     
@@ -47,6 +51,8 @@ public class RecipeBrowser : MonoBehaviour
     {
         "전체", "망토", "팔찌", "미정이2", "미정이3"
     };
+    
+    private RecipeElement recipeElement;
     
     private int mainCategoryValue;
     private int subCategoryValue;
@@ -188,5 +194,32 @@ public class RecipeBrowser : MonoBehaviour
             mismatchText.gameObject.SetActive(false);
         }
     }
-    
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        { 
+            //이전에 활성화 된 요소가 있다면 축소
+            if (recipeElement != null)
+            {                    
+                Debug.Log("클릭");
+                recipeElement.PanelShrinkHeight();
+                //recipeDetail.ReturnRecipeMaterialPool();
+            } 
+            
+            recipeResults.Clear();
+            recipeRaycaster.Raycast(eventData, recipeResults);
+            
+            foreach (var data in recipeResults)
+            {
+                if (data.gameObject.transform.parent.TryGetComponent<RecipeElement>(out recipeElement))
+                { 
+                    recipeDetail.SetActiveDetailPanel(true);
+                    recipeDetail.UpdateRecipeDetail(recipeElement.GetItemData());
+                    recipeElement.PanelExpandHeight();
+                    return;
+                } 
+            } 
+        }
+    }
 }

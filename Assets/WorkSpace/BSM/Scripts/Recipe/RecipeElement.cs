@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class RecipeElement : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class RecipeElement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private TextMeshProUGUI itemDescription;
 
+    private ItemData itemData;
     private LayoutElement layoutElement;
     private Parts curParts;
     private WeaponType weaponType;
@@ -21,10 +23,13 @@ public class RecipeElement : MonoBehaviour
     private bool isWeaponCheck;
     private bool isSubWeaponCheck;
     private bool isMainCategoryCheck;
+
+    private RectTransform rect;
     
     private void Awake()
     {
-        layoutElement = GetComponent<LayoutElement>();
+        layoutElement = GetComponent<LayoutElement>(); 
+        rect = GetComponent<RectTransform>();
     }
 
     private void OnEnable()
@@ -57,6 +62,8 @@ public class RecipeElement : MonoBehaviour
         weaponType = itemData.WeaponType;
         subWeaponType = itemData.SubWeaponType;
         curItemName = itemData.Name;
+        
+        this.itemData = itemData;
     }
 
     /// <summary>
@@ -132,8 +139,35 @@ public class RecipeElement : MonoBehaviour
     private void ApplyVisibilityResult(bool visibility)
     {
         transform.localScale = visibility ? Vector3.one : Vector3.zero;
-        layoutElement.ignoreLayout = !visibility;
-        
+        layoutElement.ignoreLayout = !visibility; 
         RecipeBrowser.MisMatchCountCheck(!visibility ? 1 : -1);
     }
+    
+    /// <summary>
+    /// 아이템 데이터를 반환
+    /// </summary>
+    /// <returns></returns>
+    public ItemData GetItemData()
+    {
+        return this.itemData;
+    }
+
+    /// <summary>
+    /// 레시피 선택 시 영역 확대
+    /// </summary>
+    public void PanelExpandHeight()
+    {
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, 150f);
+        layoutElement.preferredHeight = 150f;
+    }
+
+    /// <summary>
+    /// 레시피 영역 축소
+    /// </summary>
+    public void PanelShrinkHeight()
+    {
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, 100f);
+        layoutElement.preferredHeight = 100f;
+    }
+    
 }
