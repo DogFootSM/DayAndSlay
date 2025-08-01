@@ -94,12 +94,12 @@ GameObject:
   - component: {fileID: 6768102555775733642}
   - component: {fileID: 4280622862996560033}
   - component: {fileID: 6521707523087042549}
+  - component: {fileID: 2100281336196742176}
   - component: {fileID: 2622700998350529938}
   - component: {fileID: 8218918077755205585}
+  - component: {fileID: 4894937483075603683}
   - component: {fileID: 2852571515173303574}
   - component: {fileID: 1584338468107993734}
-  - component: {fileID: 4894937483075603683}
-  - component: {fileID: 2100281336196742176}
   - component: {fileID: -337308179194136232}
   m_Layer: 0
   m_Name: Rat
@@ -226,6 +226,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2100281336196742176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269701800412192224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: a3b3925797c3d5d449a1e39046a93fa8, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
+  isAttacking: 0
 --- !u!114 &2622700998350529938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +281,27 @@ MonoBehaviour:
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
+--- !u!114 &4894937483075603683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269701800412192224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  MaxHp: 0
+  Hp: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0
 --- !u!61 &2852571515173303574
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -317,43 +354,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
---- !u!114 &4894937483075603683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269701800412192224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  MaxHp: 0
-  Hp: 0
-  Attack: 0
-  AttackRange: 0
-  ChaseRange: 0
-  MoveSpeed: 0
-  AttackCooldown: 0
---- !u!114 &2100281336196742176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269701800412192224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: a3b3925797c3d5d449a1e39046a93fa8, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
-  isAttacking: 0
 --- !u!50 &-337308179194136232
 Rigidbody2D:
   serializedVersion: 4
@@ -374,4 +374,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4

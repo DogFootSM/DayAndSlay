@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 1601204771588268310}
   - component: {fileID: 4425910556373969110}
   - component: {fileID: 5386918725613994773}
+  - component: {fileID: 1583439449573798401}
   - component: {fileID: 4879786823134290632}
   - component: {fileID: 6087783516721240178}
+  - component: {fileID: -4089047552206157527}
   - component: {fileID: 4542563170354638787}
   - component: {fileID: 1267680729230137572}
   - component: {fileID: 3646640323488330428}
-  - component: {fileID: -4089047552206157527}
-  - component: {fileID: 1583439449573798401}
   m_Layer: 0
   m_Name: Orc
   m_TagString: Untagged
@@ -145,6 +145,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1583439449573798401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206897382857518734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 70d4f973e3ca5704ba0a7db1f4cd0286, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
+  isAttacking: 0
 --- !u!114 &4879786823134290632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +200,27 @@ MonoBehaviour:
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
+--- !u!114 &-4089047552206157527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206897382857518734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  MaxHp: 0
+  Hp: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0
 --- !u!61 &4542563170354638787
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -256,44 +293,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &-4089047552206157527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2206897382857518734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  MaxHp: 0
-  Hp: 0
-  Attack: 0
-  AttackRange: 0
-  ChaseRange: 0
-  MoveSpeed: 0
-  AttackCooldown: 0
---- !u!114 &1583439449573798401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2206897382857518734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 70d4f973e3ca5704ba0a7db1f4cd0286, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
-  isAttacking: 0
+  m_Constraints: 4
 --- !u!1 &7981083056191550358
 GameObject:
   m_ObjectHideFlags: 0
