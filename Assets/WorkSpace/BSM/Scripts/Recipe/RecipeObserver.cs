@@ -10,7 +10,6 @@ public class RecipeObserver : MonoBehaviour
     public static event Action<string> OnSearchItemName; 
     
     public static int MainCategory;
-
     public static HashSet<Parts> MainCategoryTypeSet = new HashSet<Parts>();
     public static HashSet<Enum> SubCategoryTypeSet = new HashSet<Enum>();
     
@@ -82,5 +81,5 @@ public class RecipeObserver : MonoBehaviour
     public void SearchItemName(string name)
     {
         OnSearchItemName?.Invoke(name);
-    }
+    } 
 }

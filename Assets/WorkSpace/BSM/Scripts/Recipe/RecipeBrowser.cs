@@ -15,6 +15,8 @@ public class RecipeBrowser : MonoBehaviour
     [SerializeField] private TMP_InputField recipeSearchInputField;
     [SerializeField] private Button searchButton;
     [SerializeField] private Button deleteButton;
+    [SerializeField] private Animator recipeToastAnimator;
+    private static GameObject mismatchText;
     
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
     private List<ItemData> recipeList => itemDatabase.ItemDatabase.items;
@@ -44,12 +46,12 @@ public class RecipeBrowser : MonoBehaviour
         "전체", "망토", "팔찌", "미정이2", "미정이3"
     };
     
-    private Dictionary<Parts, List<ItemData>> searchRecipeMap = new Dictionary<Parts, List<ItemData>>();
-    private List<RecipeElement> recipeElements = new List<RecipeElement>();
-
     private int mainCategoryValue;
     private int subCategoryValue;
-    
+    private int recipeInputToastHash;
+
+    private static int RecipeCount;
+    private static int MisMatchCount;
     
     private void Awake()
     {
@@ -57,6 +59,8 @@ public class RecipeBrowser : MonoBehaviour
         subCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryRecipeList(x));
         deleteButton.onClick.AddListener(() => recipeSearchInputField.text = string.Empty);
         searchButton.onClick.AddListener(RecipeSearch);
+        recipeInputToastHash = Animator.StringToHash("ShowToast");
+        mismatchText = transform.GetChild(2).GetChild(4).GetChild(0).GetChild(2).gameObject;
         
         InitRecipeList();
     }
@@ -70,6 +74,7 @@ public class RecipeBrowser : MonoBehaviour
     private void ChangedSubCategoryRecipeList(int value)
     {
         subCategoryValue = value;
+        MisMatchCount = 0;
         recipeObserver.ChangeSubCategory(subCategoryValue);
     }
     
@@ -80,16 +85,11 @@ public class RecipeBrowser : MonoBehaviour
     {
         for (int i = 0; i < recipeList.Count; i++)
         {
-            if (!searchRecipeMap.ContainsKey(recipeList[i].Parts))
-            {
-                searchRecipeMap.Add(recipeList[i].Parts, new List<ItemData>());
-            }
-            
             if(!recipeList[i].IsEquipment) continue;
-            
-            searchRecipeMap[recipeList[i].Parts].Add(recipeList[i]);
             CreateRecipes(recipeList[i]);
         }
+        
+        RecipeCount = recipeListParent.transform.childCount;
     }
 
     /// <summary>
@@ -100,10 +100,13 @@ public class RecipeBrowser : MonoBehaviour
         if (recipeSearchInputField.text == string.Empty)
         {
             //검색어 입력 안내 토스트 메시지
+            recipeToastAnimator.SetTrigger(recipeInputToastHash);
             return;
         }
-        
+
+        MisMatchCount = 0;
         recipeObserver.SearchItemName(recipeSearchInputField.text);
+        recipeSearchInputField.text = string.Empty;
     }
     
     /// <summary>
@@ -133,6 +136,7 @@ public class RecipeBrowser : MonoBehaviour
         }
 
         mainCategoryValue = value;
+        MisMatchCount = 0;
         recipeObserver.ChangeMainCategory(mainCategoryValue);
         subCategoryDropdown.RefreshShownValue();
     }
@@ -146,7 +150,24 @@ public class RecipeBrowser : MonoBehaviour
         GameObject recipeListElement = Instantiate(recipeListElementPrefab, transform.position, Quaternion.identity, recipeListParent.transform);
         RecipeElement recipeElement = recipeListElement.GetComponent<RecipeElement>();
         recipeElement.SetElement(recipeData);
-        recipeElements.Add(recipeElement);
+    }
+
+    /// <summary>
+    /// 검색된 리스트 요소 개수 확인
+    /// </summary>
+    /// <param name="mismatch"></param>
+    public static void MisMatchCountCheck(int mismatch)
+    {
+        MisMatchCount += mismatch; 
+        
+        if (RecipeCount - MisMatchCount <= 0)
+        {
+            mismatchText.gameObject.SetActive(true);
+        }
+        else
+        {
+            mismatchText.gameObject.SetActive(false);
+        }
     }
     
 }

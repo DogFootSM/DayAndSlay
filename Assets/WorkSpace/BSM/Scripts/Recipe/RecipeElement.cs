@@ -122,7 +122,7 @@ public class RecipeElement : MonoBehaviour
             {
                 ApplyVisibilityResult(searchNameCheck && isMainCategoryCheck);
             } 
-        } 
+        }  
     }
     
     /// <summary>
@@ -133,5 +133,7 @@ public class RecipeElement : MonoBehaviour
     {
         transform.localScale = visibility ? Vector3.one : Vector3.zero;
         layoutElement.ignoreLayout = !visibility;
+        
+        RecipeBrowser.MisMatchCountCheck(!visibility ? 1 : -1);
     }
 }
