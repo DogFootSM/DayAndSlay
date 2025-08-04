@@ -8,7 +8,6 @@ public class Npc : MonoBehaviour
 {
     private Rigidbody2D rb;
     [Inject] PlayerContext playerContext;
-    [Inject] private ItemStorage itemManager;
     [Inject] private StoreManager storeManager;
     private PlayerController player;
 
@@ -20,7 +19,7 @@ public class Npc : MonoBehaviour
     [SerializeField] private Animator animator;
 
     public ItemData wantItem;
-    [SerializeField] private List<ItemData> wantItemList = new();
+    [SerializeField] private List<ItemData> wantItemList;
     [SerializeField] private PopUp talkPopUp;
     [SerializeField] private TargetSensorInNpc targetSensor;
     [SerializeField] private AstarPath astarPath;
@@ -34,6 +33,7 @@ public class Npc : MonoBehaviour
     private string currentAnim = "";
 
     [SerializeField] private bool isAngry;
+    private Coroutine blockCoroutine;
     public NpcStateMachine StateMachine { get; private set; } = new();
 
     /// <summary>
@@ -78,6 +78,76 @@ public class Npc : MonoBehaviour
         return grid != null && grid.name == "OutsideGrid";
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("온콜리전엔터 실행됨 + 플레이어 인식됨");
+            PauseMovement();
+
+            if (blockCoroutine == null)
+            {
+                blockCoroutine = StartCoroutine(BlockNPCCoroutine());
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Physics2D.GetIgnoreLayerCollision(15, 20))
+            {
+                StartCoroutine(ResumeNPCCoroutine(3f));
+            }
+
+            else
+            {
+                StartCoroutine(ResumeNPCCoroutine(0f));
+            }
+        }
+    }
+
+    private IEnumerator BlockNPCCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        Debug.Log("충돌 판정 무시로 변경");
+        Physics2D.IgnoreLayerCollision(20, 15, true);
+        blockCoroutine = null;
+
+        // 이동 재개
+        StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager, targetSensor));
+        
+    }
+
+    private IEnumerator ResumeNPCCoroutine(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        Debug.Log("충돌판정 복구");
+        if (blockCoroutine != null)
+        {
+            StopCoroutine(blockCoroutine);
+            blockCoroutine = null;
+        }
+
+        Physics2D.IgnoreLayerCollision(20, 15, false);
+
+        // 즉시 이동 재개
+        StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager, targetSensor));
+    }
+    
+    public void PauseMovement()
+    {
+        if (moveCoroutine != null)
+        {
+            animator.Play("Idle");
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+    }
+
     private void Start()
     {
         Init();
@@ -100,7 +170,7 @@ public class Npc : MonoBehaviour
 
     private void SetupItemWish()
     {
-        wantItemList = itemManager.ItemDatas;
+        wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
     }
 
@@ -134,49 +204,11 @@ public class Npc : MonoBehaviour
             StopCoroutine(moveCoroutine);
 
         astarPath.DetectTarget(transform.position, targetPos);
-        moveCoroutine = StartCoroutine(NewMoveCoroutine(targetPos, onArrive));
+        moveCoroutine = StartCoroutine(MoveCoroutine(targetPos, onArrive));
     }
 
-    private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
-    {
-        List<Vector3> path = astarPath.path;
-
-        if (path == null || path.Count == 0)
-        {
-            Debug.LogWarning("A* 경로 없음, 이동 중단");
-            PlayDirectionAnimation(Vector3.zero);
-            yield break;
-        }
-
-        foreach (Vector3 point in path)
-        {
-            while (Mathf.Abs(transform.position.x - point.x) > 0.05f)
-            {
-                float dirX = Mathf.Sign(point.x - transform.position.x);
-                Vector3 moveDir = new Vector3(dirX, 0, 0);
-                transform.position += moveDir * moveSpeed * Time.deltaTime;
-                PlayDirectionAnimation(moveDir);
-                yield return null;
-            }
-
-            while (Mathf.Abs(transform.position.y - point.y) > 0.05f)
-            {
-                float dirY = Mathf.Sign(point.y - transform.position.y);
-                Vector3 moveDir = new Vector3(0, dirY, 0);
-                transform.position += moveDir * moveSpeed * Time.deltaTime;
-                PlayDirectionAnimation(moveDir);
-                yield return null;
-            }
-
-            transform.position = new Vector3(point.x, point.y, transform.position.z);
-            yield return new WaitForSeconds(0.05f);
-        }
-
-        PlayDirectionAnimation(Vector3.zero);
-        onArrive?.Invoke();
-    }
     
-    private IEnumerator NewMoveCoroutine(Vector3 target, System.Action onArrive)
+    private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
         List<Vector3> path = astarPath.path;
 

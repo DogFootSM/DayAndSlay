@@ -9,7 +9,7 @@ using Zenject;
 public class GeneralMonsterAI : MonoBehaviour
 {
     [SerializeField] protected MonsterData monsterData;
-    [SerializeField] protected TestPlayer player;
+    [SerializeField] protected PlayerController player;
 
     protected BehaviourTree tree;
     protected MonsterModel model;
@@ -30,7 +30,7 @@ public class GeneralMonsterAI : MonoBehaviour
 
     protected virtual void Start()
     {
-        player = GameObject.FindWithTag("Player")?.GetComponent<TestPlayer>();
+        player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
         tree = new BehaviourTree(BuildRoot());
         stateMachine = new MonsterStateMachine(animator);
 

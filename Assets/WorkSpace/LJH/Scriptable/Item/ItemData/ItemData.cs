@@ -43,7 +43,8 @@ public class ItemData : ScriptableObject
     public int ingredients_3;
     public int ingredients_4;
 
-    public List<ItemData> Ingrediants = new();
+    public List<int> Ingrediants = new();
+
 
     
     

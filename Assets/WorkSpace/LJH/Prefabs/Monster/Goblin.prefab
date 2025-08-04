@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 6297989645333955350}
   - component: {fileID: 7052912307474658341}
   - component: {fileID: 5739400906888177894}
+  - component: {fileID: 3541872496575171498}
   - component: {fileID: 2575475074534013927}
   - component: {fileID: 729123636436155563}
+  - component: {fileID: 1945000851585728621}
   - component: {fileID: 9171184401338512563}
   - component: {fileID: 2701887625613745867}
   - component: {fileID: 4601401437452502203}
-  - component: {fileID: 1945000851585728621}
-  - component: {fileID: 3541872496575171498}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -145,6 +145,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3541872496575171498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 09c54c7205c79844a9943e79ddf17177, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
+  isAttacking: 0
 --- !u!114 &2575475074534013927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +200,27 @@ MonoBehaviour:
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
+--- !u!114 &1945000851585728621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  MaxHp: 0
+  Hp: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0
 --- !u!61 &9171184401338512563
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -257,41 +294,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1945000851585728621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488993737496387518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  Hp: 0
-  Attack: 0
-  AttackRange: 0
-  ChaseRange: 0
-  MoveSpeed: 0
-  AttackCooldown: 0
---- !u!114 &3541872496575171498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488993737496387518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 09c54c7205c79844a9943e79ddf17177, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
 --- !u!1 &1980958820101092610
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,5 +373,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
-  path: []
   mapGrid: {fileID: 0}
+  path: []

@@ -4,16 +4,36 @@ using UnityEngine;
 
 public class IngameManager : MonoBehaviour
 {
-    DataManager dataManager;
-    void Start()
+    public static IngameManager instance;
+    
+    public StageNum curStage;
+
+    private void Awake()
     {
-        DataInit();
+        SingletonInit();
     }
 
-
-    void DataInit()
+    private void SingletonInit()
     {
-        //데이터 테이블에 저장된 낮/밤을 가져와야함
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+        DontDestroyOnLoad(gameObject);
     }
+
+    public void SetStage(StageNum stage)
+    {
+        curStage = stage;
+    }
+
+    public StageNum GetStage() => curStage;
+
+
 
 }

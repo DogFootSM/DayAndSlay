@@ -79,8 +79,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
-  path: []
   mapGrid: {fileID: 0}
+  path: []
 --- !u!1 &9110040514710003671
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,13 +94,13 @@ GameObject:
   - component: {fileID: 4441215847310820223}
   - component: {fileID: 802854726108836940}
   - component: {fileID: 2693953888585509007}
+  - component: {fileID: 74644543518979204}
   - component: {fileID: 5294340429251935118}
   - component: {fileID: 6979159313498127554}
+  - component: {fileID: -7092550575976737974}
   - component: {fileID: 1549869261425915098}
   - component: {fileID: 5745363889840660130}
   - component: {fileID: 6133863406020592850}
-  - component: {fileID: -7092550575976737974}
-  - component: {fileID: 74644543518979204}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Untagged
@@ -165,9 +165,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1452600182, guid: 1c4c8fde9fe5b944f8195b5a682f86b4, type: 3}
+  m_Sprite: {fileID: 454278503, guid: 1c4c8fde9fe5b944f8195b5a682f86b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: cbdfa5bbe3b3dba4fa961cc19675b493, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 4da2a3a56c71b9948ba8935bc8bc19ae, type: 3}
 --- !u!114 &802854726108836940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,9 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: 0.000008534279
+  m_CategoryHash: 2.516169e-21
+  m_labelHash: 0.00000007984493
+  m_SpriteKey: 5.170728e-27
 --- !u!95 &2693953888585509007
 Animator:
   serializedVersion: 5
@@ -226,6 +226,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &74644543518979204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9110040514710003671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: e540bf577a0e05f45b584d000dfeb94f, type: 2}
+  player: {fileID: 0}
+  monsterState: 0
+  isAttacking: 0
 --- !u!114 &5294340429251935118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +281,27 @@ MonoBehaviour:
   player: {fileID: 0}
   isMoving: 0
   isAttacking: 0
+--- !u!114 &-7092550575976737974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9110040514710003671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  MaxHp: 0
+  Hp: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0
 --- !u!61 &1549869261425915098
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -325,51 +362,16 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9110040514710003671}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &-7092550575976737974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9110040514710003671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  Hp: 0
-  Attack: 0
-  AttackRange: 0
-  ChaseRange: 0
-  MoveSpeed: 0
-  AttackCooldown: 0
---- !u!114 &74644543518979204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9110040514710003671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: e540bf577a0e05f45b584d000dfeb94f, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
+  m_Constraints: 4

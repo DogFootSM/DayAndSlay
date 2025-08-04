@@ -29,27 +29,27 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     
     private List<string> mainWeaponSubCategoryOptions = new List<string>()
     {
-        "ÀüÃ¼", "È°", "°Ë", "Ã¢", "¿Ïµå"
+        "ì „ì²´", "í™œ", "ê²€", "ì°½", "ì™„ë“œ"
     };
 
     private List<string> subWeaponSubCategoryOptions = new List<string>()
     {
-        "ÀüÃ¼", "È­»ìÅë", "¹ÌÁ¤ÀÌ", "¿¥ºí·½", "¸¶µµ¼­"
+        "ì „ì²´", "í™”ì‚´í†µ", "ë¯¸ì •ì´", "ì— ë¸”ë ˜", "ë§ˆë„ì„œ"
     };
 
     private List<string> allSubCategoryOptions = new List<string>()
     {
-        "ÀüÃ¼"
+        "ì „ì²´"
     };
     
     private List<string> armorSubCategoryOptions = new List<string>()
     {
-        "ÀüÃ¼", "¸ğÀÚ", "»óÀÇ", "ÇÏÀÇ", "Àå°©", "½Å¹ß"
+        "ì „ì²´", "ëª¨ì", "ìƒì˜", "í•˜ì˜", "ì¥ê°‘", "ì‹ ë°œ"
     };
 
     private List<string> accessorySubCategoryOptions = new List<string>()
     {
-        "ÀüÃ¼", "¸ÁÅä", "ÆÈÂî", "¹ÌÁ¤ÀÌ2", "¹ÌÁ¤ÀÌ3"
+        "ì „ì²´", "ë§í† ", "íŒ”ì°Œ", "ë¯¸ì •ì´2", "ë¯¸ì •ì´3"
     };
     
     private RecipeElement recipeElement;
@@ -88,7 +88,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     }
     
     /// <summary>
-    /// ·¹½ÃÇÇ ¸®½ºÆ® ÃÊ±âÈ­
+    /// ë ˆì‹œí”¼ ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
     /// </summary>
     private void InitRecipeList()
     {
@@ -102,13 +102,13 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ÀÌ¸§ °Ë»ö
+    /// ì•„ì´í…œ ì´ë¦„ ê²€ìƒ‰
     /// </summary>
     private void RecipeSearch()
     {
         if (recipeSearchInputField.text == string.Empty)
         {
-            //°Ë»ö¾î ÀÔ·Â ¾È³» Åä½ºÆ® ¸Ş½ÃÁö
+            //ê²€ìƒ‰ì–´ ì…ë ¥ ì•ˆë‚´ í† ìŠ¤íŠ¸ ë©”ì‹œì§€
             recipeToastAnimator.SetTrigger(recipeInputToastHash);
             return;
         }
@@ -119,7 +119,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     }
     
     /// <summary>
-    /// ´ëºĞ·ù º¯°æ¿¡ µû¸¥ ÁßºĞ·ù Ä«Å×°í¸® º¯°æ
+    /// ëŒ€ë¶„ë¥˜ ë³€ê²½ì— ë”°ë¥¸ ì¤‘ë¶„ë¥˜ ì¹´í…Œê³ ë¦¬ ë³€ê²½
     /// </summary>
     /// <param name="value"></param>
     private void ChangedMainCategoryOption(int value)
@@ -151,23 +151,23 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// ·¹½ÃÇÇ ¸®½ºÆ® »õ·Î°íÄ§
+    /// ë ˆì‹œí”¼ ë¦¬ìŠ¤íŠ¸ ìƒˆë¡œê³ ì¹¨
     /// </summary>
     private void RefreshRecipeList()
     {
-        //ÇöÀç ¸ŞÀÎ Ä«Å×°í¸®°¡ 'ÀüÃ¼' ÀÎ »óÅÂ¿¡¼­ »õ·Î°íÄ§
+        //í˜„ì¬ ë©”ì¸ ì¹´í…Œê³ ë¦¬ê°€ 'ì „ì²´' ì¸ ìƒíƒœì—ì„œ ìƒˆë¡œê³ ì¹¨
         if (mainCategoryValue == 0)
         {
             recipeObserver.ChangeMainCategory(mainCategoryValue);    
         }
         
-        //¸ŞÀÎ Ä«Å×°í¸®°¡ ±× ¿ÜÀÎ »óÅÂÀÏ °æ¿ì
+        //ë©”ì¸ ì¹´í…Œê³ ë¦¬ê°€ ê·¸ ì™¸ì¸ ìƒíƒœì¼ ê²½ìš°
         mainCategoryDropdown.value = 0;
         mismatchText.gameObject.SetActive(false);
     }
     
     /// <summary>
-    /// ÃÊ±â ÀüÃ¼ ¾ÆÀÌÅÛ ·¹½ÃÇÇ ¸®½ºÆ® »ı¼º
+    /// ì´ˆê¸° ì „ì²´ ì•„ì´í…œ ë ˆì‹œí”¼ ë¦¬ìŠ¤íŠ¸ ìƒì„±
     /// </summary>
     /// <param name="recipeData"></param>
     private void CreateRecipes(ItemData recipeData)
@@ -178,7 +178,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// °Ë»öµÈ ¸®½ºÆ® ¿ä¼Ò °³¼ö È®ÀÎ
+    /// ê²€ìƒ‰ëœ ë¦¬ìŠ¤íŠ¸ ìš”ì†Œ ê°œìˆ˜ í™•ì¸
     /// </summary>
     /// <param name="mismatch"></param>
     public static void MisMatchCountCheck(int mismatch)
@@ -208,7 +208,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
                 
                 if (compare != null && !compare.Equals(recipeElement))
                 {
-                    //ÀÌÀü¿¡ È°¼ºÈ­ µÈ ¿ä¼Ò°¡ ÀÖ´Ù¸é Ãà¼Ò
+                    //ì´ì „ì— í™œì„±í™” ëœ ìš”ì†Œê°€ ìˆë‹¤ë©´ ì¶•ì†Œ
                     if (recipeElement != null)
                     {
                         recipeElement.PanelShrinkHeight();

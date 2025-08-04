@@ -7,12 +7,10 @@ using Zenject;
 
 public class GeneralMonsterMethod : MonoBehaviour
 {
-    MonsterData monsterData;
-    [Inject]
-    DungeonManager dungeonManager;
-    [Inject]
-    ItemStorage itemStorage;
+    private MonsterData monsterData;
+    [Inject] private DungeonManager dungeonManager;
 
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] protected BoxCollider2D attackHitBox;
     [SerializeField] protected AstarPath astarPath;
     [SerializeField] protected GameObject player;
@@ -24,6 +22,7 @@ public class GeneralMonsterMethod : MonoBehaviour
 
     private void Start()
     {
+        rb =  GetComponent<Rigidbody2D>();
         player = GameObject.FindWithTag("Player");
         monster = GetComponent<MonsterModel>();
     }
@@ -52,29 +51,29 @@ public class GeneralMonsterMethod : MonoBehaviour
         {
             for (int i = 1; i < astarPath.path.Count; i++)
             {
-                Vector3 target = astarPath.path[i];
+                Vector2 target = astarPath.path[i];
 
-                while (Vector2.Distance(transform.position, target) > 0.01f)
+                while (Vector2.Distance(rb.position, target) > 0.01f)
                 {
-                    Vector3 current = transform.position;
-                    Vector3 direction = target - current;
+                    Vector2 current = rb.position;
+                    Vector2 direction = target - current;
 
-                    Vector3 moveDir = Vector3.zero;
+                    Vector2 moveDir = Vector2.zero;
 
                     if (Mathf.Abs(direction.x) > 0.01f)
                     {
-                        moveDir = (direction.x > 0) ? Vector3.right : Vector3.left;
+                        moveDir = (direction.x > 0) ? Vector2.right : Vector2.left;
                     }
                     else if (Mathf.Abs(direction.y) > 0.01f)
                     {
-                        moveDir = (direction.y > 0) ? Vector3.up : Vector3.down;
+                        moveDir = (direction.y > 0) ? Vector2.up : Vector2.down;
                     }
                     else
                     {
-                        break; // 목표에 도달
+                        break;
                     }
 
-                    Vector3 nextPos = current + moveDir * monsterData.MoveSpeed * Time.deltaTime;
+                    Vector2 nextPos = current + moveDir * monsterData.MoveSpeed * Time.fixedDeltaTime;
 
                     // Clamp: 목표를 넘어가지 않도록
                     if (Vector2.Distance(nextPos, target) > Vector2.Distance(current, target))
@@ -82,12 +81,11 @@ public class GeneralMonsterMethod : MonoBehaviour
                         nextPos = target;
                     }
 
-                    transform.position = nextPos;
-
-                    yield return null;
+                    rb.MovePosition(nextPos);
+                    yield return new WaitForFixedUpdate();
                 }
 
-                transform.position = target; // 위치 스냅
+                rb.MovePosition(target); // 목표 위치 스냅
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -158,7 +156,7 @@ public class GeneralMonsterMethod : MonoBehaviour
         int ItemId = dropEntry.ItemId;
         
         // ID로 아이템 데이터 불러오기
-        ItemData itemData = itemStorage.GetItemById(itemStorage.IngrediantDict, ItemId);
+        ItemData itemData = ItemDatabaseManager.instance.GetItemByID(ItemId);
 
         if (itemData == null)
         {
