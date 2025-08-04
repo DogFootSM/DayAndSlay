@@ -9,9 +9,9 @@ using UnityEngine.Serialization;
 public class NpcTalkData : ScriptableObject
 {
 
-    private GenderType curGender;
-    private AgeType curAge;
-    private string printTalk;
+    [SerializeField]private GenderType curGender;
+    [SerializeField]private AgeType curAge;
+    [SerializeField]private string printTalk;
     
     
     public GenderType CurGenderType => curGender;

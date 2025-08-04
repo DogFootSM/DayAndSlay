@@ -218,8 +218,7 @@ public class DataManager : MonoBehaviour
                 sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
-                // this Code By JhLee
-                sqlManager.GetCharacterColumn(CharacterDataColumns.LAST_PLAYED_TIME)
+                
             }, spriteColumns.ToArray(), sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
 
         sqlManager.UpdateCharacterDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
@@ -248,7 +247,7 @@ public class DataManager : MonoBehaviour
             },
             new[]
             {
-                $"{curWeapon + 100}", //지급할 Item_id
+                $"{100001 + (curWeapon * 100)}", //지급할 Item_id
                 $"{SlotId}", //해당 캐릭터 slotId
                 "1", //지급할 개수
                 "0", //인벤토리 슬롯의 위치
