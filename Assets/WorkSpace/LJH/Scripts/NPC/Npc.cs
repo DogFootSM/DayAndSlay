@@ -35,6 +35,7 @@ public class Npc : MonoBehaviour
     [SerializeField] private bool isAngry;
     private Coroutine blockCoroutine;
     public NpcStateMachine StateMachine { get; private set; } = new();
+    private INpcState prevState;
 
     /// <summary>
     /// TargetSeneorInNpc 따오기
@@ -84,7 +85,6 @@ public class Npc : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("온콜리전엔터 실행됨 + 플레이어 인식됨");
             PauseMovement();
 
             if (blockCoroutine == null)
@@ -114,15 +114,11 @@ public class Npc : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        Debug.Log("충돌 판정 무시로 변경");
         Physics2D.IgnoreLayerCollision(20, 15, true);
         blockCoroutine = null;
 
-        // 이동 재개
-        StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager, targetSensor));
-        //State를 기억해뒀다가 전에 진행하던 State로 바꿔줘야함
-        INpcState curState = StateMachine.CurrentState;
-        StateMachine.ChangeState(curState);
+        StateMachine.ChangeState(prevState);
+        prevState = null;
 
     }
 
@@ -130,7 +126,6 @@ public class Npc : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
 
-        Debug.Log("충돌판정 복구");
         if (blockCoroutine != null)
         {
             StopCoroutine(blockCoroutine);
@@ -140,13 +135,17 @@ public class Npc : MonoBehaviour
         Physics2D.IgnoreLayerCollision(20, 15, false);
 
         // 즉시 이동 재개
-        StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager, targetSensor));
+        StateMachine.ChangeState(prevState);
+        prevState = null;
     }
     
     public void PauseMovement()
     {
+        prevState = StateMachine.CurrentState;
+        
         if (moveCoroutine != null)
         {
+            Debug.Log($"나는 {gameObject.name} 이고 내 이전 상태는{prevState}");
             animator.Play("Idle");
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
