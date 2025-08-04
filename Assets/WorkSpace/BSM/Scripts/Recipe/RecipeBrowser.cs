@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
@@ -20,8 +21,8 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Button refreshButton;
     [SerializeField] private GraphicRaycaster recipeRaycaster;
     [SerializeField] private RecipeDetail recipeDetail;
-    
-    private static GameObject mismatchText;
+    [SerializeField] private GameObject mismatchText;
+    public static GameObject GlobalMismatchText { get; private set;}
     
     private List<RaycastResult> recipeResults = new List<RaycastResult>();
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
@@ -69,8 +70,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
         searchButton.onClick.AddListener(RecipeSearch);
         refreshButton.onClick.AddListener(RefreshRecipeList);
         recipeInputToastHash = Animator.StringToHash("ShowToast");
-        mismatchText = transform.GetChild(2).GetChild(5).GetChild(0).GetChild(2).gameObject;
-        
+        GlobalMismatchText = mismatchText;
         InitRecipeList();
     }
  
@@ -163,7 +163,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
         
         //메인 카테고리가 그 외인 상태일 경우
         mainCategoryDropdown.value = 0;
-        mismatchText.gameObject.SetActive(false);
+        GlobalMismatchText.SetActive(false);
     }
     
     /// <summary>
@@ -187,11 +187,11 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
         
         if (RecipeCount - MisMatchCount <= 0)
         {
-            mismatchText.gameObject.SetActive(true);
+            GlobalMismatchText.SetActive(true);
         }
         else
         {
-            mismatchText.gameObject.SetActive(false);
+            GlobalMismatchText.SetActive(false);
         }
     }
 
