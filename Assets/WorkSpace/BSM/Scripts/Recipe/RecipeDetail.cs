@@ -126,7 +126,7 @@ public class RecipeDetail : MonoBehaviour
     /// <summary>
     /// 선택한 레시피 변경 시 재료 아이템 풀에 반환
     /// </summary>
-    public void ReturnRecipeMaterialPool()
+    private void ReturnRecipeMaterialPool()
     {
         for (int i = 0; i < materialParent.transform.childCount; i++)
         {

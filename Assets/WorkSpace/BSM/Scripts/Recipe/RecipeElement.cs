@@ -26,12 +26,9 @@ public class RecipeElement : MonoBehaviour
     private bool isMainCategoryCheck;
     private int expandAniHash;
     
-    private RectTransform rect;
-    
     private void Awake()
     {
         layoutElement = GetComponent<LayoutElement>(); 
-        rect = GetComponent<RectTransform>();
         expandAniHash = Animator.StringToHash("isExpand");
     }
 
