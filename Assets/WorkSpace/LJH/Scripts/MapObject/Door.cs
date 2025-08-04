@@ -39,7 +39,7 @@ public class Door : InteractableObj
         }
         
         animator.Play("DoorOpenAni");
-        SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
+        //SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
         player.transform.position = movePos;
 
     }
