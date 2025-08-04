@@ -2,10 +2,11 @@ using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapLoader : MonoBehaviour
+public class BossMapLoader : MonoBehaviour
 {
     [SerializeField] private Tilemap wallTilemap;
     [SerializeField] private Tilemap mapTilemap;
@@ -18,23 +19,12 @@ public class MapLoader : MonoBehaviour
     [SerializeField] private RuleTile waterTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
 
     private DictList<List<Tile>> tileDictList = new DictList<List<Tile>>();
-    [SerializeField] private List<string> csvFileNames_stage1;
-    [SerializeField] private List<string> csvFileNames_stage2;
-    [SerializeField] private List<string> csvFileNames_stage3;
+    [SerializeField] private List<string> csvFileNames;
     void Start()
     {
-        switch (IngameManager.instance.GetStage())
-        {
-            case StageNum.STAGE1:
-                LoadMap(csvFileNames_stage1[Random.Range(0, csvFileNames_stage1.Count)]);
-                break;
-            case StageNum.STAGE2:
-                LoadMap(csvFileNames_stage2[Random.Range(0, csvFileNames_stage2.Count)]);
-                break;
-            case StageNum.STAGE3:
-                LoadMap(csvFileNames_stage3[Random.Range(0, csvFileNames_stage3.Count)]);
-                break;
-        }
+        TileDictMaker(); 
+        LoadMap(csvFileNames[(int)IngameManager.instance.GetStage()]);
+        
     }
 
     void LoadMap(string fileName)
