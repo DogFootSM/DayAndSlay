@@ -27,13 +27,17 @@ public class Door : InteractableObj
     {
         animator = GetComponent<Animator>();
         movePos = movePosTrans.position;
-        player = GameObject.FindWithTag("Player");
 
         grid = GetCurrentGrid(transform.position);
     }
 
     public override void Interaction()
     {
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player");
+        }
+        
         animator.Play("DoorOpenAni");
         SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
         player.transform.position = movePos;
@@ -55,22 +59,25 @@ public class Door : InteractableObj
             }
         }
 
-
-        switch (doorType)
+        else if (collision.gameObject.CompareTag("Player"))
         {
-            case DoorType.DOOR:
-                popUp.GetComponent<PopUp>().objName = "문";
-                break;
+            switch (doorType)
+            {
+                case DoorType.DOOR:
+                    popUp.GetComponent<PopUp>().objName = "문";
+                    break;
 
-            case DoorType.LADDER:
-                popUp.GetComponent<PopUp>().objName = "사다리";
-                break;
+                case DoorType.LADDER:
+                    popUp.GetComponent<PopUp>().objName = "사다리";
+                    break;
 
-            default:
-                popUp.GetComponent<PopUp>().objName = "기타";
-                break;
+                default:
+                    popUp.GetComponent<PopUp>().objName = "기타";
+                    break;
+            }
+
+            popUp.SetActive(!popUp.gameObject.activeSelf);
         }
-        popUp.SetActive(!popUp.gameObject.activeSelf);
     }
 
     private Grid GetCurrentGrid(Vector3 worldPos)

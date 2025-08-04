@@ -23,7 +23,7 @@ public class SqlManager : IInitializable
         _characterDataColumns = new Dictionary<CharacterDataColumns, string>();
         _characterItemDataColumns = new Dictionary<CharacterItemDataColumns, string>();
         sqlDatabase = new SqliteDatabase();
-        sqlDatabase.CreateTable();  
+        sqlDatabase.CreateTable();
     }
 
     /// <summary>

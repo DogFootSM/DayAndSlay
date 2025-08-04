@@ -8,6 +8,7 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private PlayerController playerController;
 
     private LayerMask detectionLayerMask; 
+    private LayerMask npcLayerMask;
     private RaycastHit2D hit;
     private Vector2 curDir;
     
@@ -15,7 +16,8 @@ public class PlayerInteractor : MonoBehaviour
      
     private void Awake()
     {
-        detectionLayerMask = LayerMask.GetMask("SavePoint", "NPC");
+        detectionLayerMask = LayerMask.GetMask("SavePoint", "NPC", "Door");
+        npcLayerMask = LayerMask.GetMask("NPC");
         ignorePlayerLayer = ~(1 << LayerMask.NameToLayer("Player")); 
     }
 
@@ -33,9 +35,15 @@ public class PlayerInteractor : MonoBehaviour
                 {
                     saveHandler.OpenSaveAlert();
                 }
-                else if (hit.collider.transform.GetChild(0).TryGetComponent<NpcTalk>(out NpcTalk npcTalk))
+                
+                else if ((1 << hit.collider.gameObject.layer & npcLayerMask) != 0)
                 {
+                    NpcTalk npcTalk = hit.collider.gameObject.GetComponentInChildren<NpcTalk>();
                     npcTalk.OnTalkPrintEvent?.Invoke();
+                }
+                else if (hit.collider.TryGetComponent<InteractableObj>(out InteractableObj interactableObj))
+                {
+                    interactableObj.Interaction();
                 }
             } 
         } 

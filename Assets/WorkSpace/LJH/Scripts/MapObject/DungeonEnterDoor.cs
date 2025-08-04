@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class DungeonEnterDoor : MonoBehaviour
+public class DungeonEnterDoor : InteractableObj
 {
     [Inject(Id = "LoadingScene")] [Header("로딩 씬")]
     private SceneReference loadingScene;
@@ -12,6 +12,7 @@ public class DungeonEnterDoor : MonoBehaviour
     [Inject(Id = "DungeonScene")] [Header("이동할 씬")]
     private SceneReference scene;
 
+    [Inject(Id = "PopUp")] private GameObject popUp;
     [SerializeField] private GameObject stagePopUp;
 
     private Animator animator;
@@ -21,22 +22,21 @@ public class DungeonEnterDoor : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public override void Interaction()
+    {
+        stagePopUp.SetActive(!stagePopUp.activeSelf);
+    }
+
+    public override void UiOnOffMethod(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            stagePopUp.SetActive(!stagePopUp.activeSelf);
+            popUp.GetComponent<PopUp>().objName = "던전 선택";
+
+            popUp.SetActive(!popUp.gameObject.activeSelf);
         }
     }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            stagePopUp.SetActive(!stagePopUp.activeSelf);
-        }
-    }
-
+    
     public void PlayerInteractionDoor()
     {
         Loading.LoadScene(scene);

@@ -68,6 +68,8 @@ public class Npc : MonoBehaviour
         this.age = age;
     }
 
+    public (GenderType, AgeType) GetNpcType() => (gender, age);
+
     /// <summary>
     /// True = Outside / False = Store
     /// </summary>
@@ -118,7 +120,10 @@ public class Npc : MonoBehaviour
 
         // 이동 재개
         StateMachine.ChangeState(new NpcDecisionInStoreState(this, storeManager, targetSensor));
-        
+        //State를 기억해뒀다가 전에 진행하던 State로 바꿔줘야함
+        INpcState curState = StateMachine.CurrentState;
+        StateMachine.ChangeState(curState);
+
     }
 
     private IEnumerator ResumeNPCCoroutine(float seconds)

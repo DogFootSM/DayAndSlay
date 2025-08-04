@@ -40,7 +40,7 @@ public class TalkManager : MonoBehaviour
             }
             
             talkMaps[key].Add(npcTalkData[i].Talk);
-        } 
+        }
     }
     
     /// <summary>
@@ -51,11 +51,6 @@ public class TalkManager : MonoBehaviour
     { 
         var key = (gender, age);
 
-        if (!talkMaps.ContainsKey(key))
-        {
-            talkMaps[key] = new List<string>();
-        }
-        
         return talkMaps[key];
     }
 }

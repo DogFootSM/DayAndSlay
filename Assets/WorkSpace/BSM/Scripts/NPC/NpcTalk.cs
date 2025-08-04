@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class NpcTalk : MonoBehaviour
 {
-    [SerializeField] private NpcTalkData npcTalkData;
+    [SerializeField] private Npc npc;
     [SerializeField] private Animator bubbleAnimator;
     [SerializeField] private TextMeshProUGUI speechText;
     
@@ -20,16 +20,17 @@ public class NpcTalk : MonoBehaviour
     
     private int bubbleAnimHash;
     private bool canTalkState = true;
+
     
     private void Awake()
     {
-        npcTalkData = Resources.Load<NpcTalkData>("TalkData/NPCTalkData");
         bubbleAnimHash = Animator.StringToHash("PlayTalk");
     }
 
     private void Start()
     {
-        npcTalks = talkManager.GetTalkData(GenderType.MALE, AgeType.CHILD);
+        Debug.Log((npc.GetNpcType().Item1, npc.GetNpcType().Item2));
+        npcTalks = talkManager.GetTalkData(npc.GetNpcType().Item1, npc.GetNpcType().Item2);
     }
 
     private void OnEnable()
