@@ -29,7 +29,6 @@ public class NpcTalk : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log((npc.GetNpcType().Item1, npc.GetNpcType().Item2));
         npcTalks = talkManager.GetTalkData(npc.GetNpcType().Item1, npc.GetNpcType().Item2);
     }
 

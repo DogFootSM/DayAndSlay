@@ -23,18 +23,18 @@ public class MapLoader : MonoBehaviour
     [SerializeField] private List<string> csvFileNames_stage3;
     void Start()
     {
+        TileDictMaker();
+        
         switch (IngameManager.instance.GetStage())
         {
+            
             case StageNum.STAGE1:
-                Debug.Log("STAGE1");
                 LoadMap(csvFileNames_stage1[Random.Range(0, csvFileNames_stage1.Count)]);
                 break;
             case StageNum.STAGE2:
-                Debug.Log("STAGE2");
                 LoadMap(csvFileNames_stage2[Random.Range(0, csvFileNames_stage2.Count)]);
                 break;
             case StageNum.STAGE3:
-                Debug.Log("STAGE3");
                 LoadMap(csvFileNames_stage3[Random.Range(0, csvFileNames_stage3.Count)]);
                 break;
         }
@@ -62,10 +62,8 @@ public class MapLoader : MonoBehaviour
                     {
                         case 0:
                             wallTilemap.SetTile(pos, wallTile);
-                            Debug.Log("º®±ò¸²");
                             break;
                         case 1:
-                            Debug.Log("¹Ù´Ú ±ò¸²");
                             mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
                             break;
                         case 2:

@@ -48,14 +48,17 @@ public class Door : InteractableObj
     {
         if (collision.gameObject.CompareTag("NPC"))
         {
-            Npc npc = collision.gameObject.GetComponent<Npc>();
-            npc.transform.position = movePos;
-            npc.StateMachine.ChangeState(new NpcIdleState(npc));
-
-            if (grid == gridList[0])
+            if(popUp.GetComponent<PopUp>().objName == "문")
             {
-                store.EnqueueInNpcQue(npc);
-                return;
+                Npc npc = collision.gameObject.GetComponent<Npc>();
+                npc.transform.position = movePos;
+                npc.StateMachine.ChangeState(new NpcIdleState(npc));
+
+                if (grid == gridList[0])
+                {
+                    store.EnqueueInNpcQue(npc);
+                    return;
+                }
             }
         }
 
