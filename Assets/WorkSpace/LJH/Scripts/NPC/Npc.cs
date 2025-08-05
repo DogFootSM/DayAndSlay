@@ -36,6 +36,9 @@ public class Npc : MonoBehaviour
     private Coroutine blockCoroutine;
     public NpcStateMachine StateMachine { get; private set; } = new();
     private INpcState prevState;
+    private Collider2D npcCol;
+    private Collider2D playerCol;
+    private bool isIgnoringCollision = false;
 
     /// <summary>
     /// TargetSeneorInNpc 따오기
@@ -83,7 +86,7 @@ public class Npc : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !isIgnoringCollision)
         {
             PauseMovement();
 
@@ -100,7 +103,7 @@ public class Npc : MonoBehaviour
         {
             if (Physics2D.GetIgnoreLayerCollision(15, 20))
             {
-                StartCoroutine(ResumeNPCCoroutine(3f));
+                StartCoroutine(ResumeNPCCoroutine(1f));
             }
 
             else
@@ -112,40 +115,42 @@ public class Npc : MonoBehaviour
 
     private IEnumerator BlockNPCCoroutine()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
-        Physics2D.IgnoreLayerCollision(20, 15, true);
+        npcCol.isTrigger = true;
         blockCoroutine = null;
 
-        StateMachine.ChangeState(prevState);
-        prevState = null;
+        StartCoroutine(ResumeNPCCoroutine(1f));
 
     }
 
     private IEnumerator ResumeNPCCoroutine(float seconds)
     {
+        animator.Play(currentAnim);
+        StateMachine.ChangeState(prevState);
+        prevState = null;
+        
         yield return new WaitForSeconds(seconds);
-
+        
         if (blockCoroutine != null)
         {
             StopCoroutine(blockCoroutine);
             blockCoroutine = null;
         }
 
-        Physics2D.IgnoreLayerCollision(20, 15, false);
-
-        // 즉시 이동 재개
-        StateMachine.ChangeState(prevState);
-        prevState = null;
+        npcCol.isTrigger = false;
+        transform.position += (transform.position - player.transform.position).normalized * 0.2f;
+        
     }
     
     public void PauseMovement()
     {
+        if (prevState != null) return;
+        
         prevState = StateMachine.CurrentState;
         
         if (moveCoroutine != null)
         {
-            Debug.Log($"나는 {gameObject.name} 이고 내 이전 상태는{prevState}");
             animator.Play("Idle");
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
@@ -158,6 +163,8 @@ public class Npc : MonoBehaviour
         SetupItemWish();
         rb = GetComponent<Rigidbody2D>();
         StateMachine.ChangeState(new NpcDecisionState(this));
+        npcCol = GetComponent<Collider2D>();
+        playerCol = player.GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -215,7 +222,7 @@ public class Npc : MonoBehaviour
     private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
         List<Vector3> path = astarPath.path;
-
+        
         if (path == null || path.Count == 0)
         {
             Debug.LogWarning("A* 경로 없음, 이동 중단");
@@ -349,9 +356,9 @@ public class Npc : MonoBehaviour
         else nextAnim = "Idle";
 
         // 같은 애니메이션 반복 호출 방지
-        if (nextAnim != currentAnim)
+        if (nextAnim != currentAnim || nextAnim == "Idle")
         {
-            animator.Play(nextAnim);
+            animator.Play(nextAnim, -1, 0f); // 항상 처음부터 재생
             currentAnim = nextAnim;
         }
     }

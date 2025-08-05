@@ -48,7 +48,7 @@ public class Door : InteractableObj
     {
         if (collision.gameObject.CompareTag("NPC"))
         {
-            if(popUp.GetComponent<PopUp>().objName == "문")
+            if(doorType == DoorType.DOOR)
             {
                 Npc npc = collision.gameObject.GetComponent<Npc>();
                 npc.transform.position = movePos;
@@ -63,6 +63,45 @@ public class Door : InteractableObj
         }
 
         else if (collision.gameObject.CompareTag("Player"))
+        {
+            switch (doorType)
+            {
+                case DoorType.DOOR:
+                    popUp.GetComponent<PopUp>().objName = "문";
+                    break;
+
+                case DoorType.LADDER:
+                    popUp.GetComponent<PopUp>().objName = "사다리";
+                    break;
+
+                default:
+                    popUp.GetComponent<PopUp>().objName = "기타";
+                    break;
+            }
+
+            popUp.SetActive(!popUp.gameObject.activeSelf);
+        }
+    }
+    
+    public override void UiOnOffMethod(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("NPC"))
+        {
+            if(doorType == DoorType.DOOR)
+            {
+                Npc npc = collider.gameObject.GetComponent<Npc>();
+                npc.transform.position = movePos;
+                npc.StateMachine.ChangeState(new NpcIdleState(npc));
+
+                if (grid == gridList[0])
+                {
+                    store.EnqueueInNpcQue(npc);
+                    return;
+                }
+            }
+        }
+
+        else if (collider.gameObject.CompareTag("Player"))
         {
             switch (doorType)
             {
