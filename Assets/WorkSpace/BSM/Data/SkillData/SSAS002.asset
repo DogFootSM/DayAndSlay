@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SSAS002
   m_EditorClassIdentifier: 
   SkillId: SSAS002
-  SkillName: "\uD68C\uC804 \uBCA0\uAE30"
-  PrerequisiteSkillsId: []
+  SkillName: "\uB2EC\uBB34\uC0C8\uAE40"
+  PrerequisiteSkillsId:
+  - SSAS001
   SkillDescription: "\uAC80\uC744 \uD06C\uAC8C \uD718\uB458\uB7EC \uC8FC\uBCC0\uC758
     \uC801\uB4E4\uC744 \uBCA0\uC5B4\uB0B8\uB2E4."
   SkillEffectPrefab: {fileID: 0}
@@ -22,11 +23,14 @@ MonoBehaviour:
   SkillMaxLevel: 6
   SkillDamage: 1.7
   SkillDamageIncreaseRate: 0.13
-  SkillIcon: {fileID: 0}
+  SkillIcon: {fileID: 21300000, guid: b65ad58324faba343a3ffb09ad0396e4, type: 2}
   RequiredWeapon: 1
   UseSkillDelay: 1
   IsActive: 0
   UseSkillDelayDecreaseRate: 0.5
-  SkillRange: 2
+  SkillRange: 0
+  SkillRadiusRange: 1
   SkillHitCount: 1
   SkillCastingTime: 0
+  BuffDuration: 1
+  DeBuffDuration: 0

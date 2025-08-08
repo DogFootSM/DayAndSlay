@@ -32,7 +32,7 @@ public class SkillParser : MonoBehaviour
     private Dictionary<string, int> headerMap = new Dictionary<string, int>();
     
     //구글 시트 주소
-    private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:S10&gid=117661071";
+    private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:V60&gid=117661071";
 
     public void StartDownload(bool renameFiles)
     {
@@ -70,6 +70,7 @@ public class SkillParser : MonoBehaviour
                 {
                     rowData[value[0]].Add(value[j]);
                     headerMap[headers[j].Trim()] = j;
+                    Debug.Log(headers[j]);
                 }
                 
                 ApplySoData(rowData[value[0]], renameFiles);
@@ -125,6 +126,17 @@ public class SkillParser : MonoBehaviour
         
         int skillHitCount = 0;
         int.TryParse(rowData[headerMap["HitCount"]], out skillHitCount);
+
+        float buffDuration = 0;
+        float.TryParse(rowData[headerMap["BuffDuration"]], out buffDuration);
+
+        float deBuffDuration = 0f;
+        float.TryParse(rowData[headerMap["DebuffDuration"]], out deBuffDuration);
+
+        float skillRadiusRange = 0f;
+        float.TryParse(rowData[headerMap["Radius"]], out skillRadiusRange);
+
+        string prerequisiteSkillsId = rowData[headerMap["PrecedingSkill"]] ?? string.Empty;
         
         //TODO: 선행 스킬 리스트 추가 필요
         
@@ -139,7 +151,7 @@ public class SkillParser : MonoBehaviour
         
         //추출한 데이터 값으로 SO 데이터 설정
         skillData.SetData(skillId, skillName, skillDescription, skillEffect, skillCoolDown, skillMaxLevel, skillDamage, skillDamageIncreaseRate,
-            skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount, active);
+            skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount, active, buffDuration, deBuffDuration, prerequisiteSkillsId, skillRadiusRange);
         EditorUtility.SetDirty(skillData);
         
         AssetDatabase.SaveAssets();

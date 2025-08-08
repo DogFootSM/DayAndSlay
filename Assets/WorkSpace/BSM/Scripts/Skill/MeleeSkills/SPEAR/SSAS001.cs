@@ -32,7 +32,7 @@ public class SSAS001 : MeleeSkill
         {
             overlapSize = new Vector2(1f, 3f);
         }
- 
+        
         ShieldEffect(0.5f, 3, 2.5f, 5f);
     }
 
