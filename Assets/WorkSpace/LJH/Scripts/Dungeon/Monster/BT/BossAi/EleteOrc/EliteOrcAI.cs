@@ -1,8 +1,8 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bellus : NepenthesAI
+public class EliteOrcAI : BossMonsterAI
 {
     [Header("힐 조건 조정")]
     [SerializeField] private float healThresholdPercent = 20f;
@@ -14,17 +14,14 @@ public class Bellus : NepenthesAI
     [Header("공격 쿨타임 조정")]
     [SerializeField] private float attackCooldown = 2f;
 
-    [Header("Malus")]
-    [SerializeField] private BossMonsterAI partner;
 
     private float healTimer;
     private float poisonTimer;
     private float attackTimer;
-
-    protected void Start()
+    
+     protected void Start()
     {
         base.Start();
-        partner = FindObjectOfType<Malus>();
     }
     protected override void Update()
     {
@@ -66,18 +63,12 @@ public class Bellus : NepenthesAI
 
     private bool CanHeal()
     {
-        if (partner == null) return false;
         if (healTimer > 0f) return false;
 
         MonsterModel myModel = model;
-        MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
-        if (myModel == null || partnerModel == null) return false;
 
-        float myHpPercent = (float)myModel.GetMonsterHp() / (float)myModel.GetMonsterMaxHp() * 100f;
-        float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
-        float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
+        return true;
 
-        return diff >= healThresholdPercent;
     }
 
     private bool CanPoison()
@@ -134,7 +125,8 @@ public class Bellus : NepenthesAI
 
     // ---------------- BT patterns ----------------
 
-    protected override List<BTNode> BuildSkillPatterns()
+
+    protected override List<BTNode> BuildSkillSelector()
     {
         List<BTNode> list = new List<BTNode>();
 
@@ -157,7 +149,7 @@ public class Bellus : NepenthesAI
         return list;
     }
 
-    protected override List<BTNode> BuildAttackPatterns()
+    protected override List<BTNode> BuildAttackSelector()
     {
         List<BTNode> list = new List<BTNode>();
 
@@ -172,6 +164,4 @@ public class Bellus : NepenthesAI
 
         return list;
     }
-
-    public BossMonsterAI GetPartner() => partner;
 }
