@@ -25,6 +25,7 @@ public class TargetSensor : MonoBehaviour
     {
         findCollider.radius = findRange;
         targetLayer = LayerMask.GetMask("Player");
+        astar.SetGridAndTilemap(grid);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

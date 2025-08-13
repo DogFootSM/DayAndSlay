@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class EliteOrcAI : BossMonsterAI
 {
-    [Header("힐 조건 조정")]
-    [SerializeField] private float healThresholdPercent = 20f;
-    [SerializeField] private float healCooldown = 8f;
-
-    [Header("독 쿨타임 조정")]
-    [SerializeField] private float poisonCooldown = 10f;
+    [Header("돌진 쿨타임 조정")]
+    [SerializeField] private float rushCooldown = 10f;
 
     [Header("공격 쿨타임 조정")]
     [SerializeField] private float attackCooldown = 2f;
 
 
-    private float healTimer;
-    private float poisonTimer;
+    private float rushTimer;
     private float attackTimer;
     
      protected void Start()
@@ -39,8 +34,7 @@ public class EliteOrcAI : BossMonsterAI
 
     private void UpdateCooldowns()
     {
-        healTimer -= Time.deltaTime;
-        poisonTimer -= Time.deltaTime;
+        rushTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
     }
     
@@ -55,25 +49,15 @@ public class EliteOrcAI : BossMonsterAI
 
         if (distance > monsterData.AttackRange)
         {
-            return !CanPoison() && !CanHeal();
+            return !CanRush();
         }
 
-        return !CanPoison() && !CanHeal() && !CanAttack();
+        return !CanRush() && !CanAttack();
     }
 
-    private bool CanHeal()
+    private bool CanRush()
     {
-        if (healTimer > 0f) return false;
-
-        MonsterModel myModel = model;
-
-        return true;
-
-    }
-
-    private bool CanPoison()
-    {
-        return poisonTimer <= 0f;
+        return rushTimer <= 0f;
     }
 
     private bool CanAttack()
@@ -81,14 +65,9 @@ public class EliteOrcAI : BossMonsterAI
         return attackTimer <= 0f;
     }
 
-    private void ResetHealCooldown()
-    {
-        healTimer = healCooldown;
-    }
-
     private void ResetPoisonCooldown()
     {
-        poisonTimer = poisonCooldown;
+        rushTimer = rushCooldown;
     }
 
     private void ResetAttackCooldown()
@@ -98,21 +77,14 @@ public class EliteOrcAI : BossMonsterAI
 
     // ---------------- actual actions ----------------
 
-    private void PerformHeal()
+    private void PerformRush()
     {
         method.Skill_First();
-        SkillCommonStart();
-        ResetHealCooldown();
-    }
-
-    private void PerformPoison()
-    {
-        method.Skill_Second();
         SkillCommonStart();
         ResetPoisonCooldown();
     }
 
-    private void PerformBite()
+    private void PerformAttack()
     {
         AttackCommonStart();
         ResetAttackCooldown();
@@ -132,16 +104,8 @@ public class EliteOrcAI : BossMonsterAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanHeal),
-            new ActionNode(PerformHeal),
-            new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
-        }));
-
-        list.Add(new Sequence(new List<BTNode>
-        {
-            new IsPreparedCooldownNode(CanPoison),
-            new ActionNode(PerformPoison),
+            new IsPreparedCooldownNode(CanRush),
+            new ActionNode(PerformRush),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
@@ -157,7 +121,7 @@ public class EliteOrcAI : BossMonsterAI
         {
             new IsAttackRangeNode(transform, player.transform, 2f),
             new IsPreparedCooldownNode(CanAttack),
-            new ActionNode(PerformBite),
+            new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));

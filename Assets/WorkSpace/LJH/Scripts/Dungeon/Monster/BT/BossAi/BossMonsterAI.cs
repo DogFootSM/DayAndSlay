@@ -139,6 +139,8 @@ public abstract class BossMonsterAI : MonoBehaviour
 
     protected virtual void Move()
     {
+        if (method.isMoving) return;
+        
         Debug.Log(name + " -> Move");
         animator.stateMachine.ChangeState(new BossMonsterMoveState());
         method.Move();
