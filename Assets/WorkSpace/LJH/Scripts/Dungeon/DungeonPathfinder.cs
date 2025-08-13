@@ -228,11 +228,6 @@ public class DungeonPathfinder : MonoBehaviour
                 secondDoor = DeltaCalculator(dir2);
             }
 
-            //矫累 规苞 场 规 俊寇 贸府
-            if (firstDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(secondDoor);
-            else if (secondDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(firstDoor);
-            else route[i].GetComponent<Room>().ActivateTheDoor(firstDoor, secondDoor);
-
         }
     }
 
@@ -288,6 +283,11 @@ public class DungeonPathfinder : MonoBehaviour
     public List<Grid> GetRoomList()
     {
         return new List<Grid>(this.roomList);
+    }
+    
+    public void SetRoomList(Grid room)
+    {
+        roomList.Add(room);
     }
 
 }

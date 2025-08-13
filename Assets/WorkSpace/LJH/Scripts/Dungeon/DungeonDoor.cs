@@ -5,13 +5,9 @@ using Zenject;
 
 public class DungeonDoor : MonoBehaviour
 {
-    [Inject]
-    private DungeonPathfinder dungeonPathfinder;
-
+/*
     [SerializeField] Transform spawner;
     [HideInInspector] public Vector2 spawnerPos;
-
-    List<Grid> roomList;
 
     List<GameObject> doorList;
 
@@ -19,9 +15,13 @@ public class DungeonDoor : MonoBehaviour
     Grid toGrid;
 
     //인덱스 이동용
-    int verticalOffset = 3;
-    int horizonOffset = 1;
-    int index;
+    private int verticalOffset = 3;
+    private int horizonOffset = 1;
+    private int index;
+
+    private bool isFirst;
+
+    public bool ThisDoorIsFirst(bool yes) => isFirst;
 
     private void Start()
     {
@@ -42,6 +42,21 @@ public class DungeonDoor : MonoBehaviour
     /// </summary>
     void DoorPathfinder()
     {
+        if (isFirst)
+        {
+            toGrid = [index + 1];
+        }
+
+        else
+        {
+            toGrid = roomList[index - 1];
+        }
+        
+        
+        
+        
+        
+        
 
         for (int i = 0; i < doorList.Count; i++)
         {
@@ -82,9 +97,8 @@ public class DungeonDoor : MonoBehaviour
 
     void Init()
     {
-        roomList = dungeonPathfinder.GetRoomList();
         fromGrid = GetComponentInParent<Grid>();
         index = roomList.IndexOf(fromGrid);
         doorList = GetComponentInParent<Room>().GetDoorList();
-    }
+    }*/
 }
