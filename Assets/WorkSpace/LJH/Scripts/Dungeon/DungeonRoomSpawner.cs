@@ -33,7 +33,8 @@ public class DungeonRoomSpawner : MonoBehaviour
             {
                 GameObject bossRoom = bossRooms[0];
                 RoomList.Add(Instantiate(bossRoom, roomPos[i].transform.position, Quaternion.identity));
-                RoomList[RoomList.Count - 1].GetComponent<Room>().SetBossRoom(true);
+                RoomList[i].GetComponent<Room>().SetBossRoom(true);
+                RoomList[i].name = $"BossRoom";
             }
             //일반 방
             else
@@ -41,7 +42,9 @@ public class DungeonRoomSpawner : MonoBehaviour
                 GameObject room = rooms[Random.Range(0, rooms.Count)];
                 RoomList.Add(Instantiate(room, roomPos[i].transform.position, Quaternion.identity));
                 RoomList[i].GetComponent<Room>().SetBossRoom(false);
+                RoomList[i].name = $"Room_{i}";
             }
+
             //룸 리스트에 추가
             dungeonPathfinder.SetRoomList(RoomList[i].GetComponent<Grid>());
         }
@@ -50,13 +53,15 @@ public class DungeonRoomSpawner : MonoBehaviour
     /// <summary>
     /// 문 생성
     /// </summary>
-    public void BuildDoor(List<Grid> route)
+    public void BuildDoor(List<Grid> route, bool isReverse)
     {
         foreach (Grid r in route)
         {
             GameObject room = r.gameObject;
             
-            if (room == RoomList[RoomList.Count - 1]) continue;
+            //맨끝방의 도어와 시작방의 이전 문은 생성하지 않음
+            if (room == RoomList[^1]) continue;
+            if (room == route[^1].gameObject && isReverse) continue;
             
             Tilemap floorTilemap = room.transform.GetChild(1).GetComponent<Tilemap>();
             Tilemap wallTilemap = room.transform.GetChild(0).GetComponent<Tilemap>();
@@ -81,7 +86,9 @@ public class DungeonRoomSpawner : MonoBehaviour
             {
                 Vector3 doorPos = floorPositions[Random.Range(0, floorPositions.Count)];
 
-                Instantiate(doorPrefab, doorPos, Quaternion.identity, room.transform);
+                GameObject door = Instantiate(doorPrefab, doorPos, Quaternion.identity, room.transform);
+                
+                door.GetComponent<DungeonDoor>().SetRoute(route);
             }
         }
     }

@@ -26,11 +26,13 @@ public class DungeonPathfinder : MonoBehaviour
     /// 보스방 까지의 경로 List
     /// </summary>
     private List<Grid> route = new List<Grid>();
+    private List<Grid> reverseRoute = new List<Grid>();
 
     private Dictionary<int, List<Grid>> graph = new Dictionary<int, List<Grid>>();
 
     //사이드 루트 경로
     private List<Grid> sideRoute = new List<Grid>();
+    private List<Grid> reverseSideRoute = new List<Grid>();
 
     private Dictionary<Grid, int> roomDict = new Dictionary<Grid, int>();
     private void Start()
@@ -55,10 +57,26 @@ public class DungeonPathfinder : MonoBehaviour
         }
 
         SideRouteMake();
-
+        ReverseRoute();
         StartCoroutine(DoorBuilder());
 
         DrawRouteLines();
+    }
+
+    /// <summary>
+    /// 돌아가는 문을 생성하기 위한 루트 뒤집어주는 메서드
+    /// </summary>
+    private void ReverseRoute()
+    {
+        List<Grid> tempRoute = new List<Grid>(route);
+        tempRoute.Reverse();
+        reverseRoute = tempRoute;
+
+        if (sideRoute.Count < 1) return;
+        
+        List<Grid> tempSideRoute = new List<Grid>(sideRoute);
+        tempSideRoute.Reverse();
+        reverseSideRoute = tempSideRoute;
     }
 
     /// <summary>
@@ -69,8 +87,10 @@ public class DungeonPathfinder : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         
-        spawner.BuildDoor(route);
-        spawner.BuildDoor(sideRoute);
+        spawner.BuildDoor(route, false);
+        spawner.BuildDoor(sideRoute, false);
+        spawner.BuildDoor(reverseRoute, true);
+        spawner.BuildDoor(reverseSideRoute, true);
     }
 
     /// <summary>
@@ -229,11 +249,6 @@ public class DungeonPathfinder : MonoBehaviour
     /// </summary>
     private void DrawRouteLines()
     {
-        foreach (Grid room in route)
-            Debug.Log($"메인 루트 {room.name}");
-        
-        foreach (Grid room in sideRoute)
-            Debug.Log(room.name);
         // 메인 루트 그리기
         mainRouteLineRenderer.positionCount = route.Count;
         for (int i = 0; i < route.Count; i++)
