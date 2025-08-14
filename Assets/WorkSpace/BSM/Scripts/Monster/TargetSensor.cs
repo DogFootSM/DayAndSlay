@@ -25,6 +25,10 @@ public class TargetSensor : MonoBehaviour
     {
         findCollider.radius = findRange;
         targetLayer = LayerMask.GetMask("Player");
+    }
+
+    private void Start()
+    {
         astar.SetGridAndTilemap(grid);
     }
 
@@ -73,4 +77,6 @@ public class TargetSensor : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, findRange);
     }
+    
+    public void SetGrid(Grid grid) => this.grid = grid;
 }

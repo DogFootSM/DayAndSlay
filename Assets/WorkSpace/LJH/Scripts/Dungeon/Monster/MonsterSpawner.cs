@@ -75,7 +75,6 @@ public class MonsterSpawner : MonoBehaviour
     {
         if (IsBossRoom()) return;
 
-        Debug.Log("몬스터스폰포즈셋");
         foreach (GameObject spawner in spawnerList)
         {
             checkNum = 0;
@@ -117,6 +116,8 @@ public class MonsterSpawner : MonoBehaviour
 
             GameObject monster = container.InstantiatePrefab(
                 prefabToSpawn, spawnerList[i].transform.position, Quaternion.identity, null);
+            
+            monster.GetComponentInChildren<TargetSensor>().SetGrid(grid);
 
             monsterList.Add(monster);
         }
@@ -171,7 +172,7 @@ public class MonsterSpawner : MonoBehaviour
     private void Init()
     {
         player = GameObject.FindWithTag("Player");
-        grid = GetComponentInParent<Grid>();
+        grid = GetComponent<Grid>();
         localBounds = floor.cellBounds;
 
         xPos[Direction.Left] = -mapSize;

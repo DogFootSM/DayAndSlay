@@ -183,7 +183,6 @@ public class DungeonPathfinder : MonoBehaviour
         sideRoute.Add(entry);                 // 라인렌더러가 메인→사이드로 자연스럽게 이어지게
         BuildSidePathLinear(first, localVisited, main);
 
-        Debug.Log($"SideRoute length = {sideRoute.Count} (entry={roomDict[entry]})");
     }
 
 /// <summary>

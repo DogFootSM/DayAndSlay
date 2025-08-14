@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zenject;
 
 public class DungeonRoomSpawner : MonoBehaviour
 {
+    [Inject] protected DiContainer container;
+    
     [SerializeField] private DungeonPathfinder dungeonPathfinder;
     //Todo : 스테이지에 따라 rooms 목록 변경
     [SerializeField] private List<GameObject> rooms;
@@ -32,7 +35,7 @@ public class DungeonRoomSpawner : MonoBehaviour
             if (i == roomPos.Count - 1)
             {
                 GameObject bossRoom = bossRooms[0];
-                RoomList.Add(Instantiate(bossRoom, roomPos[i].transform.position, Quaternion.identity));
+                RoomList.Add(container.InstantiatePrefab(bossRoom, roomPos[i].transform.position, Quaternion.identity, null));
                 RoomList[i].GetComponent<Room>().SetBossRoom(true);
                 RoomList[i].name = $"BossRoom";
             }
@@ -40,7 +43,7 @@ public class DungeonRoomSpawner : MonoBehaviour
             else
             {
                 GameObject room = rooms[Random.Range(0, rooms.Count)];
-                RoomList.Add(Instantiate(room, roomPos[i].transform.position, Quaternion.identity));
+                RoomList.Add(container.InstantiatePrefab(room, roomPos[i].transform.position, Quaternion.identity, null));
                 RoomList[i].GetComponent<Room>().SetBossRoom(false);
                 RoomList[i].name = $"Room_{i}";
             }
