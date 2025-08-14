@@ -14,6 +14,7 @@ public class ParticleStopAction : MonoBehaviour
     /// </summary>
     private void OnParticleSystemStopped()
     {
+        Debug.Log("종료");
         instance.ReturnSkillParticlePool(SkillID, gameObject);
     }
 }

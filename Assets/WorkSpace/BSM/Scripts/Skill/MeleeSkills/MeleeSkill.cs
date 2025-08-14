@@ -38,13 +38,14 @@ public abstract class MeleeSkill : SkillFactory
     {
         for (int i = 0; i < skillEffectPrefab.Count; i++)
         {
+            Debug.Log("스킬 이펙트 발동");
             GameObject instance = particlePooling.GetSkillPool($"{skillId}_{i+1}_Particle", skillEffectPrefab[i]);
             instance.transform.parent = null;
             instance.transform.position = position + direction;
             
             ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
             ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
-            stopAction.SkillID = skillId;
+            stopAction.SkillID = $"{skillId}_{i+1}_Particle";
             
             mainModule = particleSystem.main;
             currentDirection = direction;

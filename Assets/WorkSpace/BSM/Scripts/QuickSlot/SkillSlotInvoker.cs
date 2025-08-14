@@ -47,9 +47,10 @@ public class SkillSlotInvoker : MonoBehaviour
             if (skillNode != null)
             {
                 slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-             
+                Debug.Log("팩토리에서 받아옴");
                 if (slotSkill != null)
                 {
+                    Debug.Log("스킬 존재");
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
                     CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);

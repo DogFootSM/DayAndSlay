@@ -30,7 +30,7 @@ public class PlayerSkill : PlayerState
     {
         //TODO: 스킬에 맞는 애니메이션?
         afterDelay = playerController.SkillSlotInvoker.InvokeSkillFromSlot(keyToQuickSlotMap[skillInputKey], playerController.CurrentWeaponType);
-
+        Debug.Log(afterDelay);
         if (afterDelayCo == null)
         {
             afterDelayCo = playerController.StartCoroutine(AfterDelayRoutine());
