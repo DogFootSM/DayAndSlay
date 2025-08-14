@@ -28,6 +28,7 @@ public class PlayerSkill : PlayerState
     /// </summary>
     private void ExecuteSkillFromSlot()
     {
+        //TODO: 스킬에 맞는 애니메이션?
         afterDelay = playerController.SkillSlotInvoker.InvokeSkillFromSlot(keyToQuickSlotMap[skillInputKey], playerController.CurrentWeaponType);
 
         if (afterDelayCo == null)

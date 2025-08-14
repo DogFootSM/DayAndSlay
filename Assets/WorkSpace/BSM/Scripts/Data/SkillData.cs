@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.Windows;
 
 [CreateAssetMenu(fileName = "Skill", menuName = "Data/Skill")]
 public class SkillData : ScriptableObject
@@ -10,7 +11,7 @@ public class SkillData : ScriptableObject
     public string SkillName;
     public List<string> PrerequisiteSkillsId = new();
     public string SkillDescription;
-    public GameObject SkillEffectPrefab;
+    public List<GameObject> SkillEffectPrefab = new();
     
     public float SkillCooldown;
     public int SkillMaxLevel;
@@ -35,7 +36,16 @@ public class SkillData : ScriptableObject
     private void SetSkillEffect(WeaponType weaponType, string skillId, string effectName)
     {
         //TODO: 추후 스킬 경로 변경해주면 됨
-        SkillEffectPrefab = Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effectName}");
+        string[] effects = effectName.Split(',');
+        
+        for (int i = 0; i < effects.Length; i++)
+        {
+            Debug.Log(effects[i]);
+            
+            SkillEffectPrefab.Add(Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effects[i]}"));
+        }
+        
+        //SkillEffectPrefab = Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effectName}");
     }
 
     private void SetSkillIcon(string iconName)
@@ -96,7 +106,7 @@ public class SkillData : ScriptableObject
         this.BuffDuration = buffDuration;
         this.DeBuffDuration = deBuffDuration;
         SetPrerequisiteSkillsId(prerequisiteSkillsId);
-        this.IsActive = isActive == 0;
+        this.IsActive = isActive == 1;
     }
     
 } 

@@ -69,8 +69,7 @@ public class SkillParser : MonoBehaviour
                 for (int j = 0; j < headers.Length && j < value.Length; j++)
                 {
                     rowData[value[0]].Add(value[j]);
-                    headerMap[headers[j].Trim()] = j;
-                    Debug.Log(headers[j]);
+                    headerMap[headers[j].Trim()] = j; 
                 }
                 
                 ApplySoData(rowData[value[0]], renameFiles);

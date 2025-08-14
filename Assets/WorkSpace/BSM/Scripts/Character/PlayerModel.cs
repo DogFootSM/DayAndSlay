@@ -231,7 +231,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         //TODO: 테스트용 코드
         if (Input.GetKeyDown(KeyCode.V))
-        {
+        { 
             GainExperience(50);
         } 
     }

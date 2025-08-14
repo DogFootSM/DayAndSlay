@@ -34,21 +34,24 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
-    protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, GameObject skillEffectPrefab)
+    protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, List<GameObject> skillEffectPrefab)
     {
-        GameObject instance = particlePooling.GetSkillPool(skillId, skillEffectPrefab);
-        instance.transform.parent = null;
-        instance.transform.position = position + direction;
-
-        ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
-        ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
-        stopAction.SkillID = skillId;
-
-        mainModule = particleSystem.main;
-        currentDirection = direction;
-
-        instance.SetActive(true);
-        particleSystem.Play();
+        for (int i = 0; i < skillEffectPrefab.Count; i++)
+        {
+            GameObject instance = particlePooling.GetSkillPool($"{skillId}_{i+1}_Particle", skillEffectPrefab[i]);
+            instance.transform.parent = null;
+            instance.transform.position = position + direction;
+            
+            ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+            ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
+            stopAction.SkillID = skillId;
+            
+            mainModule = particleSystem.main;
+            currentDirection = direction;
+            
+            instance.SetActive(true);
+            particleSystem.Play();
+        } 
     }
 
     /// <summary>

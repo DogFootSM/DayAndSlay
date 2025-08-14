@@ -46,7 +46,12 @@ public class SkillTree : MonoBehaviour, ISavable
         {
             if (skillNode.CurSkillLevel > 0)
             {
-                skillParticlePooling.InstantiateSkillParticlePool(skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
+                for (int i = 0; i < skillNode.skillData.SkillEffectPrefab.Count; i++)
+                {
+                    skillParticlePooling.InstantiateSkillParticlePool($"{skillNode.skillData.SkillId}_{i + 1}_Particle", skillNode.skillData.SkillEffectPrefab[i]);
+                }
+                
+                //skillParticlePooling.InstantiateSkillParticlePool(skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
             }
         }
     }
