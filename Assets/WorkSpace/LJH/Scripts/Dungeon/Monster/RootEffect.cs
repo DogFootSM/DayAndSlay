@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RootEffect : Effect
@@ -22,7 +20,7 @@ public class RootEffect : Effect
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("피해 입음");
+            Debug.Log("???? ????");
         }
     }
 }
