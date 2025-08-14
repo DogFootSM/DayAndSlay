@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
@@ -6,15 +7,37 @@ using UnityEngine.Windows.Speech;
 
 public abstract class MeleeSkill : SkillFactory
 {
-    private ParticleSystem.MainModule mainModule;
+
     private Vector2 currentDirection;
     
+    protected ParticleSystem.MainModule mainModule;
+    protected List<Action> skillActions = new List<Action>();
+    protected ParticleSystem.TriggerModule triggerModule;
+    protected ParticleInteraction interaction;
     protected float skillDamage;
+    
+    protected float leftDeg; 
+    protected float rightDeg;
+    protected float downDeg;
+    protected float upDeg;
     
     public MeleeSkill(SkillNode skillNode) : base(skillNode)
     {
     }
 
+    protected void SetOverlapSize(Vector2 direction, float skillRange)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            //TODO: 감지 모양 및 크기는 추후 수정
+            overlapSize = new Vector2(skillRange, 1f);
+        }
+        else
+        {
+            overlapSize = new Vector2(1f, skillRange);
+        }
+    }
+    
     /// <summary>
     /// 현재 스킬의 데미지 반환
     /// </summary>
@@ -36,6 +59,8 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, List<GameObject> skillEffectPrefab)
     {
+        skillActions.Clear();
+        
         for (int i = 0; i < skillEffectPrefab.Count; i++)
         {
             Debug.Log("스킬 이펙트 발동");
@@ -44,17 +69,20 @@ public abstract class MeleeSkill : SkillFactory
             instance.transform.position = position + direction;
             
             ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
-            ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
-            stopAction.SkillID = $"{skillId}_{i+1}_Particle";
+            interaction = instance.GetComponent<ParticleInteraction>();
+            interaction.EffectId = $"{skillId}_{i+1}_Particle";
             
+            triggerModule = particleSystem.trigger;
             mainModule = particleSystem.main;
             currentDirection = direction;
-            
+ 
             instance.SetActive(true);
             particleSystem.Play();
         } 
     }
-
+    
+    
+    
     /// <summary>
     /// 파티클의 StartRotation을 회전
     /// </summary>
@@ -69,7 +97,7 @@ public abstract class MeleeSkill : SkillFactory
         if (currentDirection.y < 0) mainModule.startRotationZ = Mathf.Deg2Rad * upDegY;
         if (currentDirection.y > 0) mainModule.startRotationZ = Mathf.Deg2Rad * downDegY;
     }
-
+ 
     /// <summary>
     /// 넉백 효과
     /// </summary>
@@ -143,6 +171,11 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveCounterWhileImmobile();
     }
 
+    protected void MoveSpeedBuff(float duration, float ratio)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
+    }
+    
     /// <summary>
     /// 몬스터 방어력 감소 디버프 효과 호출
     /// </summary>
@@ -167,16 +200,30 @@ public abstract class MeleeSkill : SkillFactory
     protected void ExecuteChargeSkill(Vector2 dir, Vector2 playerPos, Vector2 overlapSize)
     {
         skillNode.PlayerSkillReceiver.ReceiveExecuteCharge(dir, playerPos, overlapSize);
-        
     }
-    
+
+    /// <summary>
+    /// 파티클 트리거 리스트 감지된 콜라이더 제거
+    /// </summary>
+    protected void RemoveTriggerModuleList()
+    { 
+        for (int i = triggerModule.colliderCount -1; i >= 0; i--)
+        {
+            triggerModule.RemoveCollider(triggerModule.GetCollider(i));
+        } 
+    }
+
     /// <summary>
     /// 몬스터에게 데미지 전달
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="damage">스킬 데미지</param>
-    protected void Hit(IEffectReceiver monster, float damage)
+    /// <param name="hitCount">몬스터 타격 횟수</param>
+    protected void Hit(IEffectReceiver monster, float damage, int hitCount)
     {
-        monster.TakeDamage(damage);
+        for (int i = 0; i < hitCount; i++)
+        {
+            monster.TakeDamage(damage);
+        } 
     }
 }

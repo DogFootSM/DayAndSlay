@@ -43,7 +43,7 @@ ParticleSystem:
   m_GameObject: {fileID: 486490840764853208}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1.5
+  simulationSpeed: 2.2
   stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
@@ -3852,11 +3852,11 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
-    enter: 0
+    enter: 2
     exit: 0
     colliderQueryMode: 0
     radiusScale: 1

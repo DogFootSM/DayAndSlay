@@ -20,7 +20,8 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine counterWhileImmobileCo;
     private Coroutine dashCo;
     private Coroutine dashStunCo;
-
+    private Coroutine moveSpeedBuffCo;
+    
     private LayerMask monsterMask;
     
     private Queue<IEffectReceiver> monsterQueue = new Queue<IEffectReceiver>();
@@ -245,4 +246,29 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         monsterQueue.Enqueue(monster);
     }
+
+    public void ReceiveMoveSpeedBuff(float duration, float ratio)
+    {
+        if (moveSpeedBuffCo != null)
+        {
+            StopCoroutine(moveSpeedBuffCo);
+            moveSpeedBuffCo = null;
+        }
+        moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, ratio));
+    }
+
+    /// <summary>
+    /// 이동 속도 증가 버프
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    private IEnumerator MoveSpeedBuffRoutine(float duration, float ratio)
+    {
+        float originSpeed = playerModel.PlayerStats.moveSpeed;
+        playerModel.PlayerStats.moveSpeed += (playerModel.PlayerStats.moveSpeed * ratio);
+
+        yield return WaitCache.GetWait(duration);
+        playerModel.PlayerStats.moveSpeed = originSpeed;
+    }
+    
 }

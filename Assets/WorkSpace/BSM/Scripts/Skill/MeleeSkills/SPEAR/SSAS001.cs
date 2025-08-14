@@ -1,41 +1,46 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SSAS001 : MeleeSkill
 {
-    private float leftDeg = 90f; 
-    private float rightDeg = 270f;
-    private float downDeg = 180f;
-    private float upDeg = 0f;
-
     private Vector2 dir;
-    private Vector2 pos;
-
+    private Vector2 pos; 
+    
     public SSAS001(SkillNode skillNode) : base(skillNode)
-    {
+    { 
+        leftDeg = 270f; 
+        rightDeg = 90f;
+        downDeg = 0f;
+        upDeg = 180f;
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
-    {
+    {   
+        SetOverlapSize(direction, skillNode.skillData.SkillRange);
         MeleeEffect(playerPosition, direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
         SetParticleStartRotationFromDeg(leftDeg, rightDeg, downDeg, upDeg);
-
         skillDamage = GetSkillDamage();
-
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-        {
-            //TODO: 감지 모양 및 크기는 추후 수정
-            overlapSize = new Vector2(3f, 1f);
-        }
-        else
-        {
-            overlapSize = new Vector2(1f, 3f);
-        }
         
-        ShieldEffect(0.5f, 3, 2.5f, 5f);
+        Collider2D[] detectedMonster =
+            Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0f, monsterLayer);
+   
+        if (detectedMonster.Length < 1) return;
+ 
+        IEffectReceiver monsterReceiver = detectedMonster[0].GetComponent<IEffectReceiver>();
+        
+        skillActions.Add(() => KnockBackEffect(playerPosition, direction, monsterReceiver));
+        skillActions.Add(() => Hit(monsterReceiver ,skillDamage, skillNode.skillData.SkillHitCount));
+        skillActions.Add(RemoveTriggerModuleList);
+        
+        if (triggerModule.enabled)
+        {
+            triggerModule.AddCollider(detectedMonster[0]);
+            interaction.ReceiveAction(skillActions);
+        } 
     }
-
+    
     public override void ApplyPassiveEffects() { }
     
     public override void Gizmos()
