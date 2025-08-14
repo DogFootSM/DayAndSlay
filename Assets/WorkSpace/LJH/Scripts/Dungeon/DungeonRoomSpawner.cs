@@ -50,11 +50,11 @@ public class DungeonRoomSpawner : MonoBehaviour
     /// <summary>
     /// ¹® »ý¼º
     /// </summary>
-    private void BuildDoor(DungeonPathfinder pathfinder)
+    public void BuildDoor(List<Grid> route)
     {
-        Debug.Log("ºôµåµµ¾î ½ÇÇàµÊ");
-        foreach (GameObject room in RoomList)
+        foreach (Grid r in route)
         {
+            GameObject room = r.gameObject;
             
             if (room == RoomList[RoomList.Count - 1]) continue;
             
