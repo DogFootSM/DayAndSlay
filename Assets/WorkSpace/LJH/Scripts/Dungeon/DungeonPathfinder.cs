@@ -8,7 +8,7 @@ public class DungeonPathfinder : MonoBehaviour
     [Header("던전 방 데이터")]
     [SerializeField] private List<Grid> roomList = new List<Grid>();
     [SerializeField] private int bossRoomIndex = 2;
-    [SerializeField] private int gridWidth = 3; // 4x3 그리드 기준
+    [SerializeField] private int gridWidth = 3; // 3x2 그리드 기준
 
     [Header("시각화")]
     [SerializeField] private LineRenderer mainRouteLineRenderer;
@@ -54,8 +54,8 @@ public class DungeonPathfinder : MonoBehaviour
 
         SideRouteMake();
 
-        DoorCreate(route);
-        DoorCreate(sideRoute);
+        //DoorCreate(route);
+        //DoorCreate(sideRoute);
 
         DrawRouteLines();
     }
@@ -107,9 +107,75 @@ public class DungeonPathfinder : MonoBehaviour
         route.Remove(current);
         return false;
     }
-
     private void SideRouteMake()
     {
+        sideRoute.Clear();
+        if (route == null || route.Count == 0) return;
+
+        // 메인루트 집합
+        HashSet<Grid> main = new HashSet<Grid>(route);
+
+        // 1) "메인에 속하면서 비-메인 이웃이 있는" 진입 후보 수집
+        List<(Grid entry, Grid neighbor)> candidates = new List<(Grid, Grid)>();
+        foreach (Grid r in route)
+        {
+            if (r == roomList[bossRoomIndex]) continue; // 보스 방은 제외(원하면 포함 가능)
+
+            int idx = roomDict[r];
+            foreach (Grid nb in graph[idx])
+            {
+                if (!main.Contains(nb) && nb != roomList[bossRoomIndex])
+                    candidates.Add((r, nb));
+            }
+        }
+
+        if (candidates.Count == 0)
+        {
+            Debug.LogWarning("사이드루트 후보가 없습니다. (메인과 인접한 비-메인 방이 없음)");
+            return;
+        }
+
+        // 2) 임의의 후보 선택
+        var pick = candidates[Random.Range(0, candidates.Count)];
+        Grid entry = pick.entry;
+        Grid first = pick.neighbor;
+
+        // 3) 선형 경로 구축: 메인과 겹치지 않도록 로컬 visited 사용
+        HashSet<Grid> localVisited = new HashSet<Grid>(main); // 메인은 이미 방문 처리
+        localVisited.Add(entry);
+
+        sideRoute.Add(entry);                 // 라인렌더러가 메인→사이드로 자연스럽게 이어지게
+        BuildSidePathLinear(first, localVisited, main);
+
+        Debug.Log($"SideRoute length = {sideRoute.Count} (entry={roomDict[entry]})");
+    }
+
+// 비-메인 영역 안에서만 한 방향으로 쭉 뻗는 선형 경로를 만든다.
+    private void BuildSidePathLinear(Grid current, HashSet<Grid> visited, HashSet<Grid> main)
+    {
+        while (true)
+        {
+            if (!visited.Add(current)) break;     // 이미 방문(또는 메인)이면 종료
+            sideRoute.Add(current);
+
+            int idx = roomDict[current];
+
+            // 다음 후보: 아직 방문 안 했고 메인도 아니고 보스도 아닌 이웃들
+            List<Grid> nextCandidates = new List<Grid>();
+            foreach (Grid nb in graph[idx])
+            {
+                if (!visited.Contains(nb) && !main.Contains(nb) && nb != roomList[bossRoomIndex])
+                    nextCandidates.Add(nb);
+            }
+
+            if (nextCandidates.Count == 0) break; // 더 못 뻗으면 종료
+            current = nextCandidates[Random.Range(0, nextCandidates.Count)];
+        }
+    }
+/*
+    private void SideRouteMake()
+    {
+        
         List<Grid> StartGrid = new List<Grid>();
 
         foreach (Grid mainRoom in route)
@@ -144,6 +210,9 @@ public class DungeonPathfinder : MonoBehaviour
         HashSet<Grid> sideVisited = new HashSet<Grid>();
 
         sideVisited.Add(entryPoint);
+        
+        Debug.Log($"Route idx: {string.Join(",", route.ConvertAll(g => roomDict[g]))}");
+        Debug.Log($"Side-entry candidates: {StartGrid.Count}");
 
         foreach (Grid neighbor in graph[entryIndex])
         {
@@ -153,7 +222,13 @@ public class DungeonPathfinder : MonoBehaviour
                 break;
             }
         }
+        
+        
     }
+    
+    
+    
+    
 
     private void SideRouteDFS(Grid current, HashSet<Grid> sideVisited)
     {
@@ -172,7 +247,7 @@ public class DungeonPathfinder : MonoBehaviour
                 SideRouteDFS(neighbor, sideVisited);
             }
         }
-    }
+    }*/
 
 
     /// <summary>
@@ -195,6 +270,7 @@ public class DungeonPathfinder : MonoBehaviour
             TryAddNeighbor(i, right);
 
         }
+        
     }
 
     private void TryAddNeighbor(int from, int to)
@@ -253,6 +329,11 @@ public class DungeonPathfinder : MonoBehaviour
     /// </summary>
     private void DrawRouteLines()
     {
+        foreach (Grid room in route)
+            Debug.Log($"메인 루트 {room.name}");
+        
+        foreach (Grid room in sideRoute)
+            Debug.Log(room.name);
         // 메인 루트 그리기
         mainRouteLineRenderer.positionCount = route.Count;
         for (int i = 0; i < route.Count; i++)
