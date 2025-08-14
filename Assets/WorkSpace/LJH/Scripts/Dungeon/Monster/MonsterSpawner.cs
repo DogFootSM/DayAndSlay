@@ -49,6 +49,7 @@ public class MonsterSpawner : MonoBehaviour
         MonsterSpawnPosSet();
         MonsterSpawn();
         SpawnerDestroy();
+        
     }
 
     private void Update()
@@ -73,53 +74,7 @@ public class MonsterSpawner : MonoBehaviour
 
         return false;
     }
-    public const int MaxAttempts = 100;
 
-    virtual public void MonsterSpawnPosSet1()
-    {
-        if (IsBossRoom()) return;
-
-        // 1) 경계 정리 (min <= max 보장 + int 상한 포함되게 +1)
-        int xMinLocal = Mathf.Min(this.xPos[Direction.Left],  this.xPos[Direction.Right]);
-        int xMaxLocal = Mathf.Max(this.xPos[Direction.Left],  this.xPos[Direction.Right]) + 1; // 포함되게
-        int yMinLocal = Mathf.Min(this.yPos[Direction.Down],  this.yPos[Direction.Up]);
-        int yMaxLocal = Mathf.Max(this.yPos[Direction.Down],  this.yPos[Direction.Up]) + 1;    // 포함되게
-
-        // 2) 방의 부모 기준을 '셀 좌표'로 환산
-        Vector3 parentWorld = transform.parent != null ? transform.parent.position : Vector3.zero;
-        Vector3Int parentCell = floor.WorldToCell(parentWorld);
-
-        foreach (GameObject spawner in spawnerList)
-        {
-            bool placed = false;
-
-            for (int attempt = 0; attempt < MaxAttempts; attempt++)
-            {
-                // 3) 셀 좌표에서 직접 난수
-                int cx = Random.Range(xMinLocal + parentCell.x, xMaxLocal + parentCell.x);
-                int cy = Random.Range(yMinLocal + parentCell.y, yMaxLocal + parentCell.y);
-                Vector3Int cell = new Vector3Int(cx, cy, 0);
-
-                // 4) 셀 유효성 검사
-                if (CheckTile(cell))
-                {
-                    // 5) 셀 중심 월드 좌표로 배치
-                    Vector3 world = floor.GetCellCenterWorld(cell);
-                    spawner.transform.position = world;
-                    placed = true;
-                    break;
-                }
-            }
-
-            if (!placed)
-            {
-                Debug.LogWarning($"[{name}] 유효 스폰 타일을 {MaxAttempts}회 내에 찾지 못함.");
-                // 필요하다면: spawner를 비활성화하거나, fallback 위치로 이동
-                // spawner.SetActive(false);
-            }
-        }
-    }
-    
     virtual public void MonsterSpawnPosSet()
     {
         Room room = GetComponentInParent<Room>();
@@ -198,6 +153,7 @@ public class MonsterSpawner : MonoBehaviour
     public void MonsterActiver()
     {
         bool playerInside = ContainsPlayer(player.transform.position);
+        Debug.Log(playerInside);
 
         foreach (GameObject mon in monsterList)
         {
