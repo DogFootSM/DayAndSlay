@@ -13,6 +13,9 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
     [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
 
+    [SerializeField] protected Tilemap floorTilemap;
+    [SerializeField] protected Tilemap wallTilemap;
+
 
     //플레이어 위치 체크 테스트용 변수
     [SerializeField] private GameObject player;
@@ -70,32 +73,84 @@ public class MonsterSpawner : MonoBehaviour
 
         return false;
     }
-    int checkNum;
-    virtual public void MonsterSpawnPosSet()
+    public const int MaxAttempts = 100;
+
+    virtual public void MonsterSpawnPosSet1()
     {
         if (IsBossRoom()) return;
 
+        // 1) 경계 정리 (min <= max 보장 + int 상한 포함되게 +1)
+        int xMinLocal = Mathf.Min(this.xPos[Direction.Left],  this.xPos[Direction.Right]);
+        int xMaxLocal = Mathf.Max(this.xPos[Direction.Left],  this.xPos[Direction.Right]) + 1; // 포함되게
+        int yMinLocal = Mathf.Min(this.yPos[Direction.Down],  this.yPos[Direction.Up]);
+        int yMaxLocal = Mathf.Max(this.yPos[Direction.Down],  this.yPos[Direction.Up]) + 1;    // 포함되게
+
+        // 2) 방의 부모 기준을 '셀 좌표'로 환산
+        Vector3 parentWorld = transform.parent != null ? transform.parent.position : Vector3.zero;
+        Vector3Int parentCell = floor.WorldToCell(parentWorld);
+
         foreach (GameObject spawner in spawnerList)
         {
-            checkNum = 0;
-            Vector3 spawnPos = Vector3.zero;
-            Vector3Int tilePos = Vector3Int.zero;
-            do
-            {
-                int xPos = Random.Range(this.xPos[Direction.Left], this.xPos[Direction.Right]) + (int)GetComponentInParent<Transform>().position.x;
-                int yPos = Random.Range(this.yPos[Direction.Up], this.yPos[Direction.Down]) + (int)GetComponentInParent<Transform>().position.y;
+            bool placed = false;
 
-                spawnPos = new Vector3Int(xPos, yPos, 0);
-                tilePos = floor.WorldToCell(spawnPos);
-                checkNum++;
-            } while (!CheckTile(tilePos) && checkNum < 30);
-
-            if (checkNum == 30)
+            for (int attempt = 0; attempt < MaxAttempts; attempt++)
             {
-                Debug.Log("무한루프 터짐");
+                // 3) 셀 좌표에서 직접 난수
+                int cx = Random.Range(xMinLocal + parentCell.x, xMaxLocal + parentCell.x);
+                int cy = Random.Range(yMinLocal + parentCell.y, yMaxLocal + parentCell.y);
+                Vector3Int cell = new Vector3Int(cx, cy, 0);
+
+                // 4) 셀 유효성 검사
+                if (CheckTile(cell))
+                {
+                    // 5) 셀 중심 월드 좌표로 배치
+                    Vector3 world = floor.GetCellCenterWorld(cell);
+                    spawner.transform.position = world;
+                    placed = true;
+                    break;
+                }
             }
 
-            spawner.transform.position = spawnPos;
+            if (!placed)
+            {
+                Debug.LogWarning($"[{name}] 유효 스폰 타일을 {MaxAttempts}회 내에 찾지 못함.");
+                // 필요하다면: spawner를 비활성화하거나, fallback 위치로 이동
+                // spawner.SetActive(false);
+            }
+        }
+    }
+    
+    virtual public void MonsterSpawnPosSet()
+    {
+        Room room = GetComponentInParent<Room>();
+        GameObject _room = room.gameObject;
+        
+        if (room.GetBossCheck()) return;
+        
+        foreach (GameObject spawner in spawnerList)
+        {
+            if (floorTilemap == null) continue;
+
+            List<Vector3> floorPositions = new List<Vector3>();
+            
+            BoundsInt bounds = floorTilemap.cellBounds;
+            
+            foreach (Vector3Int pos in bounds.allPositionsWithin)
+            {
+                if (floorTilemap.HasTile(pos) && !wallTilemap.HasTile(pos))
+                {
+                    // Cell -> World 좌표 변환
+                    Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
+                    floorPositions.Add(worldPos);
+                }
+            }
+
+            if (floorPositions.Count > 0)
+            {
+                Vector3 spawnerPos = floorPositions[Random.Range(0, floorPositions.Count)];
+
+                spawner.transform.position = spawnerPos;
+            }
         }
     }
 
@@ -132,7 +187,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         for (int i = spawnerList.Count - 1; i >= 0; i--)
         {
-            Destroy(spawnerList[i]);
+            //Destroy(spawnerList[i]);
         }
     }
 
@@ -142,10 +197,12 @@ public class MonsterSpawner : MonoBehaviour
     /// </summary>
     public void MonsterActiver()
     {
-        foreach(GameObject mon in monsterList)
+        bool playerInside = ContainsPlayer(player.transform.position);
+
+        foreach (GameObject mon in monsterList)
         {
-            GridReFerence(mon);
-            mon.SetActive(ContainsPlayer(player.transform.position));
+            GridReFerence(mon);             // 그리드/타일 참조 갱신
+            mon.SetActive(playerInside);    // 방 안이면 전부 On, 밖이면 Off
         }
     }
 
@@ -162,11 +219,16 @@ public class MonsterSpawner : MonoBehaviour
         astarPath.mapGrid = grid;
         astarPath.TileMapReference();
     }
-
-    private bool ContainsPlayer(Vector3 pos)
+    
+    private bool ContainsPlayer(Vector3 worldPos)
     {
-        Vector3Int localCell = grid.WorldToCell(pos);
-        return localBounds.Contains(localCell);
+        if (floor == null) return false;
+
+        Vector3Int cell = floor.WorldToCell(worldPos);
+
+        // bounds 체크 및 실제 바닥 타일 존재 체크
+        if (!floor.cellBounds.Contains(cell)) return false;
+        return floor.HasTile(cell);
     }
 
     private void Init()
