@@ -41,23 +41,24 @@ public class SSAS005 : MeleeSkill
             }
         }
         
+        ExecuteDash(direction.normalized);
         MeleeEffect(playerPosition - (direction / 2), skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
-        
+
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
 
         if (cols.Length > 0)
         {
             IEffectReceiver monster = cols[0].GetComponent<IEffectReceiver>();
             skillActions.Add(() => Hit(monster, skillDamage, skillNode.skillData.SkillHitCount));
-        }
-        
-        
-        
-        if (triggerModule.enabled)
-        {
+            skillActions.Add(() => DashStunEffect(monster, skillNode.skillData.DeBuffDuration));
+            skillActions.Add(RemoveTriggerModuleList);
             
-        }
-        
+            if (triggerModule.enabled)
+            {
+                triggerModule.AddCollider(cols[0]);
+                interaction.ReceiveAction(skillActions);
+            }
+        } 
     }
 
     public override void ApplyPassiveEffects(){}

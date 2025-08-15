@@ -44,8 +44,6 @@ public class SkillData : ScriptableObject
             
             SkillEffectPrefab.Add(Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effects[i]}"));
         }
-        
-        //SkillEffectPrefab = Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effectName}");
     }
 
     private void SetSkillIcon(string iconName)

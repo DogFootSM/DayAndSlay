@@ -131,7 +131,17 @@ public abstract class MeleeSkill : SkillFactory
     {
         monster.ReceiveStun(duration);
     }
-
+    
+    /// <summary>
+    /// 대쉬 종료 후 몬스터 스턴 효과
+    /// </summary>
+    /// <param name="receivers">감지한 몬스터</param>
+    /// <param name="duration">스턴 지속 시간</param>
+    protected void DashStunEffect(IEffectReceiver receivers, float duration)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveDashStun(receivers, duration);
+    }
+    
     /// <summary>
     /// 적 둔화 효과 호출
     /// </summary>
@@ -198,9 +208,15 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerModel.NextSkillBuffActive = true;
     }
 
-    protected void ExecuteChargeSkill(Vector2 dir, Vector2 playerPos, Vector2 overlapSize)
+    /// <summary>
+    /// 캐릭터 대쉬 사용
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="playerPos"></param>
+    /// <param name="overlapSize"></param>
+    protected void ExecuteDash(Vector2 dir)
     {
-        skillNode.PlayerSkillReceiver.ReceiveExecuteCharge(dir, playerPos, overlapSize);
+        skillNode.PlayerSkillReceiver.ReceiveDash(dir);
     }
 
     /// <summary>

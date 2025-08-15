@@ -9,7 +9,7 @@ public class SkillSlotInvoker : MonoBehaviour
 {
     private SkillFactory slotSkill;
 
-    private Vector2 curDirection;
+    private Vector2 curDirection = Vector2.down;
     public UnityAction<Vector2> OnDirectionChanged;
     
     private void OnEnable()
@@ -47,10 +47,9 @@ public class SkillSlotInvoker : MonoBehaviour
             if (skillNode != null)
             {
                 slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-                Debug.Log("팩토리에서 받아옴");
+
                 if (slotSkill != null)
                 {
-                    Debug.Log("스킬 존재");
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
                     CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
