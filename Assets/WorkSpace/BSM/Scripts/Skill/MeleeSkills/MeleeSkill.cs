@@ -54,6 +54,15 @@ public abstract class MeleeSkill : SkillFactory
     }
 
     /// <summary>
+    /// 레벨당 디버프 지속 시간 증가 계산
+    /// </summary>
+    /// <returns></returns>
+    protected float GetDeBuffDurationIncreasePerLevel(float increaseValue)
+    {
+        return skillNode.skillData.DeBuffDuration + (skillNode.CurSkillLevel * increaseValue);
+    }
+    
+    /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
     protected void MeleeEffect(Vector2 position, string skillId, List<GameObject> skillEffectPrefab)
@@ -104,7 +113,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="playerPos">현재 캐릭터의 위치</param>
     /// <param name="playerDir">캐릭터가 공격한 방향</param>
     /// <param name="monster">감지한 몬스터</param>
-    protected void KnockBackEffect(Vector2 playerPos, Vector2 playerDir, IEffectReceiver monster)
+    protected void ExecuteKnockBack(Vector2 playerPos, Vector2 playerDir, IEffectReceiver monster)
     {
         monster.ReceiveKnockBack(playerPos, playerDir);
     }
@@ -117,7 +126,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="duration">지속 시간</param>
     /// <param name="tick">데미지를 가할 시간 간격</param>
     /// <param name="damage">초당 데미지</param>
-    protected void DotEffect(IEffectReceiver monster, float duration, float tick, float damage)
+    protected void ExecuteDot(IEffectReceiver monster, float duration, float tick, float damage)
     {
         monster.ReceiveDot(duration, tick, damage);
     }
@@ -127,7 +136,7 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">스턴 지속 시간</param>
-    protected void StunEffect(IEffectReceiver monster, float duration)
+    protected void ExecuteStun(IEffectReceiver monster, float duration)
     {
         monster.ReceiveStun(duration);
     }
@@ -137,7 +146,7 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="receivers">감지한 몬스터</param>
     /// <param name="duration">스턴 지속 시간</param>
-    protected void DashStunEffect(IEffectReceiver receivers, float duration)
+    protected void ExecuteDashStun(IEffectReceiver receivers, float duration)
     {
         skillNode.PlayerSkillReceiver.ReceiveDashStun(receivers, duration);
     }
@@ -148,7 +157,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">둔화 지속 시간</param>
     /// <param name="ratio">둔화 효과 적용 비율</param>
-    protected void SlowEffect(IEffectReceiver monster, float duration, float ratio)
+    protected void ExecuteSlow(IEffectReceiver monster, float duration, float ratio)
     {
         monster.ReceiveSlow(duration, ratio);
     }
@@ -160,7 +169,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="shieldCount">스킬 사용 시 충전할 쉴드 개수</param>
     /// <param name="defenseBoostMultiplier">쉴드 사용 시 증가할 방어력</param>
     /// <param name="duration">스킬 지속 시간</param>
-    protected void ShieldEffect(float castingTime, int shieldCount, float defenseBoostMultiplier, float duration)
+    protected void ExecuteShield(float castingTime, int shieldCount, float defenseBoostMultiplier, float duration)
     {
         skillNode.PlayerSkillReceiver.ReceiveShield(castingTime, shieldCount, defenseBoostMultiplier, duration);
     }
@@ -169,7 +178,7 @@ public abstract class MeleeSkill : SkillFactory
     /// 스킬 사용 시 이동 불가 상태 효과 호출
     /// </summary>
     /// <param name="duration">이동 불가할 지속 시간</param>
-    protected void ApplyMovementBlock(float duration)
+    protected void ExecutMovementBlock(float duration)
     {
         skillNode.PlayerSkillReceiver.ReceiveMovementBlock(duration);
     }
@@ -182,7 +191,7 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveCounterWhileImmobile();
     }
 
-    protected void MoveSpeedBuff(float duration, float ratio)
+    protected void ExecuteMoveSpeedBuff(float duration, float ratio)
     {
         skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
     }
@@ -193,7 +202,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">디버프 지속 시간</param>
     /// <param name="deBuffPercent">방어력 감소 비율</param>
-    protected void ApplyDefenseDeBuff(IEffectReceiver monster, float duration, float deBuffPercent)
+    protected void ExecuteDefenseDeBuff(IEffectReceiver monster, float duration, float deBuffPercent)
     {
         monster.ReceiveDefenseDeBuff(duration, deBuffPercent);
     }
@@ -202,7 +211,7 @@ public abstract class MeleeSkill : SkillFactory
     /// 다음 스킬 데미지 버프 적용
     /// </summary>
     /// <param name="multiplier"></param>
-    protected void ApplyNextSkillDamageBuff(float multiplier)
+    protected void ExecuteNextSkillDamageBuff(float multiplier)
     {
         skillNode.PlayerModel.NextSkillDamageMultiplier = multiplier;
         skillNode.PlayerModel.NextSkillBuffActive = true;
@@ -230,6 +239,11 @@ public abstract class MeleeSkill : SkillFactory
         } 
     }
 
+    protected void ExecuteAttackUpDefenseDown(float duration)
+    {
+        
+    }
+    
     /// <summary>
     /// 몬스터에게 데미지 전달
     /// </summary>

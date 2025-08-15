@@ -30,7 +30,7 @@ public class SSAS001 : MeleeSkill
  
         IEffectReceiver monsterReceiver = detectedMonster[0].GetComponent<IEffectReceiver>();
         
-        skillActions.Add(() => KnockBackEffect(playerPosition, direction, monsterReceiver));
+        skillActions.Add(() => ExecuteKnockBack(playerPosition, direction, monsterReceiver));
         skillActions.Add(() => Hit(monsterReceiver ,skillDamage, skillNode.skillData.SkillHitCount));
         skillActions.Add(RemoveTriggerModuleList);
         

@@ -10,13 +10,16 @@ public class SSAS007 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-     }
+        MeleeEffect(playerPosition + Vector2.up, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
+        
+        
+    }
 
     public override void ApplyPassiveEffects()
     {
-     }
+    }
 
     public override void Gizmos()
     {
-     }
+    }
 }

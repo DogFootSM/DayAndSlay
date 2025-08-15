@@ -28,10 +28,10 @@ public class SSAS003 : MeleeSkill
 
         if (detectedMonster.Length > 0)
         {
+            //TODO: 방어력 무시 데미지 ?
             IEffectReceiver monsterReceiver = detectedMonster[0].GetComponent<IEffectReceiver>();
             skillActions.Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
             skillActions.Add(RemoveTriggerModuleList);
-            
             if (triggerModule.enabled)
             {   
                 triggerModule.AddCollider(detectedMonster[0]);

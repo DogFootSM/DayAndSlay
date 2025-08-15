@@ -49,8 +49,10 @@ public class SSAS005 : MeleeSkill
         if (cols.Length > 0)
         {
             IEffectReceiver monster = cols[0].GetComponent<IEffectReceiver>();
+            float deBuffDuration = GetDeBuffDurationIncreasePerLevel(0.2f);
+            
             skillActions.Add(() => Hit(monster, skillDamage, skillNode.skillData.SkillHitCount));
-            skillActions.Add(() => DashStunEffect(monster, skillNode.skillData.DeBuffDuration));
+            skillActions.Add(() => ExecuteDashStun(monster, deBuffDuration));
             skillActions.Add(RemoveTriggerModuleList);
             
             if (triggerModule.enabled)

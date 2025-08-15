@@ -21,7 +21,8 @@ public class SSAS004 : MeleeSkill
             
             MeleeEffect(detected[0].transform.position + Vector3.up, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
             
-            skillActions.Add(() => SlowEffect(monster, skillNode.skillData.DeBuffDuration, 0.5f));
+            float deBuffDuration = GetDeBuffDurationIncreasePerLevel(5f);
+            skillActions.Add(() => ExecuteSlow(monster, deBuffDuration, 0.5f));
             skillActions.Add(() => Hit(monster, skillDamage, skillNode.skillData.SkillHitCount));
             skillActions.Add(RemoveTriggerModuleList);
             
@@ -30,7 +31,16 @@ public class SSAS004 : MeleeSkill
                 triggerModule.AddCollider(detected[0]);
                 interaction.ReceiveAction(skillActions);
             } 
-        } 
+        }
+        else
+        {
+            Vector2 offset = new Vector2();
+            
+            if(Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) offset = new Vector2(skillNode.skillData.SkillRange, 0);
+            else offset = new Vector2(0, skillNode.skillData.SkillRange);
+            
+            MeleeEffect((playerPosition + (direction * offset)), skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
+        }
     }
 
     public override void ApplyPassiveEffects(){ }
