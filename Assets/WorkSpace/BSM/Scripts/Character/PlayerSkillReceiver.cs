@@ -20,7 +20,8 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine counterWhileImmobileCo;
     private Coroutine dashCo;
     private Coroutine dashStunCo;
-
+    private Coroutine moveSpeedBuffCo;
+    
     private LayerMask monsterMask;
     
     private Queue<IEffectReceiver> monsterQueue = new Queue<IEffectReceiver>();
@@ -73,27 +74,45 @@ public class PlayerSkillReceiver : MonoBehaviour
         shieldSkillCo = StartCoroutine(ShieldRoutine(shieldCount, defenseBoostMultiplier, duration));
     }
 
-    public void ReceiveExecuteCharge(Vector2 chargeDirection, Vector2 playerPos, Vector2 overlapSize)
+    /// <summary>
+    /// 대쉬 스킬 리시버
+    /// </summary>
+    /// <param name="chargeDirection">대쉬할 방향</param>
+    public void ReceiveDash(Vector2 chargeDirection)
     {
-        playerController.CharacterRb.velocity = chargeDirection * 5f;
+        playerController.CharacterRb.velocity = chargeDirection * 8f;
 
         if (dashCo != null)
         {
             StopCoroutine(dashCo);
             dashCo = null;
         }
+        dashCo = StartCoroutine(DashRoutine());
+        
 
-        if (dashStunCo != null)
-        {
-            StopCoroutine(dashStunCo);
-            dashStunCo = null;
-        }
-
-        dashCo = StartCoroutine(DashRoutine(chargeDirection, playerPos, overlapSize));
-        dashStunCo = StartCoroutine(DashStunRoutine(chargeDirection, playerPos, overlapSize));
     }
 
-    private IEnumerator DashRoutine(Vector2 chargeDirection, Vector2 playerPos, Vector2 overlapSize)
+    /// <summary>
+    /// 대쉬 후 몬스터 스턴 동작
+    /// </summary>
+    /// <param name="receivers">대쉬 스킬에 맞은 몬스터</param>
+    /// <param name="duration">스턴 지속 시간</param>
+    public void ReceiveDashStun(IEffectReceiver receivers, float duration)
+    {
+         if (dashStunCo != null)
+         {
+             StopCoroutine(dashStunCo);
+             dashStunCo = null;
+         }
+         
+        dashStunCo = StartCoroutine(DashStunRoutine(receivers, duration));
+    }
+    
+    /// <summary>
+    /// 대쉬 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DashRoutine()
     {
         Physics2D.IgnoreLayerCollision(playerLayer, monsterLayer, true);
         //TODO: 돌진 애니메이션 On
@@ -106,17 +125,16 @@ public class PlayerSkillReceiver : MonoBehaviour
         playerController.CharacterRb.velocity = Vector2.zero;
     }
 
-    private IEnumerator DashStunRoutine(Vector2 dir, Vector2 playerPos, Vector2 overlapSize)
+    /// <summary>
+    /// 대쉬 후 몬스터 스턴 동작 코루틴
+    /// </summary>
+    /// <param name="receivers">대쉬 스킬에 맞은 몬스터</param>
+    /// <param name="duration">스턴 지속 시간</param>
+    /// <returns></returns>
+    private IEnumerator DashStunRoutine(IEffectReceiver receivers, float duration)
     {
         yield return new WaitUntil(() => isDashDone);
-        
-        Collider2D[] overlaps =
-            Physics2D.OverlapBoxAll(playerPos + (dir.normalized * 1f), overlapSize, 0, monsterMask);
-
-        foreach (var col in overlaps)
-        {
-            col.GetComponent<IEffectReceiver>().ReceiveStun(3f);
-        }
+        receivers.ReceiveStun(duration);
     }
 
     /// <summary>
@@ -245,4 +263,29 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         monsterQueue.Enqueue(monster);
     }
+
+    public void ReceiveMoveSpeedBuff(float duration, float ratio)
+    {
+        if (moveSpeedBuffCo != null)
+        {
+            StopCoroutine(moveSpeedBuffCo);
+            moveSpeedBuffCo = null;
+        }
+        moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, ratio));
+    }
+
+    /// <summary>
+    /// 이동 속도 증가 버프
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    private IEnumerator MoveSpeedBuffRoutine(float duration, float ratio)
+    {
+        float originSpeed = playerModel.PlayerStats.moveSpeed;
+        playerModel.PlayerStats.moveSpeed += (playerModel.PlayerStats.moveSpeed * ratio);
+
+        yield return WaitCache.GetWait(duration);
+        playerModel.PlayerStats.moveSpeed = originSpeed;
+    }
+    
 }

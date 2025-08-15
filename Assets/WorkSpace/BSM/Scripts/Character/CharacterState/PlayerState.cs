@@ -6,7 +6,7 @@ public class PlayerState : PlayerStateMachine
 {
     protected static KeyCode skillInputKey;
     protected float attackSpeed => playerController.PlayerModel.PlayerStats.attackSpeed;
-    protected int moveSpeed => playerController.PlayerModel.PlayerStats.moveSpeed;
+    protected float moveSpeed => playerController.PlayerModel.PlayerStats.moveSpeed;
     
     private KeyCode[] skillInputKeys = new KeyCode[]
     {

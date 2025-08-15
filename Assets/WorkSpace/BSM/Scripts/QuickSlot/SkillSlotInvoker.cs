@@ -9,7 +9,7 @@ public class SkillSlotInvoker : MonoBehaviour
 {
     private SkillFactory slotSkill;
 
-    private Vector2 curDirection;
+    private Vector2 curDirection = Vector2.down;
     public UnityAction<Vector2> OnDirectionChanged;
     
     private void OnEnable()
@@ -47,7 +47,7 @@ public class SkillSlotInvoker : MonoBehaviour
             if (skillNode != null)
             {
                 slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-             
+
                 if (slotSkill != null)
                 {
                     slotSkill.UseSkill(curDirection, transform.position);

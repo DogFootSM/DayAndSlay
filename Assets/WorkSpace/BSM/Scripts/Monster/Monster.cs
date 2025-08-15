@@ -125,12 +125,12 @@ public class Monster : MonoBehaviour, IEffectReceiver
         //몬스터에 따른 특성 구현
     }
     
-    public void ReceiveSlow(float duration)
+    public void ReceiveSlow(float duration, float ratio)
     {
-        Slow(duration);
+        Slow(duration, ratio);
     }
     
-    protected virtual void Slow(float duration)
+    protected virtual void Slow(float duration, float ratio)
     {
         //몬스터에 따른 특성 구현
     }
@@ -237,7 +237,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         isStunned = false;
     }
     
-    protected virtual IEnumerator SlowRoutine(float duration)
+    protected virtual IEnumerator SlowRoutine(float duration, float ratio)
     {
         float elapsedTime = 0f;
 

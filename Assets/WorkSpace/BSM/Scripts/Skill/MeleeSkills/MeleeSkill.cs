@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
@@ -6,15 +7,36 @@ using UnityEngine.Windows.Speech;
 
 public abstract class MeleeSkill : SkillFactory
 {
-    private ParticleSystem.MainModule mainModule;
-    private Vector2 currentDirection;
-    
+
+    protected Vector2 currentDirection;
+    protected ParticleSystem.MainModule mainModule;
+    protected List<Action> skillActions = new List<Action>();
+    protected ParticleSystem.TriggerModule triggerModule;
+    protected ParticleInteraction interaction;
     protected float skillDamage;
+    
+    protected float leftDeg; 
+    protected float rightDeg;
+    protected float downDeg;
+    protected float upDeg;
     
     public MeleeSkill(SkillNode skillNode) : base(skillNode)
     {
     }
 
+    protected void SetOverlapSize(Vector2 direction, float skillRange)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            //TODO: 감지 모양 및 크기는 추후 수정
+            overlapSize = new Vector2(skillRange, 1f);
+        }
+        else
+        {
+            overlapSize = new Vector2(1f, skillRange);
+        }
+    }
+    
     /// <summary>
     /// 현재 스킬의 데미지 반환
     /// </summary>
@@ -32,25 +54,42 @@ public abstract class MeleeSkill : SkillFactory
     }
 
     /// <summary>
+    /// 레벨당 디버프 지속 시간 증가 계산
+    /// </summary>
+    /// <returns></returns>
+    protected float GetDeBuffDurationIncreasePerLevel(float increaseValue)
+    {
+        return skillNode.skillData.DeBuffDuration + (skillNode.CurSkillLevel * increaseValue);
+    }
+    
+    /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
-    protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, GameObject skillEffectPrefab)
+    protected void MeleeEffect(Vector2 position, string skillId, List<GameObject> skillEffectPrefab)
     {
-        GameObject instance = particlePooling.GetSkillPool(skillId, skillEffectPrefab);
-        instance.transform.parent = null;
-        instance.transform.position = position + direction;
-
-        ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
-        ParticleStopAction stopAction = instance.GetComponent<ParticleStopAction>();
-        stopAction.SkillID = skillId;
-
-        mainModule = particleSystem.main;
-        currentDirection = direction;
-
-        instance.SetActive(true);
-        particleSystem.Play();
+        skillActions.Clear();
+        
+        for (int i = 0; i < skillEffectPrefab.Count; i++)
+        {
+            Debug.Log("스킬 이펙트 발동");
+            GameObject instance = particlePooling.GetSkillPool($"{skillId}_{i+1}_Particle", skillEffectPrefab[i]);
+            instance.transform.parent = null;
+            instance.transform.position = position;
+            
+            ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+            interaction = instance.GetComponent<ParticleInteraction>();
+            interaction.EffectId = $"{skillId}_{i+1}_Particle";
+            
+            triggerModule = particleSystem.trigger;
+            mainModule = particleSystem.main; 
+ 
+            instance.SetActive(true);
+            particleSystem.Play();
+        } 
     }
-
+    
+    
+    
     /// <summary>
     /// 파티클의 StartRotation을 회전
     /// </summary>
@@ -58,21 +97,23 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="rightDeg">오른쪽 방향일 경우의 회전 값 </param>
     /// <param name="downDegY">아래 방향일 경우의 회전 값</param>
     /// <param name="upDegY">윗 방향일 경우의 회전 값</param>
-    protected void SetParticleStartRotationFromDeg(float leftDeg, float rightDeg, float downDegY, float upDegY)
+    protected void SetParticleStartRotationFromDeg(Vector2 dir, float leftDeg, float rightDeg, float downDegY, float upDegY)
     {
+        currentDirection = dir;
+        
         if (currentDirection.x < 0) mainModule.startRotationZ = Mathf.Deg2Rad * rightDeg;
         if (currentDirection.x > 0) mainModule.startRotationZ = Mathf.Deg2Rad * leftDeg;
         if (currentDirection.y < 0) mainModule.startRotationZ = Mathf.Deg2Rad * upDegY;
         if (currentDirection.y > 0) mainModule.startRotationZ = Mathf.Deg2Rad * downDegY;
     }
-
+ 
     /// <summary>
     /// 넉백 효과
     /// </summary>
     /// <param name="playerPos">현재 캐릭터의 위치</param>
     /// <param name="playerDir">캐릭터가 공격한 방향</param>
     /// <param name="monster">감지한 몬스터</param>
-    protected void KnockBackEffect(Vector2 playerPos, Vector2 playerDir, IEffectReceiver monster)
+    protected void ExecuteKnockBack(Vector2 playerPos, Vector2 playerDir, IEffectReceiver monster)
     {
         monster.ReceiveKnockBack(playerPos, playerDir);
     }
@@ -85,7 +126,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="duration">지속 시간</param>
     /// <param name="tick">데미지를 가할 시간 간격</param>
     /// <param name="damage">초당 데미지</param>
-    protected void DotEffect(IEffectReceiver monster, float duration, float tick, float damage)
+    protected void ExecuteDot(IEffectReceiver monster, float duration, float tick, float damage)
     {
         monster.ReceiveDot(duration, tick, damage);
     }
@@ -95,19 +136,30 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">스턴 지속 시간</param>
-    protected void StunEffect(IEffectReceiver monster, float duration)
+    protected void ExecuteStun(IEffectReceiver monster, float duration)
     {
         monster.ReceiveStun(duration);
     }
-
+    
+    /// <summary>
+    /// 대쉬 종료 후 몬스터 스턴 효과
+    /// </summary>
+    /// <param name="receivers">감지한 몬스터</param>
+    /// <param name="duration">스턴 지속 시간</param>
+    protected void ExecuteDashStun(IEffectReceiver receivers, float duration)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveDashStun(receivers, duration);
+    }
+    
     /// <summary>
     /// 적 둔화 효과 호출
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">둔화 지속 시간</param>
-    protected void SlowEffect(IEffectReceiver monster, float duration)
+    /// <param name="ratio">둔화 효과 적용 비율</param>
+    protected void ExecuteSlow(IEffectReceiver monster, float duration, float ratio)
     {
-        monster.ReceiveSlow(duration);
+        monster.ReceiveSlow(duration, ratio);
     }
 
     /// <summary>
@@ -117,7 +169,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="shieldCount">스킬 사용 시 충전할 쉴드 개수</param>
     /// <param name="defenseBoostMultiplier">쉴드 사용 시 증가할 방어력</param>
     /// <param name="duration">스킬 지속 시간</param>
-    protected void ShieldEffect(float castingTime, int shieldCount, float defenseBoostMultiplier, float duration)
+    protected void ExecuteShield(float castingTime, int shieldCount, float defenseBoostMultiplier, float duration)
     {
         skillNode.PlayerSkillReceiver.ReceiveShield(castingTime, shieldCount, defenseBoostMultiplier, duration);
     }
@@ -126,7 +178,7 @@ public abstract class MeleeSkill : SkillFactory
     /// 스킬 사용 시 이동 불가 상태 효과 호출
     /// </summary>
     /// <param name="duration">이동 불가할 지속 시간</param>
-    protected void ApplyMovementBlock(float duration)
+    protected void ExecutMovementBlock(float duration)
     {
         skillNode.PlayerSkillReceiver.ReceiveMovementBlock(duration);
     }
@@ -139,13 +191,18 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveCounterWhileImmobile();
     }
 
+    protected void ExecuteMoveSpeedBuff(float duration, float ratio)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
+    }
+    
     /// <summary>
     /// 몬스터 방어력 감소 디버프 효과 호출
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">디버프 지속 시간</param>
     /// <param name="deBuffPercent">방어력 감소 비율</param>
-    protected void ApplyDefenseDeBuff(IEffectReceiver monster, float duration, float deBuffPercent)
+    protected void ExecuteDefenseDeBuff(IEffectReceiver monster, float duration, float deBuffPercent)
     {
         monster.ReceiveDefenseDeBuff(duration, deBuffPercent);
     }
@@ -154,15 +211,36 @@ public abstract class MeleeSkill : SkillFactory
     /// 다음 스킬 데미지 버프 적용
     /// </summary>
     /// <param name="multiplier"></param>
-    protected void ApplyNextSkillDamageBuff(float multiplier)
+    protected void ExecuteNextSkillDamageBuff(float multiplier)
     {
         skillNode.PlayerModel.NextSkillDamageMultiplier = multiplier;
         skillNode.PlayerModel.NextSkillBuffActive = true;
     }
 
-    protected void ExecuteChargeSkill(Vector2 dir, Vector2 playerPos, Vector2 overlapSize)
+    /// <summary>
+    /// 캐릭터 대쉬 사용
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="playerPos"></param>
+    /// <param name="overlapSize"></param>
+    protected void ExecuteDash(Vector2 dir)
     {
-        skillNode.PlayerSkillReceiver.ReceiveExecuteCharge(dir, playerPos, overlapSize);
+        skillNode.PlayerSkillReceiver.ReceiveDash(dir);
+    }
+
+    /// <summary>
+    /// 파티클 트리거 리스트 감지된 콜라이더 제거
+    /// </summary>
+    protected void RemoveTriggerModuleList()
+    { 
+        for (int i = triggerModule.colliderCount -1; i >= 0; i--)
+        {
+            triggerModule.RemoveCollider(triggerModule.GetCollider(i));
+        } 
+    }
+
+    protected void ExecuteAttackUpDefenseDown(float duration)
+    {
         
     }
     
@@ -171,8 +249,12 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="damage">스킬 데미지</param>
-    protected void Hit(IEffectReceiver monster, float damage)
+    /// <param name="hitCount">몬스터 타격 횟수</param>
+    protected void Hit(IEffectReceiver monster, float damage, int hitCount)
     {
-        monster.TakeDamage(damage);
+        for (int i = 0; i < hitCount; i++)
+        {
+            monster.TakeDamage(damage);
+        } 
     }
 }

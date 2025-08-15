@@ -24,7 +24,7 @@ public class PlayerStats
     public float criticalPer;                //캐릭터 크리티컬 능력치
     public int statsPoints;             //캐릭터 보유 스탯 포인트
     public int skillPoints;             //캐릭터 보유 스킬 포인트
-    public int moveSpeed;               //캐릭터의 기본 이동속도
+    public float moveSpeed;               //캐릭터의 기본 이동속도
     public float attackSpeed;           //캐릭터의 기본 공격 속도
     
     public int VisibleStrength;         //보여질 캐릭터 힘 능력치 
@@ -231,7 +231,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         //TODO: 테스트용 코드
         if (Input.GetKeyDown(KeyCode.V))
-        {
+        { 
             GainExperience(50);
         } 
     }

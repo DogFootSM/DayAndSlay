@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour
         curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData);
         
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
+        //TODO: NotWeapon 따로 처리 필요해짐
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);
         
         //웨폰에 따른 스킬 트리 변경

@@ -80,7 +80,7 @@ public class TempGoblin : Monster
         stunCo = StartCoroutine(StunRoutine(duration));
     }
    
-    protected override void Slow(float duration)
+    protected override void Slow(float duration, float ratio)
     {
         if (slowCo != null)
         {
@@ -88,6 +88,6 @@ public class TempGoblin : Monster
             slowCo = null;
         }
 
-        slowCo = StartCoroutine(SlowRoutine(duration)); 
+        slowCo = StartCoroutine(SlowRoutine(duration, ratio)); 
     } 
 }

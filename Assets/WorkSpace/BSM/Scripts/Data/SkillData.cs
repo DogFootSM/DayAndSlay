@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.Windows;
 
 [CreateAssetMenu(fileName = "Skill", menuName = "Data/Skill")]
 public class SkillData : ScriptableObject
@@ -10,7 +11,7 @@ public class SkillData : ScriptableObject
     public string SkillName;
     public List<string> PrerequisiteSkillsId = new();
     public string SkillDescription;
-    public GameObject SkillEffectPrefab;
+    public List<GameObject> SkillEffectPrefab = new();
     
     public float SkillCooldown;
     public int SkillMaxLevel;
@@ -21,22 +22,45 @@ public class SkillData : ScriptableObject
     public float UseSkillDelay;
     public bool IsActive;
     public float UseSkillDelayDecreaseRate;
-    public float SkillRange;
+    public float SkillRange;                                    //스킬 직선 사정거리
+    public float SkillRadiusRange;                              
     public int SkillHitCount;
     public float SkillCastingTime;
+    public float BuffDuration;
+    public float DeBuffDuration;
+    
     
     /// <summary>
     /// 스킬 이펙트 오브젝트 설정
     /// </summary>
-    public void SetSkillEffect(WeaponType weaponType, string skillId, string effectName)
+    private void SetSkillEffect(WeaponType weaponType, string skillId, string effectName)
     {
         //TODO: 추후 스킬 경로 변경해주면 됨
-        SkillEffectPrefab = Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effectName}");
+        string[] effects = effectName.Split(',');
+        
+        for (int i = 0; i < effects.Length; i++)
+        {
+            Debug.Log(effects[i]);
+            
+            SkillEffectPrefab.Add(Resources.Load<GameObject>($"SkillEffect/{weaponType}/{skillId}/{effects[i]}"));
+        }
     }
 
-    public void SetSkillIcon(string iconName)
+    private void SetSkillIcon(string iconName)
     {
         SkillIcon = Resources.Load<Sprite>($"SkillIcon/{iconName}");
+    }
+
+    private void SetPrerequisiteSkillsId(string prerequisiteSkillsId)
+    {
+        string[] tmp = prerequisiteSkillsId.Split(',');
+
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            if(tmp[i].Equals("NONE")) continue;
+            
+            PrerequisiteSkillsId.Add(tmp[i]);
+        } 
     }
     
     /// <summary>
@@ -59,7 +83,7 @@ public class SkillData : ScriptableObject
     public void SetData(string skillId, string skillName, string skillDescription, string skillEffect, 
         float skillCoolDown, int skillMaxLevel, float skillDamage, float skillDamageIncreaseRate,
         string skillIcon, WeaponType requiredWeaponType, float skillDelay, float skillDelayDecreaseRate,
-        float skillRange, float castingTime, int skillHitCount, int isActive)
+        float skillRange, float castingTime, int skillHitCount, int isActive, float buffDuration, float deBuffDuration, string prerequisiteSkillsId, float skillRadiusRange)
     {
         this.SkillId = skillId;
         this.SkillName = skillName;
@@ -76,8 +100,11 @@ public class SkillData : ScriptableObject
         this.SkillCastingTime = castingTime;
         this.SkillHitCount = skillHitCount;
         SetSkillEffect(this.RequiredWeapon, this.SkillId, skillEffect);
-        
-        this.IsActive = isActive == 0;
+        this.SkillRadiusRange = skillRadiusRange;
+        this.BuffDuration = buffDuration;
+        this.DeBuffDuration = deBuffDuration;
+        SetPrerequisiteSkillsId(prerequisiteSkillsId);
+        this.IsActive = isActive == 1;
     }
     
 } 
