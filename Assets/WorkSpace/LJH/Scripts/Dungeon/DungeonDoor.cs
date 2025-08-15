@@ -4,6 +4,8 @@ using UnityEngine;
 public class DungeonDoor : MonoBehaviour
 {
     private DungeonPathfinder pathfinder;
+    private Collider2D player;
+    private bool triggered = false;
     
     /// <summary>
     /// ¸ñÀûÁö
@@ -32,14 +34,41 @@ public class DungeonDoor : MonoBehaviour
         
     }
 
-    private void OnCollisionStay2D(Collision2D other)
+    private void Update()
     {
-        if (other.collider.CompareTag("Player"))
+        if (player != null && triggered)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                other.gameObject.transform.position = toGrid.gameObject.transform.position;
-            }
+            MovePlayer();
         }
     }
+
+    private void MovePlayer()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Rigidbody2D rb = player.attachedRigidbody;
+            rb.position = toGrid.gameObject.transform.position;
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            player = collision;
+            triggered = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Player"))
+        {
+            player = null;
+            triggered = false;
+        }
+    }
+    
 }
