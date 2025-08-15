@@ -7,8 +7,13 @@ using Zenject;
 public class MonsterSpawner : MonoBehaviour
 {
     [Inject] protected DiContainer container;
-    [Inject(Id = "MONSTER")] protected List<GameObject> monsters;
-    [Inject(Id = "BOSS")] protected List<GameObject> bossMonsters;
+    [Inject(Id = "MONSTER_1")] protected List<GameObject> monsters_Stage1;
+    [Inject(Id = "MONSTER_2")] protected List<GameObject> monsters_Stage2;
+    [Inject(Id = "MONSTER_3")] protected List<GameObject> monsters_Stage3;
+
+    [Inject(Id = "BOSS_1")] protected List<GameObject> bossMonsters_Stage1;
+    [Inject(Id = "BOSS_2")] protected List<GameObject> bossMonsters_Stage2;
+    [Inject(Id = "BOSS_3")] protected List<GameObject> bossMonsters_Stage3;
 
     [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
     [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
@@ -21,9 +26,7 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] private GameObject player;
 
     private Grid grid;
-    private BoundsInt localBounds;
 
-    [SerializeField] protected Tilemap floor;
 
     private int mapSize = 20;
 
@@ -34,7 +37,7 @@ public class MonsterSpawner : MonoBehaviour
     
     private bool IsBossRoom()
     {
-        return grid.name == "Grid 5";
+        return grid.GetComponent<Room>().GetBossCheck();
     }
 
     private void Start()
@@ -65,20 +68,9 @@ public class MonsterSpawner : MonoBehaviour
         
     }
 
-    private bool CheckTile(Vector3Int pos)
-    {
-        if (floor.GetTile(pos) != null)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     virtual public void MonsterSpawnPosSet()
     {
         Room room = GetComponentInParent<Room>();
-        GameObject _room = room.gameObject;
         
         if (room.GetBossCheck()) return;
         
@@ -111,9 +103,50 @@ public class MonsterSpawner : MonoBehaviour
 
     virtual public void MonsterSpawn()
     {
+        //인게임 매니저에서 스테이지 따옴
+        //Todo : 실제 연결시에는 해당 코드 이용
+        //StageNum stageNum = IngameManager.instance.GetStage();
+        //TestCode
+        StageNum stageNum = StageNum.STAGE2;
+        
+        List<GameObject> monsters = new List<GameObject>();
+        List<GameObject> bossMonsters =  new List<GameObject>();
+
+        Debug.Log(stageNum);
+        
+        switch (stageNum)
+        {        
+            case StageNum.STAGE1:
+                Debug.Log("Stage 1");
+                monsters = monsters_Stage1;
+                bossMonsters = bossMonsters_Stage1;
+                break;
+            case StageNum.STAGE2:
+                Debug.Log("Stage 2");
+                monsters = monsters_Stage2;
+                bossMonsters = bossMonsters_Stage2;
+                break;
+            case StageNum.STAGE3:
+                Debug.Log("Stage 3");
+                monsters = monsters_Stage3;
+                bossMonsters = bossMonsters_Stage3;
+                break;
+            default:
+                Debug.LogWarning("스테이지가 지정되지 않았습니다.");
+                monsters = new List<GameObject>();
+                bossMonsters = new List<GameObject>();
+                break;
+        }
+        
+        
         for (int i = 0; i < spawnerList.Count; i++)
         {
             GameObject prefabToSpawn;
+
+            foreach (GameObject mon in monsters)
+            {
+                Debug.Log(mon.name);
+            }
 
             if (IsBossRoom())
             {
@@ -134,8 +167,6 @@ public class MonsterSpawner : MonoBehaviour
         
         MonsterActiver();
 
-
-        
     }
 
     private void SpawnerDestroy()
@@ -153,7 +184,6 @@ public class MonsterSpawner : MonoBehaviour
     public void MonsterActiver()
     {
         bool playerInside = ContainsPlayer(player.transform.position);
-        Debug.Log(playerInside);
 
         foreach (GameObject mon in monsterList)
         {
@@ -178,20 +208,19 @@ public class MonsterSpawner : MonoBehaviour
     
     private bool ContainsPlayer(Vector3 worldPos)
     {
-        if (floor == null) return false;
+        if (floorTilemap == null) return false;
 
-        Vector3Int cell = floor.WorldToCell(worldPos);
+        Vector3Int cell = floorTilemap.WorldToCell(worldPos);
 
         // bounds 체크 및 실제 바닥 타일 존재 체크
-        if (!floor.cellBounds.Contains(cell)) return false;
-        return floor.HasTile(cell);
+        if (!floorTilemap.cellBounds.Contains(cell)) return false;
+        return floorTilemap.HasTile(cell);
     }
 
     private void Init()
     {
         player = GameObject.FindWithTag("Player");
         grid = GetComponent<Grid>();
-        localBounds = floor.cellBounds;
 
         xPos[Direction.Left] = -mapSize;
         xPos[Direction.Right] = mapSize;
