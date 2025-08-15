@@ -32,14 +32,15 @@ public interface IEffectReceiver
     /// </summary>
     /// <param name="duration">스턴 지속 시간</param>
     public void ReceiveStun(float duration);
-    
+
     /// <summary>
     /// 둔화 효과 리시버
     /// 몬스터에 따른 둔화 효과 구현
     /// 지속시간에 따른 이동속도 감소
     /// </summary>
-    /// <param name="duration"></param>
-    public void ReceiveSlow(float duration);
+    /// <param name="duration">디버프 지속 시간</param>
+    /// <param name="ratio">디버프 감소 비율</param>
+    public void ReceiveSlow(float duration, float ratio);
 
     /// <summary>
     /// 몬스터 방어력 감소 효과 리시버

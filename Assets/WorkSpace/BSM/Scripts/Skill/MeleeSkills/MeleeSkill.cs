@@ -8,8 +8,7 @@ using UnityEngine.Windows.Speech;
 public abstract class MeleeSkill : SkillFactory
 {
 
-    private Vector2 currentDirection;
-    
+    protected Vector2 currentDirection;
     protected ParticleSystem.MainModule mainModule;
     protected List<Action> skillActions = new List<Action>();
     protected ParticleSystem.TriggerModule triggerModule;
@@ -57,7 +56,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
-    protected void MeleeEffect(Vector2 position, Vector2 direction, string skillId, List<GameObject> skillEffectPrefab)
+    protected void MeleeEffect(Vector2 position, string skillId, List<GameObject> skillEffectPrefab)
     {
         skillActions.Clear();
         
@@ -66,15 +65,14 @@ public abstract class MeleeSkill : SkillFactory
             Debug.Log("스킬 이펙트 발동");
             GameObject instance = particlePooling.GetSkillPool($"{skillId}_{i+1}_Particle", skillEffectPrefab[i]);
             instance.transform.parent = null;
-            instance.transform.position = position + direction;
+            instance.transform.position = position;
             
             ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
             interaction = instance.GetComponent<ParticleInteraction>();
             interaction.EffectId = $"{skillId}_{i+1}_Particle";
             
             triggerModule = particleSystem.trigger;
-            mainModule = particleSystem.main;
-            currentDirection = direction;
+            mainModule = particleSystem.main; 
  
             instance.SetActive(true);
             particleSystem.Play();
@@ -90,8 +88,10 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="rightDeg">오른쪽 방향일 경우의 회전 값 </param>
     /// <param name="downDegY">아래 방향일 경우의 회전 값</param>
     /// <param name="upDegY">윗 방향일 경우의 회전 값</param>
-    protected void SetParticleStartRotationFromDeg(float leftDeg, float rightDeg, float downDegY, float upDegY)
+    protected void SetParticleStartRotationFromDeg(Vector2 dir, float leftDeg, float rightDeg, float downDegY, float upDegY)
     {
+        currentDirection = dir;
+        
         if (currentDirection.x < 0) mainModule.startRotationZ = Mathf.Deg2Rad * rightDeg;
         if (currentDirection.x > 0) mainModule.startRotationZ = Mathf.Deg2Rad * leftDeg;
         if (currentDirection.y < 0) mainModule.startRotationZ = Mathf.Deg2Rad * upDegY;
@@ -137,9 +137,10 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">둔화 지속 시간</param>
-    protected void SlowEffect(IEffectReceiver monster, float duration)
+    /// <param name="ratio">둔화 효과 적용 비율</param>
+    protected void SlowEffect(IEffectReceiver monster, float duration, float ratio)
     {
-        monster.ReceiveSlow(duration);
+        monster.ReceiveSlow(duration, ratio);
     }
 
     /// <summary>
