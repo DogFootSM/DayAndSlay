@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -107,13 +104,6 @@ public class GeneralMonsterMethod : MonoBehaviour
     public void MoveMethod()
     {
 
-        //Todo : 코루틴 제어 정상적으로 돌아가게 해줘야함
-        // 이동 시작할때 무브코에 넣어주고 스타트 한다음 공격 상태가 된 경우 or 플레이어가 이동하여 경로 재탐색 하는 경우에 스탑코루틴 해주면서 moveCo 널로 바꿔주면 될듯
-        // 이동 구현되면 아이템 드랍 구현해야됨
-        // 아이템 풀을 이용해서 구현할 것
-        // 현재 이슈 발생
-        // >> 플레이어가 밖에서 추격 범위로 들어갔을 때 코루틴 널 뜸
-        // 코루틴 관련해서 만져주면 될듯
         {
             if (moveCoroutine != null)
             {

@@ -91,7 +91,6 @@ public class AstarPath : MonoBehaviour
         startNode.hCost = Heuristic(startPos, targetPos);
         
         openList.Add(startNode);
-         
         while (openList.Count > 0)
         { 
             currentNode = openList[0];
@@ -107,7 +106,7 @@ public class AstarPath : MonoBehaviour
             
             openList.Remove(currentNode);
             closedList.Add(currentNode);
-             
+
             //현재 노드의 위치가 타겟 위치일 경우 경로 추적 종료
             if (currentNode.curPosition == targetPos)
             {
@@ -205,6 +204,7 @@ public class AstarPath : MonoBehaviour
         
         while (curNode != null)
         {
+            Debug.Log("트레이스 실행");
             Vector3 worldPos = mapTileMap.CellToWorld((Vector3Int)curNode.curPosition);
             path.Add(worldPos + new Vector3(0.5f, 0.5f,0));
             curNode = curNode.parentNode;

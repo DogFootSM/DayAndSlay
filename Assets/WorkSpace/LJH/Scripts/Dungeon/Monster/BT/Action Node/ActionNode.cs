@@ -1,6 +1,3 @@
-using System.Collections;
-using UnityEngine;
-
 public class ActionNode : BTNode
 {
     private System.Action performAction;

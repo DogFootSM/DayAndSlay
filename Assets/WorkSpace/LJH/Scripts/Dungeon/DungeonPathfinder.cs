@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonPathfinder : MonoBehaviour
 {
+    [SerializeField] DungeonRoomSpawner spawner;
+    
     [Header("던전 방 데이터")]
     [SerializeField] private List<Grid> roomList = new List<Grid>();
     [SerializeField] private int bossRoomIndex = 2;
-    [SerializeField] private int gridWidth = 3; // 4x3 그리드 기준
+    [SerializeField] private int gridWidth = 3; // 3x2 그리드 기준
 
     [Header("시각화")]
     [SerializeField] private LineRenderer mainRouteLineRenderer;
@@ -24,11 +25,13 @@ public class DungeonPathfinder : MonoBehaviour
     /// 보스방 까지의 경로 List
     /// </summary>
     private List<Grid> route = new List<Grid>();
+    private List<Grid> reverseRoute = new List<Grid>();
 
     private Dictionary<int, List<Grid>> graph = new Dictionary<int, List<Grid>>();
 
     //사이드 루트 경로
     private List<Grid> sideRoute = new List<Grid>();
+    private List<Grid> reverseSideRoute = new List<Grid>();
 
     private Dictionary<Grid, int> roomDict = new Dictionary<Grid, int>();
     private void Start()
@@ -53,11 +56,40 @@ public class DungeonPathfinder : MonoBehaviour
         }
 
         SideRouteMake();
-
-        DoorCreate(route);
-        DoorCreate(sideRoute);
+        ReverseRoute();
+        StartCoroutine(DoorBuilder());
 
         DrawRouteLines();
+    }
+
+    /// <summary>
+    /// 돌아가는 문을 생성하기 위한 루트 뒤집어주는 메서드
+    /// </summary>
+    private void ReverseRoute()
+    {
+        List<Grid> tempRoute = new List<Grid>(route);
+        tempRoute.Reverse();
+        reverseRoute = tempRoute;
+
+        if (sideRoute.Count < 1) return;
+        
+        List<Grid> tempSideRoute = new List<Grid>(sideRoute);
+        tempSideRoute.Reverse();
+        reverseSideRoute = tempSideRoute;
+    }
+
+    /// <summary>
+    /// 문 생성 텀 주기위한 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DoorBuilder()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        spawner.BuildDoor(route, false);
+        spawner.BuildDoor(sideRoute, false);
+        spawner.BuildDoor(reverseRoute, true);
+        spawner.BuildDoor(reverseSideRoute, true);
     }
 
     /// <summary>
@@ -107,70 +139,76 @@ public class DungeonPathfinder : MonoBehaviour
         route.Remove(current);
         return false;
     }
-
+    
+    /// <summary>
+    /// 사이드 루트 생성
+    /// </summary>
     private void SideRouteMake()
     {
-        List<Grid> StartGrid = new List<Grid>();
+        sideRoute.Clear();
+        if (route == null || route.Count == 0) return;
 
-        foreach (Grid mainRoom in route)
+        HashSet<Grid> main = new HashSet<Grid>(route);
+
+        // 사이드 루트 시작할 후보 수집
+        List<(Grid entry, Grid neighbor)> candidates = new List<(Grid, Grid)>();
+        foreach (Grid r in route)
         {
-            // 보스방 제외
-            if (mainRoom == roomList[bossRoomIndex]) continue;
+            if (r == roomList[bossRoomIndex]) continue; // 보스 방은 제외
 
-            int index = roomDict[mainRoom];
-            foreach (Grid neighbor in graph[index])
+            int idx = roomDict[r];
+            foreach (Grid nb in graph[idx])
             {
-                if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
-                {
-                    StartGrid.Add(mainRoom);
-                    break;
-                }
+                if (!main.Contains(nb) && nb != roomList[bossRoomIndex])
+                    candidates.Add((r, nb));
             }
         }
 
-        if (StartGrid.Count == 0)
+        if (candidates.Count == 0)
         {
-            Debug.LogWarning("사이드루트를 만들 수 있는 지점이 없습니다.");
+            Debug.LogWarning("사이드루트 후보가 없습니다. (메인과 인접한 비-메인 방이 없음)");
             return;
         }
 
-        Grid entryPoint = StartGrid[Random.Range(0, StartGrid.Count)];
-        int entryIndex = roomDict[entryPoint];
+        // 2) 임의의 후보 선택
+        var pick = candidates[Random.Range(0, candidates.Count)];
+        Grid entry = pick.entry;
+        Grid first = pick.neighbor;
 
-        sideRoute.Add(entryPoint);
+        // 3) 선형 경로 구축: 메인과 겹치지 않도록 로컬 visited 사용
+        HashSet<Grid> localVisited = new HashSet<Grid>(main); // 메인은 이미 방문 처리
+        localVisited.Add(entry);
 
-        visitedRoom.Add(entryPoint);
+        sideRoute.Add(entry);                 // 라인렌더러가 메인→사이드로 자연스럽게 이어지게
+        BuildSidePathLinear(first, localVisited, main);
 
-        HashSet<Grid> sideVisited = new HashSet<Grid>();
-
-        sideVisited.Add(entryPoint);
-
-        foreach (Grid neighbor in graph[entryIndex])
-        {
-            if (!visitedRoom.Contains(neighbor) && neighbor != roomList[bossRoomIndex])
-            {
-                SideRouteDFS(neighbor, sideVisited);
-                break;
-            }
-        }
     }
 
-    private void SideRouteDFS(Grid current, HashSet<Grid> sideVisited)
+/// <summary>
+/// 사이드루트 경로 생성
+/// </summary>
+/// <param name="current"></param>
+/// <param name="visited"></param>
+/// <param name="main"></param>
+    private void BuildSidePathLinear(Grid current, HashSet<Grid> visited, HashSet<Grid> main)
     {
-        sideRoute.Add(current);
-        sideVisited.Add(current);
-        visitedRoom.Add(current);
-
-        int index = roomDict[current];
-
-        foreach (Grid neighbor in graph[index])
+        while (true)
         {
-            if (!visitedRoom.Contains(neighbor) &&
-                !sideVisited.Contains(neighbor) &&
-                neighbor != roomList[bossRoomIndex])
+            if (!visited.Add(current)) break;     // 이미 방문(또는 메인)이면 종료
+            sideRoute.Add(current);
+
+            int idx = roomDict[current];
+
+            // 다음 후보: 아직 방문 안 했고 메인도 아니고 보스도 아닌 이웃들
+            List<Grid> nextCandidates = new List<Grid>();
+            foreach (Grid nb in graph[idx])
             {
-                SideRouteDFS(neighbor, sideVisited);
+                if (!visited.Contains(nb) && !main.Contains(nb) && nb != roomList[bossRoomIndex])
+                    nextCandidates.Add(nb);
             }
+
+            if (nextCandidates.Count == 0) break; // 더 못 뻗으면 종료
+            current = nextCandidates[Random.Range(0, nextCandidates.Count)];
         }
     }
 
@@ -195,6 +233,7 @@ public class DungeonPathfinder : MonoBehaviour
             TryAddNeighbor(i, right);
 
         }
+        
     }
 
     private void TryAddNeighbor(int from, int to)
@@ -202,57 +241,7 @@ public class DungeonPathfinder : MonoBehaviour
         if (to >= 0 && to < roomList.Count)
             graph[from].Add(roomList[to]);
     }
-
-    private void DoorCreate(List<Grid> route)
-    {
-        int endRoomIndex = route.Count - 1;
-
-        for (int i = 0; i <= endRoomIndex; i++)
-        {
-            int firstDoor = -1;
-            int secondDoor = -1;
-
-            //진행 방향의 문
-            if (i != endRoomIndex)
-            {
-                Vector2 dir = route[i + 1].transform.position - route[i].transform.position;
-
-                firstDoor = DeltaCalculator(dir);
-            }
-            //이전 방향의 문
-            //첫번째 방의 경우 이전 방향의 문이 없으므로 예외 처리
-            if (i != 0)
-            {
-                Vector2 dir2 = route[i - 1].transform.position - route[i].transform.position;
-
-                secondDoor = DeltaCalculator(dir2);
-            }
-
-            //시작 방과 끝 방 에외 처리
-            if (firstDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(secondDoor);
-            else if (secondDoor == -1) route[i].GetComponent<Room>().ActivateTheDoor(firstDoor);
-            else route[i].GetComponent<Room>().ActivateTheDoor(firstDoor, secondDoor);
-
-        }
-    }
-
-    /// <summary>
-    /// dir, dir2 를 계산해주는 함수
-    /// </summary>
-    /// <param name="delta"></param>
-    /// <returns></returns>
-    private int DeltaCalculator(Vector2 delta)
-    {
-        if (delta.x > 0) return (int)Direction.Right;
-        else if (delta.x < 0) return (int)Direction.Left;
-        else if (delta.y > 0) return (int)Direction.Up;
-        else if (delta.y < 0) return (int)Direction.Down;
-
-        return -1;
-    }
-
-
-
+    
     /// <summary>
     /// DFS 경로 + 사이드 루트 경로 라인 렌더링
     /// </summary>
@@ -285,9 +274,22 @@ public class DungeonPathfinder : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 룸리스트 가져오기
+    /// </summary>
+    /// <returns></returns>
     public List<Grid> GetRoomList()
     {
         return new List<Grid>(this.roomList);
+    }
+    
+    /// <summary>
+    /// 룸리스트 세팅하기
+    /// </summary>
+    /// <param name="room"></param>
+    public void SetRoomList(Grid room)
+    {
+        roomList.Add(room);
     }
 
 }

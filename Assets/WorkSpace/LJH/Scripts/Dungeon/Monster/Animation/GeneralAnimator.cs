@@ -1,6 +1,6 @@
-using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 

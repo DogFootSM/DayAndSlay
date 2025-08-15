@@ -27,6 +27,11 @@ public class TargetSensor : MonoBehaviour
         targetLayer = LayerMask.GetMask("Player");
     }
 
+    private void Start()
+    {
+        astar.SetGridAndTilemap(grid);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         TriggerEnterMethod(other);
@@ -72,4 +77,6 @@ public class TargetSensor : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, findRange);
     }
+    
+    public void SetGrid(Grid grid) => this.grid = grid;
 }

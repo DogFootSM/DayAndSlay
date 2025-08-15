@@ -1,90 +1,74 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class DungeonDoor : MonoBehaviour
 {
-    [Inject]
-    private DungeonPathfinder dungeonPathfinder;
-
-    [SerializeField] Transform spawner;
-    [HideInInspector] public Vector2 spawnerPos;
-
-    List<Grid> roomList;
-
-    List<GameObject> doorList;
-
-    Grid fromGrid;
-    Grid toGrid;
-
-    //인덱스 이동용
-    int verticalOffset = 3;
-    int horizonOffset = 1;
-    int index;
-
-    private void Start()
+    private DungeonPathfinder pathfinder;
+    private Collider2D player;
+    private bool triggered = false;
+    
+    /// <summary>
+    /// 목적지
+    /// </summary>
+    private Grid toGrid;
+    
+/// <summary>
+/// 해당 문이 가져올 루트 설정
+/// </summary>
+/// <param name="route">메인or사이드</param>
+    public void SetRoute(List<Grid> route)
     {
-        Init();
-        DoorPathfinder();
+        SetToGrid(route);
+    }
+
+    private void SetToGrid(List<Grid> route)
+    {
+        Grid curGrid = transform.GetComponentInParent<Grid>();
+        
+        int curGridIndex = route.IndexOf(curGrid);
+
+        //마지막 방의 경우 목적지 필요없음
+        if (curGridIndex == route.Count - 1) return;
+        
+        toGrid = route[curGridIndex + 1];
+        
+    }
+
+    private void Update()
+    {
+        if (player != null && triggered)
+        {
+            MovePlayer();
+        }
+    }
+
+    private void MovePlayer()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Rigidbody2D rb = player.attachedRigidbody;
+            rb.position = toGrid.gameObject.transform.position;
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Player"))
+        {
+            player = collision;
+            triggered = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
         if(collision.CompareTag("Player"))
         {
-            collision.transform.position = spawnerPos;
+            player = null;
+            triggered = false;
         }
     }
-
-    /// <summary>
-    /// 문의 목적지를 정해주는 함수
-    /// </summary>
-    void DoorPathfinder()
-    {
-
-        for (int i = 0; i < doorList.Count; i++)
-        {
-            if (!doorList[i].activeSelf)
-            {
-                continue;
-            }
-
-            Direction dir = (Direction)i;
-
-            if (gameObject == doorList[i])
-            {
-                switch (dir)
-                {
-                    case Direction.Up:
-                        toGrid = roomList[index - verticalOffset];
-                        break;
-
-                    case Direction.Right:
-                        toGrid = roomList[index + horizonOffset];
-                        break;
-
-                    case Direction.Down:
-                        toGrid = roomList[index + verticalOffset];
-                        break;
-
-                    case Direction.Left:
-                        toGrid = roomList[index - horizonOffset];
-                        break;
-                }
-                break;
-            }
-        }
-        // spawnerPos는 목적지 그리드에 있는 spawnerPos
-        spawnerPos = toGrid.GetComponentInChildren<DungeonDoor>().spawner.position;
-
-    }
-
-    void Init()
-    {
-        roomList = dungeonPathfinder.GetRoomList();
-        fromGrid = GetComponentInParent<Grid>();
-        index = roomList.IndexOf(fromGrid);
-        doorList = GetComponentInParent<Room>().GetDoorList();
-    }
+    
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,12 +30,13 @@ public class Bellus : NepenthesAI
         base.Update();
         UpdateCooldowns();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            model.SetMonsterHp(-10);
-            
-            Debug.Log($"벨루스의 체력 -10 되어 현재 체력 {model.GetMonsterHp()}");
-        }
+        // 테스트 코드
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    model.SetMonsterHp(-10);
+        //    
+        //    Debug.Log($"벨루스의 체력 -10 되어 현재 체력 {model.GetMonsterHp()}");
+        //}
     }
 
     private void UpdateCooldowns()

@@ -157,7 +157,7 @@ public enum SubWeaponType
 {
 
     ARROW,
-    SHIELD,
+    SHEATH,
     EMBLEM,
     BOOK,
     NOT_SUBWEAPON,
@@ -171,7 +171,7 @@ public enum SubWeaponType
 public enum SubWeaponType_kr
 {
     화살통,
-    방패,
+    칼집,
     엠블렘,
     마도서,
     보조무기아님,
@@ -278,6 +278,9 @@ public enum M_State
 public enum ItemSet
 {
     NOT_SET,
+    APOLON,
+    ARTEMIS,
+    ZEUS,
     COSMOS,
     NIGHTFANG,
     DRAGONKNIGHT,
