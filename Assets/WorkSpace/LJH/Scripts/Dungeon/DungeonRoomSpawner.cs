@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Zenject;
 
@@ -9,17 +12,29 @@ public class DungeonRoomSpawner : MonoBehaviour
     
     [SerializeField] private DungeonPathfinder dungeonPathfinder;
     //Todo : 스테이지에 따라 rooms 목록 변경
-    [SerializeField] private List<GameObject> rooms;
-    [SerializeField] private List<GameObject> bossRooms;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, List<GameObject>> roomsDict;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, List<GameObject>> bossRoomsDict;
+    
+    [SerializeField] private List<GameObject> rooms_Stage1;
+    [SerializeField] private List<GameObject> rooms_Stage2;
+    [SerializeField] private List<GameObject> rooms_Stage3;
+    
+    [SerializeField] private List<GameObject> bossRooms_Stage1;
+    [SerializeField] private List<GameObject> bossRooms_Stage2;
+    [SerializeField] private List<GameObject> bossRooms_Stage3;
+    
     [SerializeField] private List<GameObject> roomPos;
     
     [SerializeField] private GameObject doorPrefab;
+    
+    [SerializeField] private StageNum stageNum;
 
     public List<GameObject> RoomList = new List<GameObject>();
 
     private void Awake()
     {
         //룸생성 및 던전패스파인더 룸리스트에 주입
+        Init();
         BuildMap();
     }
 
@@ -33,7 +48,7 @@ public class DungeonRoomSpawner : MonoBehaviour
             //보스 방
             if (i == roomPos.Count - 1)
             {
-                GameObject bossRoom = bossRooms[0];
+                GameObject bossRoom = bossRoomsDict[stageNum.ToString()][0];
                 RoomList.Add(container.InstantiatePrefab(bossRoom, roomPos[i].transform.position, Quaternion.identity, null));
                 RoomList[i].GetComponent<Room>().SetBossRoom(true);
                 RoomList[i].name = $"BossRoom";
@@ -41,7 +56,7 @@ public class DungeonRoomSpawner : MonoBehaviour
             //일반 방
             else
             {
-                GameObject room = rooms[Random.Range(0, rooms.Count)];
+                GameObject room = roomsDict[stageNum.ToString()][Random.Range(0, roomsDict[stageNum.ToString()].Count)];
                 RoomList.Add(container.InstantiatePrefab(room, roomPos[i].transform.position, Quaternion.identity, null));
                 RoomList[i].GetComponent<Room>().SetBossRoom(false);
                 RoomList[i].name = $"Room_{i}";
@@ -93,5 +108,16 @@ public class DungeonRoomSpawner : MonoBehaviour
                 door.GetComponent<DungeonDoor>().SetRoute(route);
             }
         }
+
+    }
+    private void Init()
+    {
+        roomsDict[nameof(StageNum.STAGE1)] = rooms_Stage1;
+        roomsDict[nameof(StageNum.STAGE2)] = rooms_Stage2;
+        roomsDict[nameof(StageNum.STAGE3)] = rooms_Stage3;
+            
+        bossRoomsDict[nameof(StageNum.STAGE1)] = bossRooms_Stage1;
+        bossRoomsDict[nameof(StageNum.STAGE2)] = bossRooms_Stage2;
+        bossRoomsDict[nameof(StageNum.STAGE3)] = bossRooms_Stage3;
     }
 }

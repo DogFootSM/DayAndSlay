@@ -9,7 +9,7 @@ public class MapCsvImporter
     [MenuItem("Tools/Import CSV/Map Data (Create Prefab)")]
     public static void ImportMapData()
     {
-        string csvFileName = "Maps/Stage1_bossMap01";
+        string csvFileName = "Maps/Stage2_BossMap01";
         string prefabOutputPath = $"Assets/WorkSpace/LJH/Prefabs/Maps/{Path.GetFileName(csvFileName)}.prefab";
         
         RuleTile wallTile = AssetDatabase.LoadAssetAtPath<RuleTile>("Assets/WorkSpace/LJH/Tile/WallRuleTile.asset");

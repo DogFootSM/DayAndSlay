@@ -260,7 +260,7 @@ public class UI_WeaponForge : BaseUI
         }
         else if (typeArray == subWeaponTypeArray)
         {
-            SetItemButton(SubWeaponType.SHIELD);
+            SetItemButton(SubWeaponType.SHEATH);
         }
 
         ButtonActivate(DICTSIZE);
@@ -282,7 +282,7 @@ public class UI_WeaponForge : BaseUI
 
             subWeaponButtonWrappers = new List<ButtonWrapper>()
             {
-                new ButtonWrapper("방패", typeButtonDictList[0], SubWeaponType.SHIELD),
+                new ButtonWrapper("방패", typeButtonDictList[0], SubWeaponType.SHEATH),
                 new ButtonWrapper("엠블렘", typeButtonDictList[1], SubWeaponType.EMBLEM),
                 new ButtonWrapper("화살통", typeButtonDictList[2], SubWeaponType.ARROW),
                 new ButtonWrapper("마도서", typeButtonDictList[3], SubWeaponType.BOOK)
@@ -333,7 +333,7 @@ public class UI_WeaponForge : BaseUI
         DictMake(WeaponType.BOW);
         DictMake(WeaponType.WAND);
 
-        DictMake(SubWeaponType.SHIELD); 
+        DictMake(SubWeaponType.SHEATH); 
         DictMake(SubWeaponType.EMBLEM);
         DictMake(SubWeaponType.ARROW);
         DictMake(SubWeaponType.BOOK);

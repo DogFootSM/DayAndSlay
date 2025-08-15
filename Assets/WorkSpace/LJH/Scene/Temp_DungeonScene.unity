@@ -952,12 +952,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dungeonPathfinder: {fileID: 1861027644}
-  rooms:
+  roomsDict:
+    _serializedList: []
+  bossRoomsDict:
+    _serializedList: []
+  rooms_Stage1:
   - {fileID: 8471419002163594564, guid: bb90b54564fe2a64cbd06c54905be56e, type: 3}
   - {fileID: 3292892252717091563, guid: 9fc0ef3683cb55d4db80c54981cdbbf8, type: 3}
   - {fileID: 5555207060313334573, guid: 8844b7f06fc474b4884863a42eaa0ddc, type: 3}
-  bossRooms:
+  rooms_Stage2:
+  - {fileID: 118449428614253298, guid: 724923de08233ee4489a17ab11e503cd, type: 3}
+  - {fileID: 3600938485113190181, guid: 3e30e55e8baec274db9470df89985fd0, type: 3}
+  - {fileID: 6734188822210745478, guid: 1277d839aa3d4244c86c63b43084bbfa, type: 3}
+  rooms_Stage3:
+  - {fileID: 1990896147520100984, guid: 5838a53ff2194e84c895cbbeb7703caf, type: 3}
+  - {fileID: 6192171709886163784, guid: 5411579d85abf9c419b81f2003b083c2, type: 3}
+  - {fileID: 5820604229131450909, guid: 7b1ea6e10661d604e9301a92724368be, type: 3}
+  bossRooms_Stage1:
   - {fileID: 5185372365391530059, guid: 7c93cebf76354f14ba9ce258feab46bd, type: 3}
+  bossRooms_Stage2:
+  - {fileID: 4743460693096425037, guid: ed6881778327dca46b13a9ca9bf4a389, type: 3}
+  bossRooms_Stage3:
+  - {fileID: 6704988117997326246, guid: 528fc44071a15db4485a8b6d4de1bad2, type: 3}
   roomPos:
   - {fileID: 9196023733549348701}
   - {fileID: 9196023732089009009}
@@ -966,6 +982,7 @@ MonoBehaviour:
   - {fileID: 9196023733243135324}
   - {fileID: 9196023732938208853}
   doorPrefab: {fileID: 6833214896959097929, guid: 691d0960f13e8b9468a38dab3087ba5a, type: 3}
+  stageNum: 1
   RoomList: []
 --- !u!1 &918499874
 GameObject:
