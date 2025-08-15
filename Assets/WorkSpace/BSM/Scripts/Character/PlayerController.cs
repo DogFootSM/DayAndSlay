@@ -141,8 +141,7 @@ public class PlayerController : MonoBehaviour
         }
         
         //웨폰 핸들러 변경
-        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData);
-        
+        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
         //TODO: NotWeapon 따로 처리 필요해짐
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);
@@ -252,6 +251,7 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(IEffectReceiver monsterReceiver, float damage)
     {
         //TODO: 보호막 쉴드에 따른 데미지 계산ㄱㄱ
+        //TODO: 방어력과 몬스터 데미지 공식 정립한 후 체력 감소 진행
         playerModel.ShieldCount--;
 
         if (playerModel.IsCountering)

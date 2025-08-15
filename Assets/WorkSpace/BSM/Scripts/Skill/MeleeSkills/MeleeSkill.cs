@@ -239,10 +239,16 @@ public abstract class MeleeSkill : SkillFactory
         } 
     }
 
-    protected void ExecuteAttackUpDefenseDown(float duration)
+    protected void ExecuteAttackUpDefenseDown(float duration, float defenseDecrease, float attackIncrease)
     {
-        
+        skillNode.PlayerSkillReceiver.ReceiveAttackUpDefenseDown(duration, defenseDecrease, attackIncrease);
     }
+
+    protected void ExecuteDefenseUpSpeedDown(float duration, float speedDecrease, float defenseIncrease)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveDefenseUpSpeedDown(duration, speedDecrease, defenseIncrease);
+    }
+
     
     /// <summary>
     /// 몬스터에게 데미지 전달

@@ -41,19 +41,19 @@ public class PlayerStats
     
     
     //캐릭터 체력
-    public int Health => level * (int)(strength * 0.2f);
+    public int Health => level * (int)(VisibleStrength * 0.2f);
 
     //캐릭터 물리 공격력
-    public int PhysicalAttack => level * (int)(strength * 0.2f);
+    public int PhysicalAttack => level * (int)(VisibleStrength * 0.2f);
 
     //캐릭터 물리 방어력
-    public int PhysicalDefense => level * (int)((Health + strength) * 0.2f);
+    public int PhysicalDefense => level * (int)((Health + VisibleStrength) * 0.2f);
 
     //캐릭터 스킬 공격력
-    public int SkillAttack => level * (int)(strength * intelligence * 0.2f);
+    public int SkillAttack => level * (int)(VisibleStrength * VisibleIntelligence * 0.2f);
 
     //캐릭터 스킬 방어력
-    public int SkillDefense => level * (int)((Health + intelligence) * 0.2f);
+    public int SkillDefense => level * (int)((Health + VisibleIntelligence) * 0.2f);
 
     /// <summary>
     /// 기본 능력치 + 장착 아이템 능력치로 보정한 스탯 초기화
@@ -160,6 +160,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         get => nextSkillDamageMultiplier;
         set => nextSkillDamageMultiplier = value;
     }
+
+    public int NormalPhysicalDamage;
+    public int NormalPhysicalDefense;
+    public float MoveSpeed;
+    
     
     private void Awake()
     {
@@ -217,7 +222,8 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.criticalPer = 0f;
             playerStats.CriticalDamage = 1.5f;
         }
-        
+
+        MoveSpeed = playerStats.moveSpeed;
         playerStats.InitVisibleStats();
     }
 
@@ -233,7 +239,8 @@ public class PlayerModel : MonoBehaviour, ISavable
         if (Input.GetKeyDown(KeyCode.V))
         { 
             GainExperience(50);
-        } 
+        }  
+        Debug.Log($"공격력 :{NormalPhysicalDamage} / 방어력 :{NormalPhysicalDefense} / 스피드 :{MoveSpeed}");
     }
 
     /// <summary>
@@ -262,6 +269,8 @@ public class PlayerModel : MonoBehaviour, ISavable
         skillTree.NotifySkillPointChanged();
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
+        NormalPhysicalDamage = playerStats.PhysicalAttack;
+        NormalPhysicalDefense = playerStats.PhysicalDefense;
     }
 
     /// <summary>
@@ -273,6 +282,8 @@ public class PlayerModel : MonoBehaviour, ISavable
         
         playerStats.AddStats(equipItemData, sign);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
+        NormalPhysicalDamage = playerStats.PhysicalAttack;
+        NormalPhysicalDefense = playerStats.PhysicalDefense;
     }
 
     public void ApplyPassiveSkillModifiers()

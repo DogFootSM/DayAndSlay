@@ -11,7 +11,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Image tempCastingEffect;
     [SerializeField] private GameObject tempShieldEffect;
-    
+
     public UnityAction<IEffectReceiver> MonsterCounterEvent;
 
     private Coroutine castingCo;
@@ -21,11 +21,15 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine dashCo;
     private Coroutine dashStunCo;
     private Coroutine moveSpeedBuffCo;
-    
+    private Coroutine attackUpDefenseDownCo;
+    private Coroutine defenseUpSpeedDownCo;
+
+    private bool isPowerTradeBuffActive;
+    private bool isDefenceTradeBuffActive;
     private LayerMask monsterMask;
-    
+
     private Queue<IEffectReceiver> monsterQueue = new Queue<IEffectReceiver>();
-    
+
     private int playerLayer;
     private int monsterLayer;
 
@@ -47,6 +51,95 @@ public class PlayerSkillReceiver : MonoBehaviour
     private void OnDisable()
     {
         MonsterCounterEvent -= MonsterCounterRegister;
+    }
+
+    /// <summary>
+    /// 공격력 버프 & 방어력 감소 스킬 효과 리시버
+    /// </summary>
+    /// <param name="duration">효과 지속 시간</param>
+    /// <param name="defenseDecrease">방어력 감소 값 EX)0.5 방어력 절반 감소</param>
+    /// <param name="attackIncrease">공격력 증가 값 EX)1.5 현재 공격력의 1.5배로 변경</param>
+    public void ReceiveAttackUpDefenseDown(float duration, float defenseDecrease, float attackIncrease)
+    {
+        if (isDefenceTradeBuffActive && defenseUpSpeedDownCo != null)
+        {
+            StopCoroutine(defenseUpSpeedDownCo);
+            defenseUpSpeedDownCo = null;
+ 
+            //스피드, 방어력 원상 복구
+            playerModel.MoveSpeed = playerModel.PlayerStats.moveSpeed;
+            playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+        }
+
+        if (attackUpDefenseDownCo != null)
+        {
+            StopCoroutine(attackUpDefenseDownCo);
+            attackUpDefenseDownCo = null;
+        }
+
+        attackUpDefenseDownCo = StartCoroutine(AttackUpDefenseDownRoutine(duration, defenseDecrease, attackIncrease));
+    }
+
+    private IEnumerator AttackUpDefenseDownRoutine(float duration, float defenseDecrease, float attackIncrease)
+    {
+        float elapsedTime = 0f;
+        isPowerTradeBuffActive = true;
+
+        while (elapsedTime < duration)
+        {
+            playerModel.NormalPhysicalDamage = (int)(playerModel.PlayerStats.PhysicalAttack * attackIncrease);
+            playerModel.NormalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseDecrease);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        isPowerTradeBuffActive = false;
+        playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+        playerModel.NormalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
+    }
+
+    /// <summary>
+    /// 방어력 증가 & 이동속도 감소 스킬 리시버
+    /// </summary>
+    /// <param name="duration">효과 지속 시간</param>
+    /// <param name="speedDecrease">이동속도 감소 값</param>
+    /// <param name="defenseIncrease">방어력 증가 값 EX)2 현재 방어력의 2배 수치로 변경</param>
+    public void ReceiveDefenseUpSpeedDown(float duration, float speedDecrease, float defenseIncrease)
+    {
+        if (isPowerTradeBuffActive && attackUpDefenseDownCo != null)
+        {
+            StopCoroutine(attackUpDefenseDownCo);
+            attackUpDefenseDownCo = null;
+            //방어력, 공격력 원상 복구 
+            playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+            playerModel.NormalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
+        }
+        
+        if (defenseUpSpeedDownCo != null)
+        {
+            StopCoroutine(defenseUpSpeedDownCo);
+            defenseUpSpeedDownCo = null;
+        }
+
+        defenseUpSpeedDownCo = StartCoroutine(DefenseUpSpeedDownRoutine(duration, speedDecrease, defenseIncrease));
+    }
+
+    private IEnumerator DefenseUpSpeedDownRoutine(float duration, float speedDecrease, float defenseIncrease)
+    {
+        float elapsedTime = 0f;
+        isDefenceTradeBuffActive = true;
+        
+        while (elapsedTime < duration)
+        {
+            playerModel.MoveSpeed = playerModel.PlayerStats.moveSpeed * speedDecrease;
+            playerModel.NormalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        } 
+        
+        isDefenceTradeBuffActive = false;
+        playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+        playerModel.MoveSpeed = playerModel.PlayerStats.moveSpeed;
     }
 
     /// <summary>
@@ -87,9 +180,8 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(dashCo);
             dashCo = null;
         }
-        dashCo = StartCoroutine(DashRoutine());
-        
 
+        dashCo = StartCoroutine(DashRoutine());
     }
 
     /// <summary>
@@ -99,15 +191,15 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <param name="duration">스턴 지속 시간</param>
     public void ReceiveDashStun(IEffectReceiver receivers, float duration)
     {
-         if (dashStunCo != null)
-         {
-             StopCoroutine(dashStunCo);
-             dashStunCo = null;
-         }
-         
+        if (dashStunCo != null)
+        {
+            StopCoroutine(dashStunCo);
+            dashStunCo = null;
+        }
+
         dashStunCo = StartCoroutine(DashStunRoutine(receivers, duration));
     }
-    
+
     /// <summary>
     /// 대쉬 코루틴
     /// </summary>
@@ -170,7 +262,7 @@ public class PlayerSkillReceiver : MonoBehaviour
 
         //캐스팅이 끝날때까지 대기
         yield return new WaitUntil(() => playerModel.IsCastingDone);
-        
+
         //캐스팅 상태 초기화
         playerModel.IsCastingDone = false;
 
@@ -271,6 +363,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(moveSpeedBuffCo);
             moveSpeedBuffCo = null;
         }
+
         moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, ratio));
     }
 
@@ -287,5 +380,4 @@ public class PlayerSkillReceiver : MonoBehaviour
         yield return WaitCache.GetWait(duration);
         playerModel.PlayerStats.moveSpeed = originSpeed;
     }
-    
 }

@@ -23,20 +23,20 @@ public class ShortSword : IAttackHandler
     /// </summary>
     /// <param name="direction">공격 방향</param>
     /// <param name="position">캐릭터 위치</param>
-    public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData)
+    public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
         //기즈모 테스트용 pos,dir 코드
         pos = position;
         dir = direction;
-
+        
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             //TODO: 추후 공격 사거리 만큼 사이즈 조정 필요
-            overlapSize = new Vector2(2f, 1f);
+            overlapSize = new Vector2(itemData.Range, 1f);
         }
         else
         {
-            overlapSize = new Vector2(1f, 2f);
+            overlapSize = new Vector2(1f, itemData.Range);
         }
 
         Collider2D[] monsterColliders =
@@ -58,7 +58,7 @@ public class ShortSword : IAttackHandler
         if (targetMonster != null)
         {
             //TODO: 몬스터 데미지는 캐릭터의 기본 공격력 + 무기 데미지 계산해서 데미지를 주면 될듯?
-            targetMonster.TakeDamage(5);
+            targetMonster.TakeDamage(playerModel.NormalPhysicalDamage);
         }
     }
 
@@ -69,7 +69,7 @@ public class ShortSword : IAttackHandler
     /// <param name="colliders">공격 범위 내 감지된 몬스터</param>
     private void TargetMonsterSwitch(Vector2 position, Collider2D[] colliders)
     {
-        distance = 9999f;
+        distance = float.MaxValue;
 
         for (int i = 0; i < colliders.Length; i++)
         {
