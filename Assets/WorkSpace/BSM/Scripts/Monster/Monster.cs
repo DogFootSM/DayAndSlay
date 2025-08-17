@@ -79,7 +79,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
             calcDefense -= CalculateDefenseDeBuff();
         }
         
-        Debug.Log($"방어력 :{calcDefense}");
+        //Debug.Log($"방어력 :{calcDefense}");
         
         //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;

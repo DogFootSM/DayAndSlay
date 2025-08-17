@@ -240,7 +240,6 @@ public class PlayerModel : MonoBehaviour, ISavable
         { 
             GainExperience(50);
         }  
-        Debug.Log($"공격력 :{NormalPhysicalDamage} / 방어력 :{NormalPhysicalDefense} / 스피드 :{MoveSpeed}");
     }
 
     /// <summary>

@@ -16,7 +16,7 @@ public class SSAS002 : MeleeSkill
     { 
         SetOverlapSize(direction, skillNode.skillData.SkillRadiusRange);
         MeleeEffect(playerPosition + direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
-        SetParticleStartRotationFromDeg(direction, leftDeg, rightDeg, downDeg, upDeg);
+        SetParticleStartRotationFromDeg(0,direction, leftDeg, rightDeg, downDeg, upDeg);
         ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, 0.3f);
         
         Collider2D[] detectedMonster =

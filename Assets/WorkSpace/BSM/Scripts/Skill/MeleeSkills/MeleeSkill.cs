@@ -11,6 +11,12 @@ public abstract class MeleeSkill : SkillFactory
     protected Vector2 currentDirection;
     protected ParticleSystem.MainModule mainModule;
     protected List<Action> skillActions = new List<Action>();
+    
+    protected List<List<Action>> multiActions = new List<List<Action>>();
+    protected List<ParticleSystem.MainModule> mainModules = new List<ParticleSystem.MainModule>();
+    protected List<ParticleSystem.TriggerModule> triggerModules = new List<ParticleSystem.TriggerModule>();
+    protected List<ParticleInteraction> interactions = new List<ParticleInteraction>();
+    
     protected ParticleSystem.TriggerModule triggerModule;
     protected ParticleInteraction interaction;
     protected float skillDamage;
@@ -35,6 +41,11 @@ public abstract class MeleeSkill : SkillFactory
         {
             overlapSize = new Vector2(1f, skillRange);
         }
+    }
+
+    protected void SetOverlapSize(float range)
+    {
+        overlapSize = new Vector2(range, range);
     }
     
     /// <summary>
@@ -87,8 +98,22 @@ public abstract class MeleeSkill : SkillFactory
             particleSystem.Play();
         } 
     }
-    
-    
+
+    protected void MultiEffect(Vector2 position, int index, string effectId, GameObject skillEffectPrefab)
+    { 
+        GameObject instance = particlePooling.GetSkillPool(effectId, skillEffectPrefab);
+        instance.transform.parent = null;
+        instance.transform.position = position;
+
+        ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+        interactions.Add(instance.GetComponent<ParticleInteraction>());
+        interactions[index].EffectId = effectId;
+        
+        mainModules.Add(particleSystem.main);
+        triggerModules.Add(particleSystem.trigger);
+        instance.SetActive(true);
+        particleSystem.Play();
+    }
     
     /// <summary>
     /// 파티클의 StartRotation을 회전
@@ -97,9 +122,10 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="rightDeg">오른쪽 방향일 경우의 회전 값 </param>
     /// <param name="downDegY">아래 방향일 경우의 회전 값</param>
     /// <param name="upDegY">윗 방향일 경우의 회전 값</param>
-    protected void SetParticleStartRotationFromDeg(Vector2 dir, float leftDeg, float rightDeg, float downDegY, float upDegY)
+    protected void SetParticleStartRotationFromDeg(int index, Vector2 dir, float leftDeg, float rightDeg, float downDegY, float upDegY)
     {
         currentDirection = dir;
+        mainModule = mainModules[index];
         
         if (currentDirection.x < 0) mainModule.startRotationZ = Mathf.Deg2Rad * rightDeg;
         if (currentDirection.x > 0) mainModule.startRotationZ = Mathf.Deg2Rad * leftDeg;
@@ -232,13 +258,24 @@ public abstract class MeleeSkill : SkillFactory
     /// 파티클 트리거 리스트 감지된 콜라이더 제거
     /// </summary>
     protected void RemoveTriggerModuleList()
-    { 
+    {   
         for (int i = triggerModule.colliderCount -1; i >= 0; i--)
         {
             triggerModule.RemoveCollider(triggerModule.GetCollider(i));
         } 
     }
 
+    protected void RemoveTriggerModuleList(int triggerIndex)
+    {  
+        for (int i = 0; i < triggerModules.Count; i++)
+        {
+            for (int j = triggerModules[i].colliderCount -1; j >= 0; j--)
+            {
+                triggerModules[i].RemoveCollider(triggerModules[i].GetCollider(j));
+            } 
+        } 
+    }
+    
     protected void ExecuteAttackUpDefenseDown(float duration, float defenseDecrease, float attackIncrease)
     {
         skillNode.PlayerSkillReceiver.ReceiveAttackUpDefenseDown(duration, defenseDecrease, attackIncrease);

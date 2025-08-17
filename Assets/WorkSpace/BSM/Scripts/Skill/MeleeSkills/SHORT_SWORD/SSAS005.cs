@@ -24,7 +24,7 @@ public class SSAS005 : MeleeSkill
             
             if (i == 0)
             {
-                SetParticleStartRotationFromDeg(direction,180f, 0f, 270f, 90f);
+                SetParticleStartRotationFromDeg(0,direction,180f, 0f, 270f, 90f);
             }
             else
             {
@@ -37,7 +37,7 @@ public class SSAS005 : MeleeSkill
                     instance.transform.localScale = new Vector2(0.1f, 1.8f); 
                 }
                 
-                SetParticleStartRotationFromDeg(direction,0, 180f, 90f, 270f);
+                SetParticleStartRotationFromDeg(0,direction,0, 180f, 90f, 270f);
             }
         }
         
