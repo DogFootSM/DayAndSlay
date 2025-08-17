@@ -26,6 +26,7 @@ public class DungeonRoomSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> roomPos;
     
     [SerializeField] private GameObject doorPrefab;
+    [SerializeField] private GameObject doorMarker;
     
     [SerializeField] private StageNum stageNum;
 
@@ -105,7 +106,14 @@ public class DungeonRoomSpawner : MonoBehaviour
 
                 GameObject door = Instantiate(doorPrefab, doorPos, Quaternion.identity, room.transform);
                 
-                door.GetComponent<DungeonDoor>().SetRoute(route);
+                DungeonDoor ddoor = door.GetComponent<DungeonDoor>();
+                
+                ddoor.SetRoute(route);
+
+                if (isReverse)
+                {
+                    Instantiate(doorMarker, doorPos, Quaternion.identity, room.transform);
+                }
             }
         }
 

@@ -107,27 +107,22 @@ public class MonsterSpawner : MonoBehaviour
         //Todo : 실제 연결시에는 해당 코드 이용
         //StageNum stageNum = IngameManager.instance.GetStage();
         //TestCode
-        StageNum stageNum = StageNum.STAGE2;
+        StageNum stageNum = StageNum.STAGE3;
         
         List<GameObject> monsters = new List<GameObject>();
         List<GameObject> bossMonsters =  new List<GameObject>();
 
-        Debug.Log(stageNum);
-        
         switch (stageNum)
         {        
             case StageNum.STAGE1:
-                Debug.Log("Stage 1");
                 monsters = monsters_Stage1;
                 bossMonsters = bossMonsters_Stage1;
                 break;
             case StageNum.STAGE2:
-                Debug.Log("Stage 2");
                 monsters = monsters_Stage2;
                 bossMonsters = bossMonsters_Stage2;
                 break;
             case StageNum.STAGE3:
-                Debug.Log("Stage 3");
                 monsters = monsters_Stage3;
                 bossMonsters = bossMonsters_Stage3;
                 break;
@@ -142,11 +137,6 @@ public class MonsterSpawner : MonoBehaviour
         for (int i = 0; i < spawnerList.Count; i++)
         {
             GameObject prefabToSpawn;
-
-            foreach (GameObject mon in monsters)
-            {
-                Debug.Log(mon.name);
-            }
 
             if (IsBossRoom())
             {
