@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,9 +18,14 @@ public class SSAS003 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
+        multiActions.Clear();
+        mainModules.Clear();
+        triggerModules.Clear();
+        interactions.Clear();
+        
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        MeleeEffect(playerPosition + direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
-        SetParticleStartRotationFromDeg(0,direction,rightDeg, leftDeg, upDeg, downDeg);
+        MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SetParticleStartRotationFromDeg(0, direction,rightDeg, leftDeg, upDeg, downDeg);
         SetParticleRotationX(direction);
         skillDamage = GetSkillDamage();
         
@@ -28,18 +34,19 @@ public class SSAS003 : MeleeSkill
 
         if (detectedMonster.Length > 0)
         {
-            //TODO: 방어력 무시 데미지 ?
-            IEffectReceiver monsterReceiver = detectedMonster[0].GetComponent<IEffectReceiver>();
-            skillActions.Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
-            skillActions.Add(RemoveTriggerModuleList);
-            if (triggerModule.enabled)
-            {   
-                triggerModule.AddCollider(detectedMonster[0]);
-                interaction.ReceiveAction(skillActions);
-            } 
-        }
-        
-        
+            multiActions.Add(new List<Action>());
+            
+            for (int i = 0; i < 1; i++)
+            {
+                IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
+
+                multiActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
+                triggerModules[0].AddCollider(detectedMonster[i]);
+            }
+            
+            multiActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(multiActions[0]);
+        } 
         
     }
  
@@ -57,7 +64,7 @@ public class SSAS003 : MeleeSkill
     }
 
     private void ChangeRotationToDeg(float xAngle, float yAngle)
-    {
+    { 
         mainModule.startRotationX = Mathf.Deg2Rad * xAngle;
         mainModule.startRotationY = Mathf.Deg2Rad * yAngle;
     }

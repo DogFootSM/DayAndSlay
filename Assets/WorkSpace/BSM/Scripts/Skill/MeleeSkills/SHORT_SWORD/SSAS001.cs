@@ -18,10 +18,10 @@ public class SSAS001 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {   
-        base.multiActions.Clear();
-        base.mainModules.Clear();
-        base.triggerModules.Clear();
-        base.interactions.Clear();
+        multiActions.Clear();
+        mainModules.Clear();
+        triggerModules.Clear();
+        interactions.Clear();
         
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
@@ -33,19 +33,19 @@ public class SSAS001 : MeleeSkill
 
         if (detectedMonster.Length > 0)
         {
-            base.multiActions.Add(new List<Action>());
+            multiActions.Add(new List<Action>());
  
             for (int i = 0; i < 2; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
-                base.multiActions[0].Add(() => ExecuteKnockBack(playerPosition, direction, monsterReceiver));
-                base.multiActions[0].Add(() => Hit(monsterReceiver ,skillDamage, skillNode.skillData.SkillHitCount));
+                multiActions[0].Add(() => ExecuteKnockBack(playerPosition, direction, monsterReceiver));
+                multiActions[0].Add(() => Hit(monsterReceiver ,skillDamage, skillNode.skillData.SkillHitCount));
                 
-                base.triggerModules[0].AddCollider(detectedMonster[i]);
-                base.interactions[0].ReceiveAction(multiActions[0]); 
+                triggerModules[0].AddCollider(detectedMonster[i]);
+                interactions[0].ReceiveAction(multiActions[0]); 
             }
              
-            base.multiActions[0].Add(() => RemoveTriggerModuleList(0));
+            multiActions[0].Add(() => RemoveTriggerModuleList(0));
         } 
     }
     

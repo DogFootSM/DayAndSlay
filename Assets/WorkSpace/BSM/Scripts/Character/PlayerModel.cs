@@ -164,7 +164,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     public int NormalPhysicalDamage;
     public int NormalPhysicalDefense;
     public float MoveSpeed;
-    
+    private float moveSpeedFactor;
     
     private void Awake()
     {
@@ -212,6 +212,8 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.agility = dataReader.GetInt32(4);
             playerStats.intelligence = dataReader.GetInt32(5);
             playerStats.skillPoints = dataReader.GetInt32(6);
+            
+            //TODO: 아래 항목들 db 저장 및 불러오기 추가 필요
             playerStats.moveSpeed = 3;
             playerStats.attackSpeed = 0.5f;
             playerStats.IncreaseMoveSpeedPer = 1f;
@@ -223,7 +225,7 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.CriticalDamage = 1.5f;
         }
 
-        MoveSpeed = playerStats.moveSpeed;
+        MoveSpeed = GetFactoredMoveSpeed();
         playerStats.InitVisibleStats();
     }
 
@@ -240,8 +242,29 @@ public class PlayerModel : MonoBehaviour, ISavable
         { 
             GainExperience(50);
         }  
+        
+        Debug.Log($"이속 :{GetFactoredMoveSpeed()} / {MoveSpeed}");
     }
 
+    /// <summary>
+    /// 이동 속도 증가값 설정 후 이동속도 업데이트
+    /// </summary>
+    /// <param name="speedFactor"></param>
+    public void UpdateMoveSpeedFactor(float speedFactor)
+    {
+        moveSpeedFactor = speedFactor;
+        MoveSpeed = GetFactoredMoveSpeed();
+    }
+    
+    /// <summary>
+    /// 이동속도 증가 값을 적용한 이동속도를 반환
+    /// </summary>
+    /// <returns></returns>
+    public float GetFactoredMoveSpeed()
+    {
+        return playerStats.moveSpeed + moveSpeedFactor;
+    }
+    
     /// <summary>
     /// 경험치 획득 후 레벨업 가능 여부 판단
     /// </summary>
@@ -320,7 +343,9 @@ public class PlayerModel : MonoBehaviour, ISavable
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
-
+    
+    
+    
     /// <summary>
     /// PlayerStat 데이터 저장
     /// </summary>

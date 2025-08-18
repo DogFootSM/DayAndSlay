@@ -12,6 +12,7 @@ public class SSAS008 : MeleeSkill
     {
         MeleeEffect(playerPosition + Vector2.up, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
         ExecuteDefenseUpSpeedDown(skillNode.skillData.BuffDuration, 0.5f, 2f);
+        //TODO: 사용 시 아이콘 하나 띄우기
     }
 
     public override void ApplyPassiveEffects()

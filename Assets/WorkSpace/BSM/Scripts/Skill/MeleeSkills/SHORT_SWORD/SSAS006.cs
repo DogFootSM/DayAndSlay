@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SSAS006 : MeleeSkill
 {
@@ -12,27 +13,33 @@ public class SSAS006 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
+        multiActions.Clear();
+        mainModules.Clear();
+        triggerModules.Clear();
+        interactions.Clear();
+        
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         skillDamage = GetSkillDamage();
 
-        Collider2D[] monster = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
 
-        if (monster.Length > 0)
+        if (cols.Length > 0)
         {
-            MeleeEffect(monster[0].transform.position - new Vector3(0, 0.5f), skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
-            IEffectReceiver receiver = monster[0].GetComponent<IEffectReceiver>();
-
+            multiActions.Add(new List<Action>());
             float deBuffDuration = GetDeBuffDurationIncreasePerLevel(1);
             
-            skillActions.Add(() => ExecuteDefenseDeBuff(receiver, deBuffDuration, deBuffRatio));
-            skillActions.Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-            skillActions.Add(RemoveTriggerModuleList);
-            
-            if (triggerModule.enabled)
+            for (int i = 0; i < 1; i++)
             {
-                triggerModule.AddCollider(monster[0]);
-                interaction.ReceiveAction(skillActions);
-            } 
+                MultiEffect(cols[i].transform.position - new Vector3(0, 0.5f), i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[i]);
+                
+                IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
+                multiActions[i].Add(() => ExecuteDefenseDeBuff(receiver, deBuffDuration, deBuffRatio));
+                multiActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                triggerModules[i].AddCollider(cols[0]);
+            }
+
+            multiActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(multiActions[0]);
         }
         else
         {

@@ -109,7 +109,7 @@ public abstract class MeleeSkill : SkillFactory
         interactions.Add(instance.GetComponent<ParticleInteraction>());
         interactions[index].EffectId = effectId;
         
-        mainModules.Add(particleSystem.main);
+        mainModules.Add(particleSystem.main); 
         triggerModules.Add(particleSystem.trigger);
         instance.SetActive(true);
         particleSystem.Play();

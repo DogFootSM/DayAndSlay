@@ -67,7 +67,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             defenseUpSpeedDownCo = null;
  
             //스피드, 방어력 원상 복구
-            playerModel.MoveSpeed = playerModel.PlayerStats.moveSpeed;
+            playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
             playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
         }
 
@@ -131,7 +131,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         
         while (elapsedTime < duration)
         {
-            playerModel.MoveSpeed = playerModel.PlayerStats.moveSpeed * speedDecrease;
+            playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed() * speedDecrease;
             playerModel.NormalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -139,7 +139,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         
         isDefenceTradeBuffActive = false;
         playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
-        playerModel.MoveSpeed = playerModel.PlayerStats.moveSpeed;
+        playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
     }
 
     /// <summary>
