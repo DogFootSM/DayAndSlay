@@ -18,6 +18,8 @@ public class MonsterInstaller : MonoInstaller
     //[SerializeField] PlayerController player;
     [SerializeField] private TestPlayer player;
     [SerializeField] private DungeonManager dungeonManager;
+    
+    [SerializeField] private MinimapController minimap;
 
     public override void InstallBindings()
     {
@@ -57,6 +59,10 @@ public class MonsterInstaller : MonoInstaller
         Container
             .Bind<DungeonManager>()
             .FromInstance(dungeonManager);
+        
+        Container
+            .Bind<MinimapController>()
+            .FromInstance(minimap);
 
     }
     

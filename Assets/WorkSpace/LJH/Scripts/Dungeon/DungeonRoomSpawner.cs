@@ -104,7 +104,7 @@ public class DungeonRoomSpawner : MonoBehaviour
             {
                 Vector3 doorPos = floorPositions[Random.Range(0, floorPositions.Count)];
 
-                GameObject door = Instantiate(doorPrefab, doorPos, Quaternion.identity, room.transform);
+                GameObject door = container.InstantiatePrefab(doorPrefab, doorPos, Quaternion.identity, room.transform);
                 
                 DungeonDoor ddoor = door.GetComponent<DungeonDoor>();
                 
@@ -112,7 +112,7 @@ public class DungeonRoomSpawner : MonoBehaviour
 
                 if (isReverse)
                 {
-                    Instantiate(doorMarker, doorPos, Quaternion.identity, room.transform);
+                    container.InstantiatePrefab(doorMarker, doorPos, Quaternion.identity, room.transform);
                 }
             }
         }
