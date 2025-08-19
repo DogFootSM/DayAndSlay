@@ -68,7 +68,7 @@ public class PlayerSkillReceiver : MonoBehaviour
  
             //스피드, 방어력 원상 복구
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
-            playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+            playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
         }
 
         if (attackUpDefenseDownCo != null)
@@ -87,15 +87,15 @@ public class PlayerSkillReceiver : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            playerModel.NormalPhysicalDamage = (int)(playerModel.PlayerStats.PhysicalAttack * attackIncrease);
-            playerModel.NormalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseDecrease);
+            playerModel.FinalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack * attackIncrease;
+            playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense * defenseDecrease;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         isPowerTradeBuffActive = false;
-        playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
-        playerModel.NormalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
+        playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+        playerModel.FinalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
     }
 
     /// <summary>
@@ -111,8 +111,8 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(attackUpDefenseDownCo);
             attackUpDefenseDownCo = null;
             //방어력, 공격력 원상 복구 
-            playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
-            playerModel.NormalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
+            playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+            playerModel.FinalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
         }
         
         if (defenseUpSpeedDownCo != null)
@@ -132,13 +132,13 @@ public class PlayerSkillReceiver : MonoBehaviour
         while (elapsedTime < duration)
         {
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed() * speedDecrease;
-            playerModel.NormalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
+            playerModel.FinalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
             elapsedTime += Time.deltaTime;
             yield return null;
         } 
         
         isDefenceTradeBuffActive = false;
-        playerModel.NormalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
+        playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
         playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
     }
 
@@ -374,10 +374,10 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MoveSpeedBuffRoutine(float duration, float ratio)
     {
-        float originSpeed = playerModel.PlayerStats.moveSpeed;
-        playerModel.PlayerStats.moveSpeed += (playerModel.PlayerStats.moveSpeed * ratio);
+        float originSpeed = playerModel.PlayerStats.baseMoveSpeed;
+        playerModel.PlayerStats.baseMoveSpeed += (playerModel.PlayerStats.baseMoveSpeed * ratio);
 
         yield return WaitCache.GetWait(duration);
-        playerModel.PlayerStats.moveSpeed = originSpeed;
+        playerModel.PlayerStats.baseMoveSpeed = originSpeed;
     }
 }

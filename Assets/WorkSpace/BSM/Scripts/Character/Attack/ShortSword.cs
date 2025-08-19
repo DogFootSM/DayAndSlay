@@ -58,7 +58,7 @@ public class ShortSword : IAttackHandler
         if (targetMonster != null)
         {
             //TODO: 몬스터 데미지는 캐릭터의 기본 공격력 + 무기 데미지 계산해서 데미지를 주면 될듯?
-            targetMonster.TakeDamage(playerModel.NormalPhysicalDamage);
+            targetMonster.TakeDamage(playerModel.FinalPhysicalDamage);
         }
     }
 
