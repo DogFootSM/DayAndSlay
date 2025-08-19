@@ -5,7 +5,7 @@ public class RootEffect : Effect
     [SerializeField] Animator animator;
     protected override void Tick() { }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
         Invoke("AnimationDelay", 0.5f);

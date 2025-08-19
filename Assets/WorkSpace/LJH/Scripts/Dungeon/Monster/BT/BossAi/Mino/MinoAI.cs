@@ -16,10 +16,6 @@ public class MinoAI : BossMonsterAI
     private float stompTimer;
     private float attackTimer;
     
-     protected void Start()
-    {
-        base.Start();
-    }
     protected override void Update()
     {
         base.Update();

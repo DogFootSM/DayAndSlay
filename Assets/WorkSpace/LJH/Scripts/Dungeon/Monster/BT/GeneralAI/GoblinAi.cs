@@ -30,15 +30,14 @@ public class GoblinAi : GeneralMonsterAI
 
         monsterState = M_State.ATTACK;
         stateMachine.ChangeState(new MonsterAttackState());
-        method.StopMoveCo();
-        method.isAttacking = true;
+        //method.StopMoveCo();
 
         StartCoroutine(AttackEndDelay()); // 공격 종료 타이밍 처리
     }
 
     protected override void Move()
     {
-        if (!method.isMoving)
+        //if (!method.isMoving)
         {
             Debug.Log("AI에서 움직임 실행시킴");
             stateMachine.ChangeState(new MonsterMoveState());

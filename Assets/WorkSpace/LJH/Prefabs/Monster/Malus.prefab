@@ -447,13 +447,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteDict:
     _serializedList:
-    - Key: Attack
+    - Key: ATTACK
       Value: {fileID: 7108339969198208228, guid: 87515b72687753c4691562a7c225c405, type: 3}
-    - Key: Die
+    - Key: DIE
       Value: {fileID: 7108339969198208228, guid: c80119e281417b84abc8b0d711d702ad, type: 3}
-    - Key: Hit
+    - Key: HIT
       Value: {fileID: 7108339969198208228, guid: e8506464c9baa314fa7758282e55ee6e, type: 3}
-    - Key: Move
+    - Key: MOVE
       Value: {fileID: 7108339969198208228, guid: c748703aa07eb9b4eb7e5d471709ad8d, type: 3}
 --- !u!114 &4163150367317462427
 MonoBehaviour:
@@ -468,8 +468,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  monsterData: {fileID: 0}
   rangeCollider: {fileID: 0}
+  isMoving: 0
   warningRoot: {fileID: 2717071210123443755}
   root: {fileID: 7236512142892927987}
 --- !u!114 &4014306058948159736
@@ -527,7 +527,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4014306058948159716}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

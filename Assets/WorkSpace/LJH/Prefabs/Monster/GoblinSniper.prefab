@@ -175,13 +175,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteDict:
     _serializedList:
-    - Key: Attack
+    - Key: ATTACK
       Value: {fileID: 7108339969198208228, guid: adf7bd36f6955d244b1c36af52e60080, type: 3}
-    - Key: Die
+    - Key: DIE
       Value: {fileID: 7108339969198208228, guid: 86556441d67778f4dac72782455dc9e0, type: 3}
-    - Key: Hit
+    - Key: HIT
       Value: {fileID: 7108339969198208228, guid: 015d570c53533c54e826c4f197679946, type: 3}
-    - Key: Move
+    - Key: MOVE
       Value: {fileID: 7108339969198208228, guid: 569835f0e7ce0f84a965c31dede624b4, type: 3}
 --- !u!114 &1065835143254805624
 MonoBehaviour:
@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  rb: {fileID: 0}
   attackHitBox: {fileID: 2426258245870005784}
   astarPath: {fileID: 1967302825783960325}
   player: {fileID: 0}
@@ -281,7 +283,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1188161495205834605}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

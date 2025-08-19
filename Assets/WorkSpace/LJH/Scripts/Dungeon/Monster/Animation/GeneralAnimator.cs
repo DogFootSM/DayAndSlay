@@ -14,85 +14,86 @@ public class GeneralAnimator : MonoBehaviour
     [SerializeField]
     protected SerializedDictionary<string, SpriteLibraryAsset> spriteDict = new SerializedDictionary<string, SpriteLibraryAsset>();
 
+    /* 
     MonsterStateMachine stateMachine;
+    */
 
     private int currentAnimationHash;
 
     private bool isAction = false;
+    public bool IsPlayingAction => isAction;              
 
     protected Dictionary<Direction, string> moveAction = new Dictionary<Direction, string>();
     protected Dictionary<Direction, string> attackAction = new Dictionary<Direction, string>();
     protected Dictionary<Direction, string> hitAction = new Dictionary<Direction, string>();
 
-    Direction dir;
+    Direction dir = Direction.Down;                       
+    /* 
     GameObject player;
+    */
 
     private Direction attackDir;
     private Direction moveDir;
 
+    /*
     float term = 0.1f;
+    */
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         spriteLibrary = GetComponent<SpriteLibrary>();
 
+        /*
         stateMachine = new MonsterStateMachine(this);
-
         stateMachine.ChangeState(new MonsterIdleState());
+        */
 
         DictinaryInit();
+
+        /*
         player = GameObject.FindWithTag("Player");
-
         StartCoroutine(dirCoroutine());
+        */
     }
-
 
     private void Update()
     {
         if (isAction)
         {
-            //애니메이션 진행도 확인
+            // 애니메이션 진행도 확인
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            currentAnimationHash = SetAnimationHash(attackAction[SetDirection()]);
-
+            // SetDirection() 호출 → 현재는 외부에서 갱신된 dir 사용
+            currentAnimationHash = SetAnimationHash(attackAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
                 isAction = false;
             }
 
-            currentAnimationHash = SetAnimationHash(hitAction[SetDirection()]);
-            
+            currentAnimationHash = SetAnimationHash(hitAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
                 isAction = false;
                 PlayIdle();
             }
-            
         }
-        
-        
     }
 
+    /*
     IEnumerator dirCoroutine()
     {
-        //현재 이건 의미 없는 상태
-        //because : 애니메이션의 방향을 지정해서 그 애니메이션을 실행 시키는 로직이라
-        //실행 시킨 이후에 방향을 바꿔주는건 의미 없음
         while (true)
         {
             yield return new WaitForSeconds(term);
             SetDirection();
         }
     }
+    */
 
+    /*
     Direction SetDirection()
     {
-        //방향 변경을 꺾을때마다 해줘야함
-        //현재 상황은 처음 애니메이션 시작할 때 방향을 정해줘서
-        //계속 한 방향으로 이동하는 상태
-
         Vector2 diff = player.transform.position - transform.position;
 
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
@@ -106,6 +107,17 @@ public class GeneralAnimator : MonoBehaviour
 
         return dir;
     }
+    */
+
+    // 이동/행동 벡터 기반으로 외부에서 방향을 지정
+    public void SetFacingByDelta(Vector2 delta)
+    {
+        if (delta.sqrMagnitude < 0.0001f) return; // 거의 0이면 무시
+        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+            dir = (delta.x > 0) ? Direction.Right : Direction.Left;
+        else
+            dir = (delta.y > 0) ? Direction.Up : Direction.Down;
+    }
 
     int SetAnimationHash(string currentAnimation)
     {
@@ -116,43 +128,47 @@ public class GeneralAnimator : MonoBehaviour
     {
         if (isAction) return;
 
-        spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.MOVE)];
         animator.Play("MonsterIdle");
-
     }
+
     public void PlayMove()
     {
         if (isAction) return;
 
-        moveDir = SetDirection();
-        spriteLibrary.spriteLibraryAsset = spriteDict["Move"];
+        // moveDir = SetDirection();
+        moveDir = dir; // 외부에서 세팅된 dir 사용
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.MOVE)];
         animator.Play(moveAction[moveDir]);
     }
+
     public void PlayAttack()
     {
-
         if (isAction) return;
-
+        
         isAction = true;
 
-        attackDir = SetDirection();
-        spriteLibrary.spriteLibraryAsset = spriteDict["Attack"];
+        // attackDir = SetDirection();
+        attackDir = dir; // 외부에서 세팅된 dir 사용
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
         animator.Play(attackAction[attackDir]);
-
     }
+
     public void PlayHit()
     {
         if (isAction) return;
 
         isAction = true;
 
-        spriteLibrary.spriteLibraryAsset = spriteDict["Hit"];
-        animator.Play(hitAction[SetDirection()]);
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.HIT)];
+        // animator.Play(hitAction[SetDirection()]);
+        animator.Play(hitAction[dir]); // 외부에서 세팅된 dir 사용
     }
+
     public void PlayDie()
     {
         Debug.Log("죽음 애니메이션 실행됨");
-        spriteLibrary.spriteLibraryAsset = spriteDict["Die"];
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.DIE)];
         animator.Play("MonsterDie");
     }
 
@@ -173,5 +189,4 @@ public class GeneralAnimator : MonoBehaviour
         hitAction.Add(Direction.Up, "MonsterHitUp");
         hitAction.Add(Direction.Down, "MonsterHitDown");
     }
-
 }

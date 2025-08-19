@@ -175,13 +175,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteDict:
     _serializedList:
-    - Key: Attack
+    - Key: ATTACK
       Value: {fileID: 7108339969198208228, guid: 0127e9b0c18b04849bcbe5af9bffc71e, type: 3}
-    - Key: Die
+    - Key: DIE
       Value: {fileID: 7108339969198208228, guid: de59c28073cc9c14a837bbe02fd24192, type: 3}
-    - Key: Hit
+    - Key: HIT
       Value: {fileID: 7108339969198208228, guid: ad6545c2fe74b3f4fb92c2896f6013cd, type: 3}
-    - Key: Move
+    - Key: MOVE
       Value: {fileID: 7108339969198208228, guid: bbf168bfe7952544fac57dab28eba03c, type: 3}
 --- !u!114 &6087783516721240178
 MonoBehaviour:
@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  rb: {fileID: 0}
   attackHitBox: {fileID: 1267680729230137572}
   astarPath: {fileID: 1754645872257719992}
   player: {fileID: 0}
@@ -281,13 +283,13 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2206897382857518734}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 10
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0

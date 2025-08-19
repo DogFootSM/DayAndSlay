@@ -13,10 +13,7 @@ public class EliteOrcAI : BossMonsterAI
     private float rushTimer;
     private float attackTimer;
     
-     protected void Start()
-    {
-        base.Start();
-    }
+    
     protected override void Update()
     {
         base.Update();

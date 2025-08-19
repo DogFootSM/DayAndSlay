@@ -463,13 +463,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteDict:
     _serializedList:
-    - Key: Attack
+    - Key: ATTACK
       Value: {fileID: 7108339969198208228, guid: 75da0bdf470dd5b4098130f9a5062906, type: 3}
-    - Key: Die
+    - Key: DIE
       Value: {fileID: 7108339969198208228, guid: 9f19acdaa15c95240ad977845f7dd78f, type: 3}
-    - Key: Hit
+    - Key: HIT
       Value: {fileID: 7108339969198208228, guid: fbb36e302d5158042ad950d096ff8359, type: 3}
-    - Key: Move
+    - Key: MOVE
       Value: {fileID: 7108339969198208228, guid: e9891870849e1ff4ebfaab6e33b34d5e, type: 3}
 --- !u!114 &6158955908396098429
 MonoBehaviour:
@@ -484,8 +484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  monsterData: {fileID: 0}
   rangeCollider: {fileID: 0}
+  isMoving: 0
   bellusHealEffect: {fileID: 1857685260661089847}
   malusHealEffect: {fileID: 1857685260661089847}
   poisonWarnigEffect: {fileID: 5879552815645198183}
@@ -545,7 +545,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7439626506249827491}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

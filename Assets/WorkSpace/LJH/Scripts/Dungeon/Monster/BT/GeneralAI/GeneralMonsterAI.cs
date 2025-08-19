@@ -40,6 +40,7 @@ public class GeneralMonsterAI : MonoBehaviour
     {
         tree.Tick();
 
+
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -101,14 +102,16 @@ public class GeneralMonsterAI : MonoBehaviour
         if (monsterState == M_State.IDLE) return;
 
         stateMachine.ChangeState(new MonsterIdleState());
+        method.IdleMethod();
         monsterState = M_State.IDLE;
     }
 
     protected virtual void Move()
     {
-        if (monsterState == M_State.MOVE || method.isMoving) return;
+        if (monsterState == M_State.MOVE) return;
 
         stateMachine.ChangeState(new MonsterMoveState());
+        method.StopIdle();
         method.MoveMethod();
         monsterState = M_State.MOVE;
     }
@@ -118,11 +121,10 @@ public class GeneralMonsterAI : MonoBehaviour
         if (monsterState == M_State.ATTACK) return;
 
         stateMachine.ChangeState(new MonsterAttackState());
-        method.StopMoveCo();
-        method.isAttacking = true;
         isAttacking = true;
         monsterState = M_State.ATTACK;
-
+        method.StopIdle();
+        method.AttackMethod();
         StartCoroutine(AttackEndDelay());
     }
 
@@ -144,7 +146,6 @@ public class GeneralMonsterAI : MonoBehaviour
         yield return new WaitForSeconds(0.5f); // 애니메이션 길이
 
         isAttacking = false;
-        method.isAttacking = false;
         monsterState = M_State.IDLE;
     }
 
