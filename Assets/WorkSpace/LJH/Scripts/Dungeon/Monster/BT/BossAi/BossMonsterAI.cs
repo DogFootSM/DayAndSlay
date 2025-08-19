@@ -155,7 +155,7 @@ public abstract class BossMonsterAI : MonoBehaviour
 
     protected virtual void SkillCommonStart()
     {
-        animator.stateMachine.ChangeState(new BossMonsterSkillState());
+        animator.stateMachine.ChangeState(new BossMonsterSkillFirstState());
         method.BeforeAttack();
     }
 

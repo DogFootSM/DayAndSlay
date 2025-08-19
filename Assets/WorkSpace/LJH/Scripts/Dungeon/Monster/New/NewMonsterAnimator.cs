@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D.Animation;
 
 [RequireComponent(typeof(Animator))]
-public class GeneralAnimator : MonoBehaviour
+public class NewMonsterAnimator : MonoBehaviour
 {
     protected Animator animator;
     protected SpriteLibrary spriteLibrary;
@@ -14,9 +14,6 @@ public class GeneralAnimator : MonoBehaviour
     [SerializeField]
     protected SerializedDictionary<string, SpriteLibraryAsset> spriteDict = new SerializedDictionary<string, SpriteLibraryAsset>();
 
-    /* 
-    MonsterStateMachine stateMachine;
-    */
 
     private int currentAnimationHash;
 

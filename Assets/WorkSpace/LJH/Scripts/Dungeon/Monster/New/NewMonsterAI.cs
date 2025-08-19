@@ -1,0 +1,139 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class NewMonsterAI : MonoBehaviour
+{
+    [SerializeField] protected MonsterData monsterData;
+    [SerializeField] protected PlayerController player;
+
+    protected BehaviourTree tree;
+    protected MonsterModel model;
+    protected NewMonsterMethod method;
+    protected NewMonsterAnimator animator;
+
+    protected NewMonsterStateMachine stateMachine;
+
+    public bool isAttacking = false;
+
+    protected virtual void Awake()
+    {
+        model = GetComponent<MonsterModel>();
+        method = GetComponent<NewMonsterMethod>();
+        animator = GetComponent<NewMonsterAnimator>();
+    }
+
+    protected virtual void Start()
+    {
+        player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
+        tree = new BehaviourTree(BuildRoot());
+        stateMachine = new NewMonsterStateMachine(animator);
+
+        method.MonsterDataInit(monsterData);
+    }
+
+    protected virtual void Update()
+    {
+        tree.Tick();
+
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Hit(1); // 테스트용
+        }
+#endif
+    }
+
+    protected virtual BTNode BuildRoot()
+    {
+        return new Selector(new List<BTNode>
+        {
+            new Sequence(BuildDieSequence()),
+            new Sequence(BuildAttackSequence()),
+            new Sequence(BuildChaseSequence()),
+            new Sequence(BuildIdleSequence())
+        });
+    }
+
+    protected virtual List<BTNode> BuildDieSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsDieNode(() => model.Hp),
+            new ActionNode(Die)
+        };
+    }
+
+    protected virtual List<BTNode> BuildAttackSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+            new ActionNode(Attack)
+        };
+    }
+
+    protected virtual List<BTNode> BuildChaseSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange),
+            new ActionNode(Move)
+        };
+    }
+
+    protected virtual List<BTNode> BuildIdleSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, () => !isAttacking),
+            new ActionNode(Idle)
+        };
+    }
+
+    // ========== 상태 메서드 ==========
+    protected virtual void Idle()
+    {
+        stateMachine.ChangeState(new NewMonsterIdleState());
+        method.IdleMethod();
+    }
+
+    protected virtual void Move()
+    {
+        stateMachine.ChangeState(new NewMonsterMoveState());
+        method.MoveMethod();
+    }
+
+    protected virtual void Attack()
+    {
+        stateMachine.ChangeState(new NewMonsterAttackState());
+        isAttacking = true;
+        method.AttackMethod();
+        StartCoroutine(AttackEndDelay());
+    }
+
+    protected virtual void Die()
+    {
+        method.DieMethod();
+        stateMachine.ChangeState(new NewMonsterDieState());
+    }
+
+    public virtual void Hit(int damage)
+    {
+        method.HitMethod(damage);
+        stateMachine.ChangeState(new NewMonsterHitState());
+    }
+
+    protected IEnumerator AttackEndDelay()
+    {
+        yield return new WaitForSeconds(0.5f); // 애니메이션 길이
+
+        isAttacking = false;
+    }
+
+    public MonsterData GetMonsterData() => monsterData;
+    public MonsterModel GetMonsterModel() => model;
+    public NewMonsterMethod GetMonsterMethod() => method;
+    public NewMonsterAnimator GetMonsterAnimator() => animator;
+}

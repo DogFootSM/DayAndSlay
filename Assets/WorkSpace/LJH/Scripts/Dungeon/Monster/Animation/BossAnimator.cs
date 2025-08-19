@@ -25,6 +25,8 @@ public class BossAnimator : MonoBehaviour
 
     private Dictionary<Direction, string> moveAction = new Dictionary<Direction, string>();
     private Dictionary<Direction, string> attackAction = new Dictionary<Direction, string>();
+    private Dictionary<Direction, string> skillFirstAction = new Dictionary<Direction, string>();
+    private Dictionary<Direction, string> skillSecondAction = new Dictionary<Direction, string>();
     private Dictionary<Direction, string> hitAction = new Dictionary<Direction, string>();
 
     private Direction dir;
@@ -85,13 +87,22 @@ public class BossAnimator : MonoBehaviour
         animator.Play(attackAction[dir]);
     }
 
-    public void PlaySkill()
+    public void PlaySkillFirst()
     {
         if (isAction) return;
         
         isAction = true;
         spriteLibrary.spriteLibraryAsset = spriteDict["Attack"];
-        animator.Play("BossSkillFirst");
+        animator.Play(skillFirstAction[dir]);
+    }
+    
+    public void PlaySkillSecond()
+    {
+        if (isAction) return;
+        
+        isAction = true;
+        spriteLibrary.spriteLibraryAsset = spriteDict["Attack"];
+        animator.Play(skillSecondAction[dir]);
     }
     
 
@@ -119,6 +130,16 @@ public class BossAnimator : MonoBehaviour
         attackAction.Add(Direction.Right, "BossAttackRight");
         attackAction.Add(Direction.Up, "BossAttackUp");
         attackAction.Add(Direction.Down, "BossAttackDown");
+        
+        skillFirstAction.Add(Direction.Left, "BossSkillFirstLeft");
+        skillFirstAction.Add(Direction.Right, "BossSkillFirstRight");
+        skillFirstAction.Add(Direction.Up, "BossSkillFirstUp");
+        skillFirstAction.Add(Direction.Down, "BossSkillFirstDown");
+        
+        skillSecondAction.Add(Direction.Left, "BossSkillSecondLeft");
+        skillSecondAction.Add(Direction.Right, "BossSkillSecondRight");
+        skillSecondAction.Add(Direction.Up, "BossSkillSecondUp");
+        skillSecondAction.Add(Direction.Down, "BossSkillSecondDown");
 
         hitAction.Add(Direction.Left, "BossHitLeft");
         hitAction.Add(Direction.Right, "BossHitRight");

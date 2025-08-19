@@ -1,9 +1,9 @@
-public class BossMonsterSkillState : IBossMonsterState
+public class BossMonsterSkillFirstState : IBossMonsterState
 {
 
     public void Enter(BossAnimator animator)
     {
-        animator.PlaySkill();
+        animator.PlaySkillFirst();
     }
     public void Update()
     { 
