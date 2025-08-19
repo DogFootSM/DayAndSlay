@@ -15,7 +15,7 @@ public class SSAS007 : MeleeSkill
         //TODO: 사용 시 아이콘 하나 띄우기
     }
 
-    public override void ApplyPassiveEffects()
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
 

@@ -59,18 +59,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        // ProjectContext.Instance.Container.Inject(this);
+        ProjectContext.Instance.Container.Inject(this);
         Init(); 
-        // InitSlotData();
-        // ChangedWeaponType(curWeaponType);
+        InitSlotData();
         characterStates[(int)curState].Enter();
+        curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
     }
 
     private void Start()
     {
-        //TODO: 테스트용
-        ProjectContext.Instance.Container.Inject(this);
-        InitSlotData();
         ChangedWeaponType(curWeaponType);
     }
 
@@ -79,9 +76,7 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         characterStates[(int)curState].Update();   
         InventoryToTableItem();
-        
         Debug.DrawRay(transform.position, MoveDir * 10f, Color.red);
-        
     }
 
     private void FixedUpdate()
@@ -145,7 +140,7 @@ public class PlayerController : MonoBehaviour
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
         //TODO: NotWeapon 따로 처리 필요해짐
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);
-        
+        playerModel.UpdateWeaponType(weaponType);
         //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
         

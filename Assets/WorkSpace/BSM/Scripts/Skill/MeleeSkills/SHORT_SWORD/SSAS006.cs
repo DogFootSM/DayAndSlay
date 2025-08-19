@@ -53,7 +53,7 @@ public class SSAS006 : MeleeSkill
         
     }
 
-    public override void ApplyPassiveEffects()
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
 

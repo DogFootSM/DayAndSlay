@@ -164,7 +164,15 @@ public class PlayerModel : MonoBehaviour, ISavable
     public int NormalPhysicalDamage;
     public int NormalPhysicalDefense;
     public float MoveSpeed;
+    
+    private const string moveSpeedFactorKey = "MoveSpeedFactor";
     private float moveSpeedFactor;
+    
+    
+    private CharacterWeaponType curWeaponType;
+    public CharacterWeaponType ModelCurWeaponType => curWeaponType;
+    
+    private Dictionary<CharacterWeaponType, Dictionary<string, float>> weaponPassiveDict = new Dictionary<CharacterWeaponType, Dictionary<string, float>>();
     
     private void Awake()
     {
@@ -247,12 +255,37 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     /// <summary>
+    /// 현재 무기타입 업데이트
+    /// </summary>
+    /// <param name="weaponType">장착한 무기의 타입</param>
+    public void UpdateWeaponType(CharacterWeaponType weaponType)
+    {
+        curWeaponType = weaponType;
+        
+        if (!weaponPassiveDict.ContainsKey(curWeaponType))
+        {
+            weaponPassiveDict.Add(curWeaponType, new Dictionary<string, float>());
+        }
+    }
+    
+    /// <summary>
     /// 이동 속도 증가값 설정 후 이동속도 업데이트
     /// </summary>
     /// <param name="speedFactor"></param>
     public void UpdateMoveSpeedFactor(float speedFactor)
     {
-        moveSpeedFactor = speedFactor;
+        if (!weaponPassiveDict.ContainsKey(curWeaponType))
+        {
+            weaponPassiveDict.Add(curWeaponType, new Dictionary<string, float>());
+        }
+        
+        if (!weaponPassiveDict[curWeaponType].ContainsKey(moveSpeedFactorKey))
+        {
+            weaponPassiveDict[curWeaponType].Add(moveSpeedFactorKey, speedFactor);
+        }
+
+        weaponPassiveDict[curWeaponType][moveSpeedFactorKey] = speedFactor;
+        moveSpeedFactor = weaponPassiveDict[curWeaponType][moveSpeedFactorKey];
         MoveSpeed = GetFactoredMoveSpeed();
     }
     

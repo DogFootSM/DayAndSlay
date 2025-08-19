@@ -21,12 +21,15 @@ public class SkillNode
     public int CurSkillLevel => curSkillLevel;
 
     public bool IsCoolDownReset;
+
+    private CharacterWeaponType curWeapon;
     
-    public SkillNode(SkillData skillData, PlayerModel playerModel, PlayerSkillReceiver playerSkillReceiver)
+    public SkillNode(SkillData skillData, PlayerModel playerModel, PlayerSkillReceiver playerSkillReceiver, CharacterWeaponType weaponType)
     {
         this.skillData = skillData;
         this.playerModel = playerModel;
         this.playerSkillReceiver = playerSkillReceiver;
+        curWeapon = weaponType;
     }
  
     /// <summary>
@@ -53,7 +56,7 @@ public class SkillNode
 
             if (passiveSkill != null)
             {
-                passiveSkill.ApplyPassiveEffects();
+                passiveSkill.ApplyPassiveEffects(curWeapon);
             } 
         }
     }
@@ -87,7 +90,7 @@ public class SkillNode
 
             if (passiveSkill != null)
             {
-                passiveSkill.ApplyPassiveEffects();
+                passiveSkill.ApplyPassiveEffects(curWeapon);
             } 
         }
     }

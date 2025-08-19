@@ -24,6 +24,7 @@ public class SkillTree : MonoBehaviour, ISavable
     private Dictionary<string, SkillNode> prerequisiteNodeMap = new();
     private Dictionary<WeaponType, List<SkillNode>> weaponTypeNodes = new();            //무기 타입별 노드
     private WeaponType curWeapon;
+    private WeaponType beforeWeapon;
     
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class SkillTree : MonoBehaviour, ISavable
             {
                 for (int i = 0; i < skillNode.skillData.SkillEffectPrefab.Count; i++)
                 {
+                    if(!skillNode.skillData.IsActive) continue;
                     skillParticlePooling.InstantiateSkillParticlePool($"{skillNode.skillData.SkillId}_{i + 1}_Particle", skillNode.skillData.SkillEffectPrefab[i]);
                 }
                 
@@ -87,7 +89,7 @@ public class SkillTree : MonoBehaviour, ISavable
         foreach (SkillData data in SkillDatas)
         {
             //노드 생성 후 전체 스킬 노드 리스트에 추가
-            allskillNodes.Add(new SkillNode(data, playerModel, playerSkillReceiver));
+            allskillNodes.Add(new SkillNode(data, playerModel, playerSkillReceiver, (CharacterWeaponType)data.RequiredWeapon));
         }
     }
 
@@ -160,8 +162,37 @@ public class SkillTree : MonoBehaviour, ISavable
     /// <param name="weaponType">현재 무기 타입</param>
     public void ChangedWeaponType(WeaponType weaponType)
     {
+        beforeWeapon = curWeapon;
         curWeapon = weaponType;
         skillTreePreview.OnChangedSkillTab?.Invoke(curWeapon);
+
+        //이전 무기 패시브 능력 해제
+        if (weaponTypeNodes.ContainsKey(beforeWeapon))
+        {
+            foreach (var skill in weaponTypeNodes[beforeWeapon])
+            {
+                PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(skill) as PassiveSkill;
+
+                if (passiveSkill != null)
+                {
+                    passiveSkill.RevertPassiveEffects();
+                }
+            }
+        }
+         
+        //현재 무기 패시브 적용
+        if (weaponTypeNodes.ContainsKey(weaponType))
+        {
+            foreach (var skill in weaponTypeNodes[curWeapon])
+            {
+                PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(skill) as PassiveSkill;
+
+                if (passiveSkill != null)
+                {
+                    passiveSkill.ApplyPassiveEffects((CharacterWeaponType)curWeapon);
+                } 
+            }
+        } 
     }
 
 

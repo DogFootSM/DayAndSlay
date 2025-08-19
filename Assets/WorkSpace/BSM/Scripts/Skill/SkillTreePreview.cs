@@ -19,7 +19,6 @@ public class SkillTreePreview : MonoBehaviour
     [SerializeField] private TextMeshProUGUI previewSkillPrerequisiteText;
     [SerializeField] private Image previewSkillIcon;
     [SerializeField] private Button previewRegisterButton;
-
     
     private List<SkillSet> skillNodeButtons = new();
     public UnityAction<WeaponType> OnChangedSkillTab;

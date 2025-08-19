@@ -39,7 +39,7 @@ public class SSAS004 : MeleeSkill
         } 
     }
 
-    public override void ApplyPassiveEffects(){ }
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType){ }
 
     public override void Gizmos() { }
 }

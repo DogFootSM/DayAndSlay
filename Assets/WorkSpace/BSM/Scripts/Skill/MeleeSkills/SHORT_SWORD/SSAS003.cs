@@ -69,7 +69,7 @@ public class SSAS003 : MeleeSkill
         mainModule.startRotationY = Mathf.Deg2Rad * yAngle;
     }
     
-    public override void ApplyPassiveEffects()
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
 
