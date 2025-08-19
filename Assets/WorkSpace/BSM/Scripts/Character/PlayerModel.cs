@@ -164,10 +164,10 @@ public class PlayerModel : MonoBehaviour, ISavable
     public int NormalPhysicalDamage;
     public int NormalPhysicalDefense;
     public float MoveSpeed;
+    public float AttackSpeed;
     
-    private const string moveSpeedFactorKey = "MoveSpeedFactor";
     private float moveSpeedFactor;
-    
+    private float attackSpeedFactor;
     
     private CharacterWeaponType curWeaponType;
     public CharacterWeaponType ModelCurWeaponType => curWeaponType;
@@ -221,7 +221,7 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.intelligence = dataReader.GetInt32(5);
             playerStats.skillPoints = dataReader.GetInt32(6);
             
-            //TODO: 아래 항목들 db 저장 및 불러오기 추가 필요
+            //기본값들로 변하지 않을 값
             playerStats.moveSpeed = 3;
             playerStats.attackSpeed = 0.5f;
             playerStats.IncreaseMoveSpeedPer = 1f;
@@ -234,6 +234,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         }
 
         MoveSpeed = GetFactoredMoveSpeed();
+        AttackSpeed = GetFactorAttackSpeed();
         playerStats.InitVisibleStats();
     }
 
@@ -251,7 +252,7 @@ public class PlayerModel : MonoBehaviour, ISavable
             GainExperience(50);
         }  
         
-        Debug.Log($"이속 :{GetFactoredMoveSpeed()} / {MoveSpeed}");
+        Debug.Log($"공속 :{GetFactorAttackSpeed()} / {AttackSpeed}");
     }
 
     /// <summary>
@@ -261,11 +262,6 @@ public class PlayerModel : MonoBehaviour, ISavable
     public void UpdateWeaponType(CharacterWeaponType weaponType)
     {
         curWeaponType = weaponType;
-        
-        if (!weaponPassiveDict.ContainsKey(curWeaponType))
-        {
-            weaponPassiveDict.Add(curWeaponType, new Dictionary<string, float>());
-        }
     }
     
     /// <summary>
@@ -274,18 +270,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <param name="speedFactor"></param>
     public void UpdateMoveSpeedFactor(float speedFactor)
     {
-        if (!weaponPassiveDict.ContainsKey(curWeaponType))
-        {
-            weaponPassiveDict.Add(curWeaponType, new Dictionary<string, float>());
-        }
-        
-        if (!weaponPassiveDict[curWeaponType].ContainsKey(moveSpeedFactorKey))
-        {
-            weaponPassiveDict[curWeaponType].Add(moveSpeedFactorKey, speedFactor);
-        }
-
-        weaponPassiveDict[curWeaponType][moveSpeedFactorKey] = speedFactor;
-        moveSpeedFactor = weaponPassiveDict[curWeaponType][moveSpeedFactorKey];
+        moveSpeedFactor = speedFactor;
         MoveSpeed = GetFactoredMoveSpeed();
     }
     
@@ -296,6 +281,17 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float GetFactoredMoveSpeed()
     {
         return playerStats.moveSpeed + moveSpeedFactor;
+    }
+
+    public void UpdateAttackSpeedFactor(float speedFactor)
+    {
+        attackSpeedFactor = speedFactor;
+        AttackSpeed = GetFactorAttackSpeed();
+    }
+    
+    public float GetFactorAttackSpeed()
+    {
+        return playerStats.attackSpeed + attackSpeedFactor;
     }
     
     /// <summary>
@@ -341,6 +337,9 @@ public class PlayerModel : MonoBehaviour, ISavable
         NormalPhysicalDefense = playerStats.PhysicalDefense;
     }
 
+    /// <summary>
+    /// 패시브 능력 적용 후 스탯 정보 변경
+    /// </summary>
     public void ApplyPassiveSkillModifiers()
     {
         statusWindow.OnChangedAllStats?.Invoke(playerStats);

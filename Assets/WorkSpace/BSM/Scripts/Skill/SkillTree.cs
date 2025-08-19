@@ -166,6 +166,16 @@ public class SkillTree : MonoBehaviour, ISavable
         curWeapon = weaponType;
         skillTreePreview.OnChangedSkillTab?.Invoke(curWeapon);
 
+        RemoveWeaponTypePassives();
+        ApplyWeaponTypePassives(); 
+    }
+    
+    
+    /// <summary>
+    /// 이전 무기의 패시브 적용 능력 제거
+    /// </summary>
+    private void RemoveWeaponTypePassives()
+    {
         //이전 무기 패시브 능력 해제
         if (weaponTypeNodes.ContainsKey(beforeWeapon))
         {
@@ -179,9 +189,15 @@ public class SkillTree : MonoBehaviour, ISavable
                 }
             }
         }
-         
+    }
+
+    /// <summary>
+    /// 현재 무기의 패시브 능력 적용
+    /// </summary>
+    private void ApplyWeaponTypePassives()
+    {
         //현재 무기 패시브 적용
-        if (weaponTypeNodes.ContainsKey(weaponType))
+        if (weaponTypeNodes.ContainsKey(curWeapon))
         {
             foreach (var skill in weaponTypeNodes[curWeapon])
             {
@@ -194,8 +210,7 @@ public class SkillTree : MonoBehaviour, ISavable
             }
         } 
     }
-
-
+    
     /// <summary>
     /// 스킬 데이터 저장
     /// </summary>

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerState : PlayerStateMachine
 {
     protected static KeyCode skillInputKey;
-    protected float attackSpeed => playerController.PlayerModel.PlayerStats.attackSpeed;
+    protected float attackSpeed => playerController.PlayerModel.AttackSpeed;
     protected float moveSpeed => playerController.PlayerModel.MoveSpeed;
     
     private KeyCode[] skillInputKeys = new KeyCode[]
