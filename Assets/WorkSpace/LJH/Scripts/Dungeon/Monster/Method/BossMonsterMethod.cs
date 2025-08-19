@@ -8,9 +8,10 @@ public abstract class BossMonsterMethod : MonoBehaviour
     private DungeonManager dungeonManager;
 
     [SerializeField] protected GameObject player;
-    [SerializeField] private MonsterData monsterData;
-    [SerializeField] private BoxCollider2D rangeCollider;
+    [SerializeField] private CircleCollider2D rangeCollider;
     
+    
+    private MonsterData monsterData;
     protected Coroutine moveCoroutine;
     protected AstarPath astarPath;
     protected Rigidbody2D rb;
