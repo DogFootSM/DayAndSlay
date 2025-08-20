@@ -15,12 +15,16 @@ public class NewMonsterAI : MonoBehaviour
     protected NewMonsterStateMachine stateMachine;
 
     public bool isAttacking = false;
+    public bool isMoving = false;
+
+    private Vector3 lastPlayerPos;
 
     protected virtual void Awake()
     {
         model = GetComponent<MonsterModel>();
         method = GetComponent<NewMonsterMethod>();
         animator = GetComponent<NewMonsterAnimator>();
+        lastPlayerPos = transform.position;
     }
 
     protected virtual void Start()
@@ -35,7 +39,6 @@ public class NewMonsterAI : MonoBehaviour
     protected virtual void Update()
     {
         tree.Tick();
-
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
@@ -102,7 +105,21 @@ public class NewMonsterAI : MonoBehaviour
     protected virtual void Move()
     {
         stateMachine.ChangeState(new NewMonsterMoveState());
+        
+        //플레이어가 움직인 경우
+        if (PlayerIsMoved() == true)
+        {
+            method.SetNewPath();
+        }
+
         method.MoveMethod();
+        //isMoving = true;
+        lastPlayerPos = player.transform.position;
+    }
+
+    private bool PlayerIsMoved()
+    {
+        return Vector3.Distance(lastPlayerPos, player.transform.position) > 0.01f;
     }
 
     protected virtual void Attack()
@@ -136,4 +153,6 @@ public class NewMonsterAI : MonoBehaviour
     public MonsterModel GetMonsterModel() => model;
     public NewMonsterMethod GetMonsterMethod() => method;
     public NewMonsterAnimator GetMonsterAnimator() => animator;
+    
+    public float GetChaseRange() => monsterData.ChaseRange;
 }

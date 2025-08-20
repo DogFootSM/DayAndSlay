@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetSensor : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class TargetSensor : MonoBehaviour
     [SerializeField] protected CircleCollider2D findCollider; 
   
     protected LayerMask targetLayer;
-    protected float findRange = 5f;
+    protected float findRange = 0f;
 
     //아래로 이재호가 추가한 변수
     protected GameObject player;
@@ -23,7 +24,7 @@ public class TargetSensor : MonoBehaviour
 
     private void Awake()
     {
-        findCollider.radius = findRange;
+        findCollider.radius = GetComponentInParent<NewMonsterAI>().GetChaseRange() / 2;
         targetLayer = LayerMask.GetMask("Player");
     }
 
@@ -73,9 +74,9 @@ public class TargetSensor : MonoBehaviour
     }
 
     private void OnDrawGizmos()
-    {
+    { 
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, findRange);
+        Gizmos.DrawWireSphere(transform.position, GetComponentInParent<NewMonsterAI>().GetChaseRange());
     }
     
     public void SetGrid(Grid grid) => this.grid = grid;

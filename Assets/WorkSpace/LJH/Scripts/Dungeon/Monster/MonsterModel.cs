@@ -23,7 +23,15 @@ public class MonsterModel : MonoBehaviour
         }
         else
         {
-            monsterData = GetComponent<GeneralMonsterAI>().GetMonsterData();
+            if (GetComponent<GeneralMonsterAI>() != null)
+            {
+                monsterData = GetComponent<GeneralMonsterAI>().GetMonsterData();
+            }
+            else
+            {
+                //테스트 코드
+                monsterData = GetComponent<NewMonsterAI>().GetMonsterData();
+            }
         }
 
         Id = monsterData.Id;
