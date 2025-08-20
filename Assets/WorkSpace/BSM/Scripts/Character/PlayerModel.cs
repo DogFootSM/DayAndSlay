@@ -21,23 +21,27 @@ public class PlayerStats
     public float baseStrength;                //캐릭터 힘 능력치
     public float baseAgility;                 //캐릭터 민첩 능력치
     public float baseIntelligence;            //캐릭터 지능 능력치
-    public float criticalPer;                //캐릭터 크리티컬 능력치
+    public float baseCriticalPer;                //캐릭터 크리티컬 능력치
     public int statsPoints;             //캐릭터 보유 스탯 포인트
     public int skillPoints;             //캐릭터 보유 스킬 포인트
     public float baseMoveSpeed;               //캐릭터의 기본 이동속도
     public float baseAttackSpeed;           //캐릭터의 기본 공격 속도
+    public float baseCriticalDamage;
     
     public float FinalStrength;         //보여질 캐릭터 힘 능력치 
     public float FinalAgility;          //보여질 캐릭터 민첩 능력치
     public float FinalIntelligence;     //보여질 캐릭터 지능 능력치
-    public float FinalCritical;         //보여질 캐릭터 크리티컬 능력치
+    public float FinalCriticalPer;      //보여질 캐릭터 크리티컬 능력치
+    public float FinalCriticalDamage;
+    public float FinalResistance;
 
-    public float CriticalDamage;
     public float IncreaseMoveSpeedPer;
     public float InCreaseAttackSpeedPer;
-    public float CoolDown;
-    public float CastingSpeed;
-    public float Resistance;
+    public float baseCoolDown;
+    public float baseCastingSpeed;
+    public float baseResistance;
+    public float DamageReflectValue;
+    public float DamageReflectRate;
     
     //TODO: 공격력 계산 공식 수정 필요
     //캐릭터 체력
@@ -165,10 +169,16 @@ public class PlayerModel : MonoBehaviour, ISavable
     [FormerlySerializedAs("NormalPhysicalDefense")] public float FinalPhysicalDefense;
     public float MoveSpeed;
     public float AttackSpeed;
-    public float StrengthFactor;
+    public float CriticalPer;
+    public float CriticalDamage;
+    
     
     private float moveSpeedFactor;
     private float attackSpeedFactor;
+    private float strengthFactor;
+    private float criticalPerFactor;
+    private float criticalDamageFactor;
+    
     
     private CharacterWeaponType curWeaponType;
     public CharacterWeaponType ModelCurWeaponType => curWeaponType;
@@ -227,12 +237,13 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.baseAttackSpeed = 0.5f;
             playerStats.IncreaseMoveSpeedPer = 1f;
             playerStats.InCreaseAttackSpeedPer = 1f;
-            playerStats.CoolDown = 0f;
-            playerStats.CastingSpeed = 0f;
-            playerStats.Resistance = 0f;
-            playerStats.criticalPer = 0f;
-            playerStats.CriticalDamage = 1.5f;
+            playerStats.baseCoolDown = 0f;
+            playerStats.baseCastingSpeed = 0f;
+            playerStats.baseResistance = 0f;
+            playerStats.baseCriticalPer = 0f;
+            playerStats.baseCriticalDamage = 1.5f;
         }
+        
         MoveSpeed = GetFactoredMoveSpeed();
         AttackSpeed = GetFactorAttackSpeed();
         playerStats.InitVisibleStats();
@@ -250,9 +261,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         if (Input.GetKeyDown(KeyCode.V))
         { 
             GainExperience(50);
-        }  
-        
-        Debug.Log($"공속 :{GetFactorAttackSpeed()} / {AttackSpeed} / {playerStats.PhysicalAttack}");
+        }
     }
 
     /// <summary>
@@ -272,6 +281,14 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         moveSpeedFactor = speedFactor;
         MoveSpeed = GetFactoredMoveSpeed();
+        playerStats.IncreaseMoveSpeedPer = 1f + moveSpeedFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+
+    public void UpdateStrengthFactor(float strengthFactor)
+    {
+        playerStats.FinalStrength += strengthFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     /// <summary>
@@ -287,11 +304,31 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         attackSpeedFactor = speedFactor;
         AttackSpeed = GetFactorAttackSpeed();
+        playerStats.InCreaseAttackSpeedPer = 1f + speedFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     public float GetFactorAttackSpeed()
     {
         return playerStats.baseAttackSpeed + attackSpeedFactor;
+    }
+
+    public void UpdateCriticalPerFactor(float criticalPerFactor)
+    {
+        this.criticalPerFactor = criticalPerFactor;
+        playerStats.FinalCriticalPer = GetFactorCriticalPerFactor();
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+
+    public float GetFactorCriticalPerFactor()
+    {
+        return playerStats.baseCriticalPer + criticalPerFactor;
+    }
+
+    public void UpdateResistanceFactor(float resistanceFactor)
+    {
+        playerStats.FinalResistance = playerStats.baseResistance + resistanceFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     /// <summary>
@@ -315,7 +352,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         FinalPhysicalDamage = playerStats.PhysicalAttack;
         FinalPhysicalDefense = playerStats.PhysicalDefense;
     }
-     
+    
     /// <summary>
     /// 캐릭터 레벨업 진행
     /// </summary>

@@ -55,7 +55,7 @@ public class SkillNode
             PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(this) as PassiveSkill;
 
             if (passiveSkill != null)
-            {
+            {Debug.Log("Apply Skill Level");
                 passiveSkill.ApplyPassiveEffects(curWeapon);
             } 
         }

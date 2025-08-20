@@ -183,7 +183,7 @@ public class SkillTree : MonoBehaviour, ISavable
             {
                 PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(skill) as PassiveSkill;
 
-                if (passiveSkill != null)
+                if (passiveSkill != null && skill.CurSkillLevel > 0)
                 {
                     passiveSkill.RevertPassiveEffects();
                 }
@@ -203,8 +203,8 @@ public class SkillTree : MonoBehaviour, ISavable
             {
                 PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(skill) as PassiveSkill;
 
-                if (passiveSkill != null)
-                {
+                if (passiveSkill != null && skill.CurSkillLevel > 0)
+                { 
                     passiveSkill.ApplyPassiveEffects((CharacterWeaponType)curWeapon);
                 } 
             }

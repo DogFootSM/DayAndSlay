@@ -60,7 +60,7 @@ public class StatusWindow : MonoBehaviour
         statsTexts[1].text = $"{playerStats.FinalAgility}";
         statsTexts[2].text = $"{playerStats.FinalIntelligence}";
         statsTexts[3].text = $"{playerStats.Health}";
-        statsTexts[4].text = $"{playerStats.criticalPer * 100}%";
+        statsTexts[4].text = $"{playerStats.FinalCriticalPer * 100}%";
         statsTexts[5].text = $"{playerStats.PhysicalAttack}";
         statsTexts[6].text = $"{playerStats.PhysicalDefense}";
         statsTexts[7].text = $"{playerStats.SkillAttack}";
@@ -68,10 +68,10 @@ public class StatusWindow : MonoBehaviour
         statsTexts[9].text = $"{playerStats.statsPoints}";
         statsTexts[10].text = $"{playerStats.IncreaseMoveSpeedPer * 100}%";
         statsTexts[11].text = $"{playerStats.InCreaseAttackSpeedPer * 100}%";
-        statsTexts[12].text = $"{playerStats.CoolDown * 100}%";
-        statsTexts[13].text = $"{playerStats.CastingSpeed * 100}%";
-        statsTexts[14].text = $"{playerStats.Resistance * 100}%";
-        statsTexts[15].text = $"{playerStats.CriticalDamage * 100}%";
+        statsTexts[12].text = $"{playerStats.baseCoolDown * 100}%";
+        statsTexts[13].text = $"{playerStats.baseCastingSpeed}";
+        statsTexts[14].text = $"{playerStats.FinalResistance}";
+        statsTexts[15].text = $"{playerStats.FinalCriticalDamage * 100}%";
     }
     
     /// <summary>
