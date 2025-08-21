@@ -25,6 +25,7 @@ public class NewMonsterMethod : MonoBehaviour
         animator = ai.GetMonsterAnimator();
         sensor = GetComponentInChildren<TargetSensor>();
         MonsterDataInit(ai.GetMonsterData());
+        moveSpeed = monsterData.MoveSpeed;
     }
 
     public void MonsterDataInit(MonsterData monsterData)

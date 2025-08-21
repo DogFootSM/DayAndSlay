@@ -13,9 +13,6 @@ GameObject:
   - component: {fileID: 2230296940673157747}
   - component: {fileID: 2915400258908273984}
   - component: {fileID: 446733505822531971}
-  - component: {fileID: -7136706325527885263}
-  - component: {fileID: 7649508663265473154}
-  - component: {fileID: 4867038125560493518}
   - component: {fileID: -5471911796277688368}
   - component: {fileID: 3950774981472583126}
   - component: {fileID: 7848198602268989358}
@@ -148,63 +145,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-7136706325527885263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
-  player: {fileID: 0}
-  monsterState: 0
-  isAttacking: 0
---- !u!114 &7649508663265473154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f034d4e380a6644409a1912cb3ac0747, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: b224440762d42f3428e76a289b92415e, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: ecfa29d2cc564634fbbcf41a28ee27ff, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: bb6e56230b4e5184bac5cd40af541aaa, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: 523a0a2e7a33eaf4a819c64503da6813, type: 3}
---- !u!114 &4867038125560493518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  rb: {fileID: 0}
-  attackHitBox: {fileID: 7848198602268989358}
-  astarPath: {fileID: 2112656555474924329}
-  player: {fileID: 0}
-  repathInterval: 0.6
-  targetMovedThreshold: 0.6
 --- !u!114 &-5471911796277688368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +254,6 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
   player: {fileID: 0}
   isAttacking: 0
-  isMoving: 0
 --- !u!114 &5546876945694116695
 MonoBehaviour:
   m_ObjectHideFlags: 0
