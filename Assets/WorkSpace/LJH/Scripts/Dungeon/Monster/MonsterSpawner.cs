@@ -96,7 +96,7 @@ public class MonsterSpawner : MonoBehaviour
             {
                 Vector3 spawnerPos = floorPositions[Random.Range(0, floorPositions.Count)];
 
-                spawner.transform.position = spawnerPos;
+                spawner.transform.position = new Vector3(spawnerPos.x, spawnerPos.y, 0);
             }
         }
     }
@@ -107,7 +107,7 @@ public class MonsterSpawner : MonoBehaviour
         //Todo : 실제 연결시에는 해당 코드 이용
         //StageNum stageNum = IngameManager.instance.GetStage();
         //TestCode
-        StageNum stageNum = StageNum.STAGE1;
+        StageNum stageNum = StageNum.STAGE2;
         
         List<GameObject> monsters = new List<GameObject>();
         List<GameObject> bossMonsters =  new List<GameObject>();

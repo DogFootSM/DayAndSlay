@@ -15,13 +15,17 @@ public class TargetSensor : MonoBehaviour
 
     //아래로 이재호가 추가한 변수
     protected GameObject player;
-    protected float interval = 0.2f;
+    protected float interval = 0.5f;
     protected float nextCheckTime = 0f;
+    
+    private Coroutine detectCoroutine;
     
     public Grid grid;
     protected Vector3Int lastPlayerCell;
 
-
+    /// <summary>
+    /// findCollider의 radius값은 고정이 아닌 몬스터의 ChaseRange에 따라 변경되도록 설정
+    /// </summary>
     private void Awake()
     {
         findCollider.radius = GetComponentInParent<NewMonsterAI>().GetChaseRange() / 2;
@@ -36,6 +40,13 @@ public class TargetSensor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         TriggerEnterMethod(other);
+
+        if (detectCoroutine == null)
+        {
+            detectCoroutine = StartCoroutine(TriggerCoroutine(other));
+        }
+
+        player = other.gameObject;
     }
 
     protected virtual void TriggerEnterMethod(Collider2D other)
@@ -47,13 +58,28 @@ public class TargetSensor : MonoBehaviour
             astar.DetectTarget(transform.position, other.gameObject.transform.position);
         }
     }
+    
+    private IEnumerator TriggerCoroutine(Collider2D other)
+    {   
+        yield return new WaitForSeconds(interval);
+        //astar.path.Clear();
+        //astar.DetectTarget(transform.position, other.gameObject.transform.position);
+    }
+
+    protected virtual void OnTriggerExit2D(Collider2D other)
+    {
+        if (detectCoroutine == null) return;
+        
+        StopCoroutine(detectCoroutine);
+        detectCoroutine = null;
+    }
 
     /// <summary>
     /// 이재호가 작성한 코드
     /// </summary>
     private void OnTriggerStay2D(Collider2D collision)
     {
-        TriggerStayMethod(collision);
+        //TriggerStayMethod(collision);
     }
 
     protected virtual void TriggerStayMethod(Collider2D collision)
@@ -80,4 +106,11 @@ public class TargetSensor : MonoBehaviour
     }
     
     public void SetGrid(Grid grid) => this.grid = grid;
+
+    public void DetectTarget()
+    {
+        if (player == null) return;
+        
+        astar.DetectTarget(transform.position, player.transform.position);
+    }
 }

@@ -15,7 +15,6 @@ public class NewMonsterAI : MonoBehaviour
     protected NewMonsterStateMachine stateMachine;
 
     public bool isAttacking = false;
-    public bool isMoving = false;
 
     private Vector3 lastPlayerPos;
 
@@ -29,8 +28,17 @@ public class NewMonsterAI : MonoBehaviour
 
     protected virtual void Start()
     {
+        StartCoroutine(StartDelayCoroutine());
+    }
+
+    private IEnumerator StartDelayCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        
         player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
+        
         tree = new BehaviourTree(BuildRoot());
+
         stateMachine = new NewMonsterStateMachine(animator);
 
         method.MonsterDataInit(monsterData);
@@ -38,6 +46,7 @@ public class NewMonsterAI : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (tree == null) return;
         tree.Tick();
 
 #if UNITY_EDITOR
@@ -109,11 +118,11 @@ public class NewMonsterAI : MonoBehaviour
         //플레이어가 움직인 경우
         if (PlayerIsMoved() == true)
         {
-            method.SetNewPath();
+            // 몬스터의 현재 위치와 플레이어의 현재 위치를 인자로 넘겨줍니다.
+            method.RequestPathUpdate(transform.position, player.transform.position);
         }
 
         method.MoveMethod();
-        //isMoving = true;
         lastPlayerPos = player.transform.position;
     }
 

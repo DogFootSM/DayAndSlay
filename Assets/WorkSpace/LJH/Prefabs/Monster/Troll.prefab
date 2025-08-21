@@ -20,6 +20,9 @@ GameObject:
   - component: {fileID: 5904012586859300392}
   - component: {fileID: 853110863517101136}
   - component: {fileID: 1257249283382031904}
+  - component: {fileID: -6320248544654570392}
+  - component: {fileID: -6949076876765780814}
+  - component: {fileID: 2297252482902623487}
   m_Layer: 0
   m_Name: Troll
   m_TagString: Untagged
@@ -152,7 +155,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4179380448030190885}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13153c23947ce4940a43ddbeaba91392, type: 3}
   m_Name: 
@@ -168,7 +171,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4179380448030190885}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f034d4e380a6644409a1912cb3ac0747, type: 3}
   m_Name: 
@@ -190,7 +193,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4179380448030190885}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17c82d2b9ceab264090b48d7d71aa589, type: 3}
   m_Name: 
@@ -200,8 +203,8 @@ MonoBehaviour:
   attackHitBox: {fileID: 853110863517101136}
   astarPath: {fileID: 3966172625280353671}
   player: {fileID: 0}
-  isMoving: 0
-  isAttacking: 0
+  repathInterval: 0.6
+  targetMovedThreshold: 0.6
 --- !u!114 &-1992846126741956770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +299,57 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-6320248544654570392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4179380448030190885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: c1b02e61a5be85042a35d3575a684214, type: 2}
+  player: {fileID: 0}
+  isAttacking: 0
+  isMoving: 0
+--- !u!114 &-6949076876765780814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4179380448030190885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: 13fa46754ad14864d9a19b571e083aa3, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: 798f3413b2690444a91d471a40a1a699, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: c74b4b6b2fe32e243a7d39bd2875b197, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: 03cd61e1479fb9b4694266f2eed2c65c, type: 3}
+--- !u!114 &2297252482902623487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4179380448030190885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
 --- !u!1 &7918180105952010082
 GameObject:
   m_ObjectHideFlags: 0

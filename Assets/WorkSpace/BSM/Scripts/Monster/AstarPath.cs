@@ -211,11 +211,11 @@ public class AstarPath : MonoBehaviour
         
         path.Reverse();  
         
-        //for (int i = 0; i < path.Count - 1; i++)
-        //{
-        //    Debug.Log($"경로 :path{i} 위치 {path[i]} / 타겟 위치 :{targetPos}");
-        //    Debug.DrawLine(path[i], path[i + 1], Color.red, 1f);
-        //}
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            Debug.Log($"경로 :path{i} 위치 {path[i]} / 타겟 위치 :{targetPos}");
+            Debug.DrawLine(path[i], path[i + 1], Color.red, 1f);
+        }
     } 
     
     /// <summary>
