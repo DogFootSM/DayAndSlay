@@ -30,6 +30,14 @@ public abstract class MeleeSkill : SkillFactory
     {
     }
 
+    protected void ListClear()
+    {
+        multiActions.Clear();
+        mainModules.Clear();
+        triggerModules.Clear();
+        interactions.Clear();
+    }
+    
     protected void SetOverlapSize(Vector2 direction, float skillRange)
     {
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))

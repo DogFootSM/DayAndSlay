@@ -24,10 +24,7 @@ public class SSAS005 : MeleeSkill
             instance.transform.localScale = new Vector2(0.1f, 1.8f); 
         }   
         
-        multiActions.Clear();
-        mainModules.Clear();
-        triggerModules.Clear();
-        interactions.Clear();
+        ListClear();
         
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         skillDamage = GetSkillDamage();
@@ -35,10 +32,7 @@ public class SSAS005 : MeleeSkill
         MultiEffect(playerPosition - (direction / 2), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction,180f, 0f, 270f, 90f);
         
-        multiActions.Clear();
-        mainModules.Clear();
-        triggerModules.Clear();
-        interactions.Clear();
+        ListClear();
         MultiEffect(playerPosition - (direction / 2), 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
         SetParticleStartRotationFromDeg(0, direction,0, 180f, 90f, 270f);
         ExecuteDash(direction.normalized);
