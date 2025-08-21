@@ -113,7 +113,7 @@ public class NewMonsterAI : MonoBehaviour
 
     protected virtual void Move()
     {
-        stateMachine.ChangeState(new NewMonsterMoveState());
+        stateMachine.ChangeState(new NewMonsterMoveState(transform, player.transform));
         
         //플레이어가 움직인 경우
         if (PlayerIsMoved() == true)
@@ -133,7 +133,7 @@ public class NewMonsterAI : MonoBehaviour
 
     protected virtual void Attack()
     {
-        stateMachine.ChangeState(new NewMonsterAttackState());
+        stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
         isAttacking = true;
         method.AttackMethod();
         StartCoroutine(AttackEndDelay());

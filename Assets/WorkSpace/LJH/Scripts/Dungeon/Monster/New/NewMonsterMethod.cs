@@ -128,7 +128,8 @@ public class NewMonsterMethod : MonoBehaviour
     /// </summary>
     public void AttackMethod()
     {
-        Debug.Log("공격");
+        // Todo: 실제 Player HP 처리
+        Debug.Log($"몬스터가 플레이어에게 {monsterData.Attack} 피해를 입힘");
     }
 
     /// <summary>

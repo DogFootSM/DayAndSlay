@@ -131,9 +131,8 @@ public class GeneralMonsterMethod : MonoBehaviour
     public void AttackMethod()
     {
         if (isDead) return;
-        
         StopMoveCo();
-
+        
         Vector2 toPlayer = player.transform.position - transform.position;
         animator?.SetFacingByDelta(toPlayer);
         animator?.PlayAttack();
