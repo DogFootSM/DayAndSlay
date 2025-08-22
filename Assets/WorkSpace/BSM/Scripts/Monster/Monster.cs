@@ -6,7 +6,8 @@ using UnityEngine;
 public class Monster : MonoBehaviour, IEffectReceiver
 {
     [NonSerialized] public float hp = 100;
-
+    private GameObject markParticle;
+    private GameObject markObject;
     private float defense = 15f;
     
     protected float moveSpeed = 3f;
@@ -35,6 +36,11 @@ public class Monster : MonoBehaviour, IEffectReceiver
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(TestTrace());
+
+        markParticle = Resources.Load<GameObject>("SkillEffect/Monster/Mark/Monster_Mark_Particle");
+        
+        markObject = Instantiate(markParticle, transform.position + Vector3.up, Quaternion.identity, transform);
+        markObject.SetActive(false);
     }
 
     private IEnumerator TestTrace()
@@ -142,6 +148,12 @@ public class Monster : MonoBehaviour, IEffectReceiver
         DefenseDeBuff(duration);
     }
 
+    public void ReceiveMarkOnTarget()
+    {
+        //TODO: 추후 표식 파티클로 변경 고려
+        markObject.SetActive(!markObject.activeSelf);
+    }
+    
     protected virtual void DefenseDeBuff(float duration)
     {
         if (defenseDeBuffCo != null)

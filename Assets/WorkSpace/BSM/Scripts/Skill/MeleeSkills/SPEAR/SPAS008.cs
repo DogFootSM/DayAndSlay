@@ -11,6 +11,8 @@ public class SPAS008 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         skillNode.IsMarkOnTarget = false;
+        IEffectReceiver receiver = skillNode.GetMarkOnTarget().GetComponent<IEffectReceiver>();
+        receiver.ReceiveMarkOnTarget();
         ExecuteBlinkToMarkedTarget(skillNode.GetMarkOnTarget());
     }
 

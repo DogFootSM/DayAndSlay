@@ -50,4 +50,8 @@ public interface IEffectReceiver
     /// <param name="deBuffPercent">방어력 감소할 비율</param>
     public void ReceiveDefenseDeBuff(float duration, float deBuffPercent);
     
+    /// <summary>
+    /// 타겟 표시 아이콘 On Off
+    /// </summary>
+    public void ReceiveMarkOnTarget();
 }

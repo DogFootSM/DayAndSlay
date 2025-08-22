@@ -122,6 +122,8 @@ public class SkillNode
         if (cols.Length > 0)
         {
             targetCollider = cols[0];
+            IEffectReceiver effectReceiver = cols[0].gameObject.GetComponent<IEffectReceiver>();
+            effectReceiver.ReceiveMarkOnTarget();
             IsMarkOnTarget = true;
         }
         else
@@ -130,6 +132,10 @@ public class SkillNode
         }  
     }
 
+    /// <summary>
+    /// 타겟 몬스터의 콜라이더를 반환
+    /// </summary>
+    /// <returns></returns>
     public Collider2D GetMarkOnTarget()
     {
         return targetCollider;
