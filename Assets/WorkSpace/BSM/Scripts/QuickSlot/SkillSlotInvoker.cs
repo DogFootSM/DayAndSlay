@@ -14,7 +14,7 @@ public class SkillSlotInvoker : MonoBehaviour
 
     private Coroutine markDashWaitCo;
     private KeyCode inputQuickSlotKey;
-
+    private SkillCoolDown beforeChangedSkillCooldown;
     private void OnEnable()
     {
         OnDirectionChanged += ChangedDirection;
@@ -49,18 +49,28 @@ public class SkillSlotInvoker : MonoBehaviour
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
 
+            //특정 스킬을 사용했는지?
             if (slotSkill is SPAS008 spas008)
             {
+                beforeChangedSkillCooldown = CoolDownUIHub.CoolDownImageMap[quickSlotType];
+                
+                //해당 스킬을 이미 사용해서 표식을 남겨놓은 상태인지 확인
                 if (!skillNode.IsMarkOnTarget)
                 {
+                    //표식을 남겨놓은 상태가 아닐 경우 표식 설정
                     skillNode.SetMarkOnTarget(curDirection, transform.position);
-
+                    
+                    //스킬 사용 방향에 몬스터가 없을 경우 리턴
+                    if (skillNode.GetMarkOnTarget() == null) return 0;
+                    
                     if (markDashWaitCo != null)
                     {
                         StopCoroutine(markDashWaitCo);
                         markDashWaitCo = null;
                     }
                     
+                    //스킬 사용 대기 효과 재생
+                    QuickSlotWaitUseUI.QuickSlotWaitUses[quickSlotType].PlayAnimation();
                     markDashWaitCo = StartCoroutine(WaitForMarkDashInput(skillNode, quickSlotType));
                 }
                 else
@@ -73,8 +83,12 @@ public class SkillSlotInvoker : MonoBehaviour
 
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
-                    CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
-
+                    
+                    //퀵슬롯이 변경되었을 경우를 대비해 퀵슬롯 타입을 찾음
+                    QuickSlotType searchType = CoolDownUIHub.SearchSkillCoolDown(beforeChangedSkillCooldown);
+                    
+                    CoolDownUIHub.CoolDownImageMap[searchType].UpdateCoolDown(skillNode);
+                    QuickSlotWaitUseUI.QuickSlotWaitUses[searchType].StopAnimation();
                     return skillNode.skillData.UseSkillDelay;
                 }
             }
@@ -106,10 +120,18 @@ public class SkillSlotInvoker : MonoBehaviour
         }
 
         skillNode.IsMarkOnTarget = false;
-        IEffectReceiver receiver = skillNode.GetMarkOnTarget().GetComponent<IEffectReceiver>();
-        receiver.ReceiveMarkOnTarget();
+            
+        //표식이 남은 몬스터가 있을 경우 해당 몬스터에 노출된 표식 이펙트 제거
+        if (skillNode.GetMarkOnTarget() != null)
+        {
+            IEffectReceiver receiver = skillNode.GetMarkOnTarget().GetComponent<IEffectReceiver>();
+            receiver.ReceiveMarkOnTarget();
+        }
+
+        QuickSlotType searchType = CoolDownUIHub.SearchSkillCoolDown(beforeChangedSkillCooldown);
+        QuickSlotWaitUseUI.QuickSlotWaitUses[searchType].StopAnimation();
         skillNode.IsCoolDownReset = false;
-        CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
+        CoolDownUIHub.CoolDownImageMap[searchType].UpdateCoolDown(skillNode);
     }
 
     private void OnDrawGizmos()

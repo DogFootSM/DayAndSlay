@@ -14,5 +14,19 @@ public static class CoolDownUIHub
             CoolDownImageMap.Add(quickSlotType, coolDownImage);
         } 
     }
+
+    public static QuickSlotType SearchSkillCoolDown(SkillCoolDown skillCoolDown)
+    {
+        foreach (var findValue in CoolDownImageMap)
+        {
+            if (findValue.Value.Equals(skillCoolDown))
+            {
+                Debug.Log($"Ã£À½ :{findValue.Key}");
+                return findValue.Key;
+            }
+        }
+
+        return QuickSlotType.NONE;
+    }
     
 }
