@@ -23,7 +23,8 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine moveSpeedBuffCo;
     private Coroutine attackUpDefenseDownCo;
     private Coroutine defenseUpSpeedDownCo;
-
+    private Coroutine BlinkToMarkCo;
+    
     private bool isPowerTradeBuffActive;
     private bool isDefenceTradeBuffActive;
     private LayerMask monsterMask;
@@ -323,6 +324,9 @@ public class PlayerSkillReceiver : MonoBehaviour
         playerModel.IsMovementBlocked = false;
     }
 
+    /// <summary>
+    /// 반격 리시버
+    /// </summary>
     public void ReceiveCounterWhileImmobile()
     {
         if (counterWhileImmobileCo != null)
@@ -356,6 +360,11 @@ public class PlayerSkillReceiver : MonoBehaviour
         monsterQueue.Enqueue(monster);
     }
 
+    /// <summary>
+    /// 이동 속도 버프 리시버
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="ratio"></param>
     public void ReceiveMoveSpeedBuff(float duration, float ratio)
     {
         if (moveSpeedBuffCo != null)
@@ -380,4 +389,29 @@ public class PlayerSkillReceiver : MonoBehaviour
         yield return WaitCache.GetWait(duration);
         playerModel.PlayerStats.baseMoveSpeed = originSpeed;
     }
+
+    /// <summary>
+    /// 타겟 방향 순간이동 리시버
+    /// </summary>
+    /// <param name="target"></param>
+    public void ReceiveBlinkToMarkedTarget(Collider2D target)
+    {
+        if (BlinkToMarkCo != null)
+        {
+            StopCoroutine(BlinkToMarkCo);
+            BlinkToMarkCo = null;
+        }
+        
+        BlinkToMarkCo = StartCoroutine(BlinkToMarkedTargetRoutine(target));
+    }
+
+    private IEnumerator BlinkToMarkedTargetRoutine(Collider2D target)
+    {
+        while (Vector2.Distance(transform.position, target.transform.position) > 1f)
+        {
+            transform.position = Vector2.Lerp(transform.position, target.transform.position, 0.5f);
+            yield return null; 
+        } 
+    }
+    
 }

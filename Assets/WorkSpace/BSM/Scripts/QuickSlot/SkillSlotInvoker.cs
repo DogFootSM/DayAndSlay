@@ -11,7 +11,10 @@ public class SkillSlotInvoker : MonoBehaviour
 
     private Vector2 curDirection = Vector2.down;
     public UnityAction<Vector2> OnDirectionChanged;
-    
+
+    private Coroutine markInputKeyCo;
+    private KeyCode inputQuickSlotKey;
+
     private void OnEnable()
     {
         OnDirectionChanged += ChangedDirection;
@@ -44,17 +47,42 @@ public class SkillSlotInvoker : MonoBehaviour
         //TODO: 캐스팅 완료되기 전이면 스킬 사용x?
         if (skillNode.IsCoolDownReset)
         {
-            if (skillNode != null)
-            {
-                slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
+            slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
 
-                if (slotSkill != null)
+            if (slotSkill is SPAS008 spas008)
+            {
+                if (!skillNode.IsMarkOnTarget)
                 {
+                    skillNode.SetMarkOnTarget(curDirection, transform.position);
+
+                    if (markInputKeyCo != null)
+                    {
+                        StopCoroutine(markInputKeyCo);
+                        markInputKeyCo = null;
+                    }
+                    
+                    markInputKeyCo = StartCoroutine(WaitForMarkDashInput(skillNode));
+                }
+                else
+                {
+                    if (markInputKeyCo != null)
+                    {
+                        StopCoroutine(markInputKeyCo);
+                        markInputKeyCo = null;
+                    }
+
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
                     CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
+
+                    return skillNode.skillData.UseSkillDelay;
                 }
-            
+            }
+            else
+            {
+                slotSkill.UseSkill(curDirection, transform.position);
+                skillNode.IsCoolDownReset = false;
+                CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
                 return skillNode.skillData.UseSkillDelay;
             }
         }
@@ -62,15 +90,28 @@ public class SkillSlotInvoker : MonoBehaviour
         {
             //TODO: 스킬 쿨타임 사용 불가 UI 라던지 사용 불가 사운드 
             Debug.Log($"{skillNode.skillData.SkillName} 쿨타임 초기화 x");
-        } 
-        
+        }
+
         return 0;
     }
-  
+
+    private IEnumerator WaitForMarkDashInput(SkillNode skillNode)
+    {
+        float elapsedTime = 5f;
+
+        while (elapsedTime > 0)
+        {
+            elapsedTime -= Time.deltaTime;
+            yield return null;
+        }
+
+        skillNode.IsMarkOnTarget = false;
+    }
+
     private void OnDrawGizmos()
     {
         if (slotSkill == null) return;
-        
+
         //TODO: 스킬 기즈모 테스트용
         slotSkill.Gizmos();
     }

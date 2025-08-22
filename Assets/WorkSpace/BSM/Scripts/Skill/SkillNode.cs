@@ -21,8 +21,12 @@ public class SkillNode
     public int CurSkillLevel => curSkillLevel;
 
     public bool IsCoolDownReset;
+    public bool IsMarkOnTarget;
 
     private CharacterWeaponType curWeapon;
+    private LayerMask monsterLayer;
+    private Collider2D targetCollider;
+    private Vector2 overlapSize;
     
     public SkillNode(SkillData skillData, PlayerModel playerModel, PlayerSkillReceiver playerSkillReceiver, CharacterWeaponType weaponType)
     {
@@ -30,6 +34,7 @@ public class SkillNode
         this.playerModel = playerModel;
         this.playerSkillReceiver = playerSkillReceiver;
         curWeapon = weaponType;
+        monsterLayer = LayerMask.GetMask("Monster");
     }
  
     /// <summary>
@@ -95,5 +100,39 @@ public class SkillNode
         }
     }
     
+    /// <summary>
+    /// 타겟 몬스터에 표식 설정
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="playerPosition"></param>
+    public void SetMarkOnTarget(Vector2 direction, Vector2 playerPosition)
+    {
+
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            overlapSize = new Vector2(skillData.SkillRange, 1f);
+        }
+        else
+        {
+            overlapSize = new Vector2(1f, skillData.SkillRange);
+        }
+
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
+
+        if (cols.Length > 0)
+        {
+            targetCollider = cols[0];
+            IsMarkOnTarget = true;
+        }
+        else
+        {
+            targetCollider = null;
+        }  
+    }
+
+    public Collider2D GetMarkOnTarget()
+    {
+        return targetCollider;
+    }
     
 }

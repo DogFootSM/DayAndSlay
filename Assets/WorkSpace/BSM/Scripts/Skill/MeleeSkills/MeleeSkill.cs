@@ -229,6 +229,11 @@ public abstract class MeleeSkill : SkillFactory
     {
         skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
     }
+
+    protected void ExecuteBlinkToMarkedTarget(Collider2D target)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveBlinkToMarkedTarget(target);
+    }
     
     /// <summary>
     /// 몬스터 방어력 감소 디버프 효과 호출

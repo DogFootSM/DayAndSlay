@@ -11,11 +11,8 @@ public class SSAS004 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-        multiActions.Clear();
-        mainModules.Clear();
-        triggerModules.Clear();
-        interactions.Clear();
-        
+        ListClear();
+
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         
         Collider2D[] detected = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);

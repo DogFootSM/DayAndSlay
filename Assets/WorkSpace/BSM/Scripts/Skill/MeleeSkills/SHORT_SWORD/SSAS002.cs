@@ -15,11 +15,8 @@ public class SSAS002 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     { 
-        multiActions.Clear();
-        mainModules.Clear();
-        triggerModules.Clear();
-        interactions.Clear();
-         
+        ListClear();
+        
         SetOverlapSize(direction, skillNode.skillData.SkillRadiusRange);
         MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
