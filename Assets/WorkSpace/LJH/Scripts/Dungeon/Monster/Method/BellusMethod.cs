@@ -28,8 +28,8 @@ public class BellusMethod : BossMonsterMethod
     public override void Skill_Second()
     {
         //독 장판 설치
-        SetPosEffect(poisonWarnigEffect);
-        SetPosEffect(poisonEffect);
+        SetPosEffect(poisonWarnigEffect, player);
+        SetPosEffect(poisonEffect, player);
         
         SetEffectActiver(poisonWarnigEffect);
         SetEffectActiver(poisonEffect);

@@ -5,17 +5,28 @@ using Zenject;
 
 public class NewMonsterMethod : MonoBehaviour
 {
-    private MonsterData monsterData;
-    private AstarPath astarPath;
-    private NewMonsterAI ai;
-    private NewMonsterAnimator animator;
-    private Rigidbody2D rb;
-    private TargetSensor sensor;
+    protected MonsterData monsterData;
+    protected AstarPath astarPath;
+    protected NewMonsterAI ai;
+    protected NewMonsterAnimator animator;
+    protected Rigidbody2D rb;
+    protected TargetSensor sensor;
+    protected GameObject player;
     
     public float moveSpeed = 5f;
     private int currentPathIndex;
 
     private List<Vector3> path = new List<Vector3>();
+    
+    public void SetPlayer(GameObject player) => this.player = player;
+
+    public virtual void Skill_First()
+    {
+    }
+
+    public virtual void Skill_Second()
+    {
+    }
 
     private void Start()
     {
@@ -76,7 +87,7 @@ public class NewMonsterMethod : MonoBehaviour
     #region Move
     // AI 스크립트에서 호출될 이동 함수
     
-    public void Move()
+    public virtual void Move()
     {
         // 경로가 비어있으면 A*에서 경로를 가져와서 시작합니다.
         // 이렇게 하면 몬스터가 경로를 받기 전까지 멈춰있게 됩니다.
@@ -115,7 +126,7 @@ public class NewMonsterMethod : MonoBehaviour
         }
     }
     
-    public void RequestPathUpdate(Vector3 start, Vector3 end)
+    public virtual void RequestPathUpdate(Vector3 start, Vector3 end)
     {
         // Debug.Log("경로 갱신 요청");
         // A* Pathfinding 실행
@@ -151,7 +162,7 @@ public class NewMonsterMethod : MonoBehaviour
         Debug.Log("피격");
     }
 
-    private void DropItem()
+    protected void DropItem()
     {
         Debug.Log("아이템 떨어뜨림");
     }

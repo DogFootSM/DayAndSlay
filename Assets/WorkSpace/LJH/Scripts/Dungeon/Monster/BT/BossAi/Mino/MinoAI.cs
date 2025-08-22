@@ -3,40 +3,28 @@ using UnityEngine;
 
 public class MinoAI : BossMonsterAI
 {
-    [Header("박치기 쿨타임 조정")]
+    // 미노타우로스만의 고유한 쿨타임 변수를 인스펙터에 노출합니다.
+    // 기존 buttCooldown과 stompCooldown을 대체합니다.
+    [Header("스킬 쿨타임 조정")]
     [SerializeField] private float buttCooldown = 10f;
-
-    [Header("밟기 쿨타임 조정")] 
     [SerializeField] private float stompCooldown = 10f;
     
-    [Header("공격 쿨타임 조정")]
-    [SerializeField] private float attackCooldown = 2f;
-
-    private float buttTimer;
-    private float stompTimer;
-    private float attackTimer;
+    // 이 변수들은 실제 쿨타임 값을 저장합니다.
+    // 부모 클래스의 skillFirstCooldown, skillSecondCooldown 변수와 헷갈리지 않도록
+    // MinoAI 클래스 내부에서만 사용하고, 이를 부모 클래스 변수에 할당하는 방식이 좋습니다.
     
-    protected override void Update()
+    // Start() 메서드에서 부모 클래스의 쿨타임 변수에 값을 할당합니다.
+    protected override void Start()
     {
-        base.Update();
-        UpdateCooldowns();
-
-        // 테스트 코드
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    model.SetMonsterHp(-10);
-        //    
-        //    Debug.Log($"벨루스의 체력 -10 되어 현재 체력 {model.GetMonsterHp()}");
-        //}
-    }
-
-    private void UpdateCooldowns()
-    {
-        buttTimer -= Time.deltaTime;
-        stompTimer -= Time.deltaTime;
-        attackTimer -= Time.deltaTime;
+        base.Start();
+        // 부모 클래스의 변수에 값을 할당하여 공통 로직을 활용합니다.
+        skillFirstCooldown = buttCooldown;
+        skillSecondCooldown = stompCooldown;
+        
+        // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
     }
     
+    // IsAllOnCooldown은 미노의 스킬에 맞게 구현합니다.
     protected override bool IsAllOnCooldown()
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
@@ -48,88 +36,51 @@ public class MinoAI : BossMonsterAI
 
         if (distance > monsterData.AttackRange)
         {
-            return !CanButt() && !CanStomp();
+            return !CanSkillSecond() && !CanSkillFirst();
         }
 
-        return !CanButt() && !CanStomp() && !CanAttack();
+        return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
+    }
+    
+    // MinoAI 고유의 스킬 사용 가능 조건만 정의합니다.
+    protected override bool CanSkillFirst()
+    {
+        // Butt 공격 쿨타임을 체크합니다.
+        return skillFirstTimer <= 0f;
     }
 
-    private bool CanButt()
+    protected override bool CanSkillSecond()
     {
-        return buttTimer <= 0f;
+        // Stomp 공격 쿨타임을 체크합니다.
+        return skillSecondTimer <= 0f;
     }
 
-    private bool CanStomp()
+    protected override bool CanAttack()
     {
-        return stompTimer <= 0f;
-    }
-
-    private bool CanAttack()
-    {
+        // 일반 공격 쿨타임을 체크합니다.
         return attackTimer <= 0f;
     }
 
-    private void ResetButtCooldown()
-    {
-        buttTimer = buttCooldown;
-    }
-
-    private void ResetStompCooldown()
-    {
-        stompTimer = stompCooldown;
-    }
-    
-    private void ResetAttackCooldown()
-    {
-        attackTimer = attackCooldown;
-    }
-
-    // ---------------- actual actions ----------------
-
-    private void PerformButt()
-    {
-        method.Skill_First();
-        SkillCommonStart();
-        ResetButtCooldown();
-    }
-
-    private void PerformStomp()
-    {
-        method.Skill_Second();
-        SkillCommonStart();
-        ResetStompCooldown();
-    }
-
-    private void PerformAttack()
-    {
-        AttackCommonStart();
-        ResetAttackCooldown();
-    }
-
-    private void EndAction()
-    {
-        AttackCommonEnd();
-    }
-
     // ---------------- BT patterns ----------------
-
 
     protected override List<BTNode> BuildSkillSelector()
     {
         List<BTNode> list = new List<BTNode>();
 
+        // 첫 번째 스킬 (Butt)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanButt),
-            new ActionNode(PerformButt),
+            new IsPreparedCooldownNode(CanSkillFirst),
+            new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
         
+        // 두 번째 스킬 (Stomp)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanStomp),
-            new ActionNode(PerformStomp),
+            new IsPreparedCooldownNode(CanSkillSecond),
+            new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
@@ -141,9 +92,10 @@ public class MinoAI : BossMonsterAI
     {
         List<BTNode> list = new List<BTNode>();
 
+        // 일반 공격
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsAttackRangeNode(transform, player.transform, 2f),
+            new IsAttackRangeNode(transform, player.transform, model.AttackRange),
             new IsPreparedCooldownNode(CanAttack),
             new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),

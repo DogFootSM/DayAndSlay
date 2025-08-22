@@ -6,10 +6,6 @@ public class MinoMethod : BossMonsterMethod
     
     [SerializeField] private GameObject stompEffect;
 
-    private void Start()
-    {
-        MonsterInit();
-    }
     public override void Skill_First()
     {
         
@@ -17,7 +13,7 @@ public class MinoMethod : BossMonsterMethod
 
     public override void Skill_Second()
     {
-        SetEffectActiver(stompEffect);
+        //SetEffectActiver(stompEffect);
     }
 
 }

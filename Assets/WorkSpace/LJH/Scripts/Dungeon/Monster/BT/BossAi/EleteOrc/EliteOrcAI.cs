@@ -51,12 +51,22 @@ public class EliteOrcAI : BossMonsterAI
         return !CanRush() && !CanAttack();
     }
 
+    protected override bool CanSkillFirst()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override bool CanSkillSecond()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private bool CanRush()
     {
         return rushTimer <= 0f;
     }
 
-    private bool CanAttack()
+    protected override bool CanAttack()
     {
         return attackTimer <= 0f;
     }

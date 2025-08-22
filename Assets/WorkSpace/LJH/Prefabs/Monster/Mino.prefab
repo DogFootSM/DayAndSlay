@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 8352499601493418567}
   - component: {fileID: 7042962199645776680}
   - component: {fileID: 4158822911095731913}
-  - component: {fileID: 305656635593730255}
   - component: {fileID: 8186496415778326782}
+  - component: {fileID: 8117204158784861649}
   - component: {fileID: -7591143431245588105}
   - component: {fileID: 2450185539440437247}
   - component: {fileID: 5923960667601013373}
@@ -165,7 +165,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1292864437, guid: 056cd3eca7e74684e9145ca21c60dec3, type: 3}
+  m_Sprite: {fileID: 1734723248, guid: 056cd3eca7e74684e9145ca21c60dec3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -223,9 +223,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0.009161512
+  m_CategoryHash: 7.19307e-25
   m_labelHash: 0.00000040954276
-  m_SpriteKey: 1.2997732e-19
+  m_SpriteKey: 8.475677e-14
 --- !u!114 &4158822911095731913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,35 +238,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd5ea59d231e9f548a71ddbeba2a1a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   monsterData: {fileID: 11400000, guid: 83f4ec0ff428aae48857281425b69194, type: 2}
-  animator: {fileID: 305656635593730255}
-  method: {fileID: 8186496415778326782}
+  player: {fileID: 0}
+  isAttacking: 0
+  skillFirstCooldown: 0
+  skillSecondCooldown: 0
+  attackCooldown: 2
   buttCooldown: 10
   stompCooldown: 10
-  attackCooldown: 2
---- !u!114 &305656635593730255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8227391919022582039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1305f43683bfeab45b2052d39a35eb8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: 897e987ff5ed94046bfe8cee4c6923af, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: 86ea8f0bacbea26469dc9b12a2f70d4c, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: 48352576eba425b4b83ebbbbbd6c4a93, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: 8c50475a74dabf24d8f86e368acf7b57, type: 3}
 --- !u!114 &8186496415778326782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,10 +258,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc1b55ddcff98a4da1be11edb1f481b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  rangeCollider: {fileID: 0}
-  isMoving: 0
+  moveSpeed: 5
   stompEffect: {fileID: 8227391919022582039}
+--- !u!114 &8117204158784861649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8227391919022582039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: 897e987ff5ed94046bfe8cee4c6923af, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: 86ea8f0bacbea26469dc9b12a2f70d4c, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: 48352576eba425b4b83ebbbbbd6c4a93, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: 8c50475a74dabf24d8f86e368acf7b57, type: 3}
 --- !u!114 &-7591143431245588105
 MonoBehaviour:
   m_ObjectHideFlags: 0

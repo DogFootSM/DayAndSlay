@@ -36,6 +36,7 @@ public class IsPreparedAttackNode : BTNode
             currentCooldown = cooldown;
             return NodeState.Success;
         }
+
         return NodeState.Failure;
     }
 }

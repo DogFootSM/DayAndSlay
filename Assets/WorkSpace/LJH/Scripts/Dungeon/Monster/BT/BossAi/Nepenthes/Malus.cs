@@ -3,72 +3,37 @@ using UnityEngine;
 
 public class Malus : NepenthesAI
 {
-    [Header("힐 조건 조정")]
-    [SerializeField] private float healThresholdPercent = 20f;
-    [SerializeField] private float skillFirstCooldown = 8f;
-
-    [Header("뿌리 공격 쿨타임 조정")]
-    [SerializeField] private float rootCooldown = 5f;
-
-    [Header("공격 쿨타임 조정")]
-    [SerializeField] private float attackCooldown = 2f;
-
-    [Header("Bellus")]
-    [SerializeField] private BossMonsterAI partner;
-
-    private float healTimer;
-    private float skillFirstTimer;
-    private float rootTimer;
-
+    [Header("소환 조건 조정")]
+    [SerializeField] private float summonThresholdPercent = 20f;
+    
     protected override void Start()
     {
         base.Start();
+        // 파트너 찾기 로직
         partner = FindObjectOfType<Bellus>();
     }
-    protected override void Update()
-    {
-        base.Update();
-        UpdateCooldowns();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            model.SetMonsterHp(-10);
-            
-            Debug.Log($"벨루스의 체력 -10 되어 현재 체력 {model.GetMonsterHp()}");
-        }
-    }
-
-    private void UpdateCooldowns()
-    {
-        healTimer -= Time.deltaTime;
-        skillFirstTimer -= Time.deltaTime;
-        rootTimer -= Time.deltaTime;
-    }
-    
     protected override bool IsAllOnCooldown()
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
         if (distance > monsterData.ChaseRange)
         {
-            Debug.Log("거리 멀어서 트루");
             return true;
         }
 
         if (distance > monsterData.AttackRange)
         {
-            Debug.Log("거리 중간에 스킬들 쿨이라 트루");
-            return !CanRoot() && !CanSkillFirst();
+            return !CanSkillSecond() && !CanSkillFirst();
         }
 
-        Debug.Log("다 만족해서 트루");
-        return !CanRoot() && !CanSkillFirst() && !CanAttack();
+        return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
     }
 
-    private bool CanSkillFirst()
+    // 스킬 첫 번째 (소환) 사용 조건
+    protected override bool CanSkillFirst()
     {
         if (partner == null) return false;
-        if (healTimer > 0f) return false;
+        if (skillFirstTimer > 0f) return false;
 
         MonsterModel myModel = model;
         MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
@@ -78,67 +43,26 @@ public class Malus : NepenthesAI
         float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
 
-        return diff >= healThresholdPercent;
+        return diff >= summonThresholdPercent;
     }
 
-    private bool CanRoot()
+    // 스킬 두 번째 (뿌리 공격) 사용 조건
+    protected override bool CanSkillSecond()
     {
-        return skillFirstTimer <= 0f;
+        return skillSecondTimer <= 0f;
     }
 
-    private bool CanAttack()
+    // 일반 공격 사용 조건
+    protected override bool CanAttack()
     {
-        return rootTimer <= 0f;
+        return attackTimer <= 0f;
     }
 
-    private void ResetSkillFirstCooldown()
-    {
-        healTimer = skillFirstCooldown;
-    }
-
-    private void ResetRootCooldown()
-    {
-        skillFirstTimer = rootCooldown;
-    }
-
-    private void ResetAttackCooldown()
-    {
-        rootTimer = attackCooldown;
-    }
-
-    // ---------------- actual actions ----------------
-
-    private void PerformSkillFirst()
-    {
-        method.Skill_First();
-        SkillCommonStart();
-        ResetSkillFirstCooldown();
-    }
-
-    private void PerformRoot()
-    {
-        method.Skill_Second();
-        SkillCommonStart();
-        ResetRootCooldown();
-    }
-
-    private void PerformBite()
-    {
-        AttackCommonStart();
-        ResetAttackCooldown();
-    }
-
-    private void EndAction()
-    {
-        AttackCommonEnd();
-    }
-
-    // ---------------- BT patterns ----------------
-
-    protected override List<BTNode> BuildSkillPatterns()
+    // 스킬 행동 트리 패턴 구현
+    protected override List<BTNode> BuildSkillSelector()
     {
         List<BTNode> list = new List<BTNode>();
-
+        
         list.Add(new Sequence(new List<BTNode>
         {
             new IsPreparedCooldownNode(CanSkillFirst),
@@ -149,8 +73,8 @@ public class Malus : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanRoot),
-            new ActionNode(PerformRoot),
+            new IsPreparedCooldownNode(CanSkillSecond),
+            new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
@@ -158,7 +82,8 @@ public class Malus : NepenthesAI
         return list;
     }
 
-    protected override List<BTNode> BuildAttackPatterns()
+    // 공격 행동 트리 패턴 구현
+    protected override List<BTNode> BuildAttackSelector()
     {
         List<BTNode> list = new List<BTNode>();
 
@@ -166,13 +91,11 @@ public class Malus : NepenthesAI
         {
             new IsAttackRangeNode(transform, player.transform, 2f),
             new IsPreparedCooldownNode(CanAttack),
-            new ActionNode(PerformBite),
+            new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
 
         return list;
     }
-
-    public BossMonsterAI GetPartner() => partner;
 }

@@ -15,48 +15,53 @@ public class NewMonsterAnimator : MonoBehaviour
     protected SerializedDictionary<string, SpriteLibraryAsset> spriteDict = new SerializedDictionary<string, SpriteLibraryAsset>();
 
 
-    private int currentAnimationHash;
+    protected int currentAnimationHash;
 
-    private bool isAction = false;
+    protected bool isAction = false;
     public bool IsPlayingAction => isAction;              
 
     protected Dictionary<Direction, string> moveAction = new Dictionary<Direction, string>();
     protected Dictionary<Direction, string> attackAction = new Dictionary<Direction, string>();
     protected Dictionary<Direction, string> hitAction = new Dictionary<Direction, string>();
+    
+    //보스 전용
+    private Dictionary<Direction, string> skillFirstAction = new Dictionary<Direction, string>();
+    private Dictionary<Direction, string> skillSecondAction = new Dictionary<Direction, string>();
 
-    Direction dir = Direction.Down;                       
+    protected Direction dir = Direction.Down;                       
    
-    private Direction attackDir;
-    private Direction moveDir;
+    protected Direction attackDir;
+    protected Direction moveDir;
 
 
-    private void Start()
+    protected void Start()
     {
         animator = GetComponent<Animator>();
         spriteLibrary = GetComponent<SpriteLibrary>();
-
-        /*
-        stateMachine = new MonsterStateMachine(this);
-        stateMachine.ChangeState(new MonsterIdleState());
-        */
-
-        DictinaryInit();
-
-        /*
-        player = GameObject.FindWithTag("Player");
-        StartCoroutine(dirCoroutine());
-        */
+        DictionaryInit();
     }
 
-    private void Update()
+    protected void Update()
     {
+        Debug.Log(isAction);
         if (isAction)
         {
             // 애니메이션 진행도 확인
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            // SetDirection() 호출 → 현재는 외부에서 갱신된 dir 사용
             currentAnimationHash = SetAnimationHash(attackAction[dir]);
+            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+            {
+                isAction = false;
+            }
+            
+            currentAnimationHash = SetAnimationHash(skillFirstAction[dir]);
+            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+            {
+                isAction = false;
+            }
+            
+            currentAnimationHash = SetAnimationHash(skillSecondAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
                 isAction = false;
@@ -87,7 +92,7 @@ public class NewMonsterAnimator : MonoBehaviour
         return Animator.StringToHash("Base Layer." + currentAnimation);
     }
 
-    public void PlayIdle()
+    public virtual void PlayIdle()
     {
         if (isAction) return;
 
@@ -134,8 +139,36 @@ public class NewMonsterAnimator : MonoBehaviour
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.DIE)];
         animator.Play("MonsterDie");
     }
+    
+    /// <summary>
+    /// 보스몬스터 스킬1
+    /// </summary>
+    public void PlaySkillFirst()
+    {
+        if (isAction) return;
+        
+        isAction = true;
 
-    void DictinaryInit()
+        attackDir = dir;
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
+        animator.Play(skillFirstAction[attackDir]);
+    }
+    
+    /// <summary>
+    /// 보스몬스터 스킬2
+    /// </summary>
+    public void PlaySkillSecond()
+    {
+        if (isAction) return;
+        
+        isAction = true;
+
+        attackDir = dir;
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
+        animator.Play(skillSecondAction[attackDir]);
+    }
+
+    protected virtual void DictionaryInit()
     {
         moveAction.Add(Direction.Left, "MonsterMoveLeft");
         moveAction.Add(Direction.Right, "MonsterMoveRight");
@@ -151,5 +184,15 @@ public class NewMonsterAnimator : MonoBehaviour
         hitAction.Add(Direction.Right, "MonsterHitRight");
         hitAction.Add(Direction.Up, "MonsterHitUp");
         hitAction.Add(Direction.Down, "MonsterHitDown");
+        
+        skillFirstAction.Add(Direction.Left, "MonsterSkillFirstLeft");
+        skillFirstAction.Add(Direction.Right, "MonsterSkillFirstRight");
+        skillFirstAction.Add(Direction.Up, "MonsterSkillFirstUp");
+        skillFirstAction.Add(Direction.Down, "MonsterSkillFirstDown");
+        
+        skillSecondAction.Add(Direction.Left, "MonsterSkillSecondLeft");
+        skillSecondAction.Add(Direction.Right, "MonsterSkillSecondRight");
+        skillSecondAction.Add(Direction.Up, "MonsterSkillSecondUp");
+        skillSecondAction.Add(Direction.Down, "MonsterSkillSecondDown");
     }
 }

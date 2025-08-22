@@ -36,6 +36,7 @@ public class NewMonsterAI : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         
         player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
+        method.SetPlayer(player.gameObject);
         
         tree = new BehaviourTree(BuildRoot());
 
@@ -153,8 +154,8 @@ public class NewMonsterAI : MonoBehaviour
 
     protected IEnumerator AttackEndDelay()
     {
-        yield return new WaitForSeconds(0.5f); // 애니메이션 길이
-
+        yield return new WaitForSeconds(0.5f);
+    
         isAttacking = false;
     }
 

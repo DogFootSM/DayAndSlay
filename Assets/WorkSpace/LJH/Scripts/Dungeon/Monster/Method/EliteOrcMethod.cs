@@ -1,24 +1,20 @@
 using UnityEngine;
 
-public class EliteOrcMethod : BossMonsterMethod
+public class EliteOrcMethod : NewMonsterMethod
 {
     private BossMonsterAI eliteOrc;
     
     [SerializeField] private GameObject rushEffect;
 
-    private void Start()
-    {
-        MonsterInit();
-    }
     public override void Skill_First()
     {
         //돌진 스킬
-        SetEffectActiver(rushEffect);
         
     }
 
     public override void Skill_Second()
     {
+        
     }
 
 }

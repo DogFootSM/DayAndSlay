@@ -15,15 +15,11 @@ public class MalusMethod : BossMonsterMethod
     }
     public override void Skill_First()
     {
-        //소환? 뭘로하지?
+        //Todo : 잡몹 소환
     }
 
     public override void Skill_Second()
     {
-        SetPosEffect(warningRoot);
-        SetPosEffect(root);
-        
-        SetEffectActiver(warningRoot);
-        SetEffectActiver(root);
+        //Todo : 뿌리 공격
     }
 }
