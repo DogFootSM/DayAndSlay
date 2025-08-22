@@ -54,6 +54,8 @@ public class MainQuickSlot : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        
         raycastResults.Clear();
         
         mainQuickSlotRaycaster.Raycast(eventData, raycastResults);

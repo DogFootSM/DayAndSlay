@@ -129,6 +129,7 @@ public class SkillNode
         else
         {
             targetCollider = null;
+            IsMarkOnTarget = false;
         }  
     }
 

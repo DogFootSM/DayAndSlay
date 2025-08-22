@@ -39,7 +39,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
 
         markParticle = Resources.Load<GameObject>("SkillEffect/Monster/Mark/Monster_Mark_Particle");
         
-        markObject = Instantiate(markParticle, transform.position + Vector3.up, Quaternion.identity, transform);
+        markObject = Instantiate(markParticle, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity, transform);
         markObject.SetActive(false);
     }
 

@@ -12,7 +12,7 @@ public class SkillSlotInvoker : MonoBehaviour
     private Vector2 curDirection = Vector2.down;
     public UnityAction<Vector2> OnDirectionChanged;
 
-    private Coroutine markInputKeyCo;
+    private Coroutine markDashWaitCo;
     private KeyCode inputQuickSlotKey;
 
     private void OnEnable()
@@ -55,20 +55,20 @@ public class SkillSlotInvoker : MonoBehaviour
                 {
                     skillNode.SetMarkOnTarget(curDirection, transform.position);
 
-                    if (markInputKeyCo != null)
+                    if (markDashWaitCo != null)
                     {
-                        StopCoroutine(markInputKeyCo);
-                        markInputKeyCo = null;
+                        StopCoroutine(markDashWaitCo);
+                        markDashWaitCo = null;
                     }
                     
-                    markInputKeyCo = StartCoroutine(WaitForMarkDashInput(skillNode));
+                    markDashWaitCo = StartCoroutine(WaitForMarkDashInput(skillNode, quickSlotType));
                 }
                 else
                 {
-                    if (markInputKeyCo != null)
+                    if (markDashWaitCo != null)
                     {
-                        StopCoroutine(markInputKeyCo);
-                        markInputKeyCo = null;
+                        StopCoroutine(markDashWaitCo);
+                        markDashWaitCo = null;
                     }
 
                     slotSkill.UseSkill(curDirection, transform.position);
@@ -95,7 +95,7 @@ public class SkillSlotInvoker : MonoBehaviour
         return 0;
     }
 
-    private IEnumerator WaitForMarkDashInput(SkillNode skillNode)
+    private IEnumerator WaitForMarkDashInput(SkillNode skillNode, QuickSlotType quickSlotType)
     {
         float elapsedTime = 5f;
 
@@ -106,6 +106,10 @@ public class SkillSlotInvoker : MonoBehaviour
         }
 
         skillNode.IsMarkOnTarget = false;
+        IEffectReceiver receiver = skillNode.GetMarkOnTarget().GetComponent<IEffectReceiver>();
+        receiver.ReceiveMarkOnTarget();
+        skillNode.IsCoolDownReset = false;
+        CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
     }
 
     private void OnDrawGizmos()
