@@ -452,6 +452,10 @@ PrefabInstance:
       propertyPath: obstacleTileMap
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4158822911095731913, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
+      propertyPath: buttCooldown
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7042962199645776680, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
       propertyPath: m_SpriteKey
       value: 1.3971405e-28
@@ -470,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8227391919022582039, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8227391919022582505, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
       propertyPath: m_Sprite
@@ -1216,6 +1220,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c93cebf76354f14ba9ce258feab46bd, type: 3}
+--- !u!1001 &1487454006552042279
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -2829234086739164384, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_Size.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2829234086739164384, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_Size.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875196522976084501, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: grid
+      value: 
+      objectReference: {fileID: 1389777895}
+    - target: {fileID: 5721288573892970358, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: mapGrid
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566479308208419710, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_Name
+      value: Banshee
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840242932846492006, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: monsterData
+      value: 
+      objectReference: {fileID: 11400000, guid: 83f4ec0ff428aae48857281425b69194, type: 2}
+    - target: {fileID: 9157779623089675954, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9157779623089675954, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
 --- !u!1001 &4014306060176611339
 PrefabInstance:
   m_ObjectHideFlags: 0
