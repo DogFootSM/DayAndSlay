@@ -100,19 +100,20 @@ public class NewMonsterAI : MonoBehaviour
     {
         return new List<BTNode>
         {
-            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, () => !isAttacking),
+            //new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, () => !isAttacking),
             new ActionNode(Idle)
         };
     }
 
     // ========== 상태 메서드 ==========
-    protected virtual void Idle()
+    protected void Idle()
     {
+        Debug.Log("아이들 애니재생 및 메서드 실행");
         stateMachine.ChangeState(new NewMonsterIdleState());
         method.IdleMethod();
     }
 
-    protected virtual void Move()
+    protected void Move()
     {
         stateMachine.ChangeState(new NewMonsterMoveState(transform, player.transform));
         
@@ -154,7 +155,7 @@ public class NewMonsterAI : MonoBehaviour
 
     protected IEnumerator AttackEndDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(model.AttackCooldown);
     
         isAttacking = false;
     }

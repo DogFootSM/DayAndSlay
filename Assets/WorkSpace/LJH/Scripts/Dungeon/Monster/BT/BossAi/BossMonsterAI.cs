@@ -15,7 +15,7 @@ public abstract class BossMonsterAI : NewMonsterAI
     protected float skillSecondTimer;
     protected float attackTimer;
 
-    protected virtual void Start()
+    protected override void Start()
     {
         base.Start();
         
@@ -61,45 +61,34 @@ public abstract class BossMonsterAI : NewMonsterAI
         };
     }
 
-    protected virtual List<BTNode> BuildAttackSequence()
+    protected override List<BTNode> BuildAttackSequence()
     {
         List<BTNode> patterns = BuildAttackSelector();
         if (patterns == null) patterns = new List<BTNode>();
 
         return new List<BTNode>
         {
-            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange + 2, monsterData.AttackCooldown),
+            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
             new Selector(patterns)
         };
     }
 
-    protected virtual List<BTNode> BuildIdleSequence()
-    {
-        return new List<BTNode>
-        {
-            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, IsAllOnCooldown),
-            new ActionNode(Idle)
-        };
-    }
     
-    // 이 메서드들은 자식 클래스에서 오버라이딩하여 구현해야 합니다.
+    // 이 메서드들은 자식 클래스에서 오버라이딩하여 구현
     protected abstract List<BTNode> BuildSkillSelector();
     protected abstract List<BTNode> BuildAttackSelector();
 
     // ============================ 동작 메서드 =============================
     
-    // 네펜데스AI에서 가져온 쿨타임 체크 로직들
     protected abstract bool IsAllOnCooldown();
     protected abstract bool CanSkillFirst();
     protected abstract bool CanSkillSecond();
     protected abstract bool CanAttack();
 
-    // 네펜데스AI에서 가져온 쿨타임 리셋 로직들
     protected void ResetSkillFirstCooldown() => skillFirstTimer = skillFirstCooldown;
     protected void ResetSkillSecondCooldown() => skillSecondTimer = skillSecondCooldown;
     protected void ResetAttackCooldown() => attackTimer = attackCooldown;
 
-    // 네펜데스AI에서 가져온 실제 행동 로직들
     protected void PerformSkillFirst()
     {
         Debug.Log("스킬1 실행!");
@@ -123,7 +112,7 @@ public abstract class BossMonsterAI : NewMonsterAI
     }
 
     protected void PerformAttack()
-    { 
+    {
         Debug.Log("PerformAttack() 호출. 공격 실행!");
         stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
         isAttacking = true;
@@ -152,6 +141,4 @@ public abstract class BossMonsterAI : NewMonsterAI
     {
         
     }
-
-    public MonsterData GetMonsterData() => monsterData;
 }

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EliteOrcAI : BossMonsterAI
+public class EliteOrcAI : MonoBehaviour
 {
+    /*
     [Header("돌진 쿨타임 조정")]
     [SerializeField] private float rushCooldown = 10f;
 
@@ -133,5 +134,5 @@ public class EliteOrcAI : BossMonsterAI
         }));
 
         return list;
-    }
+    }*/
 }

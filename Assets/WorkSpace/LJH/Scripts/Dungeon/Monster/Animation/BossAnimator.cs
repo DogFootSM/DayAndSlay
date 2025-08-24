@@ -16,7 +16,7 @@ public class BossAnimator : NewMonsterAnimator
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.MOVE)];
         animator.Play("BossIdle");
     }
-    
+    /*
     public void PlaySkillFirst()
     {
         if (isAction) return;
@@ -38,8 +38,7 @@ public class BossAnimator : NewMonsterAnimator
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
         animator.Play(skillSecondAction[dir]);
     }
-    
-
+*/
     protected override void DictionaryInit()
     {
         moveAction.Add(Direction.Left, "MonsterMoveLeft");

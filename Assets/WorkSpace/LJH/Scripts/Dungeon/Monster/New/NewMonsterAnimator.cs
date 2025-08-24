@@ -43,7 +43,6 @@ public class NewMonsterAnimator : MonoBehaviour
 
     protected void Update()
     {
-        Debug.Log(isAction);
         if (isAction)
         {
             // 애니메이션 진행도 확인
@@ -135,11 +134,11 @@ public class NewMonsterAnimator : MonoBehaviour
 
     public void PlayDie()
     {
-        Debug.Log("죽음 애니메이션 실행됨");
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.DIE)];
         animator.Play("MonsterDie");
     }
-    
+
+    private int i = 0;
     /// <summary>
     /// 보스몬스터 스킬1
     /// </summary>
@@ -148,7 +147,8 @@ public class NewMonsterAnimator : MonoBehaviour
         if (isAction) return;
         
         isAction = true;
-
+        Debug.Log($"1번 스킬의 애니메이션 재생 횟수 {i}");
+        i++;
         attackDir = dir;
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
         animator.Play(skillFirstAction[attackDir]);

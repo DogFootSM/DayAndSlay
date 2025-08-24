@@ -24,16 +24,19 @@ public class BansheeAI : BossMonsterAI
         // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
     }
     
-    // IsAllOnCooldown은 미노의 스킬에 맞게 구현합니다.
     protected override bool IsAllOnCooldown()
     {
+        //distance는 몬스터와 플레이어의 거리
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
+        //distance가 몬스터의 추격범위보다 클 경우 == 몬스터의 추격 범위 바깥에 플레이어가 존재할 경우
         if (distance > monsterData.ChaseRange)
-        {
+        { 
+        //true 리턴함
             return true;
         }
 
+        //distance가 몬스터의 공격 사거리 범위보다 클 경우 == 몬스터의 공격 사거리 범위 바깥에 플레이어가 존재할 경우
         if (distance > monsterData.AttackRange)
         {
             return !CanSkillSecond() && !CanSkillFirst();
@@ -42,16 +45,15 @@ public class BansheeAI : BossMonsterAI
         return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
     }
     
-    // MinoAI 고유의 스킬 사용 가능 조건만 정의합니다.
     protected override bool CanSkillFirst()
     {
-        // Butt 공격 쿨타임을 체크합니다.
+        // scream 공격 쿨타임을 체크합니다.
         return skillFirstTimer <= 0f;
     }
 
     protected override bool CanSkillSecond()
     {
-        // Stomp 공격 쿨타임을 체크합니다.
+        // teleport 공격 쿨타임을 체크합니다.
         return skillSecondTimer <= 0f;
     }
 

@@ -55,7 +55,6 @@ public class NewMonsterMethod : MonoBehaviour
     /// </summary>
     public void IdleMethod()
     {
-        Debug.Log("대기");
     }
 
     #region Idle
@@ -77,7 +76,6 @@ public class NewMonsterMethod : MonoBehaviour
     /// </summary>
     public void MoveMethod()
     {
-        Debug.Log("이동");
         Move();
     }
     // ==============================
@@ -141,7 +139,7 @@ public class NewMonsterMethod : MonoBehaviour
     public void AttackMethod()
     {
         // Todo: 실제 Player HP 처리
-        Debug.Log($"몬스터가 플레이어에게 {monsterData.Attack} 피해를 입힘");
+        //Debug.Log($"몬스터가 플레이어에게 {monsterData.Attack} 피해를 입힘");
     }
 
     /// <summary>
