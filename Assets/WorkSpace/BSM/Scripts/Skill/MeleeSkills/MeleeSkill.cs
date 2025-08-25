@@ -16,6 +16,7 @@ public abstract class MeleeSkill : SkillFactory
     protected List<ParticleSystem.MainModule> mainModules = new List<ParticleSystem.MainModule>();
     protected List<ParticleSystem.TriggerModule> triggerModules = new List<ParticleSystem.TriggerModule>();
     protected List<ParticleInteraction> interactions = new List<ParticleInteraction>();
+    protected ParticleSystemRenderer particleSystemRenderer;
     
     protected ParticleSystem.TriggerModule triggerModule;
     protected ParticleInteraction interaction;
@@ -116,11 +117,21 @@ public abstract class MeleeSkill : SkillFactory
         ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
         interactions.Add(instance.GetComponent<ParticleInteraction>());
         interactions[index].EffectId = effectId;
+        particleSystemRenderer = instance.GetComponent<ParticleSystemRenderer>();
         
         mainModules.Add(particleSystem.main); 
         triggerModules.Add(particleSystem.trigger);
         instance.SetActive(true);
         particleSystem.Play();
+    }
+
+    /// <summary>
+    /// 파티클 오브젝트 Flip 설정
+    /// </summary>
+    /// <param name="flip"></param>
+    protected void SetParticleRendererFlip(Vector3 flip)
+    {
+        particleSystemRenderer.flip = flip;
     }
     
     /// <summary>

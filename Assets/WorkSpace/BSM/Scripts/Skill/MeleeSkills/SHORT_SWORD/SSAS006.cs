@@ -40,12 +40,22 @@ public class SSAS006 : MeleeSkill
         }
         else
         {
-            Vector2 offset = new Vector2();
+            Vector2 offsetWidth = new Vector2();
+            Vector2 offsetHeight = new Vector2();
             
-            if(Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) offset = new Vector2(skillNode.skillData.SkillRange, 0);
-            else offset = new Vector2(0, skillNode.skillData.SkillRange);
+            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            {
+                offsetWidth = new Vector2(skillNode.skillData.SkillRange, 0);
+                offsetHeight = playerPosition + (Vector2.down / 2);
+
+            }
+            else
+            {
+                offsetWidth = new Vector2(0, skillNode.skillData.SkillRange);
+                offsetHeight = playerPosition;
+            }
             
-            MeleeEffect((playerPosition + (direction * offset)), skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
+            MultiEffect((offsetHeight + (direction * offsetWidth)), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         }
         
     }
