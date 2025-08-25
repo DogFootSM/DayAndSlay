@@ -10,7 +10,6 @@ public abstract class MeleeSkill : SkillFactory
 
     protected Vector2 currentDirection;
     protected ParticleSystem.MainModule mainModule;
-    protected List<Action> skillActions = new List<Action>();
     
     protected List<List<Action>> multiActions = new List<List<Action>>();
     protected List<ParticleSystem.MainModule> mainModules = new List<ParticleSystem.MainModule>();
@@ -18,10 +17,7 @@ public abstract class MeleeSkill : SkillFactory
     protected List<ParticleInteraction> interactions = new List<ParticleInteraction>();
     protected ParticleSystemRenderer particleSystemRenderer;
     
-    protected ParticleSystem.TriggerModule triggerModule;
-    protected ParticleInteraction interaction;
     protected float skillDamage;
-    
     protected float leftDeg; 
     protected float rightDeg;
     protected float downDeg;
@@ -85,29 +81,6 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
-    protected void MeleeEffect(Vector2 position, string skillId, List<GameObject> skillEffectPrefab)
-    {
-        skillActions.Clear();
-        
-        for (int i = 0; i < skillEffectPrefab.Count; i++)
-        {
-            Debug.Log("스킬 이펙트 발동");
-            GameObject instance = particlePooling.GetSkillPool($"{skillId}_{i+1}_Particle", skillEffectPrefab[i]);
-            instance.transform.parent = null;
-            instance.transform.position = position;
-            
-            ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
-            interaction = instance.GetComponent<ParticleInteraction>();
-            interaction.EffectId = $"{skillId}_{i+1}_Particle";
-            
-            triggerModule = particleSystem.trigger;
-            mainModule = particleSystem.main; 
- 
-            instance.SetActive(true);
-            particleSystem.Play();
-        } 
-    }
-
     protected void MultiEffect(Vector2 position, int index, string effectId, GameObject skillEffectPrefab)
     { 
         GameObject instance = particlePooling.GetSkillPool(effectId, skillEffectPrefab);
@@ -281,14 +254,6 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 파티클 트리거 리스트 감지된 콜라이더 제거
     /// </summary>
-    protected void RemoveTriggerModuleList()
-    {   
-        for (int i = triggerModule.colliderCount -1; i >= 0; i--)
-        {
-            triggerModule.RemoveCollider(triggerModule.GetCollider(i));
-        } 
-    }
-
     protected void RemoveTriggerModuleList(int triggerIndex)
     {  
         for (int i = 0; i < triggerModules.Count; i++)

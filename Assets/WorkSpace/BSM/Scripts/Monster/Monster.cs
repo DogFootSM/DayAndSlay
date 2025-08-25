@@ -6,6 +6,7 @@ using UnityEngine;
 public class Monster : MonoBehaviour, IEffectReceiver
 {
     [NonSerialized] public float hp = 100;
+    public float maxHp = 100;
     private GameObject markParticle;
     private GameObject markObject;
     private float defense = 15f;
@@ -90,6 +91,11 @@ public class Monster : MonoBehaviour, IEffectReceiver
         //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
         Debug.Log($"{gameObject.name} 남은 hp :{hp}");
+    }
+
+    public float GetMaxHp()
+    {
+        return maxHp;
     }
 
     /// <summary>

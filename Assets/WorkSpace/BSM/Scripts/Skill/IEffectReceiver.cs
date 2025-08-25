@@ -4,7 +4,17 @@ using UnityEngine;
 
 public interface IEffectReceiver
 {
+    /// <summary>
+    /// 몬스터에게 데미지
+    /// </summary>
+    /// <param name="damage"></param>
     public void TakeDamage(float damage);
+    
+    /// <summary>
+    /// 몬스터의 최대 체력 반환
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxHp();
     
     /// <summary>
     /// 넉백 리시버

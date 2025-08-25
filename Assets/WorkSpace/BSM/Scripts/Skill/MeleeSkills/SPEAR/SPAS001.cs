@@ -36,6 +36,8 @@ public class SPAS001 : MeleeSkill
         ListClear();
         MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
         SetParticleStartRotationFromDeg(0, direction, 0f, 180f, 90f, 270f);
+        if (direction.x < 0 || direction.y < 0) SetParticleRendererFlip(Vector3.up);
+        else SetParticleRendererFlip(Vector3.zero);
         skillDamage = GetSkillDamage();
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
@@ -43,17 +45,18 @@ public class SPAS001 : MeleeSkill
         if (cols.Length > 0)
         {
             multiActions.Add(new List<Action>());
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 
-                multiActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                multiActions[i].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
-                multiActions[i].Add(() => RemoveTriggerModuleList(0));
+                multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                multiActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
                 
-                triggerModules[i].AddCollider(cols[i]);
-                interactions[i].ReceiveAction(multiActions[i]);
+                triggerModules[0].AddCollider(cols[i]);
             } 
+            
+            multiActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(multiActions[0]); 
         } 
     }
 
