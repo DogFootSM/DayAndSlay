@@ -19,7 +19,6 @@ public class NewMonsterSkillFirstState : NewIMonsterState
         // 2. 애니메이터에 방향 전달
         animator.SetFacingByDelta(directionToPlayer);
 
-        Debug.Log("펄스트스킬스테이트재생");
         // 3. 공격 애니메이션 재생
         animator.PlaySkillFirst();
     }

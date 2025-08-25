@@ -639,6 +639,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &1115592376 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4041487671169658802, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+  m_PrefabInstance: {fileID: 1487454006552042279}
+  m_PrefabAsset: {fileID: 0}
 --- !u!156049354 &1389777895 stripped
 Grid:
   m_CorrespondingSourceObject: {fileID: 5191519352783415874, guid: 7c93cebf76354f14ba9ce258feab46bd, type: 3}
@@ -1279,6 +1284,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1648046939317739502, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: delay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1648046939317739502, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: duration
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2875196522976084501, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: grid
       value: 
@@ -1287,6 +1300,10 @@ PrefabInstance:
       propertyPath: mapGrid
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5986441510293772973, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: screamEffect
+      value: 
+      objectReference: {fileID: 1115592376}
     - target: {fileID: 6566479308208419710, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: m_Name
       value: Banshee

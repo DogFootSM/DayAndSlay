@@ -4,7 +4,7 @@ public abstract class Effect : MonoBehaviour
 {
     [SerializeField] private float delay;
     [SerializeField] private float duration;
-    [SerializeField] private bool startedDuration = false;
+    private bool startedDuration = false;
 
     private float _delay;
     private float _duration;

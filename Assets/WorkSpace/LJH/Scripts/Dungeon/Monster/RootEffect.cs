@@ -20,7 +20,7 @@ public class RootEffect : Effect
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("???? ????");
+            Debug.Log("플레이어 타격");
         }
     }
 }

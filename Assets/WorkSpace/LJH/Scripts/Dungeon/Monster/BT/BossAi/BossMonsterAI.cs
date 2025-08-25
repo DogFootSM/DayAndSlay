@@ -91,7 +91,6 @@ public abstract class BossMonsterAI : NewMonsterAI
 
     protected void PerformSkillFirst()
     {
-        Debug.Log("스킬1 실행!");
         stateMachine.ChangeState(new NewMonsterSkillFirstState(transform, player.transform));
         isAttacking = true;
         method.Skill_First();
@@ -102,7 +101,6 @@ public abstract class BossMonsterAI : NewMonsterAI
     
     protected void PerformSkillSecond()
     {
-        Debug.Log("스킬2 실행"!);
         stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
         isAttacking = true;
         method.Skill_Second();
@@ -113,7 +111,6 @@ public abstract class BossMonsterAI : NewMonsterAI
 
     protected void PerformAttack()
     {
-        Debug.Log("PerformAttack() 호출. 공격 실행!");
         stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
         isAttacking = true;
         method.AttackMethod();

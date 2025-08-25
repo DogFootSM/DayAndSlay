@@ -4,7 +4,7 @@ public class MinoMethod : BossMonsterMethod
 {
     private BossMonsterAI mino;
     
-    [SerializeField] private GameObject stompEffect;
+    [SerializeField] private ParticleSystem stompEffect;
 
     public override void Skill_First()
     {
@@ -13,7 +13,8 @@ public class MinoMethod : BossMonsterMethod
 
     public override void Skill_Second()
     {
-        //SetEffectActiver(stompEffect);
+        //SetPosEffect(stompEffect, gameObject);
+        //EffectPlay(stompEffect);
     }
 
 }

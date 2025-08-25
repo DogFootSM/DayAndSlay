@@ -147,7 +147,6 @@ public class NewMonsterAnimator : MonoBehaviour
         if (isAction) return;
         
         isAction = true;
-        Debug.Log($"1번 스킬의 애니메이션 재생 횟수 {i}");
         i++;
         attackDir = dir;
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];

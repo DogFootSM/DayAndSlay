@@ -108,7 +108,6 @@ public class NewMonsterAI : MonoBehaviour
     // ========== 상태 메서드 ==========
     protected void Idle()
     {
-        Debug.Log("아이들 애니재생 및 메서드 실행");
         stateMachine.ChangeState(new NewMonsterIdleState());
         method.IdleMethod();
     }

@@ -4,16 +4,25 @@ using Zenject;
 
 public abstract class BossMonsterMethod : NewMonsterMethod
 {
+    public ParticleSystem effect;
+    
+    
     public abstract override void Skill_First();
     public abstract override void Skill_Second();
     
-    protected void SetPosEffect(GameObject effect, GameObject target)
+    public void SetPosEffect(ParticleSystem effect, GameObject target)
     {
         effect.transform.position = target.transform.position;
     }
 
-    protected void SetEffectActiver(GameObject effect)
+    public void EffectPlay()
     {
-        effect.SetActive(true);
+        Debug.Log("실행됨");
+
+        if (effect == null)
+        {
+            Debug.Log("effect가 Null입니다.");
+        }
+        effect.Play(true);
     }
 }
