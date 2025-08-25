@@ -25,8 +25,8 @@ public class NewMonsterAnimator : MonoBehaviour
     protected Dictionary<Direction, string> hitAction = new Dictionary<Direction, string>();
     
     //보스 전용
-    private Dictionary<Direction, string> skillFirstAction = new Dictionary<Direction, string>();
-    private Dictionary<Direction, string> skillSecondAction = new Dictionary<Direction, string>();
+    protected Dictionary<Direction, string> skillFirstAction = new Dictionary<Direction, string>();
+    protected Dictionary<Direction, string> skillSecondAction = new Dictionary<Direction, string>();
 
     protected Direction dir = Direction.Down;                       
    
