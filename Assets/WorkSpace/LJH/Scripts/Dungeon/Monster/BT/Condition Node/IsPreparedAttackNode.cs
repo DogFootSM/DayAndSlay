@@ -20,7 +20,7 @@ public class IsPreparedAttackNode : BTNode
         this.target = target;
         this.range = range;
         this.cooldown = cooldown;
-        currentCooldown = cooldown;
+        currentCooldown = 0;
     }
 
     public override NodeState Tick()
