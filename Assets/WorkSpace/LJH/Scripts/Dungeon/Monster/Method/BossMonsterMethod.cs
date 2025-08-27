@@ -17,8 +17,6 @@ public abstract class BossMonsterMethod : NewMonsterMethod
 
     public void EffectPlay()
     {
-        Debug.Log("실행됨");
-
         if (effect == null)
         {
             Debug.Log("effect가 Null입니다.");

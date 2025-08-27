@@ -20,13 +20,11 @@ public class NewMonsterMethod : MonoBehaviour
     
     public void SetPlayer(GameObject player) => this.player = player;
 
-    public virtual void Skill_First()
-    {
-    }
+    public virtual void Skill_First() { }
 
-    public virtual void Skill_Second()
-    {
-    }
+    public virtual void Skill_Second() { }
+    public virtual void Skill_Third() { }
+    public virtual void Skill_Fourth() { }
 
     private void Start()
     {

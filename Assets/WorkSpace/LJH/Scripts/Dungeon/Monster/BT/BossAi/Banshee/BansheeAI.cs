@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class BansheeAI : BossMonsterAI
 {
-    // 미노타우로스만의 고유한 쿨타임 변수를 인스펙터에 노출합니다.
-    // 기존 buttCooldown과 stompCooldown을 대체합니다.
     [Header("스킬 쿨타임 조정")]
     [SerializeField] private float screamCooldown = 10f;
     [SerializeField] private float teleportCooldown = 10f;
+    [SerializeField] private float buffCooldown = 10f;
+    [SerializeField] private float ultCooldown = 10f;
     
     // 이 변수들은 실제 쿨타임 값을 저장합니다.
     // 부모 클래스의 skillFirstCooldown, skillSecondCooldown 변수와 헷갈리지 않도록
@@ -20,47 +20,15 @@ public class BansheeAI : BossMonsterAI
         // 부모 클래스의 변수에 값을 할당하여 공통 로직을 활용합니다.
         skillFirstCooldown = screamCooldown;
         skillSecondCooldown = teleportCooldown;
+        skillThirdCooldown = buffCooldown;
+        skillFourthCooldown = ultCooldown;
+        
+        Debug.Log($"비명 지르기의 쿨타임 {skillFirstCooldown}");
+        Debug.Log($"순간이동의 쿨타임 {skillSecondCooldown}");
+        Debug.Log($"버프의 쿨타임 {skillThirdCooldown}");
+        Debug.Log($"궁극기의 쿨타임 {skillFourthCooldown}");
         
         // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
-    }
-    
-    protected override bool IsAllOnCooldown()
-    {
-        //distance는 몬스터와 플레이어의 거리
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-
-        //distance가 몬스터의 추격범위보다 클 경우 == 몬스터의 추격 범위 바깥에 플레이어가 존재할 경우
-        if (distance > monsterData.ChaseRange)
-        { 
-        //true 리턴함
-            return true;
-        }
-
-        //distance가 몬스터의 공격 사거리 범위보다 클 경우 == 몬스터의 공격 사거리 범위 바깥에 플레이어가 존재할 경우
-        if (distance > monsterData.AttackRange)
-        {
-            return !CanSkillSecond() && !CanSkillFirst();
-        }
-
-        return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
-    }
-    
-    protected override bool CanSkillFirst()
-    {
-        // scream 공격 쿨타임을 체크합니다.
-        return skillFirstTimer <= 0f;
-    }
-
-    protected override bool CanSkillSecond()
-    {
-        // teleport 공격 쿨타임을 체크합니다.
-        return skillSecondTimer <= 0f;
-    }
-
-    protected override bool CanAttack()
-    {
-        // 일반 공격 쿨타임을 체크합니다.
-        return attackTimer <= 0f;
     }
 
     // ---------------- BT patterns ----------------
@@ -69,20 +37,39 @@ public class BansheeAI : BossMonsterAI
     {
         List<BTNode> list = new List<BTNode>();
 
-        // 첫 번째 스킬 (Butt)
+        // 첫 번째 스킬 (Scream)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillFirst),
+            new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
         
-        // 두 번째 스킬 (Stomp)
+        // 두 번째 스킬 (teleport)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillSecond),
+            new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+        
+        // 세 번째 스킬 (Buff)
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
+            new ActionNode(PerformSkillThird),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+        
+        // 네 번째 스킬 (ultimate)
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsHPThresholdCheckNode(50f, GetMonsterModel()),
+            new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
+            new ActionNode(PerformSkillFourth),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));

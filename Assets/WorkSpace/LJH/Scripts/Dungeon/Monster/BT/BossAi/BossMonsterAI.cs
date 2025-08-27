@@ -8,11 +8,16 @@ public abstract class BossMonsterAI : NewMonsterAI
     [Header("공통 스킬 쿨타임 조정")]
     [SerializeField] protected float skillFirstCooldown;
     [SerializeField] protected float skillSecondCooldown;
+    [SerializeField] protected float skillThirdCooldown;
+    [SerializeField] protected float skillFourthCooldown;
     [SerializeField] protected float attackCooldown = 2f;
 
     // 네펜데스AI에서 가져온 공통 타이머 변수들
     protected float skillFirstTimer;
     protected float skillSecondTimer;
+    protected float skillThirdTimer;
+    protected float skillFourthTimer;
+    
     protected float attackTimer;
 
     protected override void Start()
@@ -21,12 +26,19 @@ public abstract class BossMonsterAI : NewMonsterAI
         
         skillFirstTimer = skillFirstCooldown;
         skillSecondTimer = skillSecondCooldown;
+        skillThirdTimer = skillThirdCooldown;
+        skillFourthTimer = skillFourthCooldown;
+        
         attackTimer = attackCooldown;
     }
     protected override void Update()
     {
         base.Update();
         UpdateCooldowns();
+        Debug.Log($"scream의 쿨타임 {(int)skillFirstTimer}");
+        Debug.Log($"teleport의 쿨타임 {(int)skillSecondTimer}");
+        Debug.Log($"buff의 쿨타임 {(int)skillThirdTimer}");
+        Debug.Log($"Ult의 쿨타임 {(int)skillFourthTimer}");
     }
 
     // 쿨타임 업데이트 로직도 모든 보스에게 공통
@@ -34,6 +46,9 @@ public abstract class BossMonsterAI : NewMonsterAI
     {
         skillFirstTimer -= Time.deltaTime;
         skillSecondTimer -= Time.deltaTime;
+        skillThirdTimer -= Time.deltaTime;
+        skillFourthTimer -= Time.deltaTime;
+        
         attackTimer -= Time.deltaTime;
     }
 
@@ -78,15 +93,21 @@ public abstract class BossMonsterAI : NewMonsterAI
     protected abstract List<BTNode> BuildSkillSelector();
     protected abstract List<BTNode> BuildAttackSelector();
 
-    // ============================ 동작 메서드 =============================
-    
-    protected abstract bool IsAllOnCooldown();
-    protected abstract bool CanSkillFirst();
-    protected abstract bool CanSkillSecond();
-    protected abstract bool CanAttack();
+
+    protected bool CanSkill(float timer)
+    {
+        return timer <= 0f;
+    }
+    protected bool CanAttack()
+    {
+        // 일반 공격 쿨타임을 체크합니다.
+        return attackTimer <= 0f;
+    }
 
     protected void ResetSkillFirstCooldown() => skillFirstTimer = skillFirstCooldown;
     protected void ResetSkillSecondCooldown() => skillSecondTimer = skillSecondCooldown;
+    protected void ResetSkillThirdCooldown() => skillThirdTimer = skillThirdCooldown;
+    protected void ResetSkillFourthCooldown() => skillFourthTimer = skillFourthCooldown;
     protected void ResetAttackCooldown() => attackTimer = attackCooldown;
 
     protected void PerformSkillFirst()
@@ -107,6 +128,26 @@ public abstract class BossMonsterAI : NewMonsterAI
         SkillCommonStart();
         StartCoroutine(AttackEndDelay());
         ResetSkillSecondCooldown();
+    }
+    
+    protected void PerformSkillThird()
+    {
+        //stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
+        isAttacking = true;
+        method.Skill_Third();
+        SkillCommonStart();
+        StartCoroutine(AttackEndDelay());
+        ResetSkillThirdCooldown();
+    }
+    
+    protected void PerformSkillFourth()
+    {
+        //stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
+        isAttacking = true;
+        method.Skill_Fourth();
+        SkillCommonStart();
+        StartCoroutine(AttackEndDelay());
+        ResetSkillFourthCooldown();
     }
 
     protected void PerformAttack()

@@ -14,24 +14,9 @@ public class Bellus : NepenthesAI
     }
 
     // 스킬 첫 번째 (힐) 사용 조건
-    protected override bool IsAllOnCooldown()
-    {
-        float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distance > monsterData.ChaseRange)
-        {
-            return true;
-        }
 
-        if (distance > monsterData.AttackRange)
-        {
-            return !CanSkillSecond() && !CanSkillFirst();
-        }
-
-        return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
-    }
-
-    protected override bool CanSkillFirst()
+    private bool CanSkillFirst()
     {
         if (partner == null) return false;
         if (skillFirstTimer > 0f) return false;
@@ -45,18 +30,6 @@ public class Bellus : NepenthesAI
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
 
         return diff >= healThresholdPercent;
-    }
-
-    // 스킬 두 번째 (독) 사용 조건
-    protected override bool CanSkillSecond()
-    {
-        return skillSecondTimer <= 0f;
-    }
-
-    // 일반 공격 사용 조건
-    protected override bool CanAttack()
-    {
-        return attackTimer <= 0f;
     }
 
     // 스킬 행동 트리 패턴 구현
@@ -74,7 +47,7 @@ public class Bellus : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillSecond),
+            new IsPreparedCooldownNode(() => CanSkill(skillSecondCooldown)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)

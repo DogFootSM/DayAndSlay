@@ -12,25 +12,9 @@ public class Malus : NepenthesAI
         // 파트너 찾기 로직
         partner = FindObjectOfType<Bellus>();
     }
-    protected override bool IsAllOnCooldown()
-    {
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-
-        if (distance > monsterData.ChaseRange)
-        {
-            return true;
-        }
-
-        if (distance > monsterData.AttackRange)
-        {
-            return !CanSkillSecond() && !CanSkillFirst();
-        }
-
-        return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
-    }
 
     // 스킬 첫 번째 (소환) 사용 조건
-    protected override bool CanSkillFirst()
+    protected bool CanSkillFirst()
     {
         if (partner == null) return false;
         if (skillFirstTimer > 0f) return false;
@@ -46,17 +30,6 @@ public class Malus : NepenthesAI
         return diff >= summonThresholdPercent;
     }
 
-    // 스킬 두 번째 (뿌리 공격) 사용 조건
-    protected override bool CanSkillSecond()
-    {
-        return skillSecondTimer <= 0f;
-    }
-
-    // 일반 공격 사용 조건
-    protected override bool CanAttack()
-    {
-        return attackTimer <= 0f;
-    }
 
     // 스킬 행동 트리 패턴 구현
     protected override List<BTNode> BuildSkillSelector()
@@ -73,7 +46,7 @@ public class Malus : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillSecond),
+            new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)

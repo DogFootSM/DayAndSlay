@@ -23,43 +23,6 @@ public class MinoAI : BossMonsterAI
         
         // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
     }
-    
-    // IsAllOnCooldown은 미노의 스킬에 맞게 구현합니다.
-    protected override bool IsAllOnCooldown()
-    {
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-
-        if (distance > monsterData.ChaseRange)
-        {
-            return true;
-        }
-
-        if (distance > monsterData.AttackRange)
-        {
-            return !CanSkillSecond() && !CanSkillFirst();
-        }
-
-        return !CanSkillSecond() && !CanSkillFirst() && !CanAttack();
-    }
-    
-    // MinoAI 고유의 스킬 사용 가능 조건만 정의합니다.
-    protected override bool CanSkillFirst()
-    {
-        // Butt 공격 쿨타임을 체크합니다.
-        return skillFirstTimer <= 0f;
-    }
-
-    protected override bool CanSkillSecond()
-    {
-        // Stomp 공격 쿨타임을 체크합니다.
-        return skillSecondTimer <= 0f;
-    }
-
-    protected override bool CanAttack()
-    {
-        // 일반 공격 쿨타임을 체크합니다.
-        return attackTimer <= 0f;
-    }
 
     // ---------------- BT patterns ----------------
 
@@ -67,20 +30,38 @@ public class MinoAI : BossMonsterAI
     {
         List<BTNode> list = new List<BTNode>();
 
-        // 첫 번째 스킬 (Butt)
+        // 첫 번째 스킬 (Teleport)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillFirst),
+            new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
         
-        // 두 번째 스킬 (Stomp)
+        // 두 번째 스킬 (Scream)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillSecond),
+            new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+        
+        // 세 번째 스킬 (Buff)
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
+            new ActionNode(PerformSkillThird),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+        
+        // 네 번째 스킬 (ultimate)
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
+            new ActionNode(PerformSkillFourth),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
