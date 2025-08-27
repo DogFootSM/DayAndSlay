@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BansheeMethod : BossMonsterMethod
 {
+    [SerializeField] SpiritRush spirit;
+    
     [SerializeField] private float buffDuration;
     
     public override void Skill_First()
@@ -24,6 +26,8 @@ public class BansheeMethod : BossMonsterMethod
     public override void Skill_Fourth()
     {
         Debug.Log("±Ã±Ø±â »ç¿ë");
+        spirit.GetComponent<ParticleSystem>().Play();
+        spirit.Rush();
     }
 
     /// <summary>

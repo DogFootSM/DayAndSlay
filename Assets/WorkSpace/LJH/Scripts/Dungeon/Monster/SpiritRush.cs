@@ -5,9 +5,28 @@ using UnityEngine;
 
 public class SpiritRush : MonoBehaviour
 {
-    private void OnEnable()
+    private Coroutine rushCoroutine;
+    
+    public void Rush()
     {
-        transform.position += Vector3.up * 5f;
+        rushCoroutine = StartCoroutine(RushCoroutine());
+    }
+
+    private IEnumerator RushCoroutine()
+    {
+        while(true)
+        {
+            transform.position += Vector3.up;
+            
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public void EndRush()
+    {
+        StopCoroutine(rushCoroutine);
+        rushCoroutine = null;
+        transform.position = Vector3.zero;
     }
     private void OnParticleCollision(GameObject other)
     {
