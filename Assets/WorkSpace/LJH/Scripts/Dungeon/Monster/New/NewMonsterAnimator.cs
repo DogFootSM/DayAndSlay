@@ -27,11 +27,15 @@ public class NewMonsterAnimator : MonoBehaviour
     //보스 전용
     protected Dictionary<Direction, string> skillFirstAction = new Dictionary<Direction, string>();
     protected Dictionary<Direction, string> skillSecondAction = new Dictionary<Direction, string>();
+    protected Dictionary<Direction, string> skillThirdAction = new Dictionary<Direction, string>();
+    protected Dictionary<Direction, string> skillFourthAction = new Dictionary<Direction, string>();
 
     protected Direction dir = Direction.Down;                       
    
     protected Direction attackDir;
     protected Direction moveDir;
+
+    public Direction GetCurrentDir() => dir;
 
 
     protected void Start()
@@ -61,6 +65,18 @@ public class NewMonsterAnimator : MonoBehaviour
             }
             
             currentAnimationHash = SetAnimationHash(skillSecondAction[dir]);
+            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+            {
+                isAction = false;
+            }
+            
+            currentAnimationHash = SetAnimationHash(skillThirdAction[dir]);
+            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+            {
+                isAction = false;
+            }
+            
+            currentAnimationHash = SetAnimationHash(skillFourthAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
                 isAction = false;
@@ -138,7 +154,6 @@ public class NewMonsterAnimator : MonoBehaviour
         animator.Play("MonsterDie");
     }
 
-    private int i = 0;
     /// <summary>
     /// 보스몬스터 스킬1
     /// </summary>
@@ -147,7 +162,6 @@ public class NewMonsterAnimator : MonoBehaviour
         if (isAction) return;
         
         isAction = true;
-        i++;
         attackDir = dir;
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
         animator.Play(skillFirstAction[attackDir]);
@@ -165,6 +179,34 @@ public class NewMonsterAnimator : MonoBehaviour
         attackDir = dir;
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
         animator.Play(skillSecondAction[attackDir]);
+    }
+    
+    /// <summary>
+    /// 보스몬스터 스킬3
+    /// </summary>
+    public void PlaySkillThird()
+    {
+        if (isAction) return;
+        
+        isAction = true;
+
+        attackDir = dir;
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
+        animator.Play(skillThirdAction[attackDir]);
+    }
+    
+    /// <summary>
+    /// 보스몬스터 스킬4
+    /// </summary>
+    public void PlaySkillFourth()
+    {
+        if (isAction) return;
+        
+        isAction = true;
+
+        attackDir = dir;
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
+        animator.Play(skillFourthAction[attackDir]);
     }
 
     protected virtual void DictionaryInit()
@@ -193,5 +235,15 @@ public class NewMonsterAnimator : MonoBehaviour
         skillSecondAction.Add(Direction.Right, "MonsterSkillSecondRight");
         skillSecondAction.Add(Direction.Up, "MonsterSkillSecondUp");
         skillSecondAction.Add(Direction.Down, "MonsterSkillSecondDown");
+        
+        skillFirstAction.Add(Direction.Left, "MonsterSkillThirdLeft");
+        skillFirstAction.Add(Direction.Right, "MonsterSkillThirdRight");
+        skillFirstAction.Add(Direction.Up, "MonsterSkillThirdUp");
+        skillFirstAction.Add(Direction.Down, "MonsterSkillThirdDown");
+        
+        skillSecondAction.Add(Direction.Left, "MonsterSkillFourthLeft");
+        skillSecondAction.Add(Direction.Right, "MonsterSkillFourthRight");
+        skillSecondAction.Add(Direction.Up, "MonsterSkillFourthUp");
+        skillSecondAction.Add(Direction.Down, "MonsterSkillFourthDown");
     }
 }

@@ -23,11 +23,6 @@ public class BansheeAI : BossMonsterAI
         skillThirdCooldown = buffCooldown;
         skillFourthCooldown = ultCooldown;
         
-        Debug.Log($"비명 지르기의 쿨타임 {skillFirstCooldown}");
-        Debug.Log($"순간이동의 쿨타임 {skillSecondCooldown}");
-        Debug.Log($"버프의 쿨타임 {skillThirdCooldown}");
-        Debug.Log($"궁극기의 쿨타임 {skillFourthCooldown}");
-        
         // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
     }
 

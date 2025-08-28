@@ -35,10 +35,6 @@ public abstract class BossMonsterAI : NewMonsterAI
     {
         base.Update();
         UpdateCooldowns();
-        Debug.Log($"scream의 쿨타임 {(int)skillFirstTimer}");
-        Debug.Log($"teleport의 쿨타임 {(int)skillSecondTimer}");
-        Debug.Log($"buff의 쿨타임 {(int)skillThirdTimer}");
-        Debug.Log($"Ult의 쿨타임 {(int)skillFourthTimer}");
     }
 
     // 쿨타임 업데이트 로직도 모든 보스에게 공통
@@ -58,7 +54,7 @@ public abstract class BossMonsterAI : NewMonsterAI
         {
             new Sequence(BuildDieSequence()),
             new Sequence(BuildSkillSequence()),
-            new Sequence(BuildAttackSequence()),
+            //new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
             new Sequence(BuildIdleSequence())
         });
@@ -132,7 +128,7 @@ public abstract class BossMonsterAI : NewMonsterAI
     
     protected void PerformSkillThird()
     {
-        //stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
+        stateMachine.ChangeState(new NewMonsterSkillThirdState(transform, player.transform));
         isAttacking = true;
         method.Skill_Third();
         SkillCommonStart();
@@ -142,7 +138,7 @@ public abstract class BossMonsterAI : NewMonsterAI
     
     protected void PerformSkillFourth()
     {
-        //stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
+        stateMachine.ChangeState(new NewMonsterSkillFourthState(transform, player.transform));
         isAttacking = true;
         method.Skill_Fourth();
         SkillCommonStart();

@@ -651,7 +651,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078137147}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -8.87, z: 0}
+  m_LocalPosition: {x: -10.42, y: -14.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1341,11 +1341,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -10.34
       objectReference: {fileID: 0}
     - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -11.79
       objectReference: {fileID: 0}
     - target: {fileID: 1022200547956221348, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1396,6 +1396,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5986441510293772973, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: buffDuration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5986441510293772973, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: screamEffect
       value: 
       objectReference: {fileID: 1115592376}
@@ -1433,7 +1437,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6840242932846492006, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: skillFourthCooldown
-      value: 10
+      value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098733651182486092, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9157779623089675954, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
       propertyPath: m_LocalPosition.x

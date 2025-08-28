@@ -9,6 +9,8 @@ public abstract class BossMonsterMethod : NewMonsterMethod
     
     public abstract override void Skill_First();
     public abstract override void Skill_Second();
+    public abstract override void Skill_Third();
+    public abstract override void Skill_Fourth();
     
     public void SetPosEffect(ParticleSystem effect, GameObject target)
     {

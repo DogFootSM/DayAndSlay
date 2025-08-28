@@ -8,6 +8,11 @@ public class MalusMethod : BossMonsterMethod
     [SerializeField] private GameObject warningRoot;
     [SerializeField] private GameObject root;
 
+    public override void Skill_Fourth()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Start()
     {
         malus = GetComponent<Malus>();
@@ -21,5 +26,10 @@ public class MalusMethod : BossMonsterMethod
     public override void Skill_Second()
     {
         //Todo : »Ñ¸® °ø°Ý
+    }
+
+    public override void Skill_Third()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -30,5 +30,15 @@ public class BansheeAnimator : NewMonsterAnimator
         skillSecondAction.Add(Direction.Right, "MonsterSkillSecondDown");
         skillSecondAction.Add(Direction.Up, "MonsterSkillSecondDown");
         skillSecondAction.Add(Direction.Down, "MonsterSkillSecondDown");
+        
+        skillThirdAction.Add(Direction.Left, "MonsterSkillThirdDown");
+        skillThirdAction.Add(Direction.Right, "MonsterSkillThirdDown");
+        skillThirdAction.Add(Direction.Up, "MonsterSkillThirdDown");
+        skillThirdAction.Add(Direction.Down, "MonsterSkillThirdDown");
+        
+        skillFourthAction.Add(Direction.Left, "MonsterSkillFourthLeft");
+        skillFourthAction.Add(Direction.Right, "MonsterSkillFourthRight");
+        skillFourthAction.Add(Direction.Up, "MonsterSkillFourthUp");
+        skillFourthAction.Add(Direction.Down, "MonsterSkillFourthLeft");
     }
 }

@@ -26,8 +26,17 @@ public class BansheeMethod : BossMonsterMethod
     public override void Skill_Fourth()
     {
         Debug.Log("궁극기 사용");
+        spirit.SetRushDir(animator.GetCurrentDir());
         spirit.GetComponent<ParticleSystem>().Play();
         spirit.Rush();
+    }
+
+    /// <summary>
+    /// 애니메이션 이벤트로 호출
+    /// </summary>
+    public void Skill_FourthEffectEnd()
+    {
+        spirit.EndRush();
     }
 
     /// <summary>

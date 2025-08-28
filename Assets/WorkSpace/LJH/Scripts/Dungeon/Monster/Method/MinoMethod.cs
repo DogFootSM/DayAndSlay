@@ -17,4 +17,13 @@ public class MinoMethod : BossMonsterMethod
         //EffectPlay(stompEffect);
     }
 
+    public override void Skill_Third()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Skill_Fourth()
+    {
+        throw new System.NotImplementedException();
+    }
 }

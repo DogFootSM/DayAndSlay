@@ -9,6 +9,7 @@ public class BellusMethod : BossMonsterMethod
     [SerializeField] private ParticleSystem malusHealEffect;
     [SerializeField] private ParticleSystem poisonWarnigEffect;
     [SerializeField] private ParticleSystem poisonEffect;
+    
 
     private void Start()
     {
@@ -32,6 +33,13 @@ public class BellusMethod : BossMonsterMethod
         //EffectPlay(poisonWarnigEffect);
         //EffectPlay(poisonEffect);
     }
-    
+
+    public override void Skill_Third()
+    {
+    }
+    public override void Skill_Fourth()
+    {
+    }
+
 }
 
