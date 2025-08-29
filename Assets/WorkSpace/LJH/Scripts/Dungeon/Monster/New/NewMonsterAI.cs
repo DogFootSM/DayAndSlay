@@ -100,7 +100,6 @@ public class NewMonsterAI : MonoBehaviour
     {
         return new List<BTNode>
         {
-            //new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, () => !isAttacking),
             new ActionNode(Idle)
         };
     }

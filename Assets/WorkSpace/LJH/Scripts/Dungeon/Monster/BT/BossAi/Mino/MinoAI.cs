@@ -3,15 +3,12 @@ using UnityEngine;
 
 public class MinoAI : BossMonsterAI
 {
-    // 미노타우로스만의 고유한 쿨타임 변수를 인스펙터에 노출합니다.
-    // 기존 buttCooldown과 stompCooldown을 대체합니다.
     [Header("스킬 쿨타임 조정")]
     [SerializeField] private float buttCooldown = 10f;
     [SerializeField] private float stompCooldown = 10f;
+    [SerializeField] private float buffCooldown = 10f;
+    [SerializeField] private float ultCooldown = 10f;
     
-    // 이 변수들은 실제 쿨타임 값을 저장합니다.
-    // 부모 클래스의 skillFirstCooldown, skillSecondCooldown 변수와 헷갈리지 않도록
-    // MinoAI 클래스 내부에서만 사용하고, 이를 부모 클래스 변수에 할당하는 방식이 좋습니다.
     
     // Start() 메서드에서 부모 클래스의 쿨타임 변수에 값을 할당합니다.
     protected override void Start()
@@ -20,6 +17,8 @@ public class MinoAI : BossMonsterAI
         // 부모 클래스의 변수에 값을 할당하여 공통 로직을 활용합니다.
         skillFirstCooldown = buttCooldown;
         skillSecondCooldown = stompCooldown;
+        skillThirdCooldown = buffCooldown;
+        skillFourthCooldown = ultCooldown;
         
         // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
     }
@@ -51,6 +50,7 @@ public class MinoAI : BossMonsterAI
         // 세 번째 스킬 (Buff)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsHPThresholdCheckNode(30f, GetMonsterModel()),
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -60,6 +60,7 @@ public class MinoAI : BossMonsterAI
         // 네 번째 스킬 (ultimate)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsHPThresholdCheckNode(50f, GetMonsterModel()),
             new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
             new ActionNode(PerformSkillFourth),
             new WaitWhileActionNode(() => animator.IsPlayingAction),

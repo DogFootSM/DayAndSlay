@@ -12,8 +12,8 @@ public class NewMonsterMethod : MonoBehaviour
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
     protected GameObject player;
+    protected Collider2D coll;
     
-    public float moveSpeed = 5f;
     private int currentPathIndex;
 
     private List<Vector3> path = new List<Vector3>();
@@ -33,8 +33,8 @@ public class NewMonsterMethod : MonoBehaviour
         ai = GetComponentInChildren<NewMonsterAI>();
         animator = ai.GetMonsterAnimator();
         sensor = GetComponentInChildren<TargetSensor>();
+        coll = GetComponent<Collider2D>();
         MonsterDataInit(ai.GetMonsterData());
-        moveSpeed = monsterData.MoveSpeed;
     }
 
     public void MonsterDataInit(MonsterData monsterData)
@@ -114,7 +114,7 @@ public class NewMonsterMethod : MonoBehaviour
         Vector3 targetGridPos = path[currentPathIndex];
         Vector3 targetWorldPos = new Vector3(targetGridPos.x, targetGridPos.y, 0);
 
-        rb.MovePosition(Vector3.MoveTowards(transform.position, targetWorldPos, moveSpeed * Time.deltaTime));
+        rb.MovePosition(Vector3.MoveTowards(transform.position, targetWorldPos, monsterData.MoveSpeed * Time.deltaTime));
 
         if (Vector3.Distance(transform.position, targetWorldPos) < 0.01f)
         {

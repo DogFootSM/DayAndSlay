@@ -6,10 +6,11 @@ public abstract class BossMonsterAI : NewMonsterAI
 {
     // 네펜데스AI에서 가져온 공통 쿨타임 변수들
     [Header("공통 스킬 쿨타임 조정")]
-    [SerializeField] protected float skillFirstCooldown;
-    [SerializeField] protected float skillSecondCooldown;
-    [SerializeField] protected float skillThirdCooldown;
-    [SerializeField] protected float skillFourthCooldown;
+    protected float skillFirstCooldown;
+    protected float skillSecondCooldown;
+    protected float skillThirdCooldown;
+    protected float skillFourthCooldown;
+    
     [SerializeField] protected float attackCooldown = 2f;
 
     // 네펜데스AI에서 가져온 공통 타이머 변수들
@@ -54,12 +55,13 @@ public abstract class BossMonsterAI : NewMonsterAI
         {
             new Sequence(BuildDieSequence()),
             new Sequence(BuildSkillSequence()),
-            //new Sequence(BuildAttackSequence()),
+            new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
             new Sequence(BuildIdleSequence())
         });
     }
 
+    //이걸로 스킬 시퀀스 만들어줌
     protected virtual List<BTNode> BuildSkillSequence()
     {
         List<BTNode> patterns = BuildSkillSelector();

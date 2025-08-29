@@ -45,10 +45,10 @@ public class BansheeMethod : BossMonsterMethod
     /// <returns></returns>
     private IEnumerator MoveSpeedBuff()
     {
-        float preMoveSpeed = moveSpeed;
-        moveSpeed = moveSpeed * 1.5f;
+        float preMoveSpeed = monsterData.MoveSpeed;
+        monsterData.MoveSpeed *= 1.5f;
         yield return new WaitForSeconds(buffDuration);
-        moveSpeed = preMoveSpeed;
+        monsterData.MoveSpeed = preMoveSpeed;
     }
 
 
