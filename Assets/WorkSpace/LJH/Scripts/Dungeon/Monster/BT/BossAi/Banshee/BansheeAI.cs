@@ -35,6 +35,7 @@ public class BansheeAI : BossMonsterAI
         // 첫 번째 스킬 (Scream)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsSkillRangeNode(transform, player.transform, model.AttackRange + 3, 0),
             new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -44,6 +45,7 @@ public class BansheeAI : BossMonsterAI
         // 두 번째 스킬 (teleport)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsSkillRangeNode(transform, player.transform, 100, model.AttackRange + 1),
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -62,6 +64,7 @@ public class BansheeAI : BossMonsterAI
         // 네 번째 스킬 (ultimate)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsSkillRangeNode(transform, player.transform, model.AttackRange, 0),
             new IsHPThresholdCheckNode(50f, GetMonsterModel()),
             new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
             new ActionNode(PerformSkillFourth),

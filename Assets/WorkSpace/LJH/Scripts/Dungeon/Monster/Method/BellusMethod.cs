@@ -13,8 +13,8 @@ public class BellusMethod : BossMonsterMethod
 
     private void Start()
     {
-        bellus = GetComponent<Bellus>();
-        malus = ((Bellus)bellus).GetPartner();
+        bellus = GetComponent<BellusAI>();
+        malus = ((BellusAI)bellus).GetPartner();
     }
     public override void Skill_First()
     {

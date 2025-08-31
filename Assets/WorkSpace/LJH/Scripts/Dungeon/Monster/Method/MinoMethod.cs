@@ -6,6 +6,7 @@ public class MinoMethod : BossMonsterMethod
 {
     private BossMonsterAI mino;
 
+    [SerializeField] private Labyrinth labyrinth;
     [SerializeField] private ParticleSystem labyrinthEffect;
 
     [SerializeField] private float buffDuration;
@@ -42,7 +43,9 @@ public class MinoMethod : BossMonsterMethod
     private void Labirinth()
     {
         Debug.Log("미궁을 생성합니다.");
+        player.transform.position = transform.position;
         labyrinthEffect.Play();
+        labyrinth.gameObject.SetActive(true);
         //Todo 미궁 생성
     }
 

@@ -15,8 +15,8 @@ public class MalusMethod : BossMonsterMethod
 
     private void Start()
     {
-        malus = GetComponent<Malus>();
-        bellus = ((Malus)malus).GetPartner();
+        malus = GetComponent<MalusAI>();
+        bellus = ((MalusAI)malus).GetPartner();
     }
     public override void Skill_First()
     {

@@ -1,20 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Malus : NepenthesAI
+public class MalusAI : NepenthesAI
 {
     [Header("소환 조건 조정")]
     [SerializeField] private float summonThresholdPercent = 20f;
+
+    [SerializeField] private float rootAttackCooldown = 10f;
+    [SerializeField] private float summonCooldown = 10f;
+    [SerializeField] private float cooldown = 10f;
     
     protected override void Start()
     {
         base.Start();
         // 파트너 찾기 로직
-        partner = FindObjectOfType<Bellus>();
+        partner = FindObjectOfType<BellusAI>();
+
+        skillFirstCooldown = rootAttackCooldown;
+        skillSecondCooldown = summonCooldown;
+        skillThirdCooldown = cooldown;
     }
 
     // 스킬 첫 번째 (소환) 사용 조건
-    protected bool CanSkillFirst()
+    protected bool CanSkillCondition()
     {
         if (partner == null) return false;
         if (skillFirstTimer > 0f) return false;
@@ -38,7 +46,8 @@ public class Malus : NepenthesAI
         
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillFirst),
+            new IsPreparedCooldownNode(CanSkillCondition),
+            new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)

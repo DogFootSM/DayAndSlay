@@ -1,22 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bellus : NepenthesAI
+public class BellusAI : NepenthesAI
 {
     [Header("힐 조건 조정")]
     [SerializeField] private float healThresholdPercent = 20f;
+    
+    [SerializeField] private float poisonCooldown = 10f;
+    [SerializeField] private float healCooldown = 10f;
+    [SerializeField] private float cooldown = 10f;
     
     protected override void Start()
     {
         base.Start();
         // 파트너 찾기 로직
-        partner = FindObjectOfType<Malus>();
+        partner = FindObjectOfType<MalusAI>();
+        
+        skillFirstCooldown = poisonCooldown;
+        skillSecondCooldown = healCooldown;
+        skillThirdCooldown = cooldown;
     }
 
     // 스킬 첫 번째 (힐) 사용 조건
 
 
-    private bool CanSkillFirst()
+    private bool CanSkillCondition()
     {
         if (partner == null) return false;
         if (skillFirstTimer > 0f) return false;
@@ -39,7 +47,7 @@ public class Bellus : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillFirst),
+            new IsPreparedCooldownNode(() => CanSkill(skillFirstCooldown)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
@@ -48,6 +56,7 @@ public class Bellus : NepenthesAI
         list.Add(new Sequence(new List<BTNode>
         {
             new IsPreparedCooldownNode(() => CanSkill(skillSecondCooldown)),
+            new IsPreparedCooldownNode(CanSkillCondition),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
