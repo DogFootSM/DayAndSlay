@@ -4,38 +4,41 @@ using UnityEngine;
 public class MalusAI : NepenthesAI
 {
     [Header("소환 조건 조정")]
-    [SerializeField] private float summonThresholdPercent = 20f;
+    [SerializeField] private float summonThresholdPercent = 0;
 
     [SerializeField] private float rootAttackCooldown = 10f;
     [SerializeField] private float summonCooldown = 10f;
-    [SerializeField] private float cooldown = 10f;
+    [SerializeField] private float frenzyCooldown = 10f;
     
     protected override void Start()
     {
-        base.Start();
-        // 파트너 찾기 로직
         partner = FindObjectOfType<BellusAI>();
 
         skillFirstCooldown = rootAttackCooldown;
         skillSecondCooldown = summonCooldown;
-        skillThirdCooldown = cooldown;
+        skillThirdCooldown = frenzyCooldown;
+        base.Start();
     }
 
     // 스킬 첫 번째 (소환) 사용 조건
     protected bool CanSkillCondition()
     {
         if (partner == null) return false;
-        if (skillFirstTimer > 0f) return false;
-
+        
         MonsterModel myModel = model;
         MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
+        
         if (myModel == null || partnerModel == null) return false;
-
+        
         float myHpPercent = (float)myModel.GetMonsterHp() / (float)myModel.GetMonsterMaxHp() * 100f;
         float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
 
-        return diff >= summonThresholdPercent;
+        //벨루스의 체력이 나보다 낮을 경우 스킬 사용 조건 충족
+        bool hpDiff = myHpPercent - partnerHpPercent >  0;
+        
+        Debug.Log($"말루스가 체력 많으면 트루 {hpDiff}");
+        return hpDiff;
     }
 
 
@@ -46,7 +49,6 @@ public class MalusAI : NepenthesAI
         
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillCondition),
             new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -55,8 +57,18 @@ public class MalusAI : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsPreparedCooldownNode(CanSkillCondition),
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+        
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsHPThresholdCheckNode(50f, model),
+            new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
+            new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));
@@ -79,5 +91,16 @@ public class MalusAI : NepenthesAI
         }));
 
         return list;
+    }
+
+
+    /// <summary>
+    /// 스텟 변경하는 스킬이라 AI 클래스에서 호출
+    /// </summary>
+    public void Frenzy()
+    {
+        GetMonsterModel().AttackCooldown /= 2;
+        skillFirstCooldown = rootAttackCooldown / 2;
+        skillSecondCooldown = summonCooldown / 2;
     }
 }
