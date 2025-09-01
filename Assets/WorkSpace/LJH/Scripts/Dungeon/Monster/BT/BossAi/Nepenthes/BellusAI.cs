@@ -8,7 +8,7 @@ public class BellusAI : NepenthesAI
     
     [SerializeField] private float poisonCooldown = 10f;
     [SerializeField] private float healCooldown = 10f;
-    [SerializeField] private float cooldown = 10f;
+    [SerializeField] private float seedCooldown = 10f;
     
     protected override void Start()
     {
@@ -18,7 +18,7 @@ public class BellusAI : NepenthesAI
         
         skillFirstCooldown = poisonCooldown;
         skillSecondCooldown = healCooldown;
-        skillThirdCooldown = cooldown;
+        skillThirdCooldown = seedCooldown;
     }
 
     // 스킬 첫 번째 (힐) 사용 조건
@@ -27,7 +27,6 @@ public class BellusAI : NepenthesAI
     private bool CanSkillCondition()
     {
         if (partner == null) return false;
-        if (skillFirstTimer > 0f) return false;
 
         MonsterModel myModel = model;
         MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
@@ -36,7 +35,7 @@ public class BellusAI : NepenthesAI
         float myHpPercent = (float)myModel.GetMonsterHp() / (float)myModel.GetMonsterMaxHp() * 100f;
         float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
-
+        Debug.Log($"체력 차 퍼센트 {diff}");
         return diff >= healThresholdPercent;
     }
 
@@ -47,7 +46,7 @@ public class BellusAI : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(() => CanSkill(skillFirstCooldown)),
+            new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
@@ -55,9 +54,18 @@ public class BellusAI : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(() => CanSkill(skillSecondCooldown)),
             new IsPreparedCooldownNode(CanSkillCondition),
+            new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+            new ActionNode(EndAction)
+        }));
+        
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new IsHPThresholdCheckNode(50f, model),
+            new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
+            new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
             new ActionNode(EndAction)
         }));

@@ -183,7 +183,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 0
   duration: 0.5
-  startedDuration: 0
 --- !u!1 &3988134115547127889
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,9 +278,9 @@ GameObject:
   - component: {fileID: 1052256505251281823}
   - component: {fileID: 4014306058948159742}
   - component: {fileID: 4014306058948159737}
-  - component: {fileID: 4014306058948159743}
   - component: {fileID: 4163150367317462427}
   - component: {fileID: 4014306058948159736}
+  - component: {fileID: 5229651020047193289}
   - component: {fileID: -5421944829332588048}
   - component: {fileID: 5339214499333117911}
   m_Layer: 0
@@ -424,37 +423,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2567f9ec041cc4cbc1479e1aa12b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   monsterData: {fileID: 11400000, guid: 683b038b7c0ba77488029b5f12275cc1, type: 2}
-  animator: {fileID: 0}
-  method: {fileID: 0}
-  healThresholdPercent: 20
-  skillFirstCooldown: 8
-  rootCooldown: 5
+  player: {fileID: 0}
+  isAttacking: 0
   attackCooldown: 2
   partner: {fileID: 0}
---- !u!114 &4014306058948159743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4014306058948159716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1305f43683bfeab45b2052d39a35eb8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: 87515b72687753c4691562a7c225c405, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: c80119e281417b84abc8b0d711d702ad, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: e8506464c9baa314fa7758282e55ee6e, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: c748703aa07eb9b4eb7e5d471709ad8d, type: 3}
+  summonThresholdPercent: 20
+  rootAttackCooldown: 10
+  summonCooldown: 10
+  cooldown: 10
 --- !u!114 &4163150367317462427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,9 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ceb511e113c1949bc3a627dddc8598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  rangeCollider: {fileID: 0}
-  isMoving: 0
+  effect: {fileID: 0}
   warningRoot: {fileID: 2717071210123443755}
   root: {fileID: 7236512142892927987}
 --- !u!114 &4014306058948159736
@@ -493,6 +468,28 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+--- !u!114 &5229651020047193289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014306058948159716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05fa288833098864ca79085a77d13f9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: 87515b72687753c4691562a7c225c405, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: c80119e281417b84abc8b0d711d702ad, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: e8506464c9baa314fa7758282e55ee6e, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: c748703aa07eb9b4eb7e5d471709ad8d, type: 3}
 --- !u!61 &-5421944829332588048
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -661,5 +658,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 0.5
   duration: 0.7
-  startedDuration: 0
   animator: {fileID: 2926814292521033544}

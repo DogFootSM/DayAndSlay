@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinoAnimator : NewMonsterAnimator
+public class NepenthesAnimator : NewMonsterAnimator
 {
     protected override void DictionaryInit()
     {
@@ -21,9 +21,9 @@ public class MinoAnimator : NewMonsterAnimator
         hitAction.Add(Direction.Up, "MonsterHitUp");
         hitAction.Add(Direction.Down, "MonsterHitDown");
         
-        skillFirstAction.Add(Direction.Left, "MonsterSkillFirstLeft");
-        skillFirstAction.Add(Direction.Right, "MonsterSkillFirstRight");
-        skillFirstAction.Add(Direction.Up, "MonsterSkillFirstUp");
+        skillFirstAction.Add(Direction.Left, "MonsterSkillFirstDown");
+        skillFirstAction.Add(Direction.Right, "MonsterSkillFirstDown");
+        skillFirstAction.Add(Direction.Up, "MonsterSkillFirstDown");
         skillFirstAction.Add(Direction.Down, "MonsterSkillFirstDown");
         
         skillSecondAction.Add(Direction.Left, "MonsterSkillSecondDown");
