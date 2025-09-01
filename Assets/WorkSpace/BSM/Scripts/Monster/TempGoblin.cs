@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class TempGoblin : Monster
 {
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        player.TakeDamage(this, 3f);
-    }
-
     protected override void KnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);

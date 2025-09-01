@@ -16,6 +16,7 @@ public class SPAS002 : MeleeSkill
         MultiEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
         skillDamage = GetSkillDamage();
+        Debug.Log(skillDamage);
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
         
@@ -23,7 +24,7 @@ public class SPAS002 : MeleeSkill
         {
             multiActions.Add(new List<Action>());
             
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));

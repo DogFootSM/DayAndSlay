@@ -10,16 +10,19 @@ public class SPAS006 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-        throw new System.NotImplementedException();
+        ListClear();
+        MultiEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillName}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        //현재 스킬 레벨 당 +10% 추가
+        float multiplier = 0.5f + ((skillNode.CurSkillLevel - 1) * 0.1f);
+        ExecuteNextSkillDamageBuff(skillNode.skillData.BuffDuration, multiplier);
+        
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Gizmos()
     {
-        throw new System.NotImplementedException();
     }
 }

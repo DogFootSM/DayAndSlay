@@ -26,6 +26,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine BlinkToMarkCo;
     private Coroutine damageReductionCo;
     private Coroutine healthRegenCo;
+    private Coroutine nextSkillDamageMultiplierCo;
     
     private bool isPowerTradeBuffActive;
     private bool isDefenceTradeBuffActive;
@@ -464,7 +465,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         
         healthRegenCo = StartCoroutine(HealthRegenTickRoutine(duration, healthRegen));
     }
-
+    
     private IEnumerator HealthRegenTickRoutine(float duration, float healthRegen)
     {
         float elapsedTime = 0;
@@ -476,6 +477,43 @@ public class PlayerSkillReceiver : MonoBehaviour
             playerModel.CurHp += healthRegen;
             elapsedTime += 1f;
         }
+    }
+
+    /// <summary>
+    /// 다음 스킬 데미지 증가 버프 적용
+    /// </summary>
+    /// <param name="duration">버프 적용 시간</param>
+    /// <param name="multiplier">데미지 증가 수치, 레벨 당 + 0.1%</param>
+    public void ReceiveNextSkillDamageMultiplier(float duration, float multiplier)
+    {
+        if (nextSkillDamageMultiplierCo != null)
+        {
+            StopCoroutine(nextSkillDamageMultiplierCo);
+            nextSkillDamageMultiplierCo = null;
+        }
+        
+        nextSkillDamageMultiplierCo = StartCoroutine(NextSkillDamageRoutine(duration, multiplier));
+    }
+
+    /// <summary>
+    /// 다음 스킬 데미지 증가 버프 코루틴
+    /// </summary>
+    private IEnumerator NextSkillDamageRoutine(float duration, float multiplier)
+    {
+        playerModel.NextSkillDamageMultiplier = multiplier;
+        playerModel.NextSkillBuffActive = true;
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        //지속 시간 내 스킬 미사용 시 원상복구
+        playerModel.NextSkillDamageMultiplier = 0f;
+        playerModel.NextSkillBuffActive = false; 
     }
     
 }

@@ -196,7 +196,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <summary>
     /// 다음 사용 스킬 데미지 증가 배수
     /// </summary>
-    private float nextSkillDamageMultiplier = 1f;
+    private float nextSkillDamageMultiplier;
     public float NextSkillDamageMultiplier
     {
         get => nextSkillDamageMultiplier;

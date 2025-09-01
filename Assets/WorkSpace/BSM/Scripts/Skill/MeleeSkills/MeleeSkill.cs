@@ -64,7 +64,7 @@ public abstract class MeleeSkill : SkillFactory
         if (skillNode.PlayerModel.NextSkillBuffActive)
         {
             skillNode.PlayerModel.NextSkillBuffActive = false;
-            return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel * skillNode.PlayerModel.NextSkillDamageMultiplier;
+            return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel * (1f + skillNode.PlayerModel.NextSkillDamageMultiplier);
         } 
         
         return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel;
@@ -256,19 +256,17 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 다음 스킬 데미지 버프 적용
     /// </summary>
-    /// <param name="multiplier"></param>
-    protected void ExecuteNextSkillDamageBuff(float multiplier)
+    /// <param name="duration">데미지 버프 지속 시간</param>
+    /// <param name="multiplier">데미지 증가량</param>
+    protected void ExecuteNextSkillDamageBuff(float duration, float multiplier)
     {
-        skillNode.PlayerModel.NextSkillDamageMultiplier = multiplier;
-        skillNode.PlayerModel.NextSkillBuffActive = true;
+        skillNode.PlayerSkillReceiver.ReceiveNextSkillDamageMultiplier(duration, multiplier);
     }
 
     /// <summary>
     /// 캐릭터 대쉬 사용
     /// </summary>
     /// <param name="dir"></param>
-    /// <param name="playerPos"></param>
-    /// <param name="overlapSize"></param>
     protected void ExecuteDash(Vector2 dir)
     {
         skillNode.PlayerSkillReceiver.ReceiveDash(dir);
