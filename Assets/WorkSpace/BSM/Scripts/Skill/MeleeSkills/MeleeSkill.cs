@@ -10,7 +10,8 @@ public abstract class MeleeSkill : SkillFactory
 
     protected Vector2 currentDirection;
     protected ParticleSystem.MainModule mainModule;
-    
+
+    protected GameObject instance;
     protected List<List<Action>> multiActions = new List<List<Action>>();
     protected List<ParticleSystem.MainModule> mainModules = new List<ParticleSystem.MainModule>();
     protected List<ParticleSystem.TriggerModule> triggerModules = new List<ParticleSystem.TriggerModule>();
@@ -83,7 +84,7 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     protected void MultiEffect(Vector2 position, int index, string effectId, GameObject skillEffectPrefab)
     { 
-        GameObject instance = particlePooling.GetSkillPool(effectId, skillEffectPrefab);
+        instance = particlePooling.GetSkillPool(effectId, skillEffectPrefab);
         instance.transform.parent = null;
         instance.transform.position = position;
 
@@ -98,6 +99,19 @@ public abstract class MeleeSkill : SkillFactory
         particleSystem.Play();
     }
 
+    protected void SetParticleLocalScale(Vector3 widthScale, Vector3 heightScale)
+    {
+        if (Mathf.Abs(currentDirection.x) > Mathf.Abs(currentDirection.y))
+        {
+            instance.transform.localScale = widthScale;
+        }
+        else
+        {
+            instance.transform.localScale = heightScale;
+        }
+        
+    }
+    
     /// <summary>
     /// 파티클 오브젝트 Flip 설정
     /// </summary>
@@ -196,7 +210,7 @@ public abstract class MeleeSkill : SkillFactory
     /// 스킬 사용 시 이동 불가 상태 효과 호출
     /// </summary>
     /// <param name="duration">이동 불가할 지속 시간</param>
-    protected void ExecutMovementBlock(float duration)
+    protected void ExecuteMovementBlock(float duration)
     {
         skillNode.PlayerSkillReceiver.ReceiveMovementBlock(duration);
     }
@@ -209,11 +223,20 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveCounterWhileImmobile();
     }
 
+    /// <summary>
+    /// 이동속도 증가 버프 호출
+    /// </summary>
+    /// <param name="duration">버프 지속 시간</param>
+    /// <param name="ratio">이동 속도 증가 비율</param>
     protected void ExecuteMoveSpeedBuff(float duration, float ratio)
     {
         skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
     }
 
+    /// <summary>
+    /// 대상 위치 순간이동 기능 호출
+    /// </summary>
+    /// <param name="target">이동할 타겟 위치</param>
     protected void ExecuteBlinkToMarkedTarget(Collider2D target)
     {
         skillNode.PlayerSkillReceiver.ReceiveBlinkToMarkedTarget(target);
@@ -265,16 +288,47 @@ public abstract class MeleeSkill : SkillFactory
         } 
     }
     
+    /// <summary>
+    /// 공격력 증가 방어력 감소 효과 호출
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    /// <param name="defenseDecrease">방어력 감소값</param>
+    /// <param name="attackIncrease">공격력 증가값</param>
     protected void ExecuteAttackUpDefenseDown(float duration, float defenseDecrease, float attackIncrease)
     {
         skillNode.PlayerSkillReceiver.ReceiveAttackUpDefenseDown(duration, defenseDecrease, attackIncrease);
     }
 
+    /// <summary>
+    /// 방어력 감소, 이동속도 증가 효과 호출
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    /// <param name="speedDecrease">이동속도 감소값</param>
+    /// <param name="defenseIncrease">방어력 증가값</param>
     protected void ExecuteDefenseUpSpeedDown(float duration, float speedDecrease, float defenseIncrease)
     {
         skillNode.PlayerSkillReceiver.ReceiveDefenseUpSpeedDown(duration, speedDecrease, defenseIncrease);
     }
 
+    /// <summary>
+    /// 데미지 감소 적용 효과 호출
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="damageReduction"></param>
+    protected void ExecuteDamageReduction(float duration, float damageReduction)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveDamageReduction(duration, damageReduction);
+    }
+
+    /// <summary>
+    /// 초당 체력 회복 스킬 호출
+    /// </summary>
+    /// <param name="duration">체력 회복 지속 시간</param>
+    /// <param name="healthRegen">초당 회복할 체력 수치</param>
+    protected void ExecuteHealthRegenTick(float duration, float healthRegen)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveHealthRegenTick(duration, healthRegen);
+    }
     
     /// <summary>
     /// 몬스터에게 데미지 전달

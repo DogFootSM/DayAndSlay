@@ -14,27 +14,21 @@ public class SPAS001 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        
-        GameObject instance = particlePooling.GetSkillPool($"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
-        particlePooling.ReturnSkillParticlePool($"{skillNode.skillData.SkillId}_2_Particle", instance);
-
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        MultiEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle" , skillNode.skillData.SkillEffectPrefab[0]);
+        SetParticleStartRotationFromDeg(0, direction, 90f, 270f, 180f, 0);
+        if (direction.x > 0 || direction.y > 0)
         {
-            instance.transform.localScale = new Vector2(1.5f, 1f);
+            SetParticleRendererFlip(Vector3.right);
         }
         else
         {
-            instance.transform.localScale = new Vector2(1f, 1.5f);
+            SetParticleRendererFlip(Vector3.zero);
         }
-        
-        MultiEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle" , skillNode.skillData.SkillEffectPrefab[0]);
-        SetParticleStartRotationFromDeg(0, direction, 90f, 270f, 180f, 0);
-        if (direction.x > 0 || direction.y > 0) SetParticleRendererFlip(Vector3.right);
-        else SetParticleRendererFlip(Vector3.zero);
         ExecuteDash(direction);
         
         ListClear();
         MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
+        SetParticleLocalScale(new Vector2(1.5f, 1f), new Vector2(1f, 1.5f));
         SetParticleStartRotationFromDeg(0, direction, 0f, 180f, 90f, 270f);
         if (direction.x < 0 || direction.y < 0) SetParticleRendererFlip(Vector3.up);
         else SetParticleRendererFlip(Vector3.zero);

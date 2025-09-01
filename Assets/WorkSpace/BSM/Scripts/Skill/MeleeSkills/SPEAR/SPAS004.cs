@@ -13,34 +13,31 @@ public class SPAS004 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        GameObject instance = particlePooling.GetSkillPool($"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-        particlePooling.ReturnSkillParticlePool($"{skillNode.skillData.SkillId}_1_Particle", instance);
 
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        MultiEffect(playerPosition + (direction * 4f), 0, $"{skillNode.skillData.SkillId}_1_Particle",
+            skillNode.skillData.SkillEffectPrefab[0]);
+        SetParticleStartRotationFromDeg(0, direction, 90f, 270f, 180f, 0);
+        SetParticleLocalScale(new Vector3(3f, 1.5f), new Vector3(1.5f, 3f));
+        
+        if (direction.y > 0)
         {
-            instance.transform.localScale = new Vector3(1.5f, 1f);
+            particleSystemRenderer.sortingOrder = -1;
         }
         else
         {
-            instance.transform.localScale = new Vector3(1f, 1.5f);
+            particleSystemRenderer.sortingOrder = 50;
         }
-
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * skillNode.skillData.SkillRange),
+        
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction,
             overlapSize, 0, monsterLayer);
 
         skillDamage = GetSkillDamage();
 
         if (cols.Length > 0)
         {
-            Vector2 pos = cols[cols.Length / 2].transform.position;
-            
-            //TODO: 창 소환 위치 어떻게 할까 애매하네;
-            MultiEffect(playerPosition + (direction * 2f), 0, $"{skillNode.skillData.SkillId}_1_Particle",
-                skillNode.skillData.SkillEffectPrefab[0]);
-            
             multiActions.Add(new List<Action>());
-            
-            for (int i = 0; i < 1f; i++)
+
+            for (int i = 0; i < 1; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
@@ -53,23 +50,7 @@ public class SPAS004 : MeleeSkill
             
             multiActions[0].Add(() => RemoveTriggerModuleList(0));
             interactions[0].ReceiveAction(multiActions[0]); 
-        }
-        else
-        {
-            MultiEffect(playerPosition + (direction * 2f), 0, $"{skillNode.skillData.SkillId}_1_Particle",
-                skillNode.skillData.SkillEffectPrefab[0]);
-        }
-        
-        if (direction.y > 0)
-        {
-            particleSystemRenderer.sortingOrder = -1;
-        }
-        else
-        {
-            particleSystemRenderer.sortingOrder = 50;
-        }
-        
-        SetParticleStartRotationFromDeg(0, direction, 90f, 270f, 180f, 0);
+        } 
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)

@@ -71,7 +71,10 @@ public class Monster : MonoBehaviour, IEffectReceiver
     protected void Update()
     {
         if (isStunned) return;
-        
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            player.TakeDamage(this, 3);
+        }
         //transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
     }
 

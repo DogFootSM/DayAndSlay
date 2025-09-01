@@ -24,6 +24,8 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine attackUpDefenseDownCo;
     private Coroutine defenseUpSpeedDownCo;
     private Coroutine BlinkToMarkCo;
+    private Coroutine damageReductionCo;
+    private Coroutine healthRegenCo;
     
     private bool isPowerTradeBuffActive;
     private bool isDefenceTradeBuffActive;
@@ -412,6 +414,68 @@ public class PlayerSkillReceiver : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position, target.transform.position, 0.5f);
             yield return null; 
         } 
+    }
+    
+    /// <summary>
+    /// 데미지 감소 비율 리시버
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    /// <param name="damageReduction">데미지 받을 시 얼마의 비율로 데미지 피해를 받을지에 대한 수치</param>
+    public void ReceiveDamageReduction(float duration, float damageReduction)
+    {
+        if (damageReductionCo != null)
+        {
+            StopCoroutine(damageReductionCo);
+            damageReductionCo = null;
+        }
+        
+        damageReductionCo = StartCoroutine(DamageReductionRoutine(duration, damageReduction));
+    }
+
+    /// <summary>
+    /// 데미지 감소 비율 적용 코루틴
+    /// </summary>
+    private IEnumerator DamageReductionRoutine(float duration, float damageReduction)
+    {
+        float elapsedTime = 0;
+
+        playerModel.DamageReductionRatio = damageReduction;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        playerModel.DamageReductionRatio = 0;
+    }
+
+    /// <summary>
+    /// 초당 체력 회복 리시버
+    /// </summary>
+    /// <param name="duration">체력 회복 지속 시간</param>
+    /// <param name="healthRegen">초당 회복할 체력 수치</param>
+    public void ReceiveHealthRegenTick(float duration, float healthRegen)
+    {
+        if (healthRegenCo != null)
+        {
+            StopCoroutine(healthRegenCo);
+            healthRegenCo = null;
+        }
+        
+        healthRegenCo = StartCoroutine(HealthRegenTickRoutine(duration, healthRegen));
+    }
+
+    private IEnumerator HealthRegenTickRoutine(float duration, float healthRegen)
+    {
+        float elapsedTime = 0;
+        
+        while (elapsedTime < duration)
+        {
+            //1초당 체력 회복
+            yield return WaitCache.GetWait(1f);
+            playerModel.CurHp += healthRegen;
+            elapsedTime += 1f;
+        }
     }
     
 }

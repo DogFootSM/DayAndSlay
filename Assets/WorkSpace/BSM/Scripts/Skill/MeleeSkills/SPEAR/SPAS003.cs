@@ -13,27 +13,21 @@ public class SPAS003 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-
-        GameObject instance = particlePooling.GetSkillPool($"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-        particlePooling.ReturnSkillParticlePool($"{skillNode.skillData.SkillId}_1_Particle", instance);
-
         Vector2 offset = new Vector2();
         
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
-            instance.transform.localScale = new Vector3(1.5f, 1f);
             offset = new Vector2(0f, 0.25f);
         }
         else
         {
-            instance.transform.localScale = new Vector3(1f, 1.5f);
             offset = new Vector2(-0.25f, 0f);
         }
-        
-        
+         
         MultiEffect(playerPosition + offset + (direction * 1.55f), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
-
+        SetParticleLocalScale(new Vector3(1.5f, 1f), new Vector3(1f, 1.5f));
+        
         if (direction.x < 0 || direction.y < 0)
         {
             SetParticleRendererFlip(Vector3.up);

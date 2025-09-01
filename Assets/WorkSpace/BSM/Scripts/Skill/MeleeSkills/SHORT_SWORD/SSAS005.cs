@@ -12,25 +12,13 @@ public class SSAS005 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     { 
-        GameObject instance = particlePooling.GetSkillPool($"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
-        particlePooling.ReturnSkillParticlePool($"{skillNode.skillData.SkillId}_2_Particle", instance);
-        
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-        {
-            instance.transform.localScale = new Vector2(1.8f, 0.1f);
-        }
-        else
-        {
-            instance.transform.localScale = new Vector2(0.1f, 1.8f); 
-        }   
-        
         ListClear();
-        
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         skillDamage = GetSkillDamage();
          
         MultiEffect(playerPosition - (direction / 2), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-        SetParticleStartRotationFromDeg(0, direction,180f, 0f, 270f, 90f);
+        SetParticleStartRotationFromDeg(0, direction,180f, 0f, 270f, 90f); 
+        SetParticleLocalScale(new Vector3(1.8f, 0.1f), new Vector3(0.1f, 1.8f));
         
         ListClear();
         MultiEffect(playerPosition - (direction / 2), 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);

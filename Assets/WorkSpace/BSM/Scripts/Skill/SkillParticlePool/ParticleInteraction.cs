@@ -46,7 +46,7 @@ public class ParticleInteraction : MonoBehaviour
 
         while (Vector2.Distance(transform.position, targetPos) > 0.01f)
         {
-            transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * 2f);
+            transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
             yield return null;
         } 
     }
