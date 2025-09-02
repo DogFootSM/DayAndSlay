@@ -1306,6 +1306,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 706e2241fd4584747bd81b1dded3e33b, type: 3}
+--- !u!1 &2127504318 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7708691445656659367, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+  m_PrefabInstance: {fileID: 7439626505416857923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2127504322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127504318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d86dd380cde7605409926e90a2420477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillType: 1
+  delay: 0
+  duration: 5
+  tick: 0.5
+  damage: 100
 --- !u!1001 &2143371000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37686,9 +37708,33 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 1389777895}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: TriggerModule.inside
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: TriggerModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: CollisionModule.collisionMessages
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1857685260661089847, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2751346033396355821, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_Color.a
@@ -37789,6 +37835,10 @@ PrefabInstance:
     - target: {fileID: 7439626506249827491, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7439626506249827495, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: Hp
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7591823004586703876, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_SpriteLibraryAsset

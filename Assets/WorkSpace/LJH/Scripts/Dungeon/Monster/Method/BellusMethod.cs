@@ -19,8 +19,8 @@ public class BellusMethod : BossMonsterMethod
         bellus = GetComponent<BellusAI>();
         malus = ((BellusAI)bellus).GetPartner();
         
-        bellusHealEffect.transform.position = bellus.transform.position;
-        malusHealEffect.transform.position = malus.transform.position;
+        bellusHealEffect.transform.position = bellus.transform.position + new Vector3(0, 1, 0);
+        malusHealEffect.transform.position = malus.transform.position + new Vector3(0, 1, 0);
     }
     public override void Skill_First()
     {
@@ -35,9 +35,13 @@ public class BellusMethod : BossMonsterMethod
         Debug.Log("Èú ½ÇÇà");
         bellusHealEffect.Play();
         malusHealEffect.Play();
-        
-        bellus.GetMonsterModel().SetMonsterHp(10);
-        malus.GetMonsterModel().SetMonsterHp(10);
+
+        if (bellus.GetMonsterModel().Hp >= bellus.GetMonsterModel().MaxHp &&
+            bellus.GetMonsterModel().Hp >= bellus.GetMonsterModel().MaxHp)
+        {
+            //bellus.GetMonsterModel().SetMonsterHp(25);
+            //malus.GetMonsterModel().SetMonsterHp(25);
+        }
     }
 
     public override void Skill_Third()

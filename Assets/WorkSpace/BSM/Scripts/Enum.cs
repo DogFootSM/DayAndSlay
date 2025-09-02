@@ -401,3 +401,9 @@ public enum AnimType
     MOVE,
     
 }
+
+public enum DamageType
+{
+    INSTANTDAMAGE,
+    DOTDAMAGE,
+}
