@@ -6,6 +6,8 @@ public class Effect : MonoBehaviour
 {
     [Header("타입")]
     [SerializeField] private DamageType skillType;
+    [Header("지연 타입(즉발인지 아닌지)")]
+    [SerializeField] private DelayType delayType;
     [Header("스킬 시작 지연 시간")]
     [SerializeField] private float delay;
     [Header("지속 시간(이펙트 지속 시간)")]
@@ -17,13 +19,12 @@ public class Effect : MonoBehaviour
 
     [SerializeField] ParticleSystem warningEffect;
     
-    private Action<float, float, float> skillAction;
-    
     private Coroutine dotCoroutine;
 
     private void Start()
     {
-        SetType();
+        SetWarning();
+        
         if (skillType == DamageType.INSTANTDAMAGE)
         {
             tick = 999999999999999999999999f;
@@ -36,15 +37,14 @@ public class Effect : MonoBehaviour
             
             damage = damagePerTick;
         }
-
-        if (delay >= 1f)
-        {
-            WarningEffect();
-        }
     }
-
+    
+    /// <summary>
+    /// 범위 미리 표시해주는 경고용 파티클 위치 세팅 및 실행
+    /// </summary>
     private void WarningEffect()
     {
+        warningEffect.startLifetime = 0.5f;
         warningEffect.transform.position = transform.position;
         warningEffect.Play();
     }
@@ -93,25 +93,18 @@ public class Effect : MonoBehaviour
         }
         
     }
-    
-    //인스턴트 데미지의 경우 이펙트에 닿으면 바로 데미지 처리
-    //도트 데미지의 경우 이펙트에 닿은 동안 지속적으로 데미지 처리
-    //인스턴트 힐의 경우 즉시 체력 회복
-    //도트 힐의 경우 지속적으로 체력 회복
 
-    private void SetType()
+    private void SetWarning()
     {
-        switch (skillType)
+        switch (delayType)
         {
-            case DamageType.INSTANTDAMAGE:
-                //skillAction = InstantDamage;
+            case DelayType.DELAY:
+                WarningEffect();
                 break;
             
-            case DamageType.DOTDAMAGE:
-                //skillAction = DotDamage;
+            case DelayType.INSTANT:
                 break;
-                                                   
-        } 
+        }
     }
 
 

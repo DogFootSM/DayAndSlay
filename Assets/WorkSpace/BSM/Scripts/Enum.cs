@@ -407,3 +407,9 @@ public enum DamageType
     INSTANTDAMAGE,
     DOTDAMAGE,
 }
+
+public enum DelayType
+{
+    DELAY,
+    INSTANT,
+}

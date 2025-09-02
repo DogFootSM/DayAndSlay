@@ -656,11 +656,6 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8183825785971520954, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
   m_PrefabInstance: {fileID: 465377018}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &883399903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1857685260661089847, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
-  m_PrefabInstance: {fileID: 7439626505416857923}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1078137147
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,6 +791,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &1572103556 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+  m_PrefabInstance: {fileID: 7439626505416857923}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1680596865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,10 +1324,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 1
+  delayType: 0
   delay: 0
   duration: 5
   tick: 0.5
   damage: 100
+  warningEffect: {fileID: 1572103556}
 --- !u!1001 &2143371000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37708,6 +37710,18 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 1389777895}
+    - target: {fileID: 1455091197222054791, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1455091197222054791, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1744249456741619487, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: CollisionModule.type
       value: 1
@@ -37740,6 +37754,14 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3307619974884800113, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307619974884800113, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3759029333352082846, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_Color.a
       value: 0.38431373
@@ -37756,6 +37778,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4561710726049927343, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4561710726049927343, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4701633116112534104, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_labelHash
       value: 0.00000040954276
@@ -37764,14 +37794,58 @@ PrefabInstance:
       propertyPath: m_CategoryHash
       value: 0.005482587
       objectReference: {fileID: 0}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 196924959, guid: 63fe610333a030d4292090634179a9be, type: 3}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: UVModule.sprites.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 196924959, guid: 63fe610333a030d4292090634179a9be, type: 3}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: UVModule.sprites.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: 196924959, guid: 63fe610333a030d4292090634179a9be, type: 3}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: UVModule.sprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 196924959, guid: 63fe610333a030d4292090634179a9be, type: 3}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: UVModule.sprites.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: 196924959, guid: 63fe610333a030d4292090634179a9be, type: 3}
+    - target: {fileID: 5486643593904382111, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: UVModule.sprites.Array.data[6].sprite
+      value: 
+      objectReference: {fileID: 196924959, guid: 63fe610333a030d4292090634179a9be, type: 3}
     - target: {fileID: 5879552815645198183, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6604078924416732542, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604078924416732542, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832200408241021274, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832200408241021274, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: heal
       value: 
-      objectReference: {fileID: 883399903}
+      objectReference: {fileID: 0}
     - target: {fileID: 7439626506249827488, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: poison
       value: 
@@ -37844,10 +37918,25 @@ PrefabInstance:
       propertyPath: m_SpriteLibraryAsset
       value: 
       objectReference: {fileID: 7108339969198208228, guid: e9891870849e1ff4ebfaab6e33b34d5e, type: 3}
+    - target: {fileID: 8007253405674058569, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8007253405674058569, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8785059028050783136, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7439626506249827492, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+    - target: {fileID: 8964975287293006157, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964975287293006157, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}

@@ -2,9 +2,9 @@ using System;
 
 public class IsDieNode : BTNode
 {
-    private Func<int> getHp;
+    private Func<float> getHp;
 
-    public IsDieNode(Func<int> getHp)
+    public IsDieNode(Func<float> getHp)
     {
         this.getHp = getHp;
     }

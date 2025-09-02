@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BellusAI : NepenthesAI
+public class BellusAI : NepenthesAI, IEffectReceiver
 {
     [Header("Èú Á¶°Ç Á¶Á¤")]
     [SerializeField] private float healThresholdPercent = 20f;
@@ -90,4 +90,33 @@ public class BellusAI : NepenthesAI
         return list;
     }
 
+    public void TakeDamage(float damage)
+    {
+        model.SetMonsterHp(-damage);
+    }
+
+    public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ReceiveDot(float duration, float tick, float damage)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ReceiveStun(float duration)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ReceiveSlow(float duration, float ratio)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ReceiveDefenseDeBuff(float duration, float deBuffPercent)
+    {
+        throw new System.NotImplementedException();
+    }
 }
