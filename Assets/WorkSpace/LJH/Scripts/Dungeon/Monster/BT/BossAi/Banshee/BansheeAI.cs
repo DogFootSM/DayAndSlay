@@ -39,7 +39,6 @@ public class BansheeAI : BossMonsterAI
             new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
         
         // 두 번째 스킬 (teleport)
@@ -49,7 +48,6 @@ public class BansheeAI : BossMonsterAI
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
         
         // 세 번째 스킬 (Buff)
@@ -58,7 +56,6 @@ public class BansheeAI : BossMonsterAI
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
         
         // 네 번째 스킬 (ultimate)
@@ -69,7 +66,6 @@ public class BansheeAI : BossMonsterAI
             new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
             new ActionNode(PerformSkillFourth),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
 
         return list;
@@ -86,7 +82,6 @@ public class BansheeAI : BossMonsterAI
             new IsPreparedCooldownNode(CanAttack),
             new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
 
         return list;

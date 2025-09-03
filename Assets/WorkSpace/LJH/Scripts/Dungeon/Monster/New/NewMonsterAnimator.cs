@@ -61,7 +61,6 @@ public class NewMonsterAnimator : MonoBehaviour
             currentAnimationHash = SetAnimationHash(skillFirstAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                Debug.Log("false로 바꾸기 실행됐음");
                 isAction = false;
             }
         
@@ -69,7 +68,6 @@ public class NewMonsterAnimator : MonoBehaviour
             currentAnimationHash = SetAnimationHash(skillSecondAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                Debug.Log("false로 바꾸기 실행됐음");
                 isAction = false;
             }
             

@@ -52,7 +52,6 @@ public class MalusAI : NepenthesAI
             new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
 
         list.Add(new Sequence(new List<BTNode>
@@ -61,7 +60,6 @@ public class MalusAI : NepenthesAI
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
         
         list.Add(new Sequence(new List<BTNode>
@@ -70,7 +68,6 @@ public class MalusAI : NepenthesAI
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
 
         return list;
@@ -87,7 +84,6 @@ public class MalusAI : NepenthesAI
             new IsPreparedCooldownNode(CanAttack),
             new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
-            new ActionNode(EndAction)
         }));
 
         return list;

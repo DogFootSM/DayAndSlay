@@ -19,6 +19,8 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 
     public bool isAttacking = false;
 
+    private Rigidbody2D rigid;
+
     private Vector3 lastPlayerPos;
 
     protected virtual void Awake()
@@ -26,6 +28,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         model = GetComponent<MonsterModel>();
         method = GetComponent<NewMonsterMethod>();
         animator = GetComponent<NewMonsterAnimator>();
+        rigid = GetComponent<Rigidbody2D>();
         lastPlayerPos = transform.position;
     }
 
@@ -66,6 +69,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         return new Selector(new List<BTNode>
         {
             new Sequence(BuildDieSequence()),
+            new Sequence(BuildStunSequence()),
             new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
             new Sequence(BuildIdleSequence())
@@ -183,8 +187,68 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
-        //플레이어 기준으로 방향으로 1 정도 밀어내면 될듯
         animator.PlayHit();
+        
+        string dirString = GetDirectionByAngle(player.transform.position, transform.position).ToString();
+        Vector2 dir = Vector2.down;
+        
+        switch (dirString)
+        {
+            case "Left":
+                dir = Vector2.left;
+                break;
+            
+            case "Right":
+                dir = Vector2.right;
+                break;
+            
+            case "Up":
+                dir = Vector2.up;
+                break;
+            
+            case "Down":
+                dir = Vector2.down;
+                break;
+            
+            default:
+                dir = Vector2.down;
+                break;
+        }
+        
+        rigid.AddForce(-dir * 5f, ForceMode2D.Impulse);
+    }
+    
+    /// <summary>
+    /// 방향 구해주는 메서드
+    /// </summary>
+    /// <param name="playerPos"></param>
+    /// <param name="monsterPos"></param>
+    /// <returns></returns>
+    private Direction GetDirectionByAngle(Vector2 playerPos, Vector2 monsterPos)
+    {
+        // 몬스터 위치에서 플레이어 위치로 향하는 벡터
+        Vector2 dir = playerPos - monsterPos;
+
+        // 몬스터의 정면을 Vector2.right로 가정 (0도)
+        float angle = Vector2.SignedAngle(Vector2.right, dir);
+    
+        // 각도에 따라 4방위 판별
+        if (angle > -45f && angle <= 45f) 
+        {
+            return Direction.Right;
+        }
+        else if (angle > 45f && angle <= 135f) 
+        {
+            return Direction.Up;
+        }
+        else if (angle > 135f || angle <= -135f) // 180도 처리
+        {
+            return Direction.Left;
+        }
+        else // angle > -135f && angle <= -45f
+        {
+            return Direction.Down;
+        }
     }
 
     public void ReceiveDot(float duration, float tick, float damage)

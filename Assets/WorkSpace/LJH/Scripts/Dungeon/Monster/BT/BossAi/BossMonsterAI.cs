@@ -54,6 +54,7 @@ public abstract class BossMonsterAI : NewMonsterAI
         return new Selector(new List<BTNode>
         {
             new Sequence(BuildDieSequence()),
+            new Sequence(BuildStunSequence()),
             new Sequence(BuildSkillSequence()),
             new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
@@ -113,7 +114,6 @@ public abstract class BossMonsterAI : NewMonsterAI
         stateMachine.ChangeState(new NewMonsterSkillFirstState(transform, player.transform));
         isAttacking = true;
         method.Skill_First();
-        SkillCommonStart();
         StartCoroutine(AttackEndDelay());
         ResetSkillFirstCooldown();
     }
@@ -123,7 +123,6 @@ public abstract class BossMonsterAI : NewMonsterAI
         stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
         isAttacking = true;
         method.Skill_Second();
-        SkillCommonStart();
         StartCoroutine(AttackEndDelay());
         ResetSkillSecondCooldown();
     }
@@ -133,7 +132,6 @@ public abstract class BossMonsterAI : NewMonsterAI
         stateMachine.ChangeState(new NewMonsterSkillThirdState(transform, player.transform));
         isAttacking = true;
         method.Skill_Third();
-        SkillCommonStart();
         StartCoroutine(AttackEndDelay());
         ResetSkillThirdCooldown();
     }
@@ -143,7 +141,6 @@ public abstract class BossMonsterAI : NewMonsterAI
         stateMachine.ChangeState(new NewMonsterSkillFourthState(transform, player.transform));
         isAttacking = true;
         method.Skill_Fourth();
-        SkillCommonStart();
         StartCoroutine(AttackEndDelay());
         ResetSkillFourthCooldown();
     }
@@ -157,24 +154,6 @@ public abstract class BossMonsterAI : NewMonsterAI
         ResetAttackCooldown();
     }
 
-    protected void EndAction()
-    {
-        AttackCommonEnd();
-    }
 
-    // 이하 기존 코드 유지
-    protected virtual void AttackCommonStart()
-    {
-        
-    }
-
-    protected virtual void SkillCommonStart()
-    {
-        
-    }
-
-    protected virtual void AttackCommonEnd()
-    {
-        
-    }
+   
 }
