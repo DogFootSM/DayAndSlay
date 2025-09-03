@@ -107,7 +107,6 @@ public class SkillNode
     /// <param name="playerPosition"></param>
     public void SetMarkOnTarget(Vector2 direction, Vector2 playerPosition)
     {
-
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             overlapSize = new Vector2(skillData.SkillRange, 1f);

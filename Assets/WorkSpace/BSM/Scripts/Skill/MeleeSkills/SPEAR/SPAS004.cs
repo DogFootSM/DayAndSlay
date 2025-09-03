@@ -14,7 +14,7 @@ public class SPAS004 : MeleeSkill
         ListClear();
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
 
-        MultiEffect(playerPosition + (direction * 4f), 0, $"{skillNode.skillData.SkillId}_1_Particle",
+        SkillEffect(playerPosition + (direction * 4f), 0, $"{skillNode.skillData.SkillId}_1_Particle",
             skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 90f, 270f, 180f, 0);
         SetParticleLocalScale(new Vector3(3f, 1.5f), new Vector3(1.5f, 3f));
@@ -35,21 +35,21 @@ public class SPAS004 : MeleeSkill
 
         if (cols.Length > 0)
         {
-            multiActions.Add(new List<Action>());
+            skillActions.Add(new List<Action>());
 
             for (int i = 0; i < 1; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
                 
                 //TODO: DeBuffDuration 시간만큼 1초당 Truncate 값 만큼 지속 딜
-                multiActions[0].Add(() => ExecuteDot(receiver, skillNode.skillData.DeBuffDuration, 1f,
+                skillActions[0].Add(() => ExecuteDot(receiver, skillNode.skillData.DeBuffDuration, 1f,
                     MathF.Truncate(receiver.GetMaxHp() * (0.05f * skillNode.CurSkillLevel))));
                 triggerModules[0].AddCollider(cols[i]);
             }
             
-            multiActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(multiActions[0]); 
+            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(skillActions[0]); 
         } 
     }
 

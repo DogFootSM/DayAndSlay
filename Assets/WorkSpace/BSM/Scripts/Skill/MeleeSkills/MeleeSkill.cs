@@ -12,11 +12,12 @@ public abstract class MeleeSkill : SkillFactory
     protected ParticleSystem.MainModule mainModule;
 
     protected GameObject instance;
-    protected List<List<Action>> multiActions = new List<List<Action>>();
+    protected List<List<Action>> skillActions = new List<List<Action>>();
     protected List<ParticleSystem.MainModule> mainModules = new List<ParticleSystem.MainModule>();
     protected List<ParticleSystem.TriggerModule> triggerModules = new List<ParticleSystem.TriggerModule>();
     protected List<ParticleInteraction> interactions = new List<ParticleInteraction>();
     protected ParticleSystemRenderer particleSystemRenderer;
+    protected ParticleSystem particleSystem;
     
     protected float skillDamage;
     protected float leftDeg; 
@@ -30,7 +31,7 @@ public abstract class MeleeSkill : SkillFactory
 
     protected void ListClear()
     {
-        multiActions.Clear();
+        skillActions.Clear();
         mainModules.Clear();
         triggerModules.Clear();
         interactions.Clear();
@@ -82,18 +83,18 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 근접 공격 이펙트
     /// </summary>
-    protected void MultiEffect(Vector2 position, int index, string effectId, GameObject skillEffectPrefab)
+    protected void SkillEffect(Vector2 position, int index, string effectId, GameObject skillEffectPrefab)
     { 
         instance = particlePooling.GetSkillPool(effectId, skillEffectPrefab);
         instance.transform.parent = null;
         instance.transform.position = position;
-
-        ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+        
+        particleSystem = instance.GetComponent<ParticleSystem>();
         interactions.Add(instance.GetComponent<ParticleInteraction>());
         interactions[index].EffectId = effectId;
         particleSystemRenderer = instance.GetComponent<ParticleSystemRenderer>();
         
-        mainModules.Add(particleSystem.main); 
+        mainModules.Add(particleSystem.main);     
         triggerModules.Add(particleSystem.trigger);
         instance.SetActive(true);
         particleSystem.Play();
@@ -237,9 +238,9 @@ public abstract class MeleeSkill : SkillFactory
     /// 대상 위치 순간이동 기능 호출
     /// </summary>
     /// <param name="target">이동할 타겟 위치</param>
-    protected void ExecuteBlinkToMarkedTarget(Collider2D target)
+    protected void ExecuteBlinkToMarkedTarget(Collider2D target, Action action = null)
     {
-        skillNode.PlayerSkillReceiver.ReceiveBlinkToMarkedTarget(target);
+        skillNode.PlayerSkillReceiver.ReceiveBlinkToMarkedTarget(target, action);
     }
     
     /// <summary>
@@ -341,4 +342,28 @@ public abstract class MeleeSkill : SkillFactory
             monster.TakeDamage(damage);
         } 
     }
+
+    /// <summary>
+    /// 점프 동작 호출
+    /// </summary>
+    /// <param name="effectAction">점프 이후 땅에 착지했을 때 실행할 행동 리스트</param>
+    protected void ExecuteJumpAttackInPlace(List<Action> effectAction = null)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveJumpAttackInPlace(effectAction);   
+    }
+ 
+    /// <summary>
+    /// 스킬 이펙트 캐릭터 위치 추적 및 주변 몬스터 지속 감지
+    /// </summary>
+    /// <param name="tick">몇 초 간격으로 감지한 몬스터에게 행동을 취할지에 대한 시간</param>
+    /// <param name="action">감지한 몬스터에게 어떤 행동을 취할지</param>
+    /// <param name="effectId">캐릭터를 따라 다닐 이펙트 id</param>
+    /// <param name="duration">캐릭터를 따라 다닐 지속 시간</param>
+    /// <param name="skillEffectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <typeparam name="T1"></typeparam>
+    protected void ExecuteFindNearByMonsters<T1>(float tick, T1 action, string effectId, float duration, GameObject skillEffectPrefab = null)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(tick, action, effectId, duration, skillEffectPrefab);
+    }
+    
 }

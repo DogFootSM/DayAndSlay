@@ -14,7 +14,7 @@ public class SPAS001 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        MultiEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle" , skillNode.skillData.SkillEffectPrefab[0]);
+        SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle" , skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 90f, 270f, 180f, 0);
         if (direction.x > 0 || direction.y > 0)
         {
@@ -27,7 +27,7 @@ public class SPAS001 : MeleeSkill
         ExecuteDash(direction);
         
         ListClear();
-        MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
+        SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
         SetParticleLocalScale(new Vector2(1.5f, 1f), new Vector2(1f, 1.5f));
         SetParticleStartRotationFromDeg(0, direction, 0f, 180f, 90f, 270f);
         if (direction.x < 0 || direction.y < 0) SetParticleRendererFlip(Vector3.up);
@@ -38,19 +38,19 @@ public class SPAS001 : MeleeSkill
 
         if (cols.Length > 0)
         {
-            multiActions.Add(new List<Action>());
+            skillActions.Add(new List<Action>());
             for (int i = 0; i < 2; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 
-                multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                multiActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
+                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
                 
                 triggerModules[0].AddCollider(cols[i]);
             } 
             
-            multiActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(multiActions[0]); 
+            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(skillActions[0]); 
         } 
     }
 

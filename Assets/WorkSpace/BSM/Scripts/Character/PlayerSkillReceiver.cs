@@ -27,6 +27,10 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine damageReductionCo;
     private Coroutine healthRegenCo;
     private Coroutine nextSkillDamageMultiplierCo;
+    private Coroutine jumpAttackCo;
+    private Coroutine skillEffectFollowCharacterCo;
+    private Coroutine findNearByMonstersCo;
+    
     
     private bool isPowerTradeBuffActive;
     private bool isDefenceTradeBuffActive;
@@ -36,7 +40,7 @@ public class PlayerSkillReceiver : MonoBehaviour
 
     private int playerLayer;
     private int monsterLayer;
-
+    private bool isSearching;
     private bool isDashDone;
     public bool IsDashDone => isDashDone;
 
@@ -69,7 +73,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         {
             StopCoroutine(defenseUpSpeedDownCo);
             defenseUpSpeedDownCo = null;
- 
+
             //스피드, 방어력 원상 복구
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
             playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
@@ -118,7 +122,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
             playerModel.FinalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
         }
-        
+
         if (defenseUpSpeedDownCo != null)
         {
             StopCoroutine(defenseUpSpeedDownCo);
@@ -132,15 +136,15 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         float elapsedTime = 0f;
         isDefenceTradeBuffActive = true;
-        
+
         while (elapsedTime < duration)
         {
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed() * speedDecrease;
             playerModel.FinalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
             elapsedTime += Time.deltaTime;
             yield return null;
-        } 
-        
+        }
+
         isDefenceTradeBuffActive = false;
         playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
         playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
@@ -397,26 +401,28 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// 타겟 방향 순간이동 리시버
     /// </summary>
     /// <param name="target"></param>
-    public void ReceiveBlinkToMarkedTarget(Collider2D target)
+    public void ReceiveBlinkToMarkedTarget(Collider2D target, Action action = null)
     {
         if (BlinkToMarkCo != null)
         {
             StopCoroutine(BlinkToMarkCo);
             BlinkToMarkCo = null;
         }
-        
-        BlinkToMarkCo = StartCoroutine(BlinkToMarkedTargetRoutine(target));
+
+        BlinkToMarkCo = StartCoroutine(BlinkToMarkedTargetRoutine(target, action));
     }
 
-    private IEnumerator BlinkToMarkedTargetRoutine(Collider2D target)
+    private IEnumerator BlinkToMarkedTargetRoutine(Collider2D target, Action action = null)
     {
         while (Vector2.Distance(transform.position, target.transform.position) > 1f)
         {
             transform.position = Vector2.Lerp(transform.position, target.transform.position, 0.5f);
-            yield return null; 
+            yield return null;
         } 
+        
+        action?.Invoke();
     }
-    
+
     /// <summary>
     /// 데미지 감소 비율 리시버
     /// </summary>
@@ -429,7 +435,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(damageReductionCo);
             damageReductionCo = null;
         }
-        
+
         damageReductionCo = StartCoroutine(DamageReductionRoutine(duration, damageReduction));
     }
 
@@ -446,7 +452,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         playerModel.DamageReductionRatio = 0;
     }
 
@@ -462,15 +468,16 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(healthRegenCo);
             healthRegenCo = null;
         }
-        
+
         healthRegenCo = StartCoroutine(HealthRegenTickRoutine(duration, healthRegen));
     }
-    
+
     private IEnumerator HealthRegenTickRoutine(float duration, float healthRegen)
     {
         float elapsedTime = 0;
-        
-        while (elapsedTime < duration)
+
+        //지속 시간이 끝나기 전 or 현재 체력이 최대 체력보다 적을 경우 체력 회복
+        while (elapsedTime < duration || playerModel.CurHp < playerModel.MaxHp)
         {
             //1초당 체력 회복
             yield return WaitCache.GetWait(1f);
@@ -491,7 +498,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(nextSkillDamageMultiplierCo);
             nextSkillDamageMultiplierCo = null;
         }
-        
+
         nextSkillDamageMultiplierCo = StartCoroutine(NextSkillDamageRoutine(duration, multiplier));
     }
 
@@ -510,10 +517,165 @@ public class PlayerSkillReceiver : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         //지속 시간 내 스킬 미사용 시 원상복구
         playerModel.NextSkillDamageMultiplier = 0f;
-        playerModel.NextSkillBuffActive = false; 
+        playerModel.NextSkillBuffActive = false;
+    }
+
+    /// <summary>
+    /// 제자리 점프 실행
+    /// </summary>
+    public void ReceiveJumpAttackInPlace(List<Action> effectAction)
+    {
+        if (jumpAttackCo == null)
+        {
+            jumpAttackCo = StartCoroutine(JumpAttackInPlaceRoutine(effectAction));
+        }
+    }
+
+    /// <summary>
+    /// 제자리 점프 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator JumpAttackInPlaceRoutine(List<Action> effectAction)
+    {
+        float originPosY = transform.position.y;
+        float curHeight = transform.position.y;
+
+        float jumpVelocity = 5f;
+        float fallVelocity = 0;
+        float gravity = 9f;
+
+        //제자리 점프
+        while (jumpVelocity > 0)
+        {
+            curHeight += jumpVelocity * Time.deltaTime;
+            jumpVelocity -= gravity * Time.deltaTime;
+            transform.position = new Vector2(transform.position.x, curHeight);
+            yield return null;
+        }
+
+        //하강
+        while (curHeight > originPosY)
+        {
+            fallVelocity += gravity * Time.deltaTime * 5f;
+            curHeight -= fallVelocity * Time.deltaTime;
+            transform.position = new Vector2(transform.position.x, curHeight);
+            yield return null;
+        }
+
+        //하강 완료 후 원래 y 위치로 보정
+        transform.position = new Vector2(transform.position.x, originPosY);
+
+        //땅에 착지했을 때 스킬 이펙트 Action 실행
+        foreach (var effect in effectAction)
+        {
+            effect?.Invoke();
+        }
+
+        if (jumpAttackCo != null)
+        {
+            StopCoroutine(jumpAttackCo);
+            jumpAttackCo = null;
+        }
+    }
+
+    /// <summary>
+    /// 스킬 지속 시간만큼 스킬 이펙트가 캐릭터를 따라 이동
+    /// 주변 몬스터 감지 후 감지된 몬스터에게 행동을 취함
+    /// </summary>
+    /// <param name="tick">몇 초 간격으로 몬스터에게 행동을 취할지에 대한 시간</param>
+    /// <param name="skillAction">각 스킬 별 클래스를 넘겨 받아 각 스킬의 Action 메서드를 실행하여 감지한 몬스터들에게 행동을 수행</param>
+    /// <param name="effectId">캐릭터를 따라 다닐 스킬 이펙트 ID</param>
+    /// <param name="duration">캐릭터를 따라 다닐 스킬 이펙트 지속 시간</param>
+    /// <param name="skillEffectPrefab">캐릭터를 따라 다닐 스킬 이펙트, 따라 다닐 이펙트가 없다면 매개변수 미입력</param>
+    /// <typeparam name="T1"></typeparam>
+    public void ReceiveFindNearByMonsters<T1>(float tick, T1 skillAction, string effectId, float duration, GameObject skillEffectPrefab = null)
+    {
+        ParticleSystem particle = null;
+        
+        //캐릭터를 따라다닐 스킬 이펙트를 풀에서 꺼내오거나 새로 생성
+        if (skillEffectPrefab != null)
+        {
+            GameObject effectInstance = SkillParticlePooling.Instance.GetSkillPool(effectId, skillEffectPrefab);
+            effectInstance.SetActive(true);
+            effectInstance.transform.position = transform.position + Vector3.up;
+        
+            //캐릭터 자식으로 설정
+            effectInstance.transform.parent = transform;
+        
+            //풀에 반납하기 위한 이펙트 ID 설정
+            ParticleInteraction particleInteraction = effectInstance.GetComponent<ParticleInteraction>();
+            particleInteraction.EffectId = effectId;
+        
+            particle = effectInstance.GetComponent<ParticleSystem>();
+        }
+        
+        if (skillEffectFollowCharacterCo == null)
+        {
+            skillEffectFollowCharacterCo = StartCoroutine(FollowCharacterWithParticleRoutine(particle, duration));
+        }
+        
+        if (findNearByMonstersCo == null)
+        {
+            findNearByMonstersCo = StartCoroutine(FindNearByMonstersRoutine(tick, skillAction));
+        } 
+    }
+
+    private IEnumerator FindNearByMonstersRoutine<T1>(float tick, T1 skillAction)
+    {
+        Vector2 overlapSize = new Vector2(2f, 2f);
+        
+        //현재 주변을 감지하고 있는 상태
+        while (isSearching)
+        {
+            Collider2D[] cols = Physics2D.OverlapBoxAll(transform.position, overlapSize, 0, monsterMask);
+            
+            //사용 스킬이 SPAS009이면 아래 실행
+            if (skillAction is SPAS009 spas009)
+            {
+                spas009.Action(cols);
+            }
+
+            yield return WaitCache.GetWait(tick);
+        }
+        
+        //코루틴 종료 처리
+        if (findNearByMonstersCo != null)
+        {
+            StopCoroutine(findNearByMonstersCo);
+            findNearByMonstersCo = null;
+        } 
     }
     
+    private IEnumerator FollowCharacterWithParticleRoutine(ParticleSystem particle, float duration)
+    {
+        float elapsedTime = 0;
+        
+        //주변을 감지하고 있는 상태 On
+        isSearching = true;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        //주변을 감지하고 있는 상태 Off
+        isSearching = false;
+
+        if (particle != null)
+        {
+            particle.Stop();
+        }
+         
+        //코루틴 종료 처리
+        if (skillEffectFollowCharacterCo != null)
+        {
+            StopCoroutine(skillEffectFollowCharacterCo);
+            skillEffectFollowCharacterCo = null;
+        }
+    }
+ 
 }

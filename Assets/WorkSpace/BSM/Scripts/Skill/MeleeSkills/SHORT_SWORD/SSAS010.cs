@@ -15,7 +15,7 @@ public class SSAS010 : MeleeSkill
         ListClear();
         
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        MultiEffect(playerPosition + new Vector2(0f, 0.7f), 0,$"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SkillEffect(playerPosition + new Vector2(0f, 0.7f), 0,$"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         skillDamage = GetSkillDamage();
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
@@ -27,17 +27,17 @@ public class SSAS010 : MeleeSkill
             //TODO: 몬스터 감지 카운트만큼 반복
             for (int i = 0; i < cols.Length; i++)
             {
-                MultiEffect(cols[i].transform.position, i,$"{skillNode.skillData.SkillId}_2_Particle",skillNode.skillData.SkillEffectPrefab[1]);
+                SkillEffect(cols[i].transform.position, i,$"{skillNode.skillData.SkillId}_2_Particle",skillNode.skillData.SkillEffectPrefab[1]);
 
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                multiActions.Add(new List<Action>());
-                multiActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                multiActions[i].Add(() => RemoveTriggerModuleList(i));
+                skillActions.Add(new List<Action>());
+                skillActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[i].Add(() => RemoveTriggerModuleList(i));
 
                 if (triggerModules[i].enabled)
                 {
                     triggerModules[i].AddCollider(cols[i]);
-                    interactions[i].ReceiveAction(multiActions[i]);
+                    interactions[i].ReceiveAction(skillActions[i]);
                 }
             }   
         }

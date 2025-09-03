@@ -18,7 +18,7 @@ public class SSAS002 : MeleeSkill
         ListClear();
         
         SetOverlapSize(direction, skillNode.skillData.SkillRadiusRange);
-        MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
         ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, 0.3f);
         
@@ -28,21 +28,21 @@ public class SSAS002 : MeleeSkill
  
         if (detectedMonster.Length > 0)
         {
-            multiActions.Add(new List<Action>());
+            skillActions.Add(new List<Action>());
  
             for (int i = 0; i < 1; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
-                multiActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
 
                 if (triggerModules[0].enabled)
                 {
                     triggerModules[0].AddCollider(detectedMonster[i]);
-                    interactions[0].ReceiveAction(multiActions[0]);
+                    interactions[0].ReceiveAction(skillActions[0]);
                 }
             }
              
-            multiActions[0].Add(() => RemoveTriggerModuleList(0)); 
+            skillActions[0].Add(() => RemoveTriggerModuleList(0)); 
         } 
     }
 

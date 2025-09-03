@@ -118,6 +118,11 @@ public class PlayerModel : MonoBehaviour, ISavable
     private int slotId;
 
     private float maxHp;
+
+    public float MaxHp
+    {
+        get => maxHp;
+    }
     
     /// <summary>
     /// 현재 캐릭터 체력

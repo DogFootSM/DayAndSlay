@@ -21,7 +21,7 @@ public class SSAS003 : MeleeSkill
         ListClear();
 
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        MultiEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction,rightDeg, leftDeg, upDeg, downDeg);
         SetParticleRotationX(direction);
         skillDamage = GetSkillDamage();
@@ -31,18 +31,18 @@ public class SSAS003 : MeleeSkill
 
         if (detectedMonster.Length > 0)
         {
-            multiActions.Add(new List<Action>());
+            skillActions.Add(new List<Action>());
             
             for (int i = 0; i < 1; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
 
-                multiActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
                 triggerModules[0].AddCollider(detectedMonster[i]);
             }
             
-            multiActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(multiActions[0]);
+            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(skillActions[0]);
         } 
         
     }

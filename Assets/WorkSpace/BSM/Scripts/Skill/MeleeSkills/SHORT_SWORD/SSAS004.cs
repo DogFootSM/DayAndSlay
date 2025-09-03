@@ -25,13 +25,13 @@ public class SSAS004 : MeleeSkill
             for (int i = 0; i < 3; i++)
             {
                 IEffectReceiver monster = detected[i].GetComponent<IEffectReceiver>();
-                MultiEffect(detected[i].transform.position + Vector3.up, i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-                multiActions.Add(new List<Action>());
-                multiActions[i].Add(() => ExecuteSlow(monster, deBuffDuration, 0.5f));
-                multiActions[i].Add(() => Hit(monster, skillDamage, skillNode.skillData.SkillHitCount));
-                multiActions[i].Add(() => RemoveTriggerModuleList(i));
+                SkillEffect(detected[i].transform.position + Vector3.up, i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+                skillActions.Add(new List<Action>());
+                skillActions[i].Add(() => ExecuteSlow(monster, deBuffDuration, 0.5f));
+                skillActions[i].Add(() => Hit(monster, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[i].Add(() => RemoveTriggerModuleList(i));
                 triggerModules[i].AddCollider(detected[i]);
-                interactions[i].ReceiveAction(multiActions[i]); 
+                interactions[i].ReceiveAction(skillActions[i]); 
             } 
         } 
     }

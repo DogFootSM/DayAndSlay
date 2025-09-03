@@ -12,7 +12,7 @@ public class SSAS009 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
-        MultiEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
         skillDamage = GetSkillDamage();
         
@@ -20,19 +20,19 @@ public class SSAS009 : MeleeSkill
 
         if (cols.Length > 0)
         {
-            multiActions.Add(new List<Action>());
-            Debug.Log(multiActions.Count);
+            skillActions.Add(new List<Action>());
+            Debug.Log(skillActions.Count);
             for (int i = 0; i < 2; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                multiActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
+                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
                 triggerModules[0].AddCollider(cols[i]);
 
             }
             
-            multiActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(multiActions[0]);  
+            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(skillActions[0]);  
         } 
     }
 

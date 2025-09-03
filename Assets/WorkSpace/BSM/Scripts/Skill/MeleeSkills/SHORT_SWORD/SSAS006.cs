@@ -22,21 +22,21 @@ public class SSAS006 : MeleeSkill
 
         if (cols.Length > 0)
         {
-            multiActions.Add(new List<Action>());
+            skillActions.Add(new List<Action>());
             float deBuffDuration = GetDeBuffDurationIncreasePerLevel(1);
             
             for (int i = 0; i < 1; i++)
             {
-                MultiEffect(cols[i].transform.position - new Vector3(0, 0.5f), i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[i]);
+                SkillEffect(cols[i].transform.position - new Vector3(0, 0.5f), i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[i]);
                 
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                multiActions[i].Add(() => ExecuteDefenseDeBuff(receiver, deBuffDuration, deBuffRatio));
-                multiActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[i].Add(() => ExecuteDefenseDeBuff(receiver, deBuffDuration, deBuffRatio));
+                skillActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
                 triggerModules[i].AddCollider(cols[0]);
             }
 
-            multiActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(multiActions[0]);
+            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(skillActions[0]);
         }
         else
         {
@@ -55,7 +55,7 @@ public class SSAS006 : MeleeSkill
                 offsetHeight = playerPosition;
             }
             
-            MultiEffect((offsetHeight + (direction * offsetWidth)), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+            SkillEffect((offsetHeight + (direction * offsetWidth)), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         }
         
     }

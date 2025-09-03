@@ -24,7 +24,7 @@ public class SPAS003 : MeleeSkill
             offset = new Vector2(-0.25f, 0f);
         }
          
-        MultiEffect(playerPosition + offset + (direction * 1.55f), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SkillEffect(playerPosition + offset + (direction * 1.55f), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
         SetParticleLocalScale(new Vector3(1.5f, 1f), new Vector3(1f, 1.5f));
         
@@ -45,18 +45,18 @@ public class SPAS003 : MeleeSkill
 
         if (cols.Length > 0)
         {
-            multiActions.Add(new List<Action>());
+            skillActions.Add(new List<Action>());
 
             for (int i = 0; i < 1; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                multiActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
                 
                 triggerModules[0].AddCollider(cols[i]);
             }
             
-            multiActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(multiActions[0]);
+            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            interactions[0].ReceiveAction(skillActions[0]);
         }
         
     }

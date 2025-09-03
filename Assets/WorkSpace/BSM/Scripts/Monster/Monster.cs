@@ -37,10 +37,14 @@ public class Monster : MonoBehaviour, IEffectReceiver
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(TestTrace());
-
+        
+        //마킹 오브젝트 설정
         markParticle = Resources.Load<GameObject>("SkillEffect/Monster/Mark/Monster_Mark_Particle");
         
+        //몬스터 마킹 파티클 몬스터 자식 오브젝트로 생성
         markObject = Instantiate(markParticle, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity, transform);
+        
+        //마킹 오브젝트 비활성화
         markObject.SetActive(false);
     }
 
@@ -75,6 +79,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         {
             player.TakeDamage(this, 3);
         }
+        
         //transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
     }
 
@@ -93,7 +98,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         
         //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
-        Debug.Log($"{gameObject.name} 남은 hp :{hp}");
+        //Debug.Log($"{gameObject.name} 남은 hp :{hp}");
     }
 
     public float GetMaxHp()
@@ -157,9 +162,11 @@ public class Monster : MonoBehaviour, IEffectReceiver
         DefenseDeBuff(duration);
     }
 
+    /// <summary>
+    /// 타겟 몬스터 마킹 표식 On,Off 설정
+    /// </summary>
     public void ReceiveMarkOnTarget()
     {
-        //TODO: 추후 표식 파티클로 변경 고려
         markObject.SetActive(!markObject.activeSelf);
     }
     
