@@ -110,7 +110,6 @@ public abstract class BossMonsterAI : NewMonsterAI
 
     protected void PerformSkillFirst()
     {
-        Debug.Log("스킬 1번 사용");
         stateMachine.ChangeState(new NewMonsterSkillFirstState(transform, player.transform));
         isAttacking = true;
         method.Skill_First();
@@ -121,7 +120,6 @@ public abstract class BossMonsterAI : NewMonsterAI
     
     protected void PerformSkillSecond()
     {
-        Debug.Log($"{gameObject.name}스킬 2번 사용");
         stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
         isAttacking = true;
         method.Skill_Second();
@@ -132,7 +130,6 @@ public abstract class BossMonsterAI : NewMonsterAI
     
     protected void PerformSkillThird()
     {
-        Debug.Log("스킬 3번 사용");
         stateMachine.ChangeState(new NewMonsterSkillThirdState(transform, player.transform));
         isAttacking = true;
         method.Skill_Third();

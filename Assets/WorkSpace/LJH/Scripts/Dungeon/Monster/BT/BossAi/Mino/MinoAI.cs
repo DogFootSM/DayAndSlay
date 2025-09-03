@@ -29,9 +29,10 @@ public class MinoAI : BossMonsterAI
     {
         List<BTNode> list = new List<BTNode>();
 
-        // 첫 번째 스킬 (Butt)
+       // 첫 번째 스킬 (Butt)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsSkillRangeNode(transform, player.transform, model.AttackRange +3, 0),
             new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -41,6 +42,7 @@ public class MinoAI : BossMonsterAI
         // 두 번째 스킬 (stomp)
         list.Add(new Sequence(new List<BTNode>
         {
+            new IsSkillRangeNode(transform, player.transform, model.AttackRange +3, 0),
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
