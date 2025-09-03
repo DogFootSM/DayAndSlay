@@ -6,6 +6,8 @@ public class MinoMethod : BossMonsterMethod
 {
     private BossMonsterAI mino;
 
+    [SerializeField] private ParticleSystem stompEffect;
+    
     [SerializeField] private Labyrinth labyrinth;
     [SerializeField] private ParticleSystem labyrinthEffect;
 
@@ -19,6 +21,7 @@ public class MinoMethod : BossMonsterMethod
     public override void Skill_Second()
     {
         //Todo : 범위 내 적에게 피해
+        stompEffect.Play();
     }
 
     public override void Skill_Third()

@@ -55,11 +55,7 @@ public class Effect : MonoBehaviour
         Debug.Log($"{gameObject.name} {damage}damage");
         
         // 예시: IEffectReceiver 인터페이스를 가진 컴포넌트 찾기
-        if (other.TryGetComponent<IEffectReceiver>(out IEffectReceiver receiver))
-        {
-            // 원하는 로직 실행
-            receiver.TakeDamage(damage);
-        }
+        dotCoroutine = StartCoroutine(DotCoroutine(other));
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -81,12 +77,15 @@ public class Effect : MonoBehaviour
         }
     }
 
-    private IEnumerator DotCoroutine(Collider2D other)
+    private IEnumerator DotCoroutine(GameObject other)
     {
         while (true)
         {
-            //IEffectReceiver receiver = other.GetComponent<IEffectReceiver>();
-            //other.GetComponent<PlayerController>().TakeDamage(receiver, damage);
+            if (other.TryGetComponent<IEffectReceiver>(out IEffectReceiver receiver))
+            {
+                // 원하는 로직 실행
+                receiver.TakeDamage(damage);
+            }
 
             Debug.Log($"{damage} 만큼 피해 입음");
             yield return new WaitForSeconds(tick);

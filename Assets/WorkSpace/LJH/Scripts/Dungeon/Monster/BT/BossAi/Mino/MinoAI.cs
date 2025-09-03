@@ -87,4 +87,5 @@ public class MinoAI : BossMonsterAI
 
         return list;
     }
+
 }

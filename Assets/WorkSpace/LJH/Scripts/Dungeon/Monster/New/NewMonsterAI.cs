@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewMonsterAI : MonoBehaviour
+public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 {
     [SerializeField] protected MonsterData monsterData;
     [SerializeField] protected PlayerController player;
@@ -13,6 +13,9 @@ public class NewMonsterAI : MonoBehaviour
     protected NewMonsterAnimator animator;
 
     protected NewMonsterStateMachine stateMachine;
+
+    protected bool isStun;
+    protected bool GetIsStun() => isStun;
 
     public bool isAttacking = false;
 
@@ -96,6 +99,15 @@ public class NewMonsterAI : MonoBehaviour
         };
     }
 
+    protected virtual List<BTNode> BuildStunSequence()
+    {
+        return new List<BTNode>
+        {
+            new IsStunNode(GetIsStun()),
+            new ActionNode(Idle)
+        };
+    }
+
     protected virtual List<BTNode> BuildIdleSequence()
     {
         return new List<BTNode>
@@ -164,4 +176,86 @@ public class NewMonsterAI : MonoBehaviour
     public NewMonsterAnimator GetMonsterAnimator() => animator;
     
     public float GetChaseRange() => monsterData.ChaseRange;
+    public void TakeDamage(float damage)
+    {
+        model.SetMonsterHp(-damage);
+    }
+
+    public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
+    {
+        //플레이어 기준으로 방향으로 1 정도 밀어내면 될듯
+        animator.PlayHit();
+    }
+
+    public void ReceiveDot(float duration, float tick, float damage)
+    {
+        StartCoroutine(DotCoroutine(duration, tick, damage));
+    }
+
+    private IEnumerator DotCoroutine(float duration, float tick, float damage)
+    {
+        // 코루틴 시작 시 첫 피해를 바로 적용
+        model.SetMonsterHp(-damage);
+
+        float elapsed = 0f; // 경과 시간
+
+        // duration이 다 될 때까지 반복
+        while (elapsed < duration)
+        {
+            // tick만큼 기다리기
+            yield return new WaitForSeconds(tick);
+
+            // 피해 적용
+            model.SetMonsterHp(-damage);
+
+            // 경과 시간 누적
+            elapsed += tick;
+        }
+    }
+
+    public void ReceiveStun(float duration)
+    {
+        animator.PlayHit();
+        StartCoroutine(StunCoroutine(duration));
+    }
+
+    private IEnumerator StunCoroutine(float duration)
+    {
+        isStun = true;
+        
+        yield return new WaitForSeconds(duration);
+        
+        isStun = false;
+    }
+
+    public void ReceiveSlow(float duration, float ratio)
+    {
+        StartCoroutine(SlowCoroutine(duration, ratio));
+    }
+
+    private IEnumerator SlowCoroutine(float duration, float ratio)
+    {
+        float preSpeed = model.MoveSpeed;
+
+        model.MoveSpeed /= ratio;
+        
+        yield return new WaitForSeconds(duration);
+        model.MoveSpeed = preSpeed;
+    }
+
+    public void ReceiveDefenseDeBuff(float duration, float deBuffPercent)
+    {
+        StartCoroutine(debuffDefCoroutine(duration, deBuffPercent));
+    }
+
+    private IEnumerator debuffDefCoroutine(float duration, float deBuffPercent)
+    {
+        float preDef = model.def;
+
+        model.def /= deBuffPercent;
+        
+        yield return new WaitForSeconds(duration);
+        
+        model.def = preDef;
+    }
 }

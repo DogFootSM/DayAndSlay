@@ -8,7 +8,8 @@ public class MonsterModel : MonoBehaviour
     public string Name;
     public float MaxHp;
     public float Hp;
-    public int Attack;
+    public float def;
+    public float Attack;
     public float AttackRange;
     public float ChaseRange;
     public float MoveSpeed;
