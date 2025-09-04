@@ -2,39 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SSPS001 : PassiveSkill
+public class SPPS002 : PassiveSkill
 {
+    private float moveSpeedValueModifier = 0.08f;
     private float attackSpeedValueModifier = 0.08f;
     private float attackSpeedLevelModifier = 0.02f;
     
-    public SSPS001(SkillNode skillNode) : base(skillNode)
+    public SPPS002(SkillNode skillNode) : base(skillNode)
     {
-
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
-    { 
-
+    {
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        //DB Load ì‹œ í˜„ì¬ ì°©ìš©ì¤‘ì¸ ë¬´ê¸°ê°€ íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ì˜ ë¬´ê¸°ì™€ ê°™ì„ ë•Œì—ë§Œ íŒ¨ì‹œë¸Œ ëŠ¥ë ¥ ì ìš©
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
-        PassiveEffect();
-        
-        //í˜„ì¬ ê¸°ë³¸ ì´ë™ ì†ë„ ê¸°ì¤€ Factor ë§Œí¼ ì¦ê°€í•œ ê°’
-        float moveFactor = skillNode.PlayerModel.PlayerStats.baseMoveSpeed * 0.1f;
+
+        //ÇöÀç ±âº» ÀÌµ¿ ¼Óµµ ±âÁØ Factor ¸¸Å­ Áõ°¡ÇÑ °ª
+        float moveFactor = skillNode.PlayerModel.PlayerStats.baseMoveSpeed * moveSpeedValueModifier;
         skillNode.PlayerModel.UpdateMoveSpeedFactor(moveFactor);
         
-        //í˜„ì¬ ìŠ¤í‚¬ ë ˆë²¨ ë‹¹ ì¶”ê°€ ìˆ˜ì¹˜
+        //ÇöÀç ½ºÅ³ ·¹º§ ´ç Ãß°¡ ¼öÄ¡
         float perLevel = (skillNode.CurSkillLevel - 1) * attackSpeedLevelModifier;
         
-        //í˜„ì¬ ê¸°ë³¸ ê³µê²© ì†ë„ ê¸°ì¤€ Factor + ë ˆë²¨ ë‹¹ ì¶”ê°€ ìˆ˜ì¹˜ë§Œí¼ ì¦ê°€í•œ ê°’
+        //ÇöÀç ±âº» °ø°İ ¼Óµµ ±âÁØ Factor + ·¹º§ ´ç Ãß°¡ ¼öÄ¡¸¸Å­ Áõ°¡ÇÑ °ª
         float attackFactor = (skillNode.PlayerModel.PlayerStats.baseAttackSpeed * attackSpeedValueModifier) + perLevel;
+
         skillNode.PlayerModel.UpdateAttackSpeedFactor(attackFactor);
         
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
+    }
+
+    public override void Gizmos()
+    {
     }
 
     public override void RevertPassiveEffects()
@@ -42,9 +44,5 @@ public class SSPS001 : PassiveSkill
         skillNode.PlayerModel.UpdateMoveSpeedFactor(0);
         skillNode.PlayerModel.UpdateAttackSpeedFactor(0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
-    }
-    
-    public override void Gizmos()
-    {
     }
 }

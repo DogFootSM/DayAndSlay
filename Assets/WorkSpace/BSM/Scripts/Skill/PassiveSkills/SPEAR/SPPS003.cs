@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SSPS004 : PassiveSkill
+public class SPPS003 : PassiveSkill
 {
-    private float baseResistance = 0.12f;
-    private float resistanceLevel = 0.06f;
+    private float defenseFactor = 0.15f;
+    private float defenseLevelModifier = 0.02f;
     
-    public SSPS004(SkillNode skillNode) : base(skillNode)
+    public SPPS003(SkillNode skillNode) : base(skillNode)
     {
     }
 
@@ -17,9 +17,10 @@ public class SSPS004 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        float resistancePer = baseResistance + ((skillNode.CurSkillLevel -1) * resistanceLevel);
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+        float defenseLevelPer = defenseFactor + ((skillNode.CurSkillLevel - 1) * defenseLevelModifier);
         
-        skillNode.PlayerModel.UpdateResistanceFactor(resistancePer);
+        skillNode.PlayerModel.UpdateDefenseFactor(defenseLevelPer);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
@@ -29,7 +30,7 @@ public class SSPS004 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        skillNode.PlayerModel.UpdateResistanceFactor(0);
+        skillNode.PlayerModel.UpdateDefenseFactor(0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }
