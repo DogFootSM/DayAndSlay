@@ -20,7 +20,7 @@ public class SPAS010 : MeleeSkill
         
         LightManager.Instance.LightningFlash();
         GetMonstersCenter(playerPosition);
-        
+        //TODO: Hit Action 추가 필요
         pos = playerPosition; 
     }
 
