@@ -366,4 +366,8 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(tick, action, effectId, duration, skillEffectPrefab);
     }
     
+    public void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount);
+    } 
 }

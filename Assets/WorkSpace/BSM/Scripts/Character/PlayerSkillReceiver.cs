@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerSkillReceiver : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine jumpAttackCo;
     private Coroutine skillEffectFollowCharacterCo;
     private Coroutine findNearByMonstersCo;
-    
+    private Coroutine spawnParticleAtRandomPosition;
     
     private bool isPowerTradeBuffActive;
     private bool isDefenceTradeBuffActive;
@@ -600,7 +601,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         {
             GameObject effectInstance = SkillParticlePooling.Instance.GetSkillPool(effectId, skillEffectPrefab);
             effectInstance.SetActive(true);
-            effectInstance.transform.position = transform.position + Vector3.up;
+            effectInstance.transform.position = transform.position + new Vector3(0, 0.2f);
         
             //캐릭터 자식으로 설정
             effectInstance.transform.parent = transform;
@@ -677,5 +678,51 @@ public class PlayerSkillReceiver : MonoBehaviour
             skillEffectFollowCharacterCo = null;
         }
     }
- 
+
+    public void ReceiveSpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration,
+        GameObject particlePrefab, string effectId, int prefabCount, Action lightingAction = null)
+    {
+        if (spawnParticleAtRandomPosition == null)
+        {
+            spawnParticleAtRandomPosition = StartCoroutine(SpawnParticleAtRandomPositionRoutine(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount));
+        }
+    }
+
+    private IEnumerator SpawnParticleAtRandomPositionRoutine(Vector2 spawnPos, float radiusRange, float duration,
+        GameObject particlePrefab, string effectId, int prefabCount)
+    {
+        float elapsedTime = 0;
+
+        yield return WaitCache.GetWait(1f);
+        
+        for (int i = 0; i < prefabCount; i++)
+        {
+            GameObject instance = SkillParticlePooling.Instance.GetSkillPool(effectId, particlePrefab);
+            instance.SetActive(true);
+            
+            //이펙트가 생성될 랜덤 위치
+            float rx = Random.Range(-radiusRange, radiusRange);
+            float ry = Random.Range(-radiusRange, radiusRange);
+            instance.transform.position = spawnPos + new Vector2(rx /2 , ry / 2);
+            
+            //풀에 반환될 이펙트 id 설정
+            ParticleInteraction interaction = instance.GetComponent<ParticleInteraction>();
+            interaction.EffectId = effectId;
+            
+            //파티클 딜레이 랜덤 설정
+            ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
+            ParticleSystem.MainModule mainModule = particleSystem.main;
+            mainModule.startDelay = Random.Range(0, 5) * 0.2f;
+                
+            particleSystem.Play();
+        }
+
+        if (spawnParticleAtRandomPosition != null)
+        {
+            StopCoroutine(spawnParticleAtRandomPosition);
+            spawnParticleAtRandomPosition = null;
+        }
+        
+    }
+    
 }

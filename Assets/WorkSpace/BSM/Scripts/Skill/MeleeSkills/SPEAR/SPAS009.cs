@@ -14,7 +14,7 @@ public class SPAS009 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
-        ExecuteFindNearByMonsters(1f, this, $"{skillNode.skillData.SkillId}", skillNode.skillData.BuffDuration);
+        ExecuteFindNearByMonsters(1f, this, $"{skillNode.skillData.SkillId}", skillNode.skillData.BuffDuration, skillNode.skillData.SkillEffectPrefab[0]);
     }
     
     /// <summary>
