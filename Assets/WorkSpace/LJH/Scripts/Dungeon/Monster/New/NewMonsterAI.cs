@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 {
+    [SerializeField] private GameObject markObject;
     [SerializeField] protected MonsterData monsterData;
     [SerializeField] protected PlayerController player;
-
+    
     protected BehaviourTree tree;
     protected MonsterModel model;
     protected NewMonsterMethod method;
@@ -22,7 +23,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     private Rigidbody2D rigid;
 
     private Vector3 lastPlayerPos;
-
+ 
     protected virtual void Awake()
     {
         model = GetComponent<MonsterModel>();
@@ -30,6 +31,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         animator = GetComponent<NewMonsterAnimator>();
         rigid = GetComponent<Rigidbody2D>();
         lastPlayerPos = transform.position;
+        markObject.SetActive(false);
     }
 
     protected virtual void Start()
@@ -185,6 +187,16 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         model.SetMonsterHp(-damage);
     }
 
+    public float GetMaxHp()
+    {
+        return model.GetMonsterMaxHp();
+    }
+
+    public void ReceiveMarkOnTarget()
+    {
+        markObject.SetActive(!markObject.activeSelf);
+    }
+    
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         animator.PlayHit();
@@ -312,7 +324,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     {
         StartCoroutine(debuffDefCoroutine(duration, deBuffPercent));
     }
-
+ 
     private IEnumerator debuffDefCoroutine(float duration, float deBuffPercent)
     {
         float preDef = model.def;
