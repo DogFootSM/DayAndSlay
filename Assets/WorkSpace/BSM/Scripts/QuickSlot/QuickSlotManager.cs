@@ -120,8 +120,25 @@ public class QuickSlotManager : MonoBehaviour
         quickSlotSwap.QuickSlotSkillNodeSwap(beginSlot, endSlot, curWeaponType);
         quickSlotRegister.UpdateSlotUI(beginSlot, endSlot, curWeaponType); 
         SkillCoolDownUIChange(beginSlot, endSlot);
+        SkillWaitUseUIChange(beginSlot, endSlot);
     }
 
+    private void SkillWaitUseUIChange(QuickSlotType beginSlot, QuickSlotType endSlot)
+    {
+        GameObject updateBeginParent = QuickSlotWaitUseUI.QuickSlotWaitUses[endSlot].transform.parent.gameObject;
+        GameObject updateEndParent = QuickSlotWaitUseUI.QuickSlotWaitUses[beginSlot].transform.parent.gameObject;
+        
+        QuickSlotWaitUseUI.QuickSlotWaitUses[beginSlot].transform.SetParent(updateBeginParent.transform);
+        QuickSlotWaitUseUI.QuickSlotWaitUses[endSlot].transform.SetParent(updateEndParent.transform);
+
+        QuickSlotWaitUse temp = QuickSlotWaitUseUI.QuickSlotWaitUses[beginSlot];
+        QuickSlotWaitUseUI.QuickSlotWaitUses[beginSlot] = QuickSlotWaitUseUI.QuickSlotWaitUses[endSlot];
+        QuickSlotWaitUseUI.QuickSlotWaitUses[endSlot] = temp;
+        
+        QuickSlotWaitUseUI.QuickSlotWaitUses[beginSlot].UpdateRectTransform();
+        QuickSlotWaitUseUI.QuickSlotWaitUses[endSlot].UpdateRectTransform();
+    }
+    
     private void SkillCoolDownUIChange(QuickSlotType beginSlot, QuickSlotType endSlot)
     {
         GameObject updateBeginParent = CoolDownUIHub.CoolDownImageMap[endSlot].transform.parent.gameObject;

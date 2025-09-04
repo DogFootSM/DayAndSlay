@@ -25,6 +25,18 @@ public class CharacterAnimatorController : MonoBehaviour
     /// </summary>
     public void WeaponAnimatorChange(int curWeaponIndex)
     {
+        //TODO: 무기 장착해제 했을 때 처리
+        if (curWeaponIndex == 4)
+        {   
+            WeaponAnimator.gameObject.SetActive(false);
+            return;
+        }
+
+        if (!WeaponAnimator.gameObject.activeSelf)
+        {
+            WeaponAnimator.gameObject.SetActive(true);
+        }
+        
         WeaponAnimator.runtimeAnimatorController = WeaponAnimators[curWeaponIndex].runtimeAnimatorController;
         WeaponLibrary.spriteLibraryAsset = EquipmentLibraryAsset[curWeaponIndex];
     }

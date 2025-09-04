@@ -4,7 +4,17 @@ using UnityEngine;
 
 public interface IEffectReceiver
 {
+    /// <summary>
+    /// 몬스터에게 데미지
+    /// </summary>
+    /// <param name="damage"></param>
     public void TakeDamage(float damage);
+    
+    /// <summary>
+    /// 몬스터의 최대 체력 반환
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxHp();
     
     /// <summary>
     /// 넉백 리시버
@@ -50,4 +60,8 @@ public interface IEffectReceiver
     /// <param name="deBuffPercent">방어력 감소할 비율</param>
     public void ReceiveDefenseDeBuff(float duration, float deBuffPercent);
     
+    /// <summary>
+    /// 타겟 표시 아이콘 On Off
+    /// </summary>
+    public void ReceiveMarkOnTarget();
 }

@@ -81,6 +81,5 @@ public class SkillParticlePooling : MonoBehaviour
         skillParticlePool[effectId].Enqueue(skillParticle);
         skillParticle.transform.SetParent(transform);
         skillParticle.SetActive(false); 
-    }
-    
+    } 
 }

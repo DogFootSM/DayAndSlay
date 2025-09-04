@@ -8,7 +8,7 @@ public static class SkillFactoryManager
     {
         switch (skillNode.skillData.SkillId)
         {
-            //TODO: 스킬 아이디 값 수정 필요
+            //검
             case "SSAS001" : return new SSAS001(skillNode);
             case "SSAS002" : return new SSAS002(skillNode);
             case "SSAS003" : return new SSAS003(skillNode);
@@ -19,10 +19,22 @@ public static class SkillFactoryManager
             case "SSAS008" : return new SSAS008(skillNode);
             case "SSAS009" : return new SSAS009(skillNode);
             case "SSAS010" : return new SSAS010(skillNode); 
-            case "1_창" : return new SSAS001(skillNode);
-            case "2_창" : return new SSAS002(skillNode);
-            case "3_창" : return new SSAS003(skillNode);
-            case "4_창" : return new SSPS001(skillNode);
+            case "SSPS001" : return new SSPS001(skillNode);
+            case "SSPS002" : return new SSPS002(skillNode);
+            case "SSPS003" : return new SSPS003(skillNode);
+            case "SSPS004" : return new SSPS004(skillNode);
+            
+            //창
+            case "SPAS001" : return new SPAS001(skillNode);
+            case "SPAS002" : return new SPAS002(skillNode);
+            case "SPAS003" : return new SPAS003(skillNode);
+            case "SPAS004" : return new SPAS004(skillNode);
+            case "SPAS005" : return new SPAS005(skillNode);
+            case "SPAS006" : return new SPAS006(skillNode);
+            case "SPAS007" : return new SPAS007(skillNode);
+            case "SPAS008" : return new SPAS008(skillNode);
+            case "SPAS009" : return new SPAS009(skillNode);
+            case "SPAS010" : return new SPAS010(skillNode); 
             
             default: return null;
         }    

@@ -18,6 +18,7 @@ public class MainQuickSlot : MonoBehaviour,
     [SerializeField] private Image beginDragImage;
     [SerializeField] private SkillCoolDown skillCoolDown;
     [SerializeField] public Image skillIconRadiusParent;
+    [SerializeField] private QuickSlotWaitUse quickSlotWaitUse;
     
     public QuickSlotType CurrentQuickSlot => curQuickSlotType;
     public Image SkillIconImage => skillIconImage;
@@ -32,6 +33,7 @@ public class MainQuickSlot : MonoBehaviour,
         quickSlotTypeText.text = $"{curQuickSlotType}"; 
         
         CoolDownUIHub.CoolDownUIRegistry(curQuickSlotType, skillCoolDown);
+        QuickSlotWaitUseUI.WaitUseRegistry(curQuickSlotType, quickSlotWaitUse);
     }
 
     /// <summary>
@@ -54,6 +56,8 @@ public class MainQuickSlot : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        
         raycastResults.Clear();
         
         mainQuickSlotRaycaster.Raycast(eventData, raycastResults);

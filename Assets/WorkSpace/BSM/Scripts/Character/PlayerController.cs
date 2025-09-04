@@ -59,18 +59,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        // ProjectContext.Instance.Container.Inject(this);
+        ProjectContext.Instance.Container.Inject(this);
         Init(); 
-        // InitSlotData();
-        // ChangedWeaponType(curWeaponType);
+        InitSlotData();
         characterStates[(int)curState].Enter();
+        curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
     }
 
     private void Start()
     {
-        //TODO: 테스트용
-        ProjectContext.Instance.Container.Inject(this);
-        InitSlotData();
         ChangedWeaponType(curWeaponType);
     }
 
@@ -79,9 +76,7 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         characterStates[(int)curState].Update();   
         InventoryToTableItem();
-        
         Debug.DrawRay(transform.position, MoveDir * 10f, Color.red);
-        
     }
 
     private void FixedUpdate()
@@ -141,12 +136,11 @@ public class PlayerController : MonoBehaviour
         }
         
         //웨폰 핸들러 변경
-        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData);
-        
+        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
         //TODO: NotWeapon 따로 처리 필요해짐
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);
-        
+        playerModel.UpdateWeaponType(weaponType);
         //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
         
@@ -252,12 +246,25 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(IEffectReceiver monsterReceiver, float damage)
     {
         //TODO: 보호막 쉴드에 따른 데미지 계산ㄱㄱ
-        playerModel.ShieldCount--;
+        //TODO: 방어력과 몬스터 데미지 공식 정립한 후 체력 감소 진행 + 받는 피해량 감소 버프 상태 체크
 
+        //보호막 쉴드 존재 시 데미지 피해를 받지 않음
+        if (playerModel.ShieldCount > 0)
+        {
+            playerModel.ShieldCount--;
+            return;
+        }
+        
+        //현재 반격이 가능한 상태일 경우 몬스터에게 반격 데미지를 가함
         if (playerModel.IsCountering)
         {
             PlayerSkillReceiver.MonsterCounterEvent?.Invoke(monsterReceiver);
         }
+        
+        //방어력 감소 비율에 데미지 계산한 값
+        float takeDamage = damage - (damage * playerModel.DamageReductionRatio);
+        playerModel.CurHp -= takeDamage;
+        Debug.Log($"현재 체력:{playerModel.CurHp}");
         
     }
     

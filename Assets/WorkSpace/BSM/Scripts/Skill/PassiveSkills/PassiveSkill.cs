@@ -12,5 +12,7 @@ public abstract class PassiveSkill : SkillFactory
     {
         //TODO: 패시브 이펙트 적용 안할거면 메서드 제거하기
     }
-    
+
+    public abstract void RevertPassiveEffects();
+
 }

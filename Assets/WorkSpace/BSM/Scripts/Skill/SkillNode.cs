@@ -21,12 +21,20 @@ public class SkillNode
     public int CurSkillLevel => curSkillLevel;
 
     public bool IsCoolDownReset;
+    public bool IsMarkOnTarget;
+
+    private CharacterWeaponType curWeapon;
+    private LayerMask monsterLayer;
+    private Collider2D targetCollider;
+    private Vector2 overlapSize;
     
-    public SkillNode(SkillData skillData, PlayerModel playerModel, PlayerSkillReceiver playerSkillReceiver)
+    public SkillNode(SkillData skillData, PlayerModel playerModel, PlayerSkillReceiver playerSkillReceiver, CharacterWeaponType weaponType)
     {
         this.skillData = skillData;
         this.playerModel = playerModel;
         this.playerSkillReceiver = playerSkillReceiver;
+        curWeapon = weaponType;
+        monsterLayer = LayerMask.GetMask("Monster");
     }
  
     /// <summary>
@@ -52,8 +60,8 @@ public class SkillNode
             PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(this) as PassiveSkill;
 
             if (passiveSkill != null)
-            {
-                passiveSkill.ApplyPassiveEffects();
+            {Debug.Log("Apply Skill Level");
+                passiveSkill.ApplyPassiveEffects(curWeapon);
             } 
         }
     }
@@ -87,10 +95,50 @@ public class SkillNode
 
             if (passiveSkill != null)
             {
-                passiveSkill.ApplyPassiveEffects();
+                passiveSkill.ApplyPassiveEffects(curWeapon);
             } 
         }
     }
     
+    /// <summary>
+    /// 타겟 몬스터에 표식 설정
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="playerPosition"></param>
+    public void SetMarkOnTarget(Vector2 direction, Vector2 playerPosition)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            overlapSize = new Vector2(skillData.SkillRange, 1f);
+        }
+        else
+        {
+            overlapSize = new Vector2(1f, skillData.SkillRange);
+        }
+
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
+
+        if (cols.Length > 0)
+        {
+            targetCollider = cols[0];
+            IEffectReceiver effectReceiver = cols[0].gameObject.GetComponent<IEffectReceiver>();
+            effectReceiver.ReceiveMarkOnTarget();
+            IsMarkOnTarget = true;
+        }
+        else
+        {
+            targetCollider = null;
+            IsMarkOnTarget = false;
+        }  
+    }
+
+    /// <summary>
+    /// 타겟 몬스터의 콜라이더를 반환
+    /// </summary>
+    /// <returns></returns>
+    public Collider2D GetMarkOnTarget()
+    {
+        return targetCollider;
+    }
     
 }

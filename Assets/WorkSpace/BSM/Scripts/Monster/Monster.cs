@@ -6,7 +6,9 @@ using UnityEngine;
 public class Monster : MonoBehaviour, IEffectReceiver
 {
     [NonSerialized] public float hp = 100;
-
+    public float maxHp = 100;
+    private GameObject markParticle;
+    private GameObject markObject;
     private float defense = 15f;
     
     protected float moveSpeed = 3f;
@@ -35,6 +37,15 @@ public class Monster : MonoBehaviour, IEffectReceiver
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(TestTrace());
+        
+        //마킹 오브젝트 설정
+        markParticle = Resources.Load<GameObject>("SkillEffect/Monster/Mark/Monster_Mark_Particle");
+        
+        //몬스터 마킹 파티클 몬스터 자식 오브젝트로 생성
+        markObject = Instantiate(markParticle, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity, transform);
+        
+        //마킹 오브젝트 비활성화
+        markObject.SetActive(false);
     }
 
     private IEnumerator TestTrace()
@@ -64,6 +75,10 @@ public class Monster : MonoBehaviour, IEffectReceiver
     protected void Update()
     {
         if (isStunned) return;
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            player.TakeDamage(this, 3);
+        }
         
         //transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
     }
@@ -79,11 +94,16 @@ public class Monster : MonoBehaviour, IEffectReceiver
             calcDefense -= CalculateDefenseDeBuff();
         }
         
-        Debug.Log($"방어력 :{calcDefense}");
+        //Debug.Log($"방어력 :{calcDefense}");
         
         //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
-        Debug.Log($"{gameObject.name} 남은 hp :{hp}");
+        //Debug.Log($"{gameObject.name} 남은 hp :{hp}");
+    }
+
+    public float GetMaxHp()
+    {
+        return maxHp;
     }
 
     /// <summary>
@@ -142,6 +162,14 @@ public class Monster : MonoBehaviour, IEffectReceiver
         DefenseDeBuff(duration);
     }
 
+    /// <summary>
+    /// 타겟 몬스터 마킹 표식 On,Off 설정
+    /// </summary>
+    public void ReceiveMarkOnTarget()
+    {
+        markObject.SetActive(!markObject.activeSelf);
+    }
+    
     protected virtual void DefenseDeBuff(float duration)
     {
         if (defenseDeBuffCo != null)

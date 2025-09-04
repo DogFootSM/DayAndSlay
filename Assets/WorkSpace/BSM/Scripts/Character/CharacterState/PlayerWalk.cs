@@ -34,6 +34,8 @@ public class PlayerWalk : PlayerState
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            //TODO: 장착 무기 없을 때 처리 변경하기
+            if (playerController.CurrentWeaponType == CharacterWeaponType.LONG_SWORD) return;
             playerController.ChangeState(CharacterStateType.ATTACK);
         }
         

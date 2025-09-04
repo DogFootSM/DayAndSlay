@@ -18,51 +18,55 @@ public class PlayerStats
 
     public int level;                    //캐릭터 레벨
     public int exp;                     //캐릭터 보유 경험치
-    public int strength;                //캐릭터 힘 능력치
-    public int agility;                 //캐릭터 민첩 능력치
-    public int intelligence;            //캐릭터 지능 능력치
-    public float criticalPer;                //캐릭터 크리티컬 능력치
+    public float baseStrength;                //캐릭터 힘 능력치
+    public float baseAgility;                 //캐릭터 민첩 능력치
+    public float baseIntelligence;            //캐릭터 지능 능력치
+    public float baseCriticalPer;                //캐릭터 크리티컬 능력치
     public int statsPoints;             //캐릭터 보유 스탯 포인트
     public int skillPoints;             //캐릭터 보유 스킬 포인트
-    public float moveSpeed;               //캐릭터의 기본 이동속도
-    public float attackSpeed;           //캐릭터의 기본 공격 속도
+    public float baseMoveSpeed;               //캐릭터의 기본 이동속도
+    public float baseAttackSpeed;           //캐릭터의 기본 공격 속도
+    public float baseCriticalDamage;
     
-    public int VisibleStrength;         //보여질 캐릭터 힘 능력치 
-    public int VisibleAgility;          //보여질 캐릭터 민첩 능력치
-    public int VisibleIntelligence;     //보여질 캐릭터 지능 능력치
-    public float VisibleCritical;         //보여질 캐릭터 크리티컬 능력치
+    public float FinalStrength;         //보여질 캐릭터 힘 능력치 
+    public float FinalAgility;          //보여질 캐릭터 민첩 능력치
+    public float FinalIntelligence;     //보여질 캐릭터 지능 능력치
+    public float FinalCriticalPer;      //보여질 캐릭터 크리티컬 능력치
+    public float FinalCriticalDamage;
+    public float FinalResistance;
 
-    public float CriticalDamage;
     public float IncreaseMoveSpeedPer;
     public float InCreaseAttackSpeedPer;
-    public float CoolDown;
-    public float CastingSpeed;
-    public float Resistance;
+    public float baseCoolDown;
+    public float baseCastingSpeed;
+    public float baseResistance;
+    public float DamageReflectValue;
+    public float DamageReflectRate;
     
-    
+    //TODO: 공격력 계산 공식 수정 필요
     //캐릭터 체력
-    public int Health => level * (int)(strength * 0.2f);
+    public int Health => level * (int)(FinalStrength * 0.2f);
 
     //캐릭터 물리 공격력
-    public int PhysicalAttack => level * (int)(strength * 0.2f);
+    public float PhysicalAttack => level * FinalStrength * 0.2f;
 
     //캐릭터 물리 방어력
-    public int PhysicalDefense => level * (int)((Health + strength) * 0.2f);
+    public float PhysicalDefense => level * (Health + FinalStrength) * 0.2f;
 
     //캐릭터 스킬 공격력
-    public int SkillAttack => level * (int)(strength * intelligence * 0.2f);
+    public float SkillAttack => level * FinalStrength * FinalIntelligence * 0.2f;
 
     //캐릭터 스킬 방어력
-    public int SkillDefense => level * (int)((Health + intelligence) * 0.2f);
+    public float SkillDefense => level * (Health + FinalIntelligence) * 0.2f;
 
     /// <summary>
     /// 기본 능력치 + 장착 아이템 능력치로 보정한 스탯 초기화
     /// </summary>
     public void InitVisibleStats()
     {
-        VisibleStrength = strength;
-        VisibleAgility = agility;
-        VisibleIntelligence = intelligence;
+        FinalStrength = baseStrength;
+        FinalAgility = baseAgility;
+        FinalIntelligence = baseIntelligence;
     }
     
     /// <summary>
@@ -72,9 +76,9 @@ public class PlayerStats
     /// <param name="sign">1일 경우 장착, -1일 경우 장착 해제로 능력치 보정</param>
     public void AddStats(ItemData itemData, int sign)
     { 
-        VisibleStrength += itemData.Strength * sign;
-        VisibleAgility += itemData.Agility * sign;
-        VisibleIntelligence += itemData.Intelligence * sign;
+        FinalStrength += itemData.Strength * sign;
+        FinalAgility += itemData.Agility * sign;
+        FinalIntelligence += itemData.Intelligence * sign;
     }
 }
 
@@ -87,6 +91,8 @@ public class PlayerModel : MonoBehaviour, ISavable
     [Header("캐릭터 상태창")] [SerializeField] private StatusWindow statusWindow;
 
     [Header("캐릭터 스킬")] [SerializeField] private SkillTree skillTree;
+
+    [SerializeField] private PlayerView playerView;
     [Inject] private SqlManager sqlManager;
     [Inject] private DataManager dataManager;
     [Inject] private SaveManager saveManager;
@@ -110,14 +116,41 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     private int slotId;
+
+    private float maxHp;
+
+    public float MaxHp
+    {
+        get => maxHp;
+    }
     
+    /// <summary>
+    /// 현재 캐릭터 체력
+    /// </summary>
+    private float curHp;
+    public float CurHp
+    {
+        get => curHp;
+        set
+        {
+            curHp = value; 
+            playerView.OnChangeHealth?.Invoke(curHp / maxHp, curHp, maxHp);
+        }
+    }
+
+    /// <summary>
+    /// 현재 남아있는 쉴드의 개수
+    /// </summary>
     private int shieldCount;
     public int ShieldCount
     {
         get => shieldCount;
         set => shieldCount = value;
     }
-
+    
+    /// <summary>
+    /// 방어력 증가 배수
+    /// </summary>
     private float defenseBoostMultiplier;
     public float DefenseBoostMultiplier
     {
@@ -125,6 +158,9 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => defenseBoostMultiplier = value;
     }
 
+    /// <summary>
+    /// 현재 사용중인 스킬 캐스팅이 완료됐는지에 대한 상태
+    /// </summary>
     private bool isCastingDone;
     public bool IsCastingDone
     {
@@ -132,6 +168,9 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => isCastingDone = value;
     }
     
+    /// <summary>
+    /// 플레이어 움직임 가능 여부 상태
+    /// </summary>
     private bool isMovementBlocked;
     public bool IsMovementBlocked
     {
@@ -139,6 +178,9 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => isMovementBlocked = value;
     }
 
+    /// <summary>
+    /// 카운터 발동 상태 여부
+    /// </summary>
     private bool isCountering;
     public bool IsCountering
     {
@@ -146,6 +188,9 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => isCountering = value;
     }
 
+    /// <summary>
+    /// 다음 사용 스킬 데미지 증가 버프 적용 여부
+    /// </summary>
     private bool nextSkillBuffActive;
     public bool NextSkillBuffActive
     {
@@ -153,13 +198,44 @@ public class PlayerModel : MonoBehaviour, ISavable
         set => nextSkillBuffActive = value;
     }
 
-    private float nextSkillDamageMultiplier = 1f;
-
+    /// <summary>
+    /// 다음 사용 스킬 데미지 증가 배수
+    /// </summary>
+    private float nextSkillDamageMultiplier;
     public float NextSkillDamageMultiplier
     {
         get => nextSkillDamageMultiplier;
         set => nextSkillDamageMultiplier = value;
     }
+    
+    /// <summary>
+    /// 데미지 감소 적용 비율
+    /// </summary>
+    private float damageReductionRatio;
+    public float DamageReductionRatio
+    {
+        get => damageReductionRatio;
+        set => damageReductionRatio = value;
+    }
+    
+    public float FinalPhysicalDamage;
+    public float FinalPhysicalDefense;
+    public float MoveSpeed;
+    public float AttackSpeed;
+    public float CriticalPer;
+    public float CriticalDamage;
+
+    private float moveSpeedFactor;
+    private float attackSpeedFactor;
+    private float strengthFactor;
+    private float criticalPerFactor;
+    private float criticalDamageFactor;
+    
+    
+    private CharacterWeaponType curWeaponType;
+    public CharacterWeaponType ModelCurWeaponType => curWeaponType;
+    
+    private Dictionary<CharacterWeaponType, Dictionary<string, float>> weaponPassiveDict = new Dictionary<CharacterWeaponType, Dictionary<string, float>>();
     
     private void Awake()
     {
@@ -203,21 +279,25 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.exp = dataReader.GetInt32(0);
             playerStats.statsPoints = dataReader.GetInt32(1);
             playerStats.level = dataReader.GetInt32(2);
-            playerStats.strength = dataReader.GetInt32(3);
-            playerStats.agility = dataReader.GetInt32(4);
-            playerStats.intelligence = dataReader.GetInt32(5);
+            playerStats.baseStrength = dataReader.GetFloat(3);
+            playerStats.baseAgility = dataReader.GetFloat(4);
+            playerStats.baseIntelligence = dataReader.GetFloat(5);
             playerStats.skillPoints = dataReader.GetInt32(6);
-            playerStats.moveSpeed = 3;
-            playerStats.attackSpeed = 0.5f;
+            
+            //기본값들로 변하지 않을 값
+            playerStats.baseMoveSpeed = 3;
+            playerStats.baseAttackSpeed = 0.5f;
             playerStats.IncreaseMoveSpeedPer = 1f;
             playerStats.InCreaseAttackSpeedPer = 1f;
-            playerStats.CoolDown = 0f;
-            playerStats.CastingSpeed = 0f;
-            playerStats.Resistance = 0f;
-            playerStats.criticalPer = 0f;
-            playerStats.CriticalDamage = 1.5f;
+            playerStats.baseCoolDown = 0f;
+            playerStats.baseCastingSpeed = 0f;
+            playerStats.baseResistance = 0f;
+            playerStats.baseCriticalPer = 0f;
+            playerStats.baseCriticalDamage = 1.5f;
         }
-        
+
+        MoveSpeed = GetFactoredMoveSpeed();
+        AttackSpeed = GetFactorAttackSpeed();
         playerStats.InitVisibleStats();
     }
 
@@ -237,6 +317,93 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     /// <summary>
+    /// 현재 무기타입 업데이트
+    /// </summary>
+    /// <param name="weaponType">장착한 무기의 타입</param>
+    public void UpdateWeaponType(CharacterWeaponType weaponType)
+    {
+        curWeaponType = weaponType;
+    }
+    
+    /// <summary>
+    /// 이동 속도 증가값 설정 후 이동속도 업데이트
+    /// </summary>
+    /// <param name="speedFactor"></param>
+    public void UpdateMoveSpeedFactor(float speedFactor)
+    {
+        moveSpeedFactor = speedFactor;
+        MoveSpeed = GetFactoredMoveSpeed();
+        playerStats.IncreaseMoveSpeedPer = 1f + moveSpeedFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+
+    public void UpdateStrengthFactor(float strengthFactor)
+    {
+        playerStats.FinalStrength += strengthFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+    
+    /// <summary>
+    /// 이동속도 증가 값을 적용한 이동속도를 반환
+    /// </summary>
+    /// <returns></returns>
+    public float GetFactoredMoveSpeed()
+    {
+        return playerStats.baseMoveSpeed + moveSpeedFactor;
+    }
+    
+    /// <summary>
+    /// 현재 스피드에 Factor만큼 스피드 증가
+    /// </summary>
+    /// <param name="speedFactor"></param>
+    public void UpdateAttackSpeedFactor(float speedFactor)
+    {
+        attackSpeedFactor = speedFactor;
+        AttackSpeed = GetFactorAttackSpeed();
+        playerStats.InCreaseAttackSpeedPer = 1f + speedFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+    
+    /// <summary>
+    /// 현재 캐릭터의 이동 속도를 가져옴
+    /// </summary>
+    /// <returns></returns>
+    public float GetFactorAttackSpeed()
+    {
+        return playerStats.baseAttackSpeed + attackSpeedFactor;
+    }
+
+    /// <summary>
+    /// 현재 크리티컬 데미지에 Factor만큼 증가
+    /// </summary>
+    /// <param name="criticalPerFactor"></param>
+    public void UpdateCriticalPerFactor(float criticalPerFactor)
+    {
+        this.criticalPerFactor = criticalPerFactor;
+        playerStats.FinalCriticalPer = GetFactorCriticalPerFactor();
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+    
+    /// <summary>
+    /// 현재 크리티컬 데미지를 가져옴
+    /// </summary>
+    /// <returns></returns>
+    public float GetFactorCriticalPerFactor()
+    {
+        return playerStats.baseCriticalPer + criticalPerFactor;
+    }
+    
+    /// <summary>
+    /// 현재 상태이상에 Factor만큼 증가
+    /// </summary>
+    /// <param name="resistanceFactor"></param>
+    public void UpdateResistanceFactor(float resistanceFactor)
+    {
+        playerStats.FinalResistance = playerStats.baseResistance + resistanceFactor;
+        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+    
+    /// <summary>
     /// 경험치 획득 후 레벨업 가능 여부 판단
     /// </summary>
     /// <param name="exp">Controller에서 전달 받을 경험치 수치</param>
@@ -250,6 +417,23 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     /// <summary>
+    /// 최종적으로 사용할 스탯의 값 업데이트
+    /// </summary>
+    private void UpdateFinalStats()
+    {
+        //최종적으로 사용할 물리 스탯
+        FinalPhysicalDamage = playerStats.PhysicalAttack;
+        FinalPhysicalDefense = playerStats.PhysicalDefense;
+        
+        //현재 체력, 최대 체력 업데이트
+        curHp = playerStats.Health;
+        maxHp = playerStats.Health;
+        
+        //체력 정보 UI 업데이트
+        playerView.OnChangeHealth?.Invoke(curHp / maxHp, curHp, maxHp);
+    }
+    
+    /// <summary>
     /// 캐릭터 레벨업 진행
     /// </summary>
     private void LevelUp()
@@ -262,6 +446,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         skillTree.NotifySkillPointChanged();
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
+        UpdateFinalStats();
     }
 
     /// <summary>
@@ -270,15 +455,17 @@ public class PlayerModel : MonoBehaviour, ISavable
     public void ApplyItemModifiers(ItemData equipItemData, bool isEquip = true)
     {
         int sign = isEquip ? 1 : -1; 
-        
         playerStats.AddStats(equipItemData, sign);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
+        UpdateFinalStats();
     }
 
+    /// <summary>
+    /// 패시브 능력 적용 후 스탯 정보 변경
+    /// </summary>
     public void ApplyPassiveSkillModifiers()
     {
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
-        Debug.Log("패시브 스킬 능력치 적용");
     }
     
     /// <summary>
@@ -293,24 +480,27 @@ public class PlayerModel : MonoBehaviour, ISavable
         switch (statsType)
         {
             case CharacterStatsType.STR:
-                playerStats.strength += increasePoint;
-                playerStats.VisibleStrength += increasePoint;
+                playerStats.baseStrength += increasePoint;
+                playerStats.FinalStrength += increasePoint;
                 break;
             case CharacterStatsType.AGI:
-                playerStats.agility += increasePoint;
-                playerStats.VisibleAgility += increasePoint;
+                playerStats.baseAgility += increasePoint;
+                playerStats.FinalAgility += increasePoint;
                 break;
             case CharacterStatsType.INT:
-                playerStats.intelligence += increasePoint;
-                playerStats.VisibleIntelligence += increasePoint;
+                playerStats.baseIntelligence += increasePoint;
+                playerStats.FinalIntelligence += increasePoint;
                 break;
         }
         
         playerStats.statsPoints -= increasePoint;
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
+        UpdateFinalStats();
     }
-
+    
+    
+    
     /// <summary>
     /// PlayerStat 데이터 저장
     /// </summary>
@@ -332,9 +522,9 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{playerStats.exp}",
                 $"{playerStats.statsPoints}",
                 $"{playerStats.level}",
-                $"{playerStats.strength}",
-                $"{playerStats.agility}",
-                $"{playerStats.intelligence}",
+                $"{playerStats.baseStrength}",
+                $"{playerStats.baseAgility}",
+                $"{playerStats.baseIntelligence}",
                 $"{playerStats.skillPoints}"
             },
             "slot_id",

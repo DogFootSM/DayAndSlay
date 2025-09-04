@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SSAS002 : MeleeSkill
 {
@@ -14,9 +15,11 @@ public class SSAS002 : MeleeSkill
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     { 
+        ListClear();
+        
         SetOverlapSize(direction, skillNode.skillData.SkillRadiusRange);
-        MeleeEffect(playerPosition + direction, skillNode.skillData.SkillId, skillNode.skillData.SkillEffectPrefab);
-        SetParticleStartRotationFromDeg(direction, leftDeg, rightDeg, downDeg, upDeg);
+        SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
         ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, 0.3f);
         
         Collider2D[] detectedMonster =
@@ -25,20 +28,25 @@ public class SSAS002 : MeleeSkill
  
         if (detectedMonster.Length > 0)
         {
-            IEffectReceiver monsterReceiver = detectedMonster[0].GetComponent<IEffectReceiver>();
-        
-            skillActions.Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
-            skillActions.Add(RemoveTriggerModuleList);
-            
-            if (triggerModule.enabled)
+            skillActions.Add(new List<Action>());
+ 
+            for (int i = 0; i < 1; i++)
             {
-                triggerModule.AddCollider(detectedMonster[0]);
-                interaction.ReceiveAction(skillActions);
+                IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
+                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
+
+                if (triggerModules[0].enabled)
+                {
+                    triggerModules[0].AddCollider(detectedMonster[i]);
+                    interactions[0].ReceiveAction(skillActions[0]);
+                }
             }
+             
+            skillActions[0].Add(() => RemoveTriggerModuleList(0)); 
         } 
     }
 
-    public override void ApplyPassiveEffects() {}
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType) {}
 
     public override void Gizmos()
     {
