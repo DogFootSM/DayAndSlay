@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileSkill : MonoBehaviour
+public abstract class ProjectileSkill : SkillFactory
 {
-    // Start is called before the first frame update
-    void Start()
+    public ProjectileSkill(SkillNode skillNode) : base(skillNode)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

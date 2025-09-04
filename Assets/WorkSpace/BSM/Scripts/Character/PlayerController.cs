@@ -136,16 +136,21 @@ public class PlayerController : MonoBehaviour
         }
         
         //웨폰 핸들러 변경
-        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
+        if (itemData != null)
+        {
+            curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
+        }
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
         //TODO: NotWeapon 따로 처리 필요해짐
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);
         playerModel.UpdateWeaponType(weaponType);
+        
         //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
         
         //장착 무기가 ShortSword 외엔 방패 오브젝트 비활성화
         shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
+        
         //장착 무기가 bow 외엔 화살통 오브젝트 비활성화
         quiverObject.SetActive(curWeaponType == CharacterWeaponType.BOW);
         

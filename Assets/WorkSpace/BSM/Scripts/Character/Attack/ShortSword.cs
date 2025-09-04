@@ -23,6 +23,8 @@ public class ShortSword : IAttackHandler
     /// </summary>
     /// <param name="direction">공격 방향</param>
     /// <param name="position">캐릭터 위치</param>
+    /// <param name="itemData"></param>
+    /// <param name="playerModel"></param>
     public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
         //기즈모 테스트용 pos,dir 코드

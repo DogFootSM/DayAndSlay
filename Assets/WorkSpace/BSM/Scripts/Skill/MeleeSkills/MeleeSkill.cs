@@ -278,6 +278,7 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     protected void RemoveTriggerModuleList(int triggerIndex)
     {  
+        //TODO:추후 매개변수 지우기
         for (int i = 0; i < triggerModules.Count; i++)
         {
             for (int j = triggerModules[i].colliderCount -1; j >= 0; j--)

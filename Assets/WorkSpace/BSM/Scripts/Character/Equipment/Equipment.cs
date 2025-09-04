@@ -31,9 +31,10 @@ public class Equipment : MonoBehaviour
 
         //장착 아이템 효과 스탯 반영
         playerModel.ApplyItemModifiers(equipSlotDict[key]);
-
-
+        
+        //장비 타입일 경우 Return
         if (equipSlotDict[key].WeaponType == WeaponType.NOT_WEAPON) return;
+        
         //새로 착용한 무기 타입을 캐릭터에게 전달 
         playerController.ChangedWeaponType((CharacterWeaponType)equipSlotDict[key].WeaponType, itemData);
     }
