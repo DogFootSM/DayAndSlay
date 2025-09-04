@@ -189,24 +189,25 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     {
         animator.PlayHit();
         
-        string dirString = GetDirectionByAngle(player.transform.position, transform.position).ToString();
+        Direction direction = GetDirectionByAngle(player.transform.position, transform.position);
+        
         Vector2 dir = Vector2.down;
         
-        switch (dirString)
+        switch (direction)
         {
-            case "Left":
+            case Direction.Up:
                 dir = Vector2.left;
                 break;
             
-            case "Right":
+            case Direction.Down:
                 dir = Vector2.right;
                 break;
             
-            case "Up":
+            case Direction.Left:
                 dir = Vector2.up;
                 break;
             
-            case "Down":
+            case Direction.Right:
                 dir = Vector2.down;
                 break;
             
@@ -224,7 +225,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     /// <param name="playerPos"></param>
     /// <param name="monsterPos"></param>
     /// <returns></returns>
-    private Direction GetDirectionByAngle(Vector2 playerPos, Vector2 monsterPos)
+    public Direction GetDirectionByAngle(Vector2 playerPos, Vector2 monsterPos)
     {
         // 몬스터 위치에서 플레이어 위치로 향하는 벡터
         Vector2 dir = playerPos - monsterPos;

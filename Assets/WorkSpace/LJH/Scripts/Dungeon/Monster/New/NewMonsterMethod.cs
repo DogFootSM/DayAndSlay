@@ -17,6 +17,8 @@ public class NewMonsterMethod : MonoBehaviour
     private int currentPathIndex;
 
     private List<Vector3> path = new List<Vector3>();
+
+    protected Vector2 dir;
     
     public void SetPlayer(GameObject player) => this.player = player;
 
@@ -138,6 +140,21 @@ public class NewMonsterMethod : MonoBehaviour
     {
         // Todo: 실제 Player HP 처리
         //Debug.Log($"몬스터가 플레이어에게 {monsterData.Attack} 피해를 입힘");
+
+        Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
+        
+        float distance = Vector2.Distance(player.transform.position, transform.position);
+
+        //몬스터가 보는 방향과 플레이어와의 방향 비교)
+        if (animator.GetCurrentDir() == direction)
+        {
+            //사거리 비교
+            if (distance <= ai.GetMonsterModel().AttackRange)
+            {
+                Debug.Log("몬스터 공격");
+            }
+        }
+
     }
 
     /// <summary>
