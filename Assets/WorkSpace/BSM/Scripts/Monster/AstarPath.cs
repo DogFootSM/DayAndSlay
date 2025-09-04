@@ -204,7 +204,6 @@ public class AstarPath : MonoBehaviour
         
         while (curNode != null)
         {
-            Debug.Log("트레이스 실행");
             Vector3 worldPos = mapTileMap.CellToWorld((Vector3Int)curNode.curPosition);
             path.Add(worldPos + new Vector3(0.5f, 0.5f,0));
             curNode = curNode.parentNode;
@@ -247,8 +246,8 @@ public class AstarPath : MonoBehaviour
     /// <param name="grid"></param>
     public void SetGridAndTilemap(Grid grid)
     {
-        mapTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
-        obstacleTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
+        mapTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
+        obstacleTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
         this.mapGrid = grid;
     }
 

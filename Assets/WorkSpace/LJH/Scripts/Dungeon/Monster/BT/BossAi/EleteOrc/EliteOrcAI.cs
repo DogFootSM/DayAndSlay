@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EliteOrcAI : BossMonsterAI
+public class EliteOrcAI : MonoBehaviour
 {
+    /*
     [Header("돌진 쿨타임 조정")]
     [SerializeField] private float rushCooldown = 10f;
 
@@ -13,10 +14,7 @@ public class EliteOrcAI : BossMonsterAI
     private float rushTimer;
     private float attackTimer;
     
-     protected void Start()
-    {
-        base.Start();
-    }
+    
     protected override void Update()
     {
         base.Update();
@@ -54,12 +52,22 @@ public class EliteOrcAI : BossMonsterAI
         return !CanRush() && !CanAttack();
     }
 
+    protected override bool CanSkillFirst()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override bool CanSkillSecond()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private bool CanRush()
     {
         return rushTimer <= 0f;
     }
 
-    private bool CanAttack()
+    protected override bool CanAttack()
     {
         return attackTimer <= 0f;
     }
@@ -126,5 +134,5 @@ public class EliteOrcAI : BossMonsterAI
         }));
 
         return list;
-    }
+    }*/
 }

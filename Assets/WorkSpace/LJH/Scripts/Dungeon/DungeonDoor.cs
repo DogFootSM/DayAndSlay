@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class DungeonDoor : MonoBehaviour
 {
     private DungeonPathfinder pathfinder;
     private Collider2D player;
     private bool triggered = false;
+    
+    [Inject]
+    MinimapController minimap;
     
     /// <summary>
     /// ¸ñÀûÁö
@@ -46,6 +50,7 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            minimap.CamPosSet(toGrid.transform.position);
             Rigidbody2D rb = player.attachedRigidbody;
             rb.position = toGrid.gameObject.transform.position;
             rb.velocity = Vector2.zero;

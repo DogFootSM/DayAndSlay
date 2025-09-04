@@ -6,9 +6,10 @@ public class MonsterModel : MonoBehaviour
 
     public int Id;
     public string Name;
-    public int MaxHp;
-    public int Hp;
-    public int Attack;
+    public float MaxHp;
+    public float Hp;
+    public float def;
+    public float Attack;
     public float AttackRange;
     public float ChaseRange;
     public float MoveSpeed;
@@ -23,7 +24,7 @@ public class MonsterModel : MonoBehaviour
         }
         else
         {
-            monsterData = GetComponent<GeneralMonsterAI>().GetMonsterData();
+            monsterData = GetComponent<NewMonsterAI>().GetMonsterData();
         }
 
         Id = monsterData.Id;
@@ -37,11 +38,11 @@ public class MonsterModel : MonoBehaviour
         AttackCooldown = monsterData.AttackCooldown;
 
     }
-    public int GetMonsterMaxHp() => MaxHp;
+    public float GetMonsterMaxHp() => MaxHp;
 
-    public int GetMonsterHp() => Hp;
+    public float GetMonsterHp() => Hp;
 
-    public void SetMonsterHp(int hp)
+    public void SetMonsterHp(float hp)
     {
         Hp += hp;
     }

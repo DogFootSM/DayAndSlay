@@ -1,18 +1,13 @@
 using System.Collections.Generic;
+using UnityEngine;
 
+// BossMonsterAI를 상속받고, 네펜데스 보스만의 고유한 로직을 구현합니다.
 public abstract class NepenthesAI : BossMonsterAI
 {
-    protected override List<BTNode> BuildSkillSelector()
-    {
-        return BuildSkillPatterns();
-    }
+    [Header("파트너")]
+    [SerializeField] protected BossMonsterAI partner;
 
-    protected override List<BTNode> BuildAttackSelector()
-    {
-        return BuildAttackPatterns();
-    }
-    
-    //네펜데스의 경우는 움직임이 없기에 오버라이딩하여 상태 넘겨줌
+    // 네펜데스 보스의 고유한 특성: 움직이지 않음
     protected override List<BTNode> BuildChaseSequence()
     {
         return new List<BTNode>
@@ -21,7 +16,6 @@ public abstract class NepenthesAI : BossMonsterAI
         };
     }
 
-
-    protected abstract List<BTNode> BuildSkillPatterns();
-    protected abstract List<BTNode> BuildAttackPatterns();
+    // 네펜데스 보스의 고유한 특성: 파트너를 가짐
+    public NepenthesAI GetPartner() => partner.GetComponent<NepenthesAI>();
 }

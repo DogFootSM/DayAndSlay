@@ -1,47 +1,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BossMonsterAI : MonoBehaviour
+// 모든 보스 몬스터의 공통 로직을 담는 추상 클래스
+public abstract class BossMonsterAI : NewMonsterAI
 {
-    [SerializeField] protected TestPlayer player;
-    [SerializeField] protected MonsterData monsterData;
-    [SerializeField] protected BossAnimator animator;
-    [SerializeField] protected BossMonsterMethod method;
-
-    protected BehaviourTree tree;
-
-    protected MonsterModel model;
+    // 네펜데스AI에서 가져온 공통 쿨타임 변수들
+    [Header("공통 스킬 쿨타임 조정")]
+    protected float skillFirstCooldown;
+    protected float skillSecondCooldown;
+    protected float skillThirdCooldown;
+    protected float skillFourthCooldown;
     
-    public MonsterModel GetMonsterModel() => model;
+    [SerializeField] protected float attackCooldown = 2f;
 
-    protected virtual void Awake()
+    // 네펜데스AI에서 가져온 공통 타이머 변수들
+    protected float skillFirstTimer;
+    protected float skillSecondTimer;
+    protected float skillThirdTimer;
+    protected float skillFourthTimer;
+    
+    protected float attackTimer;
+
+    protected override void Start()
     {
-        model = GetComponent<MonsterModel>();
-        if (animator == null) animator = GetComponent<BossAnimator>();
-        if (method == null) method = GetComponent<BossMonsterMethod>();
+        base.Start();
+        
+        skillFirstTimer = skillFirstCooldown;
+        skillSecondTimer = skillSecondCooldown;
+        skillThirdTimer = skillThirdCooldown;
+        skillFourthTimer = skillFourthCooldown;
+        
+        attackTimer = attackCooldown;
+    }
+    protected override void Update()
+    {
+        base.Update();
+        UpdateCooldowns();
     }
 
-    protected virtual void Start()
+    // 쿨타임 업데이트 로직도 모든 보스에게 공통
+    protected void UpdateCooldowns()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<TestPlayer>();
-        tree = new BehaviourTree(BuildRoot());
-        method.MonsterDataInit(monsterData);
-        method.PlayerInit(player.gameObject);
+        skillFirstTimer -= Time.deltaTime;
+        skillSecondTimer -= Time.deltaTime;
+        skillThirdTimer -= Time.deltaTime;
+        skillFourthTimer -= Time.deltaTime;
+        
+        attackTimer -= Time.deltaTime;
     }
 
-    protected virtual void Update()
-    {
-        if (tree != null)
-        {
-            tree.Tick();
-        }
-    }
-
-    protected virtual BTNode BuildRoot()
+    protected override BTNode BuildRoot()
     {
         return new Selector(new List<BTNode>
         {
             new Sequence(BuildDieSequence()),
+            new Sequence(BuildStunSequence()),
             new Sequence(BuildSkillSequence()),
             new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
@@ -49,23 +62,7 @@ public abstract class BossMonsterAI : MonoBehaviour
         });
     }
 
-    /// <summary>
-    /// BT 추격 시퀀스 생성
-    /// </summary>
-    /// <returns></returns>
-    protected virtual List<BTNode> BuildChaseSequence()
-    {
-        return new List<BTNode>
-        {
-            new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange),
-            new ActionNode(Move)
-        };
-    }
-
-    /// <summary>
-    /// BT 스킬 시퀀스 생성
-    /// </summary>
-    /// <returns></returns>
+    //이걸로 스킬 시퀀스 만들어줌
     protected virtual List<BTNode> BuildSkillSequence()
     {
         List<BTNode> patterns = BuildSkillSelector();
@@ -78,11 +75,7 @@ public abstract class BossMonsterAI : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// BT 공격 시퀀스 생성
-    /// </summary>
-    /// <returns></returns>
-    protected virtual List<BTNode> BuildAttackSequence()
+    protected override List<BTNode> BuildAttackSequence()
     {
         List<BTNode> patterns = BuildAttackSelector();
         if (patterns == null) patterns = new List<BTNode>();
@@ -94,88 +87,73 @@ public abstract class BossMonsterAI : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// BT 대기 시퀀스 생성
-    /// </summary>
-    /// <returns></returns>
-    protected virtual List<BTNode> BuildIdleSequence()
-    {
-        return new List<BTNode>
-        {
-            new IsPreparedIdleNode(transform, player.transform, monsterData.ChaseRange, IsAllOnCooldown),
-            new ActionNode(Idle)
-        };
-    }
-
-    /// <summary>
-    /// BT 사망 시퀀스 생성
-    /// </summary>
-    /// <returns></returns>
-    protected virtual List<BTNode> BuildDieSequence()
-    {
-        return new List<BTNode>
-        {
-            new IsDieNode(() => model.Hp),
-            new ActionNode(Die)
-        };
-    }
-
+    
+    // 이 메서드들은 자식 클래스에서 오버라이딩하여 구현
     protected abstract List<BTNode> BuildSkillSelector();
     protected abstract List<BTNode> BuildAttackSelector();
 
-    // ============================ 동작 메서드 =============================
+
+    protected bool CanSkill(float timer)
+    {
+        return timer <= 0f;
+    }
+    protected bool CanAttack()
+    {
+        // 일반 공격 쿨타임을 체크합니다.
+        return attackTimer <= 0f;
+    }
+
+    protected void ResetSkillFirstCooldown() => skillFirstTimer = skillFirstCooldown;
+    protected void ResetSkillSecondCooldown() => skillSecondTimer = skillSecondCooldown;
+    protected void ResetSkillThirdCooldown() => skillThirdTimer = skillThirdCooldown;
+    protected void ResetSkillFourthCooldown() => skillFourthTimer = skillFourthCooldown;
+    protected void ResetAttackCooldown() => attackTimer = attackCooldown;
+
+    protected void PerformSkillFirst()
+    {
+        stateMachine.ChangeState(new NewMonsterSkillFirstState(transform, player.transform));
+        isAttacking = true;
+        method.Skill_First();
+        StartCoroutine(AttackEndDelay());
+        ResetSkillFirstCooldown();
+    }
     
-    /// <summary>
-    /// 각 몬스터별 클래스에서 쿨타임 체크 넣어줘야 함
-    /// </summary>
-    /// <returns></returns>
-    protected abstract bool IsAllOnCooldown();
+    protected void PerformSkillSecond()
+    {
+        stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
+        isAttacking = true;
+        method.Skill_Second();
+        StartCoroutine(AttackEndDelay());
+        ResetSkillSecondCooldown();
+    }
     
-    protected virtual void Idle()
+    protected void PerformSkillThird()
     {
-        Debug.Log(name + " -> Idle");
-        animator.stateMachine.ChangeState(new BossMonsterIdleState());
+        stateMachine.ChangeState(new NewMonsterSkillThirdState(transform, player.transform));
+        isAttacking = true;
+        method.Skill_Third();
+        StartCoroutine(AttackEndDelay());
+        ResetSkillThirdCooldown();
     }
-
-    protected virtual void Move()
-    {
-        if (method.isMoving) return;
-        
-        Debug.Log(name + " -> Move");
-        animator.stateMachine.ChangeState(new BossMonsterMoveState());
-        method.Move();
-    }
-
-    protected virtual void AttackCommonStart()
-    {
-        animator.stateMachine.ChangeState(new BossMonsterAttackState());
-        method.BeforeAttack();
-        method.Attack();
-    }
-
-    protected virtual void SkillCommonStart()
-    {
-        animator.stateMachine.ChangeState(new BossMonsterSkillState());
-        method.BeforeAttack();
-    }
-
-    //엔드의 경우 스킬과 공격 공통
-    protected virtual void AttackCommonEnd()
-    {
-        method.AfterAttack();
-    }
-
     
-
-    protected virtual void Die()
+    protected void PerformSkillFourth()
     {
-        Debug.Log(name + " -> Die");
-        animator.PlayDie();
-        method.Die();
+        stateMachine.ChangeState(new NewMonsterSkillFourthState(transform, player.transform));
+        isAttacking = true;
+        method.Skill_Fourth();
+        StartCoroutine(AttackEndDelay());
+        ResetSkillFourthCooldown();
     }
 
-    public MonsterData GetMonsterData()
+    protected void PerformAttack()
     {
-        return monsterData;
+        stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
+        isAttacking = true;
+        method.AttackMethod();
+        StartCoroutine(AttackEndDelay());
+        ResetAttackCooldown();
     }
+
+
+   
 }

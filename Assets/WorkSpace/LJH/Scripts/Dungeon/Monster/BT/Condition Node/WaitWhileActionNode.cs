@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class WaitWhileActionNode : BTNode
 {
@@ -15,6 +16,7 @@ public class WaitWhileActionNode : BTNode
         {
             return NodeState.Running;
         }
+
         return NodeState.Success;
     }
 }

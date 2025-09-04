@@ -392,3 +392,24 @@ public enum StageNum
     STAGE9,
     STAGE10,
 }
+
+public enum AnimType
+{
+    ATTACK,
+    DIE,
+    HIT,
+    MOVE,
+    
+}
+
+public enum DamageType
+{
+    INSTANTDAMAGE,
+    DOTDAMAGE,
+}
+
+public enum DelayType
+{
+    DELAY,
+    INSTANT,
+}

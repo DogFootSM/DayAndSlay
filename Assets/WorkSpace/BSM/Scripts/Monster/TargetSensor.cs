@@ -3,27 +3,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetSensor : MonoBehaviour
 {
     [SerializeField] protected AstarPath astar;
-    [SerializeField] protected CircleCollider2D findCollider; 
-  
+    [SerializeField] protected CircleCollider2D findCollider;
+
     protected LayerMask targetLayer;
-    protected float findRange = 5f;
+    protected float findRange = 0f;
 
     //아래로 이재호가 추가한 변수
     protected GameObject player;
-    protected float interval = 0.2f;
+    protected float interval = 0.5f;
     protected float nextCheckTime = 0f;
-    
+
+    private Coroutine detectCoroutine;
+
     public Grid grid;
     protected Vector3Int lastPlayerCell;
 
-
+    /// <summary>
+    /// findCollider의 radius값은 고정이 아닌 몬스터의 ChaseRange에 따라 변경되도록 설정
+    /// </summary>
     private void Awake()
     {
-        findCollider.radius = findRange;
+        findCollider.radius = GetComponentInParent<NewMonsterAI>().GetChaseRange() / 6;
         targetLayer = LayerMask.GetMask("Player");
     }
 
@@ -35,6 +40,7 @@ public class TargetSensor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         TriggerEnterMethod(other);
+        player = other.gameObject;
     }
 
     protected virtual void TriggerEnterMethod(Collider2D other)
@@ -47,36 +53,11 @@ public class TargetSensor : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 이재호가 작성한 코드
-    /// </summary>
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        TriggerStayMethod(collision);
-    }
-
-    protected virtual void TriggerStayMethod(Collider2D collision)
-    {
-        Vector3Int currentCell = grid.WorldToCell(collision.transform.position);
-
-        if (Time.time >= nextCheckTime)
-        {
-            if (currentCell != lastPlayerCell)
-            {
-                astar.DetectTarget(transform.position, collision.transform.position);
-
-                lastPlayerCell = currentCell;
-            }
-
-            nextCheckTime = Time.time + interval;
-        }
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, findRange);
+        Gizmos.DrawWireSphere(transform.position, GetComponentInParent<NewMonsterAI>().GetChaseRange());
     }
-    
+
     public void SetGrid(Grid grid) => this.grid = grid;
 }
