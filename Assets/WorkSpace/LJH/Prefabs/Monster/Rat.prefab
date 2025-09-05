@@ -94,13 +94,12 @@ GameObject:
   - component: {fileID: 6768102555775733642}
   - component: {fileID: 4280622862996560033}
   - component: {fileID: 6521707523087042549}
+  - component: {fileID: -7973919785854821179}
+  - component: {fileID: 2799684284601802070}
+  - component: {fileID: -3052094274494349143}
   - component: {fileID: 4894937483075603683}
   - component: {fileID: 2852571515173303574}
-  - component: {fileID: 1584338468107993734}
   - component: {fileID: -337308179194136232}
-  - component: {fileID: -7973919785854821179}
-  - component: {fileID: -3052094274494349143}
-  - component: {fileID: 2799684284601802070}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Untagged
@@ -226,6 +225,56 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7973919785854821179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269701800412192224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
+  monsterData: {fileID: 11400000, guid: a3b3925797c3d5d449a1e39046a93fa8, type: 2}
+  player: {fileID: 0}
+  isAttacking: 0
+--- !u!114 &2799684284601802070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269701800412192224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3052094274494349143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269701800412192224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: cf91f750415c5d947996180f46f884c7, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: 8b9367686b4a8f74dba07cc91e4256e7, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: 379ac9f0bea79dd4585aec438d6976d1, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: c399284016d48b144a594e972d043dc3, type: 3}
 --- !u!114 &4894937483075603683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +291,7 @@ MonoBehaviour:
   Name: 
   MaxHp: 0
   Hp: 0
+  def: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
@@ -273,32 +323,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!61 &1584338468107993734
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269701800412192224}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.4, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5, y: 1.5}
-    newSize: {x: 1.5, y: 1.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3}
-  m_EdgeRadius: 0
 --- !u!50 &-337308179194136232
 Rigidbody2D:
   serializedVersion: 4
@@ -320,53 +344,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-7973919785854821179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269701800412192224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: a3b3925797c3d5d449a1e39046a93fa8, type: 2}
-  player: {fileID: 0}
-  isAttacking: 0
---- !u!114 &-3052094274494349143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269701800412192224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: cf91f750415c5d947996180f46f884c7, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: 8b9367686b4a8f74dba07cc91e4256e7, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: 379ac9f0bea79dd4585aec438d6976d1, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: c399284016d48b144a594e972d043dc3, type: 3}
---- !u!114 &2799684284601802070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269701800412192224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5

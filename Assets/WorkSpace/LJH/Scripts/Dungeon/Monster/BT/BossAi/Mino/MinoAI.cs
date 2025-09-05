@@ -10,17 +10,17 @@ public class MinoAI : BossMonsterAI
     [SerializeField] private float ultCooldown = 10f;
     
     
-    // Start() 메서드에서 부모 클래스의 쿨타임 변수에 값을 할당합니다.
+    // Start() 메서드에서 부모 클래스의 쿨타임 변수에 값을 할당
     protected override void Start()
     {
         base.Start();
-        // 부모 클래스의 변수에 값을 할당하여 공통 로직을 활용합니다.
+        
         skillFirstCooldown = buttCooldown;
         skillSecondCooldown = stompCooldown;
         skillThirdCooldown = buffCooldown;
         skillFourthCooldown = ultCooldown;
         
-        // AttackCooldown은 부모 클래스에서 바로 사용 가능합니다.
+        Debug.Log("스타트동작");
     }
 
     // ---------------- BT patterns ----------------

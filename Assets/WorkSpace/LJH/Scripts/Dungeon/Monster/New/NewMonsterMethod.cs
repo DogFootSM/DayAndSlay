@@ -173,6 +173,7 @@ public class NewMonsterMethod : MonoBehaviour
     public void HitMethod(int damage)
     {
         Debug.Log("ÇÇ°Ý");
+        ai.ReceiveKnockBack(player.transform.position, Vector2.left);
     }
 
     protected void DropItem()

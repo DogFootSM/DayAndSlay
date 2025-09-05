@@ -444,6 +444,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 440ad5537a6f7884eabc8001053672cf, type: 3}
+--- !u!1 &457955353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4842710499064245620, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
+  m_PrefabInstance: {fileID: 465377018}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &465377018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -471,6 +476,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2450185539440437247, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4051163431267889330, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
       propertyPath: mapGrid
       value: 
@@ -483,6 +492,10 @@ PrefabInstance:
       propertyPath: obstacleTileMap
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4158822911095731913, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
+      propertyPath: markObject
+      value: 
+      objectReference: {fileID: 457955353}
     - target: {fileID: 4158822911095731913, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
       propertyPath: ultCooldown
       value: 1000000
