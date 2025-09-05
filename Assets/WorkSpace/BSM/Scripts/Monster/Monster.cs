@@ -98,7 +98,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         
         //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
-        //Debug.Log($"{gameObject.name} 남은 hp :{hp}");
+        Debug.Log($"{gameObject.name} 남은 hp :{hp}");
     }
 
     public float GetMaxHp()

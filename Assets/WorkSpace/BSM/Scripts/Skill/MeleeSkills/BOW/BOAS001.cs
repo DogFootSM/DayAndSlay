@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class BOAS001 : MeleeSkill
-{
+{ 
     public BOAS001(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -14,6 +15,7 @@ public class BOAS001 : MeleeSkill
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        
         skillDamage = GetSkillDamage();
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
@@ -21,7 +23,7 @@ public class BOAS001 : MeleeSkill
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());
-        
+            //TODO: 넉백 방향 수정해야 될듯?
             for (int i = 0; i < cols.Length; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
