@@ -107,7 +107,7 @@ public class MonsterSpawner : MonoBehaviour
         //Todo : 실제 연결시에는 해당 코드 이용
         //StageNum stageNum = IngameManager.instance.GetStage();
         //TestCode
-        StageNum stageNum = StageNum.STAGE2;
+        StageNum stageNum = StageNum.STAGE1;
         
         List<GameObject> monsters = new List<GameObject>();
         List<GameObject> bossMonsters =  new List<GameObject>();
@@ -156,7 +156,6 @@ public class MonsterSpawner : MonoBehaviour
         }
         
         MonsterActiver();
-
     }
 
     private void SpawnerDestroy()
@@ -177,6 +176,7 @@ public class MonsterSpawner : MonoBehaviour
 
         foreach (GameObject mon in monsterList)
         {
+            Debug.Log(mon.name);
             GridReFerence(mon);             // 그리드/타일 참조 갱신
             mon.SetActive(playerInside);    // 방 안이면 전부 On, 밖이면 Off
         }

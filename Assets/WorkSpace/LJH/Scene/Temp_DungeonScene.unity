@@ -390,12 +390,12 @@ MonoBehaviour:
   - {fileID: 5560193019171633010, guid: 24caccdafc4261b4cb933b319352d928, type: 3}
   - {fileID: 4179380448030190885, guid: 719b8fd0f138e5943b4753e114f039ea, type: 3}
   bossMonsters_Stage1:
-  - {fileID: 7439626506249827491, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
-  - {fileID: 4014306058948159716, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+  - {fileID: 8227391919022582039, guid: 9eed2c23dbdbdd1498fda1a116e0794a, type: 3}
   bossMonsters_Stage2:
   - {fileID: 7439626506249827491, guid: ba0d0e2cb91151340a2a9d01ee8e8b02, type: 3}
-  bossMonsters_Stage3:
   - {fileID: 4014306058948159716, guid: 2edb3063947dde146b906fc04e1b5c1e, type: 3}
+  bossMonsters_Stage3:
+  - {fileID: 6566479308208419710, guid: e29b5b792e39963439385aa6a050d6ec, type: 3}
   dfs: {fileID: 1861027644}
   player: {fileID: 839018395}
   dungeonManager: {fileID: 910339918}
@@ -1058,7 +1058,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910066351}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.4, y: 6.2, z: 0}
+  m_LocalPosition: {x: 108, y: -60, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1907,7 +1907,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1732069075}
-  - component: {fileID: 1732069074}
   m_Layer: 0
   m_Name: ItemStorage
   m_TagString: Untagged
@@ -1915,18 +1914,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1732069074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732069073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc4cebb941683624e82967b48031f65b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1732069075
 Transform:
   m_ObjectHideFlags: 0

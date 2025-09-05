@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class MinoMethod : BossMonsterMethod
 {
@@ -48,9 +49,12 @@ public class MinoMethod : BossMonsterMethod
         Debug.Log("미궁을 생성합니다.");
         player.transform.position = transform.position;
         labyrinthEffect.Play();
+
         labyrinth.gameObject.SetActive(true);
         //Todo 미궁 생성
     }
+
+    public void SetLabyrinth(Labyrinth labyrinth) => this.labyrinth = labyrinth;
 
 }
     
