@@ -135,6 +135,7 @@ public class NewMonsterMethod : MonoBehaviour
 
     /// <summary>
     /// Attack : 사거리 안에 플레이어가 있으면 공격
+    /// 해당 메서드는 애니메이션 이벤트로 호출 >> 공격 타이밍 떄문에
     /// </summary>
     public void AttackMethod()
     {
