@@ -44,7 +44,6 @@ public class PlayerAttack : PlayerState
     /// <returns></returns>
     private IEnumerator AttackExitRoutine()
     {
-        Debug.Log("어택 루틴 진입");
         playerController.CurWeapon.NormalAttack();
         playerController.BodyAnimator.Play(attackHash);
         playerController.WeaponAnimator.Play(attackHash);

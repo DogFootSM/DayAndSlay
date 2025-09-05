@@ -11,7 +11,6 @@ public class Bow : IAttackHandler
         GameObject arrowInstance = arrowPool.GetPoolArrow();
         arrowInstance.SetActive(true);
         arrowInstance.transform.parent = null;
-        Debug.Log("Arrow handler attack");
         Arrow arrow = arrowInstance.GetComponent<Arrow>();
         //TODO: 장착 무기의 사거리를 전달 필요
         arrow.SetLaunchTransform(position + (direction.normalized * 0.5f),direction, 3f);
