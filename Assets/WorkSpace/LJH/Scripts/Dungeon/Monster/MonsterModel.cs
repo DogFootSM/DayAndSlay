@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterModel : MonoBehaviour
@@ -14,6 +15,9 @@ public class MonsterModel : MonoBehaviour
     public float ChaseRange;
     public float MoveSpeed;
     public float AttackCooldown;
+    public List<ItemData> dropItems = new List<ItemData>();
+    
+    private List<DropItemEntry> dropItemEntries = new List<DropItemEntry>();
 
 
     private void Start()
@@ -36,7 +40,12 @@ public class MonsterModel : MonoBehaviour
         ChaseRange = monsterData.ChaseRange;
         MoveSpeed = monsterData.MoveSpeed;
         AttackCooldown = monsterData.AttackCooldown;
+        dropItemEntries = monsterData.DropTable;
 
+        foreach (DropItemEntry entry in dropItemEntries)
+        {
+            dropItems.Add(ItemDatabaseManager.instance.GetItemByID(entry.ItemId));
+        }
     }
     public float GetMonsterMaxHp() => MaxHp;
 
