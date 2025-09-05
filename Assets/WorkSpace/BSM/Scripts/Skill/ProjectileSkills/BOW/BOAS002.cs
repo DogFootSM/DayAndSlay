@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BOAS002 : ProjectileSkill
-{ 
+{
+    private float tempSlowPower = 0.5f;
+    
     public BOAS002(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -39,6 +41,8 @@ public class BOAS002 : ProjectileSkill
             //화살의 데미지 설정
             arrow.SetArrowDamage(skillDamage);
             
+            //화살 슬로우 스킬 적용, 현재 레벨에 따른 0.05% 추가 수치 적용
+            arrow.SetSlowSkill(true, skillNode.skillData.DeBuffDuration, tempSlowPower + ((skillNode.CurSkillLevel - 1) * 0.05f));
             yield return WaitCache.GetWait(0.2f);
         } 
     }

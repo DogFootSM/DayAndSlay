@@ -17,6 +17,11 @@ public class Arrow : MonoBehaviour
     private float range;
     private float arrowSpeed = 15f;
     
+    //슬로우 스킬 적용값
+    private float slowRatio;
+    private float slowDuration;
+    private bool isSlowSkill;
+    
     private void Awake()
     {
         monsterLayer = LayerMask.GetMask("Monster");
@@ -24,16 +29,29 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //화살이 몬스터에 닿았을 경우
         if ((1 << other.gameObject.layer & monsterLayer) != 0)
         {
             Monster monster = other.gameObject.GetComponent<Monster>();
             monster.TakeDamage(damage);
+            
+            //현재 화살이 슬로우 스킬 화살이며 몬스터가 슬로우 적용중이지 않은 상태
+            if (isSlowSkill && !monster.IsSlow)
+            {
+                IEffectReceiver receiver = other.gameObject.GetComponent<IEffectReceiver>();
+                receiver.ReceiveSlow(slowDuration, slowRatio); 
+            }
+            
             arrowPool.ReturnPoolArrow(this.gameObject); 
         }
     }
 
     private void OnDisable()
     {
+        isSlowSkill = false;
+        slowDuration = 0f;
+        slowRatio = 0f;
+        
         if (returnCo != null)
         {
             StopCoroutine(returnCo);
@@ -80,4 +98,18 @@ public class Arrow : MonoBehaviour
     {
         this.damage = damage;
     }
+
+    /// <summary>
+    /// 화살 오브젝트에 슬로우 효과 적용
+    /// </summary>
+    /// <param name="isSlowSkill">슬로우 스킬 적용 여부</param>
+    /// <param name="slowDuration">슬로우 지속 시간</param>
+    /// <param name="slowRatio">슬로우 비율</param>
+    public void SetSlowSkill(bool isSlowSkill, float slowDuration, float slowRatio)
+    {
+        this.isSlowSkill = isSlowSkill;
+        this.slowDuration = slowDuration;
+        this.slowRatio = slowRatio;
+    }
+    
 }
