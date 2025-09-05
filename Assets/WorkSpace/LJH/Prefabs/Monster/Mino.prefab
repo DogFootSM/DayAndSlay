@@ -14729,9 +14729,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8227391919022582506}
   - component: {fileID: 8227391919022582505}
-  - component: {fileID: 8227391919022582504}
   - component: {fileID: 8352499601493418567}
   - component: {fileID: 7042962199645776680}
+  - component: {fileID: 8227391919022582504}
   - component: {fileID: 4158822911095731913}
   - component: {fileID: 8186496415778326782}
   - component: {fileID: 7469695074419078920}
@@ -14815,27 +14815,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &8227391919022582504
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8227391919022582039}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 2f0b88e73f0ecae499400cd05b6967d2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8352499601493418567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14865,6 +14844,27 @@ MonoBehaviour:
   m_CategoryHash: 0.00048389428
   m_labelHash: 0.00000040954276
   m_SpriteKey: 1.8612038e-30
+--- !u!95 &8227391919022582504
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8227391919022582039}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 2f0b88e73f0ecae499400cd05b6967d2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4158822911095731913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14877,6 +14877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd5ea59d231e9f548a71ddbeba2a1a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
   monsterData: {fileID: 11400000, guid: 83f4ec0ff428aae48857281425b69194, type: 2}
   player: {fileID: 0}
   isAttacking: 0

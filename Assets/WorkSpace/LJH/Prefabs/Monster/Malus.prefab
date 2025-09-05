@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 2
   duration: 1
   tick: 0
@@ -4992,8 +4993,8 @@ GameObject:
   - component: {fileID: 4014306058948159742}
   - component: {fileID: 4014306058948159737}
   - component: {fileID: 4163150367317462427}
-  - component: {fileID: 4014306058948159736}
   - component: {fileID: 5229651020047193289}
+  - component: {fileID: 4014306058948159736}
   - component: {fileID: -5421944829332588048}
   - component: {fileID: 5339214499333117911}
   m_Layer: 0
@@ -5134,6 +5135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2567f9ec041cc4cbc1479e1aa12b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
   monsterData: {fileID: 11400000, guid: 683b038b7c0ba77488029b5f12275cc1, type: 2}
   player: {fileID: 0}
   isAttacking: 0
@@ -5158,27 +5160,6 @@ MonoBehaviour:
   effect: {fileID: 0}
   root: {fileID: 1450674528759126752}
   monster: {fileID: 0}
---- !u!114 &4014306058948159736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4014306058948159716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  MaxHp: 0
-  Hp: 0
-  Attack: 0
-  AttackRange: 0
-  ChaseRange: 0
-  MoveSpeed: 0
-  AttackCooldown: 0
 --- !u!114 &5229651020047193289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5201,6 +5182,28 @@ MonoBehaviour:
       Value: {fileID: 7108339969198208228, guid: e8506464c9baa314fa7758282e55ee6e, type: 3}
     - Key: MOVE
       Value: {fileID: 7108339969198208228, guid: c748703aa07eb9b4eb7e5d471709ad8d, type: 3}
+--- !u!114 &4014306058948159736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014306058948159716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb2bce696762f40bbfd1d64470aa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: 0
+  Name: 
+  MaxHp: 0
+  Hp: 0
+  def: 0
+  Attack: 0
+  AttackRange: 0
+  ChaseRange: 0
+  MoveSpeed: 0
+  AttackCooldown: 0
 --- !u!61 &-5421944829332588048
 BoxCollider2D:
   m_ObjectHideFlags: 0

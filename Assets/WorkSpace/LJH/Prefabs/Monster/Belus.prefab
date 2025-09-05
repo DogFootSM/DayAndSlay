@@ -4888,6 +4888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
@@ -14735,6 +14736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
@@ -19628,6 +19630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
@@ -58635,10 +58638,10 @@ GameObject:
   - component: {fileID: 7439626506249827493}
   - component: {fileID: 7439626506249827488}
   - component: {fileID: 6158955908396098429}
+  - component: {fileID: 1770743461195567507}
   - component: {fileID: 7439626506249827495}
   - component: {fileID: -4063632472117323754}
   - component: {fileID: 745124399150741237}
-  - component: {fileID: 1770743461195567507}
   m_Layer: 0
   m_Name: Belus
   m_TagString: Boss
@@ -58786,6 +58789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddcdf8275a2dc1a479163d548437ef13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
   monsterData: {fileID: 11400000, guid: 89e637bdbf0689a46a3c207743b127b4, type: 2}
   player: {fileID: 0}
   isAttacking: 0
@@ -58821,6 +58825,28 @@ MonoBehaviour:
   - {fileID: 8007253405674058569}
   - {fileID: 4561710726049927343}
   - {fileID: 1455091197222054791}
+--- !u!114 &1770743461195567507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7439626506249827491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05fa288833098864ca79085a77d13f9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: 75da0bdf470dd5b4098130f9a5062906, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: 9f19acdaa15c95240ad977845f7dd78f, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: fbb36e302d5158042ad950d096ff8359, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: e9891870849e1ff4ebfaab6e33b34d5e, type: 3}
 --- !u!114 &7439626506249827495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58837,6 +58863,7 @@ MonoBehaviour:
   Name: 
   MaxHp: 0
   Hp: 100
+  def: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
@@ -58889,28 +58916,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1770743461195567507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7439626506249827491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05fa288833098864ca79085a77d13f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: 75da0bdf470dd5b4098130f9a5062906, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: 9f19acdaa15c95240ad977845f7dd78f, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: fbb36e302d5158042ad950d096ff8359, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: e9891870849e1ff4ebfaab6e33b34d5e, type: 3}
 --- !u!1 &7513180227856329894
 GameObject:
   m_ObjectHideFlags: 0
@@ -63799,6 +63804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
@@ -73569,6 +73575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
@@ -78462,6 +78469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
@@ -88228,6 +88236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
+  delayType: 0
   delay: 1
   duration: 0.5
   tick: 0
