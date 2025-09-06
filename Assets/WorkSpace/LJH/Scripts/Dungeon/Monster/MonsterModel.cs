@@ -47,6 +47,36 @@ public class MonsterModel : MonoBehaviour
             dropItems.Add(ItemDatabaseManager.instance.GetItemByID(entry.ItemId));
         }
     }
+
+    public ItemData DropItemPick(float randomNum)
+    {
+        float firstItemRate = dropItemEntries[0].DropRate;
+        float secondItemRate = firstItemRate + dropItemEntries[1].DropRate;
+        float thirdItemRate = secondItemRate + dropItemEntries[2].DropRate;
+        
+        
+        //ex 1 ~ 10
+        if (randomNum <= firstItemRate)
+        {
+            return ItemDatabaseManager.instance.GetItemByID(dropItemEntries[0].ItemId);
+        }
+        
+        //ex 11 ~ 40
+        else if (randomNum > firstItemRate && randomNum <= secondItemRate)
+        {
+            return ItemDatabaseManager.instance.GetItemByID(dropItemEntries[1].ItemId);
+        }
+        
+        //ex 41 ~ 70
+        else if (randomNum > secondItemRate && randomNum <= thirdItemRate)
+        {
+            return ItemDatabaseManager.instance.GetItemByID(dropItemEntries[2].ItemId);
+        }
+
+        //나머지의 경우 드랍템 없음 처리
+        return null;
+
+    }
     public float GetMonsterMaxHp() => MaxHp;
 
     public float GetMonsterHp() => Hp;

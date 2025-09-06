@@ -76,7 +76,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ReceiveKnockBack(player.transform.position, Vector2.left);
+            method.DropItem();
         }
 #endif
     }

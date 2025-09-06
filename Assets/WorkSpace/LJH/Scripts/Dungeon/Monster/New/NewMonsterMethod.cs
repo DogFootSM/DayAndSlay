@@ -6,6 +6,7 @@ using Zenject;
 public class NewMonsterMethod : MonoBehaviour
 {
     protected MonsterData monsterData;
+    protected MonsterModel model;
     protected AstarPath astarPath;
     protected NewMonsterAI ai;
     protected NewMonsterAnimator animator;
@@ -164,6 +165,12 @@ public class NewMonsterMethod : MonoBehaviour
     public void DieMethod()
     {
         Debug.Log("사망");
+        
+        //사망 이펙트 재생
+        //아이템 드랍
+        //몬스터 비활성화 or 파괴
+        
+        
     }
 
 
@@ -177,8 +184,13 @@ public class NewMonsterMethod : MonoBehaviour
         ai.ReceiveKnockBack(player.transform.position, Vector2.left);
     }
 
-    protected void DropItem()
+    public void DropItem()
     {
         Debug.Log("아이템 떨어뜨림");
+        model = ai.GetMonsterModel();
+        
+        float randomNum = Random.Range(0, 100);
+
+        Debug.Log(model.DropItemPick(randomNum));
     }
 }

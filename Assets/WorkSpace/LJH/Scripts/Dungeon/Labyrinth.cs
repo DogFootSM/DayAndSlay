@@ -8,10 +8,10 @@ public class Labyrinth : MonoBehaviour
     private MinoMethod mino;
     private void Start()
     {
-        StartCoroutine(Setcoroutine());
+        StartCoroutine(SetCoroutine());
     }
 
-    private IEnumerator Setcoroutine()
+    private IEnumerator SetCoroutine()
     {
         yield return new WaitForSeconds(0.5f);
         
