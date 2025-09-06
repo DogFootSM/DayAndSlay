@@ -169,8 +169,8 @@ public class NewMonsterMethod : MonoBehaviour
         Debug.Log("사망");
         
         //사망 이펙트 재생
-        //아이템 드랍
-        //몬스터 비활성화 or 파괴
+        DropItem();
+        gameObject.SetActive(false);
         
         
     }
@@ -193,8 +193,6 @@ public class NewMonsterMethod : MonoBehaviour
         
         float randomNum = Random.Range(0, 100);
 
-        Debug.Log(model.DropItemPick(randomNum));
-        
         Instantiate(itemPrefab, transform.position, Quaternion.identity);
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
     }
