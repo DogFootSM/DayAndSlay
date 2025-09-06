@@ -5,6 +5,8 @@ using Zenject;
 
 public class NewMonsterMethod : MonoBehaviour
 {
+    [SerializeField] GameObject itemPrefab;
+    
     protected MonsterData monsterData;
     protected MonsterModel model;
     protected AstarPath astarPath;
@@ -192,5 +194,8 @@ public class NewMonsterMethod : MonoBehaviour
         float randomNum = Random.Range(0, 100);
 
         Debug.Log(model.DropItemPick(randomNum));
+        
+        Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
     }
 }
