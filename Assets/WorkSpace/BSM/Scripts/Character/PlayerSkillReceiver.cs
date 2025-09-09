@@ -482,11 +482,16 @@ public class PlayerSkillReceiver : MonoBehaviour
         float elapsedTime = 0;
 
         //지속 시간이 끝나기 전 or 현재 체력이 최대 체력보다 적을 경우 체력 회복
-        while (elapsedTime < duration || playerModel.CurHp < playerModel.MaxHp)
+        while (elapsedTime < duration && playerModel.CurHp < playerModel.MaxHp)
         {
             //1초당 체력 회복
             yield return WaitCache.GetWait(1f);
-            playerModel.CurHp += healthRegen;
+            
+            //전체 체력의 회복량 계산
+            float regenHealth = playerModel.MaxHp * healthRegen; 
+            
+            //초당 회복량 현재 체력에 더함
+            playerModel.CurHp += regenHealth;
             elapsedTime += 1f;
         }
     }
