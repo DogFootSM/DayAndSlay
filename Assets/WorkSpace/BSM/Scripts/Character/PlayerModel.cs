@@ -164,11 +164,11 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <summary>
     /// 현재 사용중인 스킬 캐스팅이 완료됐는지에 대한 상태
     /// </summary>
-    private bool isCastingDone;
-    public bool IsCastingDone
+    private bool isCasting;
+    public bool IsCasting
     {
-        get => isCastingDone;
-        set => isCastingDone = value;
+        get => isCasting;
+        set => isCasting = value;
     }
     
     /// <summary>
@@ -227,7 +227,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float AttackSpeed;
     public float CriticalPer;
     public float CriticalDamage;
-
+    
     private float moveSpeedFactor;
     private float attackSpeedFactor;
     private float strengthFactor;
