@@ -6,6 +6,7 @@ using UnityEngine;
 public class Monster : MonoBehaviour, IEffectReceiver
 {
     [NonSerialized] public float hp = 100;
+    public bool IsMove;
     public float maxHp = 100;
     private GameObject markParticle;
     private GameObject markObject;
@@ -32,6 +33,9 @@ public class Monster : MonoBehaviour, IEffectReceiver
     protected bool isDefenseDeBuffed;
 
     private float defenseDeBuffRatio;
+    
+    private bool isSlow;
+    public bool IsSlow => isSlow;
     
     private void Awake()
     {
@@ -79,8 +83,12 @@ public class Monster : MonoBehaviour, IEffectReceiver
         {
             player.TakeDamage(this, 3);
         }
-        
-        //transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
+
+        if (IsMove)
+        {
+            transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
+        }
+        //
     }
 
     //-----------------------------------------------
@@ -98,7 +106,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         
         //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
-        //Debug.Log($"{gameObject.name} 남은 hp :{hp}");
+        Debug.Log($"{gameObject.name} 남은 hp :{hp}");
     }
 
     public float GetMaxHp()
@@ -268,17 +276,18 @@ public class Monster : MonoBehaviour, IEffectReceiver
     protected virtual IEnumerator SlowRoutine(float duration, float ratio)
     {
         float elapsedTime = 0f;
-
-        float originMoveSpeed = moveSpeed;
-
-        moveSpeed -= 2f;
+        isSlow = true;
         
+        float originMoveSpeed = moveSpeed;
+        
+        moveSpeed -= (moveSpeed * ratio);
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
+        isSlow = false;
         moveSpeed = originMoveSpeed;
     }
 }

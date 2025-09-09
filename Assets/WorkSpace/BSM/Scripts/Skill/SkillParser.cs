@@ -136,8 +136,15 @@ public class SkillParser : MonoBehaviour
         float.TryParse(rowData[headerMap["Radius"]], out skillRadiusRange);
 
         string prerequisiteSkillsId = rowData[headerMap["PrecedingSkill"]] ?? string.Empty;
+
+        float skillAbilityValue = 0f;
+        float.TryParse(rowData[headerMap["SkillAbilityValue"]], out skillAbilityValue);
         
-        //TODO: 선행 스킬 리스트 추가 필요
+        float skillAbilityFactor = 0f;
+        float.TryParse(rowData[headerMap["SkillAbilityFactor"]], out skillAbilityFactor);
+
+        int detectedCount = 0;
+        int.TryParse(rowData[headerMap["DetectedCount"]], out detectedCount);
         
         SkillData skillData = new SkillData();
         skillData = CreateSkillData(skillId);
@@ -149,8 +156,14 @@ public class SkillParser : MonoBehaviour
         }
         
         //추출한 데이터 값으로 SO 데이터 설정
-        skillData.SetData(skillId, skillName, skillDescription, skillEffect, skillCoolDown, skillMaxLevel, skillDamage, skillDamageIncreaseRate,
-            skillIcon, (WeaponType)weaponType, skillDelay, skillDelayDecreaseRate, skillRange, castingTime,skillHitCount, active, buffDuration, deBuffDuration, prerequisiteSkillsId, skillRadiusRange);
+        skillData.SetData(
+            skillId, skillName, skillDescription, skillEffect, 
+            skillCoolDown, skillMaxLevel, skillDamage, skillDamageIncreaseRate,
+            skillIcon, (WeaponType)weaponType, skillDelay, 
+            skillDelayDecreaseRate, skillRange, castingTime, skillHitCount, 
+            active, buffDuration, deBuffDuration, prerequisiteSkillsId, 
+            skillRadiusRange, skillAbilityValue, skillAbilityFactor, detectedCount);
+        
         EditorUtility.SetDirty(skillData);
         
         AssetDatabase.SaveAssets();

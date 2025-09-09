@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SSPS004 : PassiveSkill
 {
+    private float baseResistance = 0.12f;
+    private float resistanceLevel = 0.06f;
+    
     public SSPS004(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -14,9 +17,10 @@ public class SSPS004 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        float resistancePer = 12f + ((skillNode.CurSkillLevel -1) * 6f);
+        float resistancePer = baseResistance + ((skillNode.CurSkillLevel -1) * resistanceLevel);
         
         skillNode.PlayerModel.UpdateResistanceFactor(resistancePer);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
     public override void Gizmos()
@@ -26,5 +30,6 @@ public class SSPS004 : PassiveSkill
     public override void RevertPassiveEffects()
     {
         skillNode.PlayerModel.UpdateResistanceFactor(0);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

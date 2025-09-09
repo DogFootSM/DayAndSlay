@@ -21,6 +21,7 @@ public class SSAS001 : MeleeSkill
         ListClear();
         
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
+        
         SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
         skillDamage = GetSkillDamage();

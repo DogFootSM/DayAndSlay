@@ -136,16 +136,21 @@ public class PlayerController : MonoBehaviour
         }
         
         //웨폰 핸들러 변경
-        curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
-        //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경인데 걍 내가 찍을까;
-        //TODO: NotWeapon 따로 처리 필요해짐
+        if (itemData != null)
+        {
+            curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
+        }
+        //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경
+        //TODO: NotWeapon 처리 필요
         characterAnimatorController.WeaponAnimatorChange((int)weaponType);
         playerModel.UpdateWeaponType(weaponType);
+        
         //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
         
         //장착 무기가 ShortSword 외엔 방패 오브젝트 비활성화
         shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
+        
         //장착 무기가 bow 외엔 화살통 오브젝트 비활성화
         quiverObject.SetActive(curWeaponType == CharacterWeaponType.BOW);
         
@@ -158,6 +163,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void KeyInput()
     {
+        //TODO: 캐스팅중인 상태이면 이동 x?
         posX = Input.GetAxisRaw("Horizontal");
         posY = Input.GetAxisRaw("Vertical");
 
@@ -245,7 +251,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(IEffectReceiver monsterReceiver, float damage)
     {
-        //TODO: 보호막 쉴드에 따른 데미지 계산ㄱㄱ
+        //TODO: 보호막 쉴드에 따른 데미지 계산
         //TODO: 방어력과 몬스터 데미지 공식 정립한 후 체력 감소 진행 + 받는 피해량 감소 버프 상태 체크
 
         //보호막 쉴드 존재 시 데미지 피해를 받지 않음

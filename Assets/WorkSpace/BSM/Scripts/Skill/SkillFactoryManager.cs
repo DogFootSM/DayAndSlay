@@ -35,6 +35,17 @@ public static class SkillFactoryManager
             case "SPAS008" : return new SPAS008(skillNode);
             case "SPAS009" : return new SPAS009(skillNode);
             case "SPAS010" : return new SPAS010(skillNode); 
+            case "SPPS001" : return new SPPS001(skillNode);
+            case "SPPS002" : return new SPPS002(skillNode);
+            case "SPPS003" : return new SPPS003(skillNode);
+            case "SPPS004" : return new SPPS004(skillNode);
+            
+            case "BOAS001" : return new BOAS001(skillNode);
+            case "BOAS002" : return new BOAS002(skillNode);
+            case "BOAS003" : return new BOAS003(skillNode);
+            case "BOAS004" : return new BOAS004(skillNode);
+            case "BOAS005" : return new BOAS005(skillNode);
+            
             
             default: return null;
         }    
