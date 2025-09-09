@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BOAS003 : MeleeSkill
 {
+    private Coroutine waitCastingCo;
     private int shieldCount = 1;
     
     public BOAS003(SkillNode skillNode) : base(skillNode)
@@ -18,9 +19,18 @@ public class BOAS003 : MeleeSkill
         
         ExecuteCasting(3f);
         ExecuteShield(shieldCount, 0, duration);
-        skillNode.PlayerSkillReceiver.StartCoroutine(CastingWaitEffect(playerPosition));
-    }
 
+        if (waitCastingCo == null)
+        {
+            waitCastingCo = skillNode.PlayerSkillReceiver.StartCoroutine(CastingWaitEffect(playerPosition));
+        } 
+    }
+    
+    /// <summary>
+    /// 캐스팅 대기 후 이펙트 실행 코루틴
+    /// </summary>
+    /// <param name="effectPosition"></param>
+    /// <returns></returns>
     private IEnumerator CastingWaitEffect(Vector2 effectPosition)
     {
         yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
@@ -29,6 +39,12 @@ public class BOAS003 : MeleeSkill
         
         //이펙트 Local 위치 설정
         instance.transform.localPosition = Vector2.zero;
+
+        if (waitCastingCo != null)
+        {
+            skillNode.PlayerSkillReceiver.StopCoroutine(waitCastingCo);
+            waitCastingCo = null;
+        }
     }
     
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)

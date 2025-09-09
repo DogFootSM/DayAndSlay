@@ -26,7 +26,7 @@ public class ParticleInteraction : MonoBehaviour
     /// </summary>
     /// <param name="delaySeconds">딜레이 시간, 몇 초 후에 몬스터 방향으로 이동할지</param>
     /// <param name="targetDirection">파티클이 날라갈 방향</param>
-    public void StraightProjectile(float delaySeconds, Vector2 targetDirection, float maxDistance)
+    public void LinearProjectile(float delaySeconds, Vector2 targetDirection, float maxDistance)
     {
         if (projectileCo != null)
         {
