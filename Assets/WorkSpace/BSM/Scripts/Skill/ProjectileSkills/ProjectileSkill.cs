@@ -88,7 +88,16 @@ public abstract class ProjectileSkill : SkillFactory
             overlapSize = new Vector2(1f, length);
         } 
     }
-
+    
+    /// <summary>
+    /// 캐스팅 로직 호출
+    /// </summary>
+    /// <param name="castingTime">스킬 사용에 걸리는 시간</param>
+    protected void ExecuteCasting(float castingTime)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveCasting(castingTime);
+    }
+    
     protected void Hit(IEffectReceiver receiver, int hitCount, float damage)
     {
         for (int i = 0; i < hitCount; i++)
