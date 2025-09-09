@@ -84,5 +84,14 @@ public class TempGoblin : Monster
         }
 
         slowCo = StartCoroutine(SlowRoutine(duration, ratio)); 
-    } 
+    }
+
+    protected override void AttackDeBuff(float duration, float deBuffPer)
+    {
+        if (attackDeBuffCo == null)
+        {
+            attackDeBuffCo = StartCoroutine(AttackDeBuffRoutine(duration, deBuffPer));
+        } 
+    }
+    
 }

@@ -378,5 +378,16 @@ public abstract class MeleeSkill : SkillFactory
     public void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
     {
         skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount);
-    } 
+    }
+
+    /// <summary>
+    /// 몬스터 공격력 감소 디버프 실행
+    /// </summary>
+    /// <param name="duration">공격력 감소 지속 시간</param>
+    /// <param name="deBuffPer">공격력 감소 퍼센트</param>
+    protected void ExecuteAttackDeBuffByMonster(IEffectReceiver receiver, float duration, float deBuffPer)
+    {
+        receiver.ReceiveAttackDeBuff(duration, deBuffPer);
+    }
+    
 }

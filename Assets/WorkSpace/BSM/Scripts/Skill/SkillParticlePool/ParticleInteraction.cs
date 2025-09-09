@@ -6,12 +6,12 @@ using UnityEngine.Serialization;
 
 public class ParticleInteraction : MonoBehaviour
 {
-    [FormerlySerializedAs("SkillID")] public string EffectId;
+    public string EffectId;
     
     private SkillParticlePooling instance => SkillParticlePooling.Instance;
-    private List<Action> actions = new List<Action>();
+    protected List<Action> actions = new List<Action>();
     private Coroutine projectileCo;
-    
+
     /// <summary>
     /// 실행할 스킬 효과를 받아옴
     /// </summary>
@@ -61,8 +61,7 @@ public class ParticleInteraction : MonoBehaviour
             yield return null;
         } 
     }
-    
-    
+ 
     /// <summary>
     /// 파티클 정지 시 풀에 반환 이벤트
     /// </summary>
@@ -70,12 +69,12 @@ public class ParticleInteraction : MonoBehaviour
     { 
         instance.ReturnSkillParticlePool(EffectId, gameObject);
     }
-
+    
     private void OnParticleTrigger()
-    {
+    { 
         foreach (var action in actions)
         {
             action?.Invoke();
         }
-    }
+    } 
 }
