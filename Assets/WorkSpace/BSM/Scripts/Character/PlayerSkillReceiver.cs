@@ -497,6 +497,18 @@ public class PlayerSkillReceiver : MonoBehaviour
     }
 
     /// <summary>
+    /// 체력 즉시 회복 리시버
+    /// </summary>
+    /// <param name="healthPercent">회복할 체력의 퍼센트</param>
+    public void ReceiveRestoreHealthByPercent(float healthPercent)
+    {
+        float healthLevelPer = playerModel.MaxHp * healthPercent;
+        
+        //현재 체력 + 회복할 체력 수치가 최대 체력을 넘는지 확인 후 체력 회복
+        playerModel.CurHp = (playerModel.CurHp + healthLevelPer) > playerModel.MaxHp ? playerModel.MaxHp : playerModel.CurHp + healthLevelPer;
+    } 
+    
+    /// <summary>
     /// 다음 스킬 데미지 증가 버프 적용
     /// </summary>
     /// <param name="duration">버프 적용 시간</param>
@@ -736,8 +748,6 @@ public class PlayerSkillReceiver : MonoBehaviour
             spawnParticleAtRandomPosition = null;
         }
     }
-    
-    
-    
+
     
 }

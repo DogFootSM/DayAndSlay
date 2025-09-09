@@ -337,6 +337,15 @@ public abstract class MeleeSkill : SkillFactory
     {
         skillNode.PlayerSkillReceiver.ReceiveHealthRegenTick(duration, healthRegen);
     }
+
+    /// <summary>
+    /// 레벨 당 퍼센트 기반 체력 즉시 회복
+    /// </summary>
+    /// <param name="healthPercent">회복할 체력의 퍼센트</param>
+    protected void ExecuteRestoreHealthByPercent(float healthPercent)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveRestoreHealthByPercent(healthPercent);
+    }
     
     /// <summary>
     /// 몬스터에게 데미지 전달
