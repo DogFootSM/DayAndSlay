@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
-
+ 
 public abstract class ProjectileSkill : SkillFactory
 {
     private SkillParticlePooling skillParticlePool => SkillParticlePooling.Instance;
-    private GameObject surrounfEffectInstance;
     private ParticleSystem surroundParticleSystem;
-    private ParticleInteraction surroundInteraction;
     
-    protected ParticleSystemRenderer particleSystemRenderer;
+    protected List<List<Action>> actions = new List<List<Action>>();
+    
+    protected GameObject surrounfEffectInstance;
+    protected List<ParticleInteraction> surroundInteraction = new List<ParticleInteraction>();
+    protected List<ParticleSystemRenderer> particleSystemRenderer = new List<ParticleSystemRenderer>();
 
     protected float skillDamage;
     
@@ -23,7 +26,7 @@ public abstract class ProjectileSkill : SkillFactory
     /// <param name="position">이펙트의 위치</param>
     /// <param name="effectPrefab">재생할 이펙트 오브젝트</param>
     /// <param name="effectId">풀에 반납할 이펙트 아이디</param>
-    protected void SurroundEffect(Vector2 position, GameObject effectPrefab, string effectId)
+    protected void SingleEffect(Vector2 position, GameObject effectPrefab, string effectId, int index)
     {
         //파티클 풀에서 파티클 오브젝트 꺼내옴
         surrounfEffectInstance = skillParticlePool.GetSkillPool(effectId, effectPrefab);
@@ -36,11 +39,11 @@ public abstract class ProjectileSkill : SkillFactory
         surroundParticleSystem.Play();
         
         //풀에 반납할 파티클 아이디 설정
-        surroundInteraction = surrounfEffectInstance.GetComponent<ParticleInteraction>();
-        surroundInteraction.EffectId = effectId; 
+        surroundInteraction.Add(surrounfEffectInstance.GetComponent<ParticleInteraction>());
+        surroundInteraction[index].EffectId = effectId; 
         
         //파티클 렌더러 모드
-        particleSystemRenderer = surrounfEffectInstance.GetComponent<ParticleSystemRenderer>();
+        particleSystemRenderer.Add(surrounfEffectInstance.GetComponent<ParticleSystemRenderer>());
     }
     
     /// <summary>
@@ -68,6 +71,30 @@ public abstract class ProjectileSkill : SkillFactory
         //TODO: 스킬 데미지 공식 수정 필요
         this.skillDamage = skillDamage + (skillDamage * skillNode.CurSkillLevel);
     }
-    
+
+    /// <summary>
+    /// 감지할 OverlapSize 설정
+    /// </summary>
+    /// <param name="direction">바라보고 있는 방향</param>
+    /// <param name="length">현재 스킬의 길이</param>
+    protected void SetOverlapSize(Vector2 direction, float length)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            overlapSize = new Vector2(length, 1f);
+        }
+        else
+        {
+            overlapSize = new Vector2(1f, length);
+        } 
+    }
+
+    protected void Hit(IEffectReceiver receiver, int hitCount, float damage)
+    {
+        for (int i = 0; i < hitCount; i++)
+        {
+            receiver.TakeDamage(damage);
+        }
+    }
     
 }

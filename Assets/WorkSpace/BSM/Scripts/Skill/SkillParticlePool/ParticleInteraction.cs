@@ -22,31 +22,42 @@ public class ParticleInteraction : MonoBehaviour
     }
 
     /// <summary>
-    /// 파티클 몬스터 방향으로 이동
+    /// 일직선 발사체 파티클 몬스터 방향으로 이동
     /// </summary>
     /// <param name="delaySeconds">딜레이 시간, 몇 초 후에 몬스터 방향으로 이동할지</param>
-    /// <param name="targetPos">파티클이 날라갈 위치</param>
-    public void ParticleToMonsterPos(float delaySeconds, Vector2 targetPos)
+    /// <param name="targetDirection">파티클이 날라갈 방향</param>
+    public void StraightProjectile(float delaySeconds, Vector2 targetDirection, float maxDistance)
     {
         if (projectileCo != null)
         {
             StopCoroutine(projectileCo);
             projectileCo = null;
         }
-
-        projectileCo = StartCoroutine(ParticleToMonsterPosRoutine(delaySeconds, targetPos));
+        
+        transform.right = targetDirection;
+         
+        projectileCo = StartCoroutine(ParticleToMonsterPosRoutine(delaySeconds, maxDistance));
     }
 
     /// <summary>
     /// 몬스터 방향 이동 코루틴
     /// </summary>
-    private IEnumerator ParticleToMonsterPosRoutine(float delaySeconds, Vector2 targetPos)
+    private IEnumerator ParticleToMonsterPosRoutine(float delaySeconds, float maxDistance)
     {
         yield return WaitCache.GetWait(delaySeconds);
-
-        while (Vector2.Distance(transform.position, targetPos) > 0.01f)
+        
+        Vector2 startPos = transform.position;
+        
+        while (true)
         {
-            transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
+            transform.Translate(Vector2.right * 15f * Time.deltaTime);
+            
+            //스킬 사정거리 이상 날라갔을 경우 파티클 정지
+            if (Vector2.Distance(transform.position, startPos) > maxDistance)
+            {
+                gameObject.GetComponent<ParticleSystem>().Stop();
+            }
+            
             yield return null;
         } 
     }
