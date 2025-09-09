@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SSPS001 : PassiveSkill
 {
-
+    private float attackSpeedValueModifier = 0.08f;
+    private float attackSpeedLevelModifier = 0.02f;
+    
     public SSPS001(SkillNode skillNode) : base(skillNode)
     {
 
@@ -26,10 +28,10 @@ public class SSPS001 : PassiveSkill
         skillNode.PlayerModel.UpdateMoveSpeedFactor(moveFactor);
         
         //현재 스킬 레벨 당 추가 수치
-        float perLevel = skillNode.CurSkillLevel * 0.02f;
+        float perLevel = (skillNode.CurSkillLevel - 1) * attackSpeedLevelModifier;
         
         //현재 기본 공격 속도 기준 Factor + 레벨 당 추가 수치만큼 증가한 값
-        float attackFactor = (skillNode.PlayerModel.PlayerStats.baseAttackSpeed * 0.08f) + perLevel;
+        float attackFactor = (skillNode.PlayerModel.PlayerStats.baseAttackSpeed * attackSpeedValueModifier) + perLevel;
         skillNode.PlayerModel.UpdateAttackSpeedFactor(attackFactor);
         
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
@@ -39,6 +41,7 @@ public class SSPS001 : PassiveSkill
     {
         skillNode.PlayerModel.UpdateMoveSpeedFactor(0);
         skillNode.PlayerModel.UpdateAttackSpeedFactor(0);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
     
     public override void Gizmos()

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SSPS002 : PassiveSkill
 {
+    private float criticalLevelModifier = 0.02f;
+    
     public SSPS002(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -18,9 +20,10 @@ public class SSPS002 : PassiveSkill
         float factor = skillNode.PlayerModel.PlayerStats.baseStrength * 0.1f;
         skillNode.PlayerModel.UpdateStrengthFactor(factor);
 
-        float criticalPer = skillNode.PlayerModel.PlayerStats.baseCriticalPer + 0.05f;
-        float criticalPerLevel = criticalPer + (skillNode.CurSkillLevel * 0.02f);
+        float criticalPer = 0.05f;
+        float criticalPerLevel = criticalPer + ((skillNode.CurSkillLevel - 1) * criticalLevelModifier);
         skillNode.PlayerModel.UpdateCriticalPerFactor(criticalPerLevel);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
     public override void Gizmos()
@@ -34,5 +37,6 @@ public class SSPS002 : PassiveSkill
 
         skillNode.PlayerModel.UpdateStrengthFactor(factor);
         skillNode.PlayerModel.UpdateCriticalPerFactor(0);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

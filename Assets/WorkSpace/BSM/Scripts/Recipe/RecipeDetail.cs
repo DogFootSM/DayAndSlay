@@ -94,9 +94,8 @@ public class RecipeDetail : MonoBehaviour
             int requestMaterialId = validMaterialIds[i];
 
             ItemData recipeMaterialData = itemDatabase.GetItemByID(requestMaterialId);
-            
+
             RecipeMaterial recipeMaterial = GetRecipeMaterialPool().GetComponent<RecipeMaterial>();
-            
             recipeMaterial.SetMaterialData(recipeMaterialData);
             recipeMaterial.gameObject.SetActive(true);
         } 

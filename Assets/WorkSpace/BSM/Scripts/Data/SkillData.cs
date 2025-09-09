@@ -28,7 +28,9 @@ public class SkillData : ScriptableObject
     public float SkillCastingTime;
     public float BuffDuration;
     public float DeBuffDuration;
-    
+    public float SkillAbilityValue;
+    public float SkillAbilityFactor;
+    public int DetectedCount;
     
     /// <summary>
     /// 스킬 이펙트 오브젝트 설정
@@ -62,7 +64,7 @@ public class SkillData : ScriptableObject
             PrerequisiteSkillsId.Add(tmp[i]);
         } 
     }
-    
+
     /// <summary>
     /// 구글시트 파싱 데이터 설정
     /// </summary>
@@ -79,11 +81,18 @@ public class SkillData : ScriptableObject
     /// <param name="skillDelay">스킬 사용 후 행동 불능 상태의 시간</param>
     /// <param name="skillDelayDecreaseRate">스킬 레벨 당 행동 불능 상태 감소 비율</param>
     /// <param name="skillRange">스킬 공격 시 감지할 몬스터 수</param>
+    /// <param name="castingTime">스킬 캐스팅 필요 시간</param>
     /// <param name="skillHitCount">스킬 사용 시 몬스터를 타격할 횟수</param>
+    /// <param name="isActive">1: 액티브 스킬, 0: 패시브 스킬</param>
+    /// <param name="buffDuration">버프 지속 시간</param>
+    /// <param name="deBuffDuration">디버프 지속 시간</param>
+    /// <param name="prerequisiteSkillsId">선행 스킬 리스트</param>
+    /// <param name="skillRadiusRange">스킬 광역 범위</param>
     public void SetData(string skillId, string skillName, string skillDescription, string skillEffect, 
         float skillCoolDown, int skillMaxLevel, float skillDamage, float skillDamageIncreaseRate,
         string skillIcon, WeaponType requiredWeaponType, float skillDelay, float skillDelayDecreaseRate,
-        float skillRange, float castingTime, int skillHitCount, int isActive, float buffDuration, float deBuffDuration, string prerequisiteSkillsId, float skillRadiusRange)
+        float skillRange, float castingTime, int skillHitCount, int isActive, float buffDuration, float deBuffDuration, string prerequisiteSkillsId, float skillRadiusRange,
+        float skillAbilityValue, float skillAbilityFactor, int detectedCount)
     {
         this.SkillId = skillId;
         this.SkillName = skillName;
@@ -105,6 +114,9 @@ public class SkillData : ScriptableObject
         this.DeBuffDuration = deBuffDuration;
         SetPrerequisiteSkillsId(prerequisiteSkillsId);
         this.IsActive = isActive == 1;
+        this.SkillAbilityValue = skillAbilityValue;
+        this.SkillAbilityFactor = skillAbilityFactor;
+        this.DetectedCount = detectedCount;
     }
     
 } 

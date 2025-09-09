@@ -40,8 +40,9 @@ public class PlayerStats
     public float baseCoolDown;
     public float baseCastingSpeed;
     public float baseResistance;
-    public float DamageReflectValue;
     public float DamageReflectRate;
+    
+    public float DefenseFactor;                 //패시브 스킬 방어력 증가 수치
     
     //TODO: 공격력 계산 공식 수정 필요
     //캐릭터 체력
@@ -51,13 +52,15 @@ public class PlayerStats
     public float PhysicalAttack => level * FinalStrength * 0.2f;
 
     //캐릭터 물리 방어력
-    public float PhysicalDefense => level * (Health + FinalStrength) * 0.2f;
-
+    private float physicalDefense => level * (Health + FinalStrength) * 0.2f;
+    public float PhysicalDefense => physicalDefense + (physicalDefense * DefenseFactor);
+    
     //캐릭터 스킬 공격력
     public float SkillAttack => level * FinalStrength * FinalIntelligence * 0.2f;
 
     //캐릭터 스킬 방어력
-    public float SkillDefense => level * (Health + FinalIntelligence) * 0.2f;
+    private float skillDefense => level * (Health + FinalIntelligence) * 0.2f;
+    public float SkillDefense => skillDefense + (skillDefense * DefenseFactor);
 
     /// <summary>
     /// 기본 능력치 + 장착 아이템 능력치로 보정한 스탯 초기화
@@ -161,11 +164,11 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <summary>
     /// 현재 사용중인 스킬 캐스팅이 완료됐는지에 대한 상태
     /// </summary>
-    private bool isCastingDone;
-    public bool IsCastingDone
+    private bool isCasting;
+    public bool IsCasting
     {
-        get => isCastingDone;
-        set => isCastingDone = value;
+        get => isCasting;
+        set => isCasting = value;
     }
     
     /// <summary>
@@ -224,18 +227,17 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float AttackSpeed;
     public float CriticalPer;
     public float CriticalDamage;
-
+    
     private float moveSpeedFactor;
     private float attackSpeedFactor;
     private float strengthFactor;
     private float criticalPerFactor;
     private float criticalDamageFactor;
+    private float armorPenetration;
     
     
     private CharacterWeaponType curWeaponType;
     public CharacterWeaponType ModelCurWeaponType => curWeaponType;
-    
-    private Dictionary<CharacterWeaponType, Dictionary<string, float>> weaponPassiveDict = new Dictionary<CharacterWeaponType, Dictionary<string, float>>();
     
     private void Awake()
     {
@@ -334,13 +336,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         moveSpeedFactor = speedFactor;
         MoveSpeed = GetFactoredMoveSpeed();
         playerStats.IncreaseMoveSpeedPer = 1f + moveSpeedFactor;
-        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
 
     public void UpdateStrengthFactor(float strengthFactor)
     {
         playerStats.FinalStrength += strengthFactor;
-        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     /// <summary>
@@ -361,7 +361,6 @@ public class PlayerModel : MonoBehaviour, ISavable
         attackSpeedFactor = speedFactor;
         AttackSpeed = GetFactorAttackSpeed();
         playerStats.InCreaseAttackSpeedPer = 1f + speedFactor;
-        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     /// <summary>
@@ -381,7 +380,6 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         this.criticalPerFactor = criticalPerFactor;
         playerStats.FinalCriticalPer = GetFactorCriticalPerFactor();
-        statusWindow.OnChangedAllStats?.Invoke(playerStats);
     }
     
     /// <summary>
@@ -400,7 +398,25 @@ public class PlayerModel : MonoBehaviour, ISavable
     public void UpdateResistanceFactor(float resistanceFactor)
     {
         playerStats.FinalResistance = playerStats.baseResistance + resistanceFactor;
-        statusWindow.OnChangedAllStats?.Invoke(playerStats);
+    }
+
+    /// <summary>
+    /// 현재 방어력 Factor 업데이트
+    /// 기본 방어력 Stats.PhysicalDefense 의 Factor 만큼 추가 스탯
+    /// </summary>
+    /// <param name="defenseFactor"></param>
+    public void UpdateDefenseFactor(float defenseFactor)
+    {
+        playerStats.DefenseFactor = defenseFactor;
+    }
+
+    /// <summary>
+    /// 방어구 관통력 스탯 업데이트
+    /// </summary>
+    /// <param name="armorPen"></param>
+    public void UpdateArmorPenetration(float armorPen)
+    {
+        armorPenetration = armorPen;
     }
     
     /// <summary>
@@ -415,7 +431,7 @@ public class PlayerModel : MonoBehaviour, ISavable
             LevelUp();
         }
     }
-
+     
     /// <summary>
     /// 최종적으로 사용할 스탯의 값 업데이트
     /// </summary>
@@ -424,7 +440,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         //최종적으로 사용할 물리 스탯
         FinalPhysicalDamage = playerStats.PhysicalAttack;
         FinalPhysicalDefense = playerStats.PhysicalDefense;
-        
+
         //현재 체력, 최대 체력 업데이트
         curHp = playerStats.Health;
         maxHp = playerStats.Health;

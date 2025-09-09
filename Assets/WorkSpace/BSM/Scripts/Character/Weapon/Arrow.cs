@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,25 +6,22 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D arrowRb;
-    
-    private Dictionary<Vector2, Quaternion> arrowRotation = new Dictionary<Vector2, Quaternion>()
-    {
-        { Vector2.left, Quaternion.Euler(0, 0, 0) },
-        { Vector2.right, Quaternion.Euler(0, 0, 180) },
-        { Vector2.up, Quaternion.Euler(0, 0, 270) },
-        { Vector2.down, Quaternion.Euler(0, 0, 90) }
-    };
-    
+
     private ArrowPool arrowPool => ArrowPool.Instance;
     private Coroutine returnCo;
     
+    private Vector2 startPos = new Vector2();
     private LayerMask monsterLayer; 
-    private Vector2 maximumPos;
-    private Vector2 targetDir;
+    
     private float damage;
-    private float distanceX;
-    private float distanceY;
-
+    private float range;
+    private float arrowSpeed = 15f;
+    
+    //슬로우 스킬 적용값
+    private float slowRatio;
+    private float slowDuration;
+    private bool isSlowSkill;
+    
     private void Awake()
     {
         monsterLayer = LayerMask.GetMask("Monster");
@@ -31,20 +29,36 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //화살이 몬스터에 닿았을 경우
         if ((1 << other.gameObject.layer & monsterLayer) != 0)
         {
             Monster monster = other.gameObject.GetComponent<Monster>();
             monster.TakeDamage(damage);
-            arrowPool.ReturnPoolArrow(this.gameObject);
             
-            if (returnCo != null)
+            //현재 화살이 슬로우 스킬 화살이며 몬스터가 슬로우 적용중이지 않은 상태
+            if (isSlowSkill && !monster.IsSlow)
             {
-                StopCoroutine(returnCo);
-                returnCo = null;
+                IEffectReceiver receiver = other.gameObject.GetComponent<IEffectReceiver>();
+                receiver.ReceiveSlow(slowDuration, slowRatio); 
             }
+            
+            arrowPool.ReturnPoolArrow(this.gameObject); 
         }
     }
- 
+
+    private void OnDisable()
+    {
+        isSlowSkill = false;
+        slowDuration = 0f;
+        slowRatio = 0f;
+        
+        if (returnCo != null)
+        {
+            StopCoroutine(returnCo);
+            returnCo = null;
+        }
+    }
+
     /// <summary>
     /// 화살이 날라갈 방향 및 회전 설정
     /// </summary>
@@ -53,45 +67,26 @@ public class Arrow : MonoBehaviour
     public void SetLaunchTransform(Vector2 pos, Vector2 dir, float weaponRange)
     {
         transform.position = pos;
-        
-        //공격 방향에 따른 화살의 rotation z값 수정
-        transform.rotation = arrowRotation[dir];
+        startPos = pos;
+        range = weaponRange;
         
         //TODO: 화살은 모두 속도 동일로, 적정 속도 찾아서 상수값으로 박기
-        arrowRb.AddForce(dir * 15f, ForceMode2D.Impulse);
+        arrowRb.AddForce(dir * arrowSpeed, ForceMode2D.Impulse);
 
-        if (returnCo != null)
-        {
-            StopCoroutine(returnCo);
-            returnCo = null;
-        }
-        
-        //화살이 날라갈 최대 공격 사거리 설정
-        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
-        {
-            distanceX = dir.x < 0 ? -weaponRange : weaponRange; 
-        }
-        else
-        {
-            distanceY = dir.y < 0 ? -weaponRange : weaponRange;
-        }
-
-        maximumPos = new Vector2(pos.x + distanceX, pos.y + distanceY);
-        returnCo = StartCoroutine(ArrowReturnRoutine(maximumPos));
+        returnCo = StartCoroutine(ArrowReturnRoutine());
     }
-
+ 
     /// <summary>
     /// 화살이 공격 가능 최대 사거리 도달 시 풀에 반환하는 코루틴 
     /// </summary>
-    /// <param name="maximumPos">방향에 따른 화살이 날라갈 최대 거리</param>
     /// <returns></returns>
-    private IEnumerator ArrowReturnRoutine(Vector2 maximumPos)
+    private IEnumerator ArrowReturnRoutine()
     {
-        while (Vector2.Distance(transform.position, maximumPos) >= 0.001f)
+        while (Vector2.Distance(transform.position, startPos) < range)
         {
+            transform.right = -arrowRb.velocity;
             yield return null;
-        }
-        
+        } 
         arrowPool.ReturnPoolArrow(this.gameObject);
     }
     
@@ -103,4 +98,18 @@ public class Arrow : MonoBehaviour
     {
         this.damage = damage;
     }
+
+    /// <summary>
+    /// 화살 오브젝트에 슬로우 효과 적용
+    /// </summary>
+    /// <param name="isSlowSkill">슬로우 스킬 적용 여부</param>
+    /// <param name="slowDuration">슬로우 지속 시간</param>
+    /// <param name="slowRatio">슬로우 비율</param>
+    public void SetSlowSkill(bool isSlowSkill, float slowDuration, float slowRatio)
+    {
+        this.isSlowSkill = isSlowSkill;
+        this.slowDuration = slowDuration;
+        this.slowRatio = slowRatio;
+    }
+    
 }
