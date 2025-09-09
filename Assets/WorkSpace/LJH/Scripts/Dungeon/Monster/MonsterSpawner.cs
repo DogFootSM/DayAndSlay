@@ -107,7 +107,7 @@ public class MonsterSpawner : MonoBehaviour
         //Todo : 실제 연결시에는 해당 코드 이용
         //StageNum stageNum = IngameManager.instance.GetStage();
         //TestCode
-        StageNum stageNum = StageNum.STAGE2;
+        StageNum stageNum = StageNum.STAGE1;
         
         List<GameObject> monsters = new List<GameObject>();
         List<GameObject> bossMonsters =  new List<GameObject>();
@@ -156,7 +156,6 @@ public class MonsterSpawner : MonoBehaviour
         }
         
         MonsterActiver();
-
     }
 
     private void SpawnerDestroy()

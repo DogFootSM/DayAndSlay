@@ -5,7 +5,10 @@ using Zenject;
 
 public class NewMonsterMethod : MonoBehaviour
 {
+    [SerializeField] GameObject itemPrefab;
+    
     protected MonsterData monsterData;
+    protected MonsterModel model;
     protected AstarPath astarPath;
     protected NewMonsterAI ai;
     protected NewMonsterAnimator animator;
@@ -135,6 +138,7 @@ public class NewMonsterMethod : MonoBehaviour
 
     /// <summary>
     /// Attack : 사거리 안에 플레이어가 있으면 공격
+    /// 해당 메서드는 애니메이션 이벤트로 호출 >> 공격 타이밍 떄문에
     /// </summary>
     public void AttackMethod()
     {
@@ -163,6 +167,12 @@ public class NewMonsterMethod : MonoBehaviour
     public void DieMethod()
     {
         Debug.Log("사망");
+        
+        //사망 이펙트 재생
+        DropItem();
+        gameObject.SetActive(false);
+        
+        
     }
 
 
@@ -173,10 +183,17 @@ public class NewMonsterMethod : MonoBehaviour
     public void HitMethod(int damage)
     {
         Debug.Log("피격");
+        ai.ReceiveKnockBack(player.transform.position, Vector2.left);
     }
 
-    protected void DropItem()
+    public void DropItem()
     {
         Debug.Log("아이템 떨어뜨림");
+        model = ai.GetMonsterModel();
+        
+        float randomNum = Random.Range(0, 100);
+
+        Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
     }
 }
