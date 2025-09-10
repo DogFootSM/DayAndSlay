@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WDAS003 : MeleeSkill
+public class WDAS008 : MeleeSkill
 {
-    public WDAS003(SkillNode skillNode) : base(skillNode)
+    public WDAS008(SkillNode skillNode) : base(skillNode)
     {
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
+        GetSkillDamage();
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
         
         ListClear();
@@ -22,11 +23,12 @@ public class WDAS003 : MeleeSkill
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());
-            //TODO: 넉백 방향 수정해야 될듯?
+            
             for (int i = 0; i < cols.Length; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                skillActions[0].Add(() => ExecuteSlow(receiver, skillNode.skillData.DeBuffDuration, skillNode.skillData.SkillAbilityValue));
+            
+                skillActions[0].Add(() => ExecuteDot(receiver, skillNode.skillData.DeBuffDuration, skillNode.skillData.SkillHitCount, skillDamage / 5));
                 triggerModules[0].AddCollider(cols[i]);
             }
         
@@ -34,6 +36,7 @@ public class WDAS003 : MeleeSkill
             interactions[0].ReceiveAction(skillActions[0]);
         } 
     }
+
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
