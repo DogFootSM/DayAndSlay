@@ -48,6 +48,7 @@ public static class SkillFactoryManager
             
             case "WDAS001" : return new WDAS001(skillNode);
             case "WDAS002" : return new WDAS002(skillNode);
+            case "WDAS003" : return new WDAS003(skillNode);
             
             
             default: return null;
