@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SSPS003 : PassiveSkill
 {
-    private float damageReflectValueModifier = 0.08f;
-    private float damageReflectLevelModifier = 0.03f;
+    private float damageReflectBaseFactor = 0.08f;
+    private float damageReflectLevelFactor = 0.03f;
     
     public SSPS003(SkillNode skillNode) : base(skillNode)
     {
@@ -17,7 +17,7 @@ public class SSPS003 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        skillNode.PlayerModel.PlayerStats.DamageReflectRate = damageReflectValueModifier + ((skillNode.CurSkillLevel - 1) * damageReflectLevelModifier);
+        DamageReflectRateBuff(damageReflectBaseFactor, damageReflectLevelFactor);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers(); 
     }
 
@@ -27,7 +27,7 @@ public class SSPS003 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        skillNode.PlayerModel.PlayerStats.DamageReflectRate = 0;
+        DamageReflectRateBuff(0, 0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

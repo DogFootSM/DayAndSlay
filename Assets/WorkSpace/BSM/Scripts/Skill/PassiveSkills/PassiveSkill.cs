@@ -60,6 +60,28 @@ public abstract class PassiveSkill : SkillFactory
         float criticalFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
         skillNode.PlayerModel.UpdateCriticalPerFactor(criticalFactor);
     }
+
+    /// <summary>
+    /// 피해 반사 증가 버프
+    /// </summary>
+    /// <param name="baseFactor">기본 피해 반사</param>
+    /// <param name="levelFactor">레벨당 추가 피해 반사</param>
+    protected void DamageReflectRateBuff(float baseFactor, float levelFactor)
+    {
+        skillNode.PlayerModel.PlayerStats.DamageReflectRate =
+            baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
+    }
+
+    /// <summary>
+    /// 상태 이상 내성 증가 버프
+    /// </summary>
+    /// <param name="baseFactor">기본 상태 이상 내성</param>
+    /// <param name="levelFactor">레벨당 추가 상태 이상 내성</param>
+    protected void ResistanceBuff(float baseFactor, float levelFactor)
+    {
+        float resistanceFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
+        skillNode.PlayerModel.UpdateResistanceFactor(resistanceFactor);
+    }
     
     public abstract void RevertPassiveEffects();
 
