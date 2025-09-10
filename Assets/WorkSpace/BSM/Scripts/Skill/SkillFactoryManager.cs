@@ -46,6 +46,9 @@ public static class SkillFactoryManager
             case "BOAS004" : return new BOAS004(skillNode);
             case "BOAS005" : return new BOAS005(skillNode);
             
+            case "WDAS001" : return new WDAS001(skillNode);
+            case "WDAS002" : return new WDAS002(skillNode);
+            
             
             default: return null;
         }    
