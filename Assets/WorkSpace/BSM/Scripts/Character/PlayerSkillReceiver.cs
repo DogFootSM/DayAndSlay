@@ -396,16 +396,10 @@ public class PlayerSkillReceiver : MonoBehaviour
     private IEnumerator MoveSpeedBuffRoutine(float duration, float factor)
     {
         playerModel.UpdateMoveSpeedFactor(factor);
-        Debug.Log($"버프 후:{playerModel.MoveSpeed}");
+        
         yield return WaitCache.GetWait(duration);
+        
         playerModel.UpdateMoveSpeedFactor(0);
-        Debug.Log($"버프 전:{playerModel.MoveSpeed}");
-        // float originSpeed = playerModel.PlayerStats.baseMoveSpeed;
-        // playerModel.PlayerStats.baseMoveSpeed += (playerModel.PlayerStats.baseMoveSpeed * ratio);
-        // Debug.Log($"버프 :{playerModel.PlayerStats.baseMoveSpeed}");
-        // yield return WaitCache.GetWait(duration);
-        // playerModel.PlayerStats.baseMoveSpeed = originSpeed;
-        // Debug.Log($"버프 해제:{playerModel.PlayerStats.baseMoveSpeed}");
     }
 
     /// <summary>
