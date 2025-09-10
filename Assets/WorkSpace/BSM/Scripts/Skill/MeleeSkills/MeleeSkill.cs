@@ -236,10 +236,10 @@ public abstract class MeleeSkill : SkillFactory
     /// 이동속도 증가 버프 호출
     /// </summary>
     /// <param name="duration">버프 지속 시간</param>
-    /// <param name="ratio">이동 속도 증가 비율</param>
-    protected void ExecuteMoveSpeedBuff(float duration, float ratio)
+    /// <param name="factor">이동 속도 증가값</param>
+    protected void ExecuteMoveSpeedBuff(float duration, float factor)
     {
-        skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
+        skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, factor);
     }
 
     /// <summary>

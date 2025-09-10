@@ -47,19 +47,16 @@ public class ParticleInteraction : MonoBehaviour
         yield return WaitCache.GetWait(delaySeconds);
         
         Vector2 startPos = transform.position;
-        
-        while (true)
+ 
+        while (Vector2.Distance(transform.position, startPos) < maxDistance)
         {
             transform.Translate(Vector2.right * 15f * Time.deltaTime);
-            
-            //스킬 사정거리 이상 날라갔을 경우 파티클 정지
-            if (Vector2.Distance(transform.position, startPos) > maxDistance)
-            {
-                gameObject.GetComponent<ParticleSystem>().Stop();
-            }
-            
-            yield return null;
+
+            yield return null;      
         } 
+        
+        //스킬 사정거리까지 날아간 후 파티클 정지
+        gameObject.GetComponent<ParticleSystem>().Stop();
     }
  
     /// <summary>

@@ -338,11 +338,6 @@ public class PlayerModel : MonoBehaviour, ISavable
         playerStats.IncreaseMoveSpeedPer = 1f + moveSpeedFactor;
     }
 
-    public void UpdateStrengthFactor(float strengthFactor)
-    {
-        playerStats.FinalStrength += strengthFactor;
-    }
-    
     /// <summary>
     /// 이동속도 증가 값을 적용한 이동속도를 반환
     /// </summary>
@@ -352,6 +347,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         return playerStats.baseMoveSpeed + moveSpeedFactor;
     }
     
+    public void UpdateStrengthFactor(float strengthFactor)
+    {
+        playerStats.FinalStrength += strengthFactor;
+    }
+     
     /// <summary>
     /// 현재 스피드에 Factor만큼 스피드 증가
     /// </summary>

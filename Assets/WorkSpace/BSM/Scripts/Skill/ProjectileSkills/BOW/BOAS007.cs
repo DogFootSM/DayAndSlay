@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BOAS007 : MonoBehaviour
+public class BOAS007 : ProjectileSkill
 {
-    // Start is called before the first frame update
-    void Start()
+    public BOAS007(SkillNode skillNode) : base(skillNode)
+    {
+    }
+
+    public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        
+    }
+
+    public override void Gizmos()
+    {
     }
 }

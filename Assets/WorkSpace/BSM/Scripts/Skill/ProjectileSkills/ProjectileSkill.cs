@@ -10,7 +10,7 @@ public abstract class ProjectileSkill : SkillFactory
     
     protected List<List<Action>> actions = new List<List<Action>>();
     
-    protected GameObject surrounfEffectInstance;
+    protected GameObject surroundEffectInstance;
     protected List<ParticleInteraction> surroundInteraction = new List<ParticleInteraction>();
     protected List<ParticleSystemRenderer> particleSystemRenderer = new List<ParticleSystemRenderer>();
 
@@ -29,21 +29,21 @@ public abstract class ProjectileSkill : SkillFactory
     protected void SingleEffect(Vector2 position, GameObject effectPrefab, string effectId, int index)
     {
         //파티클 풀에서 파티클 오브젝트 꺼내옴
-        surrounfEffectInstance = skillParticlePool.GetSkillPool(effectId, effectPrefab);
-        surrounfEffectInstance.transform.position = position;
-        surrounfEffectInstance.transform.parent = null;
-        surrounfEffectInstance.SetActive(true);
+        surroundEffectInstance = skillParticlePool.GetSkillPool(effectId, effectPrefab);
+        surroundEffectInstance.transform.position = position;
+        surroundEffectInstance.transform.parent = null;
+        surroundEffectInstance.SetActive(true);
         
         //파티클 재생
-        surroundParticleSystem = surrounfEffectInstance.GetComponent<ParticleSystem>();
+        surroundParticleSystem = surroundEffectInstance.GetComponent<ParticleSystem>();
         surroundParticleSystem.Play();
         
         //풀에 반납할 파티클 아이디 설정
-        surroundInteraction.Add(surrounfEffectInstance.GetComponent<ParticleInteraction>());
+        surroundInteraction.Add(surroundEffectInstance.GetComponent<ParticleInteraction>());
         surroundInteraction[index].EffectId = effectId; 
         
         //파티클 렌더러 모드
-        particleSystemRenderer.Add(surrounfEffectInstance.GetComponent<ParticleSystemRenderer>());
+        particleSystemRenderer.Add(surroundEffectInstance.GetComponent<ParticleSystemRenderer>());
     }
     
     /// <summary>
@@ -56,10 +56,10 @@ public abstract class ProjectileSkill : SkillFactory
     /// <param name="downDeg">아래쪽 방향으로 사용 시 설정할 각도</param>
     protected void SetSurroundPrefabLocalRotation(Vector2 direction, float leftDeg, float rightDeg, float upDeg, float downDeg)
     {
-        if(direction.x > 0) surrounfEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, rightDeg);
-        if(direction.x < 0) surrounfEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, leftDeg);
-        if(direction.y > 0) surrounfEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, upDeg);
-        if(direction.y < 0) surrounfEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, downDeg); 
+        if(direction.x > 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, rightDeg);
+        if(direction.x < 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, leftDeg);
+        if(direction.y > 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, upDeg);
+        if(direction.y < 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, downDeg); 
     }
 
     /// <summary>

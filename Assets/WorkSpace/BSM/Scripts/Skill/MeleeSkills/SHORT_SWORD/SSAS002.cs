@@ -5,6 +5,9 @@ using System;
 
 public class SSAS002 : MeleeSkill
 {
+    private float moveSpeedPer = 0.3f;
+    private float moveSpeedLevelPer = 0.05f;
+    
     public SSAS002(SkillNode skillNode) : base(skillNode)
     {
         leftDeg = 90f; 
@@ -20,7 +23,9 @@ public class SSAS002 : MeleeSkill
         SetOverlapSize(direction, skillNode.skillData.SkillRadiusRange);
         SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
-        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, 0.3f);
+        
+        float buffLevelPer = moveSpeedPer + ((skillNode.CurSkillLevel - 1) * moveSpeedLevelPer);
+        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, buffLevelPer);
         
         Collider2D[] detectedMonster =
             Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0f, monsterLayer);

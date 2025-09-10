@@ -375,9 +375,9 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <summary>
     /// 이동 속도 버프 리시버
     /// </summary>
-    /// <param name="duration"></param>
-    /// <param name="ratio"></param>
-    public void ReceiveMoveSpeedBuff(float duration, float ratio)
+    /// <param name="duration">버프 지속 시간</param>
+    /// <param name="factor">증가할 이동속도 값</param>
+    public void ReceiveMoveSpeedBuff(float duration, float factor)
     {
         if (moveSpeedBuffCo != null)
         {
@@ -385,7 +385,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             moveSpeedBuffCo = null;
         }
 
-        moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, ratio));
+        moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, factor));
     }
 
     /// <summary>
@@ -393,13 +393,19 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    private IEnumerator MoveSpeedBuffRoutine(float duration, float ratio)
+    private IEnumerator MoveSpeedBuffRoutine(float duration, float factor)
     {
-        float originSpeed = playerModel.PlayerStats.baseMoveSpeed;
-        playerModel.PlayerStats.baseMoveSpeed += (playerModel.PlayerStats.baseMoveSpeed * ratio);
-
+        playerModel.UpdateMoveSpeedFactor(factor);
+        Debug.Log($"버프 후:{playerModel.MoveSpeed}");
         yield return WaitCache.GetWait(duration);
-        playerModel.PlayerStats.baseMoveSpeed = originSpeed;
+        playerModel.UpdateMoveSpeedFactor(0);
+        Debug.Log($"버프 전:{playerModel.MoveSpeed}");
+        // float originSpeed = playerModel.PlayerStats.baseMoveSpeed;
+        // playerModel.PlayerStats.baseMoveSpeed += (playerModel.PlayerStats.baseMoveSpeed * ratio);
+        // Debug.Log($"버프 :{playerModel.PlayerStats.baseMoveSpeed}");
+        // yield return WaitCache.GetWait(duration);
+        // playerModel.PlayerStats.baseMoveSpeed = originSpeed;
+        // Debug.Log($"버프 해제:{playerModel.PlayerStats.baseMoveSpeed}");
     }
 
     /// <summary>
