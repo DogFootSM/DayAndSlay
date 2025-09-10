@@ -57,8 +57,8 @@ public class StatusWindow : MonoBehaviour
     private void ChangedAllStats(PlayerStats playerStats)
     { 
         statsTexts[0].text = $"{playerStats.FinalStrength}";
-        statsTexts[1].text = $"{playerStats.FinalAgility}";
-        statsTexts[2].text = $"{playerStats.FinalIntelligence}";
+        statsTexts[1].text = $"{playerStats.EquipAgility}";
+        statsTexts[2].text = $"{playerStats.EquipIntelligence}";
         statsTexts[3].text = $"{playerStats.Health}";
         statsTexts[4].text = $"{playerStats.FinalCriticalPer * 100}%";
         statsTexts[5].text = $"{playerStats.PhysicalAttack}";
