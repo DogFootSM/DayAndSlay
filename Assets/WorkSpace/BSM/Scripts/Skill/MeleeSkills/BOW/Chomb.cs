@@ -14,6 +14,7 @@ public class Chomb : MonoBehaviour
     private float stunDuration = 2f;
     private int explosionAnimHash;
     private string effectId;
+    private string curStateAnimationName = "Chomb_Bomb_Clip";
     
     private void Awake()
     {
@@ -62,7 +63,7 @@ public class Chomb : MonoBehaviour
         while (true)
         {
             //현재 재생중인 애니메이션이 폭발 애니메이션인지?
-            if (chombAnimator.GetCurrentAnimatorStateInfo(0).IsName("Chomb_Bomb_Clip"))
+            if (chombAnimator.GetCurrentAnimatorStateInfo(0).IsName(curStateAnimationName))
             {
                 delayTime = chombAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
                 
