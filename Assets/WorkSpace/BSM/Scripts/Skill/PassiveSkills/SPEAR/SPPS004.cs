@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SPPS004 : PassiveSkill
 {
-    private float armorPenetration = 0.1f;
-    private float armorPenetrationLevelModifier = 0.05f;
+    private float baseArmorPenetration = 0.1f;
+    private float levelArmorPenetration = 0.05f;
     
     public SPPS004(SkillNode skillNode) : base(skillNode)
     {
@@ -18,12 +18,7 @@ public class SPPS004 : PassiveSkill
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
-
-        float armorPenetrationLevelPer =
-            armorPenetration + ((skillNode.CurSkillLevel - 1) * armorPenetrationLevelModifier);
-
-        Debug.Log(armorPenetrationLevelPer);
-        
+        ArmorPenetrationBuff(baseArmorPenetration, levelArmorPenetration);    
     }
 
     public override void Gizmos()
@@ -32,5 +27,6 @@ public class SPPS004 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
+        ArmorPenetrationBuff(0, 0);
     }
 }

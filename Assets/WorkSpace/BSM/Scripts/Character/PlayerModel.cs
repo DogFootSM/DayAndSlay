@@ -27,7 +27,10 @@ public class PlayerStats
     public float baseMoveSpeed;               //캐릭터의 기본 이동속도
     public float baseAttackSpeed;           //캐릭터의 기본 공격 속도
     public float baseCriticalDamage;
-    
+    public float baseCoolDown;
+    public float baseCastingSpeed;
+    public float baseResistance;
+        
     public float EquipStrength;         //장비 장착 힘 능력치 
     public float EquipAgility;          //장비 장착 민첩 능력치
     public float EquipIntelligence;     //장비 장착 지능 능력치
@@ -43,20 +46,22 @@ public class PlayerStats
     public float FinalStrength => baseStrength + EquipStrength + StrengthFactor;
     public float FinalAgility => baseAgility + EquipAgility + AgilityFactor;
     public float FinalIntelligence => baseIntelligence + EquipIntelligence + IntelligenceFactor;
-    public float FinalCriticalPer;      //보여질 캐릭터 크리티컬 능력치
+    public float FinalCriticalPer;      
     public float FinalCriticalDamage;
     public float FinalResistance;
     
     public float IncreaseMoveSpeedPer;
     public float InCreaseAttackSpeedPer;
     #endregion
-
-    public float baseCoolDown;
-    public float baseCastingSpeed;
-    public float baseResistance;
+    
+    //피해 반사
     public float DamageReflectRate;
     
-    public float DefenseFactor;                 //패시브 스킬 방어력 증가 수치
+    //패시브 스킬 방어력 증가 수치
+    public float DefenseFactor;
+
+    //방어력 관통 수치
+    public float ArmorPenetration; 
     
     //TODO: 공격력 계산 공식 수정 필요
     //캐릭터 체력
@@ -229,6 +234,8 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float FinalPhysicalDefense;
     public float MoveSpeed;
     public float AttackSpeed;
+    
+    //TODO: 사용 방법 생각
     public float CriticalPer;
     public float CriticalDamage;
     
@@ -237,8 +244,6 @@ public class PlayerModel : MonoBehaviour, ISavable
     private float strengthFactor;
     private float criticalPerFactor;
     private float criticalDamageFactor;
-    private float armorPenetration;
-    
     
     private CharacterWeaponType curWeaponType;
     public CharacterWeaponType ModelCurWeaponType => curWeaponType;
@@ -301,7 +306,8 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.baseCriticalPer = 0f;
             playerStats.baseCriticalDamage = 1.5f;
         }
-
+        
+        playerStats.FinalCriticalDamage = playerStats.baseCriticalDamage;
         MoveSpeed = GetFactoredMoveSpeed();
         AttackSpeed = GetFactorAttackSpeed();
     }
@@ -385,7 +391,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
 
     /// <summary>
-    /// 현재 크리티컬 데미지에 Factor만큼 증가
+    /// 현재 크리티컬 확률에 Factor만큼 증가
     /// </summary>
     /// <param name="criticalPerFactor"></param>
     public void UpdateCriticalPerFactor(float criticalPerFactor)
@@ -395,12 +401,22 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
     
     /// <summary>
-    /// 현재 크리티컬 데미지를 가져옴
+    /// 현재 크리티컬 확률 가져옴
     /// </summary>
     /// <returns></returns>
     public float GetFactorCriticalPerFactor()
     {
         return playerStats.baseCriticalPer + criticalPerFactor;
+    }
+
+    /// <summary>
+    /// 현재 크리티컬 데미지 증가
+    /// </summary>
+    /// <param name="criticalDamageFactor">Factor만큼 CriticalDamage 값 증가</param>
+    public void UpdateCriticalDamage(float criticalDamageFactor)
+    {
+        float round = Mathf.Round((playerStats.baseCriticalDamage + (playerStats.baseCriticalDamage * criticalDamageFactor)) * 100) * 0.01f;
+        playerStats.FinalCriticalDamage = round;
     }
     
     /// <summary>
@@ -428,12 +444,12 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <param name="armorPen"></param>
     public void UpdateArmorPenetration(float armorPen)
     {
-        armorPenetration = armorPen;
+        playerStats.ArmorPenetration = armorPen;
     }
     
-    private void UpdateAgilityStats(float agility)
+    public void UpdateAgilityStats(float agility)
     {
-       
+       playerStats.AgilityFactor = agility;
     }
     
     /// <summary>

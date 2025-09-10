@@ -21,7 +21,7 @@ public class SPPS001 : PassiveSkill
     {
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
         StrengthBuff(baseStrengthFactor);
-        CriticalBuff(criticalBaseFactor, criticalLevelFactor);
+        CriticalRateBuff(criticalBaseFactor, criticalLevelFactor);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 

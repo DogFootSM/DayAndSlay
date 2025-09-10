@@ -16,10 +16,12 @@ public abstract class PassiveSkill : SkillFactory
     /// <summary>
     /// 기본 이동 속도 * factor만큼 MoveSpeed에 적용
     /// </summary>
-    /// <param name="factor"></param>
-    protected void MoveSpeedBuff(float factor)
+    /// <param name="factor">기본 이동 속도 증가 값</param>
+    /// <param name="levelFactor">레벨당 추가 증가값</param>
+    protected void MoveSpeedBuff(float factor, float levelFactor = 0)
     {
-        float moveFactor = skillNode.PlayerModel.PlayerStats.baseMoveSpeed * factor;
+        float perLevel = (skillNode.CurSkillLevel - 1) * levelFactor;
+        float moveFactor = skillNode.PlayerModel.PlayerStats.baseMoveSpeed * (factor + perLevel);
         skillNode.PlayerModel.UpdateMoveSpeedFactor(moveFactor);
     }
     
@@ -55,12 +57,23 @@ public abstract class PassiveSkill : SkillFactory
     /// </summary>
     /// <param name="baseFactor">스킬 기본 증가 factor</param>
     /// <param name="levelFactor">레벨당 추가 증가 factor</param>
-    protected void CriticalBuff(float baseFactor, float levelFactor)
+    protected void CriticalRateBuff(float baseFactor, float levelFactor)
     {
         float criticalFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
         skillNode.PlayerModel.UpdateCriticalPerFactor(criticalFactor);
     }
 
+    /// <summary>
+    /// 크리티컬 데미지 증가 버프
+    /// </summary>
+    /// <param name="baseFactor">기본 증가 데미지</param>
+    /// <param name="levelFactor">레벨당 추가 데미지</param>
+    protected void CriticalDamageBuff(float baseFactor, float levelFactor)
+    {
+        float criticalDamageFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
+        skillNode.PlayerModel.UpdateCriticalDamage(criticalDamageFactor);        
+    }
+    
     /// <summary>
     /// 피해 반사 증가 버프
     /// </summary>
@@ -81,6 +94,38 @@ public abstract class PassiveSkill : SkillFactory
     {
         float resistanceFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
         skillNode.PlayerModel.UpdateResistanceFactor(resistanceFactor);
+    }
+
+    /// <summary>
+    /// 방어력 증가 버프
+    /// </summary>
+    /// <param name="baseFactor">기본 방어력 증가율</param>
+    /// <param name="levelFactor">레벨당 추가 증가율</param>
+    protected void DefenseBuff(float baseFactor, float levelFactor)
+    {
+        float defenseFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
+        skillNode.PlayerModel.UpdateDefenseFactor(defenseFactor);
+    }
+
+    /// <summary>
+    /// 방어력 관통 증가 버프
+    /// </summary>
+    /// <param name="baseFactor">기본 방어력 관통력</param>
+    /// <param name="levelFactor">레벵당 추가 방어력 관통력</param>
+    protected void ArmorPenetrationBuff(float baseFactor, float levelFactor)
+    {
+        float armorPenetration = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
+        skillNode.PlayerModel.UpdateArmorPenetration(armorPenetration);
+    }
+
+    /// <summary>
+    /// 민첩 증가 버프
+    /// </summary>
+    /// <param name="baseFactor">기본 민첩 증가량</param>
+    protected void AgilityBuff(float baseFactor)
+    {
+        float agilityFactor = skillNode.PlayerModel.PlayerStats.baseAgility * baseFactor;
+        skillNode.PlayerModel.UpdateAgilityStats(agilityFactor);
     }
     
     public abstract void RevertPassiveEffects();

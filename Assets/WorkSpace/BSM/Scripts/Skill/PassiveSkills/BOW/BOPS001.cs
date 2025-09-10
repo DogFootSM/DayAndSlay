@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class BOPS001 : PassiveSkill
 {
-    private float agilityLevelPer = 0.15f;
+    private float baseAgility = 0.15f;
+
+    private float baseAttackSpeedFactor = 0.1f;
+    private float levelAttackSpeedFactor = 0.03f;
     
     public BOPS001(SkillNode skillNode) : base(skillNode)
     {
@@ -17,12 +20,9 @@ public class BOPS001 : PassiveSkill
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
-
-        float agilityFactor = skillNode.PlayerModel.PlayerStats.baseAgility * agilityLevelPer;
-        
-        
-        Debug.Log($"±âº» :{skillNode.PlayerModel.PlayerStats.baseAgility} , {agilityFactor}");
-
+        AgilityBuff(baseAgility);
+        AttackSpeedBuff(baseAttackSpeedFactor, levelAttackSpeedFactor);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
     public override void Gizmos()
@@ -31,5 +31,8 @@ public class BOPS001 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
+        AgilityBuff(0);
+        AttackSpeedBuff(0, 0);
+        skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

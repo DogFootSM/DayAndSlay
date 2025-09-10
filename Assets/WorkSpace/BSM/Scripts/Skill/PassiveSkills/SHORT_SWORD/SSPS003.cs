@@ -17,6 +17,8 @@ public class SSPS003 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+
         DamageReflectRateBuff(damageReflectBaseFactor, damageReflectLevelFactor);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers(); 
     }

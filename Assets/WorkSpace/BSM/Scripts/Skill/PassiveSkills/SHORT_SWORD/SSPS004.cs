@@ -17,6 +17,8 @@ public class SSPS004 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+
         ResistanceBuff(baseResistance, resistanceLevel);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }

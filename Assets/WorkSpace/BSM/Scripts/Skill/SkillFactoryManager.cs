@@ -40,6 +40,7 @@ public static class SkillFactoryManager
             case "SPPS003" : return new SPPS003(skillNode);
             case "SPPS004" : return new SPPS004(skillNode);
             
+            //활
             case "BOAS001" : return new BOAS001(skillNode);
             case "BOAS002" : return new BOAS002(skillNode);
             case "BOAS003" : return new BOAS003(skillNode);
@@ -49,6 +50,10 @@ public static class SkillFactoryManager
             case "BOAS007" : return new BOAS007(skillNode);
             case "BOAS008" : return new BOAS008(skillNode);
             
+            case "BOPS001" : return new BOPS001(skillNode);
+            case "BOPS002" : return new BOPS002(skillNode);
+            case "BOPS003" : return new BOPS003(skillNode);
+            case "BOPS004" : return new BOPS004(skillNode);
             default: return null;
         }    
     } 
