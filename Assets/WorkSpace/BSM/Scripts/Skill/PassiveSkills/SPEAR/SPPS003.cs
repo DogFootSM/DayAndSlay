@@ -5,7 +5,7 @@ using UnityEngine;
 public class SPPS003 : PassiveSkill
 {
     private float defenseFactor = 0.15f;
-    private float defenseLevelModifier = 0.02f;
+    private float defenseLevelFactor = 0.03f;
     
     public SPPS003(SkillNode skillNode) : base(skillNode)
     {
@@ -18,9 +18,8 @@ public class SPPS003 : PassiveSkill
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
-        float defenseLevelPer = defenseFactor + ((skillNode.CurSkillLevel - 1) * defenseLevelModifier);
+        DefenseBuff(defenseFactor, defenseLevelFactor);
         
-        skillNode.PlayerModel.UpdateDefenseFactor(defenseLevelPer);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
@@ -30,7 +29,7 @@ public class SPPS003 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        skillNode.PlayerModel.UpdateDefenseFactor(0);
+        DefenseBuff(0, 0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

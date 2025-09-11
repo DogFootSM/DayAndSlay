@@ -17,9 +17,9 @@ public class SSPS004 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        float resistancePer = baseResistance + ((skillNode.CurSkillLevel -1) * resistanceLevel);
-        
-        skillNode.PlayerModel.UpdateResistanceFactor(resistancePer);
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+
+        ResistanceBuff(baseResistance, resistanceLevel);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
@@ -29,7 +29,7 @@ public class SSPS004 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        skillNode.PlayerModel.UpdateResistanceFactor(0);
+        ResistanceBuff(0, 0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

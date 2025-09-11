@@ -2,11 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Monster : MonoBehaviour, IEffectReceiver
 {
     [NonSerialized] public float hp = 100;
     public bool IsMove;
+    private float originAttackDamage = 20f;
+    public float UseAttackDamage;
+    
     public float maxHp = 100;
     private GameObject markParticle;
     private GameObject markObject;
@@ -22,6 +26,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
     protected Coroutine stunCo;
     protected Coroutine slowCo;
     protected Coroutine defenseDeBuffCo;
+    protected Coroutine attackDeBuffCo;
     
     protected Vector2 knockBackDir;
      
@@ -176,6 +181,43 @@ public class Monster : MonoBehaviour, IEffectReceiver
     public void ReceiveMarkOnTarget()
     {
         markObject.SetActive(!markObject.activeSelf);
+    }
+
+    /// <summary>
+    /// 공격력 감소 디버프 리시버
+    /// </summary>
+    /// <param name="duration">디버프 지속 시간</param>
+    /// <param name="deBuffPer">공격력 감소 디버프 퍼센트</param>
+    public void ReceiveAttackDeBuff(float duration, float deBuffPer)
+    {
+        AttackDeBuff(duration, deBuffPer);
+    }
+
+    protected virtual void AttackDeBuff(float duration, float deBuffPer)
+    {
+        
+    }
+
+    protected virtual IEnumerator AttackDeBuffRoutine(float duration, float deBuffPer)
+    {
+        float elapsedTime = 0;
+
+        //공격에 사용할 변동되는 데미지 값
+        UseAttackDamage = originAttackDamage - (originAttackDamage * deBuffPer);
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        UseAttackDamage = originAttackDamage;
+
+        if (attackDeBuffCo != null)
+        {
+            StopCoroutine(attackDeBuffCo);
+            attackDeBuffCo = null;
+        }
     }
     
     protected virtual void DefenseDeBuff(float duration)

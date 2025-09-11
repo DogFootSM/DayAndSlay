@@ -237,10 +237,10 @@ public abstract class MeleeSkill : SkillFactory
     /// 이동속도 증가 버프 호출
     /// </summary>
     /// <param name="duration">버프 지속 시간</param>
-    /// <param name="ratio">이동 속도 증가 비율</param>
-    protected void ExecuteMoveSpeedBuff(float duration, float ratio)
+    /// <param name="factor">이동 속도 증가값</param>
+    protected void ExecuteMoveSpeedBuff(float duration, float factor)
     {
-        skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, ratio);
+        skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, factor);
     }
 
     /// <summary>
@@ -338,6 +338,15 @@ public abstract class MeleeSkill : SkillFactory
     {
         skillNode.PlayerSkillReceiver.ReceiveHealthRegenTick(duration, healthRegen);
     }
+
+    /// <summary>
+    /// 레벨 당 퍼센트 기반 체력 즉시 회복
+    /// </summary>
+    /// <param name="healthPercent">회복할 체력의 퍼센트</param>
+    protected void ExecuteRestoreHealthByPercent(float healthPercent)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveRestoreHealthByPercent(healthPercent);
+    }
     
     /// <summary>
     /// 몬스터에게 데미지 전달
@@ -379,5 +388,16 @@ public abstract class MeleeSkill : SkillFactory
     public void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
     {
         skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount);
-    } 
+    }
+    
+    /// <summary>
+    /// 몬스터 공격력 감소 디버프 실행
+    /// </summary>
+    /// <param name="duration">공격력 감소 지속 시간</param>
+    /// <param name="deBuffPer">공격력 감소 퍼센트</param>
+    protected void ExecuteAttackDeBuffByMonster(IEffectReceiver receiver, float duration, float deBuffPer)
+    {
+        receiver.ReceiveAttackDeBuff(duration, deBuffPer);
+    }
+    
 }

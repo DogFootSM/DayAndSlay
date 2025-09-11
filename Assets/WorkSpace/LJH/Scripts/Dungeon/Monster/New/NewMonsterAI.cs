@@ -227,6 +227,21 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         markObject.SetActive(!markObject.activeSelf);
     }
     
+    /// <summary>
+    /// 공격력 감소 디버프
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="deBuffPer"></param>
+    public void ReceiveAttackDeBuff(float duration, float deBuffPer)
+    {
+        AttackDeBuff(duration, deBuffPer);
+    }
+
+    protected virtual void AttackDeBuff(float duration, float deBuffPer)
+    {
+        //몬스터 특성에 따라 공격력 디버프 감소 설정
+    }
+    
     #region 넉백 효과
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {

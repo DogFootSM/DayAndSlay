@@ -185,7 +185,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             castingCo = StartCoroutine(SkillCastingRoutine(castingTime));
         }
     }
-    
+
     /// <summary>
     /// 스킬 캐스팅 시간 코루틴
     /// </summary>
@@ -205,7 +205,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             tempCastingEffect.fillAmount = elapsedTime / castingTime;
             yield return null;
         }
-
+        
         //캐스팅 상태 초기화
         playerModel.IsCasting = false;
         tempCastingEffect.fillAmount = 0; 
@@ -400,9 +400,9 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <summary>
     /// 이동 속도 버프 리시버
     /// </summary>
-    /// <param name="duration"></param>
-    /// <param name="ratio"></param>
-    public void ReceiveMoveSpeedBuff(float duration, float ratio)
+    /// <param name="duration">버프 지속 시간</param>
+    /// <param name="factor">증가할 이동속도 값</param>
+    public void ReceiveMoveSpeedBuff(float duration, float factor)
     {
         if (moveSpeedBuffCo != null)
         {
@@ -410,7 +410,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             moveSpeedBuffCo = null;
         }
 
-        moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, ratio));
+        moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, factor));
     }
 
     /// <summary>
@@ -418,13 +418,13 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    private IEnumerator MoveSpeedBuffRoutine(float duration, float ratio)
+    private IEnumerator MoveSpeedBuffRoutine(float duration, float factor)
     {
-        float originSpeed = playerModel.PlayerStats.baseMoveSpeed;
-        playerModel.PlayerStats.baseMoveSpeed += (playerModel.PlayerStats.baseMoveSpeed * ratio);
-
+        playerModel.UpdateMoveSpeedFactor(factor);
+        
         yield return WaitCache.GetWait(duration);
-        playerModel.PlayerStats.baseMoveSpeed = originSpeed;
+        
+        playerModel.UpdateMoveSpeedFactor(0);
     }
 
     /// <summary>
@@ -507,15 +507,32 @@ public class PlayerSkillReceiver : MonoBehaviour
         float elapsedTime = 0;
 
         //지속 시간이 끝나기 전 or 현재 체력이 최대 체력보다 적을 경우 체력 회복
-        while (elapsedTime < duration || playerModel.CurHp < playerModel.MaxHp)
+        while (elapsedTime < duration && playerModel.CurHp < playerModel.MaxHp)
         {
             //1초당 체력 회복
             yield return WaitCache.GetWait(1f);
-            playerModel.CurHp += healthRegen;
+            
+            //전체 체력의 회복량 계산
+            float regenHealth = playerModel.MaxHp * healthRegen; 
+            
+            //초당 회복량 현재 체력에 더함
+            playerModel.CurHp += regenHealth;
             elapsedTime += 1f;
         }
     }
 
+    /// <summary>
+    /// 체력 즉시 회복 리시버
+    /// </summary>
+    /// <param name="healthPercent">회복할 체력의 퍼센트</param>
+    public void ReceiveRestoreHealthByPercent(float healthPercent)
+    {
+        float healthLevelPer = playerModel.MaxHp * healthPercent;
+        
+        //현재 체력 + 회복할 체력 수치가 최대 체력을 넘는지 확인 후 체력 회복
+        playerModel.CurHp = (playerModel.CurHp + healthLevelPer) > playerModel.MaxHp ? playerModel.MaxHp : playerModel.CurHp + healthLevelPer;
+    } 
+    
     /// <summary>
     /// 다음 스킬 데미지 증가 버프 적용
     /// </summary>
@@ -756,8 +773,6 @@ public class PlayerSkillReceiver : MonoBehaviour
             spawnParticleAtRandomPosition = null;
         }
     }
-    
-    
-    
+
     
 }

@@ -64,4 +64,12 @@ public interface IEffectReceiver
     /// 타겟 표시 아이콘 On Off
     /// </summary>
     public void ReceiveMarkOnTarget();
+
+    /// <summary>
+    /// 몬스터 공격력 감소 디버프
+    /// </summary>
+    /// <param name="duration">디버프 지속 시간</param>
+    /// <param name="deBuffPer">감소할 공격력</param>
+    public void ReceiveAttackDeBuff(float duration, float deBuffPer);
+
 }

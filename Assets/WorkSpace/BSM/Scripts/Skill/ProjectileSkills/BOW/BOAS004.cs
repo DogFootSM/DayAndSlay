@@ -48,7 +48,7 @@ public class BOAS004 : ProjectileSkill
         SingleEffect(playerPosition + direction, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", effectIndex);
         
         //해당 스킬 발사체 파티클 데이터 설정
-        surrounfEffectInstance.GetComponent<ActionBOAS004>().SetSkillData(3, skillNode.skillData.SkillHitCount, skillDamage);
+        surroundEffectInstance.GetComponent<ActionBOAS004>().SetSkillData(3, skillNode.skillData.SkillHitCount, skillDamage);
         
         //일직선으로 날아갈 발사체 제한 거리 설정
         surroundInteraction[effectIndex].LinearProjectile(0, direction, skillNode.skillData.SkillRange);

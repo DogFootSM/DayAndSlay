@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class SSPS002 : PassiveSkill
 {
-    private float criticalLevelModifier = 0.02f;
+    private float criticalLevelFactor = 0.02f;
+    private float criticalbaseFactor = 0.05f;
+    
+    private float baseStrengthFactor = 0.1f;
     
     public SSPS002(SkillNode skillNode) : base(skillNode)
     {
@@ -17,12 +20,9 @@ public class SSPS002 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        float factor = skillNode.PlayerModel.PlayerStats.baseStrength * 0.1f;
-        skillNode.PlayerModel.UpdateStrengthFactor(factor);
-
-        float criticalPer = 0.05f;
-        float criticalPerLevel = criticalPer + ((skillNode.CurSkillLevel - 1) * criticalLevelModifier);
-        skillNode.PlayerModel.UpdateCriticalPerFactor(criticalPerLevel);
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+        StrengthBuff(baseStrengthFactor);
+        CriticalRateBuff(criticalbaseFactor, criticalLevelFactor);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
@@ -33,9 +33,7 @@ public class SSPS002 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        float factor = skillNode.PlayerModel.PlayerStats.baseStrength * -0.1f;
-
-        skillNode.PlayerModel.UpdateStrengthFactor(factor);
+        skillNode.PlayerModel.UpdateStrengthFactor(0);
         skillNode.PlayerModel.UpdateCriticalPerFactor(0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
