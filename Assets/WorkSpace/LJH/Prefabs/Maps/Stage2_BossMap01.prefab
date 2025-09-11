@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1315584761435391761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5089275986016085655}
+  m_Layer: 0
+  m_Name: MonsterSpawner 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5089275986016085655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315584761435391761}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7833640637742468318}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2547364227700286246
 GameObject:
   m_ObjectHideFlags: 0
@@ -11057,6 +11088,7 @@ GameObject:
   - component: {fileID: 7833640637742468318}
   - component: {fileID: 3945743222633605141}
   - component: {fileID: 8185175583543109737}
+  - component: {fileID: 6984327449559701842}
   m_Layer: 0
   m_Name: Stage2_BossMap01
   m_TagString: Untagged
@@ -11080,6 +11112,7 @@ Transform:
   - {fileID: 6041263125007370443}
   - {fileID: 4346278640013855759}
   - {fileID: 2593740382899043897}
+  - {fileID: 5089275986016085655}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11110,6 +11143,25 @@ MonoBehaviour:
   doors: []
   obstacleTilemap: {fileID: 4028698479559638356}
   mapTilemap: {fileID: 1432165257438254655}
+--- !u!114 &6984327449559701842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4743460693096425037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88920d2699727be4facce52007f9b485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerList:
+  - {fileID: 7218076832031267826}
+  - {fileID: 1315584761435391761}
+  monsterList: []
+  floorTilemap: {fileID: 0}
+  wallTilemap: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &7218076832031267826
 GameObject:
   m_ObjectHideFlags: 0
@@ -11134,7 +11186,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7218076832031267826}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

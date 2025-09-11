@@ -149,7 +149,6 @@ public abstract class BossMonsterAI : NewMonsterAI
     {
         stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
         isAttacking = true;
-        method.AttackMethod();
         StartCoroutine(AttackEndDelay());
         ResetAttackCooldown();
     }

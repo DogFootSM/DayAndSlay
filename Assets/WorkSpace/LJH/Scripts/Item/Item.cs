@@ -7,6 +7,12 @@ public class Item : MonoBehaviour
     [SerializeField] public ItemData itemData;
 
     public int ItemId;
+
+    public void SetItem(ItemData itemData)
+    {
+        this.itemData = itemData;
+        ItemId = itemData.ItemId;
+    }
     
     private void Start()
     {

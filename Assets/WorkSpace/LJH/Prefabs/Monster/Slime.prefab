@@ -13,13 +13,12 @@ GameObject:
   - component: {fileID: 2230296940673157747}
   - component: {fileID: 2915400258908273984}
   - component: {fileID: 446733505822531971}
+  - component: {fileID: 1808667524884681194}
+  - component: {fileID: -6591313018991375887}
+  - component: {fileID: 5546876945694116695}
   - component: {fileID: -5471911796277688368}
   - component: {fileID: 3950774981472583126}
-  - component: {fileID: 7848198602268989358}
   - component: {fileID: 8524778961033154014}
-  - component: {fileID: 1808667524884681194}
-  - component: {fileID: 5546876945694116695}
-  - component: {fileID: -6591313018991375887}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -108,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 523a0a2e7a33eaf4a819c64503da6813, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: b224440762d42f3428e76a289b92415e, type: 3}
 --- !u!114 &2915400258908273984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +144,57 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1808667524884681194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718412542748530395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
+  monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
+  player: {fileID: 0}
+  isAttacking: 0
+--- !u!114 &-6591313018991375887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718412542748530395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
+--- !u!114 &5546876945694116695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718412542748530395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: b224440762d42f3428e76a289b92415e, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: ecfa29d2cc564634fbbcf41a28ee27ff, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: bb6e56230b4e5184bac5cd40af541aaa, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: 523a0a2e7a33eaf4a819c64503da6813, type: 3}
 --- !u!114 &-5471911796277688368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,11 +211,13 @@ MonoBehaviour:
   Name: 
   MaxHp: 0
   Hp: 0
+  def: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+  dropItems: []
 --- !u!61 &3950774981472583126
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -192,32 +244,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!61 &7848198602268989358
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.4, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5, y: 1.5}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3}
-  m_EdgeRadius: 0
 --- !u!50 &8524778961033154014
 Rigidbody2D:
   serializedVersion: 4
@@ -239,56 +265,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1808667524884681194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 96382db5b19468e4ba8b2b6bd5da75cc, type: 2}
-  player: {fileID: 0}
-  isAttacking: 0
---- !u!114 &5546876945694116695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: b224440762d42f3428e76a289b92415e, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: ecfa29d2cc564634fbbcf41a28ee27ff, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: bb6e56230b4e5184bac5cd40af541aaa, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: 523a0a2e7a33eaf4a819c64503da6813, type: 3}
---- !u!114 &-6591313018991375887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6718412542748530395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!1 &7090935891435310245
 GameObject:
   m_ObjectHideFlags: 0

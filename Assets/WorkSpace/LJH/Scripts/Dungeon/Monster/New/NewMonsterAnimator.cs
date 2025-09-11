@@ -58,36 +58,39 @@ public class NewMonsterAnimator : MonoBehaviour
                 isAction = false;
             }
 
-            currentAnimationHash = SetAnimationHash(skillFirstAction[dir]);
-            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
-            {
-                isAction = false;
-            }
-        
-
-            currentAnimationHash = SetAnimationHash(skillSecondAction[dir]);
-            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
-            {
-                isAction = false;
-            }
-            
-            currentAnimationHash = SetAnimationHash(skillThirdAction[dir]);
-            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
-            {
-                isAction = false;
-            }
-            
-            currentAnimationHash = SetAnimationHash(skillFourthAction[dir]);
-            if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
-            {
-                isAction = false;
-            }
-
             currentAnimationHash = SetAnimationHash(hitAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
                 isAction = false;
                 PlayIdle();
+            }
+            
+            if (gameObject.CompareTag("Boss"))
+            {
+                currentAnimationHash = SetAnimationHash(skillFirstAction[dir]);
+                if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+                {
+                    isAction = false;
+                }
+
+
+                currentAnimationHash = SetAnimationHash(skillSecondAction[dir]);
+                if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+                {
+                    isAction = false;
+                }
+
+                currentAnimationHash = SetAnimationHash(skillThirdAction[dir]);
+                if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+                {
+                    isAction = false;
+                }
+
+                currentAnimationHash = SetAnimationHash(skillFourthAction[dir]);
+                if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
+                {
+                    isAction = false;
+                }
             }
         }
     }
@@ -227,24 +230,27 @@ public class NewMonsterAnimator : MonoBehaviour
         hitAction.Add(Direction.Up, "MonsterHitUp");
         hitAction.Add(Direction.Down, "MonsterHitDown");
         
-        skillFirstAction.Add(Direction.Left, "MonsterSkillFirstLeft");
-        skillFirstAction.Add(Direction.Right, "MonsterSkillFirstRight");
-        skillFirstAction.Add(Direction.Up, "MonsterSkillFirstUp");
-        skillFirstAction.Add(Direction.Down, "MonsterSkillFirstDown");
-        
-        skillSecondAction.Add(Direction.Left, "MonsterSkillSecondLeft");
-        skillSecondAction.Add(Direction.Right, "MonsterSkillSecondRight");
-        skillSecondAction.Add(Direction.Up, "MonsterSkillSecondUp");
-        skillSecondAction.Add(Direction.Down, "MonsterSkillSecondDown");
-        
-        skillFirstAction.Add(Direction.Left, "MonsterSkillThirdLeft");
-        skillFirstAction.Add(Direction.Right, "MonsterSkillThirdRight");
-        skillFirstAction.Add(Direction.Up, "MonsterSkillThirdUp");
-        skillFirstAction.Add(Direction.Down, "MonsterSkillThirdDown");
-        
-        skillSecondAction.Add(Direction.Left, "MonsterSkillFourthLeft");
-        skillSecondAction.Add(Direction.Right, "MonsterSkillFourthRight");
-        skillSecondAction.Add(Direction.Up, "MonsterSkillFourthUp");
-        skillSecondAction.Add(Direction.Down, "MonsterSkillFourthDown");
+        if(gameObject.CompareTag("Boss"))
+        {
+            skillFirstAction.Add(Direction.Left, "MonsterSkillFirstLeft");
+            skillFirstAction.Add(Direction.Right, "MonsterSkillFirstRight");
+            skillFirstAction.Add(Direction.Up, "MonsterSkillFirstUp");
+            skillFirstAction.Add(Direction.Down, "MonsterSkillFirstDown");
+
+            skillSecondAction.Add(Direction.Left, "MonsterSkillSecondLeft");
+            skillSecondAction.Add(Direction.Right, "MonsterSkillSecondRight");
+            skillSecondAction.Add(Direction.Up, "MonsterSkillSecondUp");
+            skillSecondAction.Add(Direction.Down, "MonsterSkillSecondDown");
+
+            skillThirdAction.Add(Direction.Left, "MonsterSkillThirdLeft");
+            skillThirdAction.Add(Direction.Right, "MonsterSkillThirdRight");
+            skillThirdAction.Add(Direction.Up, "MonsterSkillThirdUp");
+            skillThirdAction.Add(Direction.Down, "MonsterSkillThirdDown");
+
+            skillFourthAction.Add(Direction.Left, "MonsterSkillFourthLeft");
+            skillFourthAction.Add(Direction.Right, "MonsterSkillFourthRight");
+            skillFourthAction.Add(Direction.Up, "MonsterSkillFourthUp");
+            skillFourthAction.Add(Direction.Down, "MonsterSkillFourthDown");
+        }
     }
 }

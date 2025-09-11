@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: -7810289860644036248}
   - component: {fileID: -1605353544774396269}
   - component: {fileID: 518793543637172281}
-  - component: {fileID: 2571942704962472359}
   - component: {fileID: 6353814155598378802}
   - component: {fileID: -4237787542458343866}
   - component: {fileID: -977983183303633917}
@@ -83,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1662763246, guid: 227e8d1bff1b456489f8c709e454215d, type: 3}
+  m_Sprite: {fileID: -611662486, guid: 951b2cdf36605f448ae88576b3d58d42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -121,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CategoryHash: 0.009161512
-  m_labelHash: 0.000000002428638
+  m_labelHash: 0.00000040954276
   m_SpriteKey: 1.3971405e-28
 --- !u!95 &-1605353544774396269
 Animator:
@@ -156,34 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174994539d0f1dd4ab83560694babbd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  monsterData: {fileID: 11400000, guid: bd31af0aaf1acf44c898e0f5268d4fdf, type: 2}
-  animator: {fileID: 0}
-  method: {fileID: 0}
-  rushCooldown: 10
-  attackCooldown: 2
---- !u!114 &2571942704962472359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5925213130866722637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1305f43683bfeab45b2052d39a35eb8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: 20bed47c387e65c46a3220542b1021e1, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: c8206350a296f6b49b43e4387619ccf0, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: 58863f87174c5b64381d665594bf8818, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: e8fc344c61699e740b5e6f407aefe2b6, type: 3}
 --- !u!114 &6353814155598378802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,9 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae98c6cdb65100c4f935cff1938b5a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  rangeCollider: {fileID: 0}
-  isMoving: 0
   rushEffect: {fileID: 2167000236993955665, guid: ab9c5b4791704e64c8ef75945994450e, type: 3}
 --- !u!114 &-4237787542458343866
 MonoBehaviour:
@@ -216,6 +184,7 @@ MonoBehaviour:
   Name: 
   MaxHp: 0
   Hp: 0
+  def: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
