@@ -13,13 +13,12 @@ GameObject:
   - component: {fileID: 6297989645333955350}
   - component: {fileID: 7052912307474658341}
   - component: {fileID: 5739400906888177894}
+  - component: {fileID: -8283229738181849709}
+  - component: {fileID: 1507021168649134206}
+  - component: {fileID: 909258064821985926}
   - component: {fileID: 1945000851585728621}
   - component: {fileID: 9171184401338512563}
-  - component: {fileID: 2701887625613745867}
   - component: {fileID: 4601401437452502203}
-  - component: {fileID: -8283229738181849709}
-  - component: {fileID: 909258064821985926}
-  - component: {fileID: 1507021168649134206}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -84,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -182363389, guid: c1f027b8bb7319e409206374dd4d5da8, type: 3}
+  m_Sprite: {fileID: -1016514477, guid: c1f027b8bb7319e409206374dd4d5da8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 83475cdbf27997845be108932039bdef, type: 3}
 --- !u!114 &7052912307474658341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +144,57 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8283229738181849709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
+  monsterData: {fileID: 11400000, guid: 09c54c7205c79844a9943e79ddf17177, type: 2}
+  player: {fileID: 0}
+  isAttacking: 0
+--- !u!114 &1507021168649134206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
+--- !u!114 &909258064821985926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488993737496387518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteDict:
+    _serializedList:
+    - Key: ATTACK
+      Value: {fileID: 7108339969198208228, guid: 83475cdbf27997845be108932039bdef, type: 3}
+    - Key: DIE
+      Value: {fileID: 7108339969198208228, guid: a3cbc39d25238cf42b34d9ac0152594e, type: 3}
+    - Key: HIT
+      Value: {fileID: 7108339969198208228, guid: 787743c124123e14ca17e175b7bb628a, type: 3}
+    - Key: MOVE
+      Value: {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}
 --- !u!114 &1945000851585728621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,11 +211,13 @@ MonoBehaviour:
   Name: 
   MaxHp: 0
   Hp: 0
+  def: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+  dropItems: []
 --- !u!61 &9171184401338512563
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -192,32 +244,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!61 &2701887625613745867
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488993737496387518}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.4, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5, y: 1.5}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3}
-  m_EdgeRadius: 0
 --- !u!50 &4601401437452502203
 Rigidbody2D:
   serializedVersion: 4
@@ -239,56 +265,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-8283229738181849709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488993737496387518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d74650a00fc1c248b680a1baa048961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 09c54c7205c79844a9943e79ddf17177, type: 2}
-  player: {fileID: 0}
-  isAttacking: 0
---- !u!114 &909258064821985926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488993737496387518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe5bf51a387a6004280785ddca04f0f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteDict:
-    _serializedList:
-    - Key: ATTACK
-      Value: {fileID: 7108339969198208228, guid: 83475cdbf27997845be108932039bdef, type: 3}
-    - Key: DIE
-      Value: {fileID: 7108339969198208228, guid: a3cbc39d25238cf42b34d9ac0152594e, type: 3}
-    - Key: HIT
-      Value: {fileID: 7108339969198208228, guid: 787743c124123e14ca17e175b7bb628a, type: 3}
-    - Key: MOVE
-      Value: {fileID: 7108339969198208228, guid: b2be35554466ffd4b88b76cedada8907, type: 3}
---- !u!114 &1507021168649134206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488993737496387518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0834698abf846a47b23dba0341333ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!1 &1980958820101092610
 GameObject:
   m_ObjectHideFlags: 0

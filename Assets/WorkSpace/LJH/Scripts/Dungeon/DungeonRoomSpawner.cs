@@ -96,7 +96,7 @@ public class DungeonRoomSpawner : MonoBehaviour
                 {
                     // Cell -> World ÁÂÇ¥ º¯È¯
                     Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
-                    floorPositions.Add(worldPos);
+                    floorPositions.Add(new Vector3(worldPos.x, worldPos.y, 0));
                 }
             }
 

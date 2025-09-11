@@ -14,8 +14,23 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     protected NewMonsterAnimator animator;
 
     protected NewMonsterStateMachine stateMachine;
+    
+    //데미지 및 효과 처리 변수
+    protected Coroutine knockBackCo;
+    protected Coroutine dotDurationCo;
+    protected Coroutine dotDamageCo;
+    protected Coroutine stunCo;
+    protected Coroutine slowCo;
+    protected Coroutine defenseDeBuffCo;
+    
+    protected Vector2 knockBackDir;
+    
+    protected bool isStun = false;
+    protected bool isDot;
+    protected bool isDefenseDeBuffed;
 
-    protected bool isStun;
+    protected float knockBackPower = 5f;
+    private float defenseDeBuffRatio;
     protected bool GetIsStun() => isStun;
 
     public bool isAttacking = false;
@@ -61,7 +76,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Hit(1); // 테스트용
+            method.DropItem();
         }
 #endif
     }
@@ -153,7 +168,6 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     {
         stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
         isAttacking = true;
-        method.AttackMethod();
         StartCoroutine(AttackEndDelay());
     }
 
@@ -166,7 +180,6 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     public virtual void Hit(int damage)
     {
         method.HitMethod(damage);
-        stateMachine.ChangeState(new NewMonsterHitState());
     }
 
     protected IEnumerator AttackEndDelay()
@@ -184,8 +197,25 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     public float GetChaseRange() => monsterData.ChaseRange;
     public void TakeDamage(float damage)
     {
+        float calcDefense = model.def;
+        
+        //TODO: 임시 디버프 방어력 계산
+        if (isDefenseDeBuffed)
+        {
+            calcDefense -= CalculateDefenseDeBuff();
+        }
+        
         model.SetMonsterHp(-damage);
     }
+    /// <summary>
+    /// 디버프에 따른 방어력 계산
+    /// </summary>
+    /// <returns></returns>
+    private float CalculateDefenseDeBuff()
+    {
+        return model.def * defenseDeBuffRatio;
+    }
+
 
     public float GetMaxHp()
     {
@@ -197,39 +227,226 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         markObject.SetActive(!markObject.activeSelf);
     }
     
+    #region 넉백 효과
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         animator.PlayHit();
         
-        Direction direction = GetDirectionByAngle(player.transform.position, transform.position);
+        Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
         
-        Vector2 dir = Vector2.down;
-        
-        switch (direction)
+        if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
         {
-            case Direction.Up:
-                dir = Vector2.left;
-                break;
-            
-            case Direction.Down:
-                dir = Vector2.right;
-                break;
-            
-            case Direction.Left:
-                dir = Vector2.up;
-                break;
-            
-            case Direction.Right:
-                dir = Vector2.down;
-                break;
-            
-            default:
-                dir = Vector2.down;
-                break;
+            if (playerDir.x > 0)
+            {
+                //오른쪽 방향으로
+                knockBackDir = Vector2.right;
+            }
+            else
+            {
+                //왼쪽 방향으로
+                knockBackDir = Vector2.left;
+            }
+        }
+        else
+        {
+            if (playerDir.y > 0)
+            {
+                //윗 방향으로
+                knockBackDir = Vector2.up;
+            }
+            else
+            {
+                //아랫 방향으로
+                knockBackDir = Vector2.down;
+            }
+        }
+
+        if (knockBackCo != null)
+        {
+            StopCoroutine(knockBackCo);
+            knockBackCo = null;
+        }
+
+        knockBackCo = StartCoroutine(KnockBackRoutine());
+    }
+    /// <summary>
+    /// 넉백 코루틴
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator KnockBackRoutine()
+    {
+        rigid.AddForce(knockBackDir * knockBackPower, ForceMode2D.Impulse);
+
+        yield return WaitCache.GetWait(0.3f);
+
+        rigid.velocity = Vector2.zero;
+    }
+    #endregion
+
+    #region 도트 데미지
+    public void ReceiveDot(float duration, float tick, float damage)
+    {
+        StartCoroutine(DotCoroutine(duration, tick, damage));
+        
+        if (dotDurationCo != null)
+        {
+            StopCoroutine(dotDurationCo);
+            dotDurationCo = null;
+        }
+
+        if (dotDamageCo != null)
+        {
+            StopCoroutine(dotDamageCo);
+            dotDamageCo = null;
         }
         
-        rigid.AddForce(-dir * 5f, ForceMode2D.Impulse);
+        dotDurationCo = StartCoroutine(DotDurationRoutine(duration));
+        dotDamageCo = StartCoroutine(DotDamageRoutine(tick, damage));
     }
+    
+    /// <summary>
+    /// 도트 지속 시간 코루틴
+    /// </summary>
+    /// <param name="duration"></param>
+    protected virtual IEnumerator DotDurationRoutine(float duration)
+    {
+        float elapsedTime = 0f;
+
+        isDot = true;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        isDot = false;
+    }
+    
+    /// <summary>
+    /// 도트 데미지 틱 계산 코루틴
+    /// </summary>
+    /// <param name="tick"></param>
+    /// <param name="perSecondDamage"></param>
+    /// <returns></returns>
+    protected virtual IEnumerator DotDamageRoutine(float tick, float perSecondDamage)
+    {
+        while (isDot)
+        {
+            yield return WaitCache.GetWait(tick);
+            TakeDamage(perSecondDamage);
+        }
+    }
+
+    private IEnumerator DotCoroutine(float duration, float tick, float damage)
+    {
+        // 코루틴 시작 시 첫 피해를 바로 적용
+        model.SetMonsterHp(-damage);
+
+        float elapsed = 0f; // 경과 시간
+
+        // duration이 다 될 때까지 반복
+        while (elapsed < duration)
+        {
+            // tick만큼 기다리기
+            yield return new WaitForSeconds(tick);
+
+            // 피해 적용
+            model.SetMonsterHp(-damage);
+
+            // 경과 시간 누적
+            elapsed += tick;
+        }
+    }
+    
+    #endregion
+    
+    #region 기절 효과
+    public void ReceiveStun(float duration)
+    {
+        animator.PlayHit();
+        StartCoroutine(StunCoroutine(duration));
+    }
+
+    private IEnumerator StunCoroutine(float duration)
+    {
+        float elapsedTime = 0f;
+
+        isStun = true;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        isStun = false;
+    }
+    
+    #endregion
+
+    #region 둔화 효과
+    public void ReceiveSlow(float duration, float ratio)
+    {
+        StartCoroutine(SlowCoroutine(duration, ratio));
+    }
+
+    private IEnumerator SlowCoroutine(float duration, float ratio)
+    {
+        float elapsedTime = 0f;
+
+        float originMoveSpeed = model.MoveSpeed;
+
+        model.MoveSpeed *= (100 - ratio) / 100;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        model.MoveSpeed = originMoveSpeed;
+    }
+    #endregion
+
+    #region 방어력 감소 효과
+    public void ReceiveDefenseDeBuff(float duration, float deBuffPercent)
+    {
+        defenseDeBuffRatio = deBuffPercent;
+        
+        DefenseDeBuff(duration);
+    }
+ 
+    protected virtual void DefenseDeBuff(float duration)
+    {
+        if (defenseDeBuffCo != null)
+        {
+            StopCoroutine(defenseDeBuffCo);
+            defenseDeBuffCo = null;
+        }
+
+        defenseDeBuffCo = StartCoroutine(DefenseDeBuffRoutine(duration));
+    }
+
+    protected virtual IEnumerator DefenseDeBuffRoutine(float duration)
+    {
+        float elaspedTime = 0f;
+    
+        isDefenseDeBuffed = true;
+        
+        while (elaspedTime < duration)
+        {
+            elaspedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        isDefenseDeBuffed = false;
+    }
+    #endregion
+    
+    
+    
+    
     
     /// <summary>
     /// 방향 구해주는 메서드
@@ -262,77 +479,5 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         {
             return Direction.Down;
         }
-    }
-
-    public void ReceiveDot(float duration, float tick, float damage)
-    {
-        StartCoroutine(DotCoroutine(duration, tick, damage));
-    }
-
-    private IEnumerator DotCoroutine(float duration, float tick, float damage)
-    {
-        // 코루틴 시작 시 첫 피해를 바로 적용
-        model.SetMonsterHp(-damage);
-
-        float elapsed = 0f; // 경과 시간
-
-        // duration이 다 될 때까지 반복
-        while (elapsed < duration)
-        {
-            // tick만큼 기다리기
-            yield return new WaitForSeconds(tick);
-
-            // 피해 적용
-            model.SetMonsterHp(-damage);
-
-            // 경과 시간 누적
-            elapsed += tick;
-        }
-    }
-
-    public void ReceiveStun(float duration)
-    {
-        animator.PlayHit();
-        StartCoroutine(StunCoroutine(duration));
-    }
-
-    private IEnumerator StunCoroutine(float duration)
-    {
-        isStun = true;
-        
-        yield return new WaitForSeconds(duration);
-        
-        isStun = false;
-    }
-
-    public void ReceiveSlow(float duration, float ratio)
-    {
-        StartCoroutine(SlowCoroutine(duration, ratio));
-    }
-
-    private IEnumerator SlowCoroutine(float duration, float ratio)
-    {
-        float preSpeed = model.MoveSpeed;
-
-        model.MoveSpeed /= ratio;
-        
-        yield return new WaitForSeconds(duration);
-        model.MoveSpeed = preSpeed;
-    }
-
-    public void ReceiveDefenseDeBuff(float duration, float deBuffPercent)
-    {
-        StartCoroutine(debuffDefCoroutine(duration, deBuffPercent));
-    }
- 
-    private IEnumerator debuffDefCoroutine(float duration, float deBuffPercent)
-    {
-        float preDef = model.def;
-
-        model.def /= deBuffPercent;
-        
-        yield return new WaitForSeconds(duration);
-        
-        model.def = preDef;
     }
 }
