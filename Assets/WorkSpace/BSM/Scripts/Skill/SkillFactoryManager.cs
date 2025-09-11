@@ -49,6 +49,7 @@ public static class SkillFactoryManager
             case "BOAS006" : return new BOAS006(skillNode);
             case "BOAS007" : return new BOAS007(skillNode);
             case "BOAS008" : return new BOAS008(skillNode);
+            case "BOAS009" : return new BOAS009(skillNode);
             
             case "BOPS001" : return new BOPS001(skillNode);
             case "BOPS002" : return new BOPS002(skillNode);

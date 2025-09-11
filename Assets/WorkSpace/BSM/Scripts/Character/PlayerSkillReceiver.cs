@@ -178,7 +178,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             castingCo = StartCoroutine(SkillCastingRoutine(castingTime));
         }
     }
-    
+
     /// <summary>
     /// 스킬 캐스팅 시간 코루틴
     /// </summary>
@@ -196,7 +196,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             tempCastingEffect.fillAmount = elapsedTime / castingTime;
             yield return null;
         }
-
+        
         //캐스팅 상태 초기화
         playerModel.IsCasting = false;
         tempCastingEffect.fillAmount = 0; 
