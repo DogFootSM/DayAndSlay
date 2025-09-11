@@ -21,22 +21,21 @@ public class WDAS001 : ProjectileSkill
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
         Fire(playerPosition, direction);
 
-        //델리게이트로 하려니 이게 문젠디
-        //missile.OnHitFunction += Hit(receiver, skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
     }
 
     /// <summary>
-    /// 화살 발사 시 일정 텀을 줌
+    /// 미사일 발사
     /// </summary>
     /// <param name="position">발사가 시작될 위치</param>
     /// <param name="direction">발사될 방향</param>
     /// <returns></returns>
     private void Fire(Vector2 position, Vector2 direction)
     {
+        skillNode.skillData.SkillEffectPrefab[0].GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
+        
         //몸 주변에 발사 이펙트 재생
         SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 0);
         
-        //surrounfEffectInstance.GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillDamage);
         
         //회전 방향 조절
         SetSurroundPrefabLocalRotation(direction, 180f, 0f, 90f, 270f);

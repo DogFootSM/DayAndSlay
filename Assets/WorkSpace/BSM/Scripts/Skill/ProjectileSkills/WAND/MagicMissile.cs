@@ -15,7 +15,6 @@ public class MagicMissile : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        //이런식으로 해버리면 스킬의 데이터를 뽑아올 수 ㅇ벗으니 안됨
         if (collider.CompareTag("Monster") || collider.CompareTag("Boss") && collider is IEffectReceiver)
         {
             Debug.Log("매직미사일 맞음");
@@ -23,7 +22,7 @@ public class MagicMissile : MonoBehaviour
             IncreaseMagicDamage(collider);
         }
     }
-
+    
     public void SetData(int hitCount, float damage)
     {
         this.hitCount = hitCount;
@@ -40,7 +39,7 @@ public class MagicMissile : MonoBehaviour
     }
 
     //맞는 적 데미지 10% 증가된 상태로 맞는 디버프
-    public void IncreaseMagicDamage(Collider2D collider)
+    private void IncreaseMagicDamage(Collider2D collider)
     {
         Debug.Log("#초동안 공격력 10% 증가된 상태로 맞음");
     }

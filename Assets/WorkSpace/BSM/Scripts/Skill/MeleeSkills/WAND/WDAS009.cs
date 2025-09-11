@@ -14,7 +14,7 @@ public class WDAS009 : MeleeSkill
         ListClear();
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         
-        //Todo : 캐스팅 속도 없애야함
+        skillNode.PlayerSkillReceiver.StartCoroutine(skillNode.PlayerSkillReceiver.RemoveCastingTimeCoroutine(skillNode.skillData.BuffDuration));
     }
 
 
