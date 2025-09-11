@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SSPS001 : PassiveSkill
 {
-    private float attackSpeedValueModifier = 0.08f;
-    private float attackSpeedLevelModifier = 0.02f;
-    
+    private float attackSpeedFactor = 0.08f;
+    private float attackSpeedLevelPer = 0.02f;
+    private float moveSpeedFactor = 0.1f;
     public SSPS001(SkillNode skillNode) : base(skillNode)
     {
 
@@ -21,18 +21,12 @@ public class SSPS001 : PassiveSkill
     {
         //DB Load 시 현재 착용중인 무기가 패시브 스킬의 무기와 같을 때에만 패시브 능력 적용
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
-        PassiveEffect();
         
         //현재 기본 이동 속도 기준 Factor 만큼 증가한 값
-        float moveFactor = skillNode.PlayerModel.PlayerStats.baseMoveSpeed * 0.1f;
-        skillNode.PlayerModel.UpdateMoveSpeedFactor(moveFactor);
+        MoveSpeedBuff(moveSpeedFactor);
         
-        //현재 스킬 레벨 당 추가 수치
-        float perLevel = (skillNode.CurSkillLevel - 1) * attackSpeedLevelModifier;
-        
-        //현재 기본 공격 속도 기준 Factor + 레벨 당 추가 수치만큼 증가한 값
-        float attackFactor = (skillNode.PlayerModel.PlayerStats.baseAttackSpeed * attackSpeedValueModifier) + perLevel;
-        skillNode.PlayerModel.UpdateAttackSpeedFactor(attackFactor);
+        //현재 기본 공격 속도에 Factor + 스킬 레벨당 추가 수치만큼 증가한 값
+        AttackSpeedBuff(attackSpeedFactor, attackSpeedLevelPer);
         
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
