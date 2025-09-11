@@ -46,6 +46,7 @@ public static class SkillFactoryManager
             case "BOAS004" : return new BOAS004(skillNode);
             case "BOAS005" : return new BOAS005(skillNode);
             
+<<<<<<< HEAD
             case "WDAS001" : return new WDAS001(skillNode);
             case "WDAS002" : return new WDAS002(skillNode);
             case "WDAS003" : return new WDAS003(skillNode);
@@ -56,6 +57,8 @@ public static class SkillFactoryManager
             case "WDAS008" : return new WDAS008(skillNode);
             case "WDAS009" : return new WDAS009(skillNode);
             case "WDAS010" : return new WDAS010(skillNode);
+=======
+>>>>>>> parent of b209bbdb ([Feat] 완드 스킬 1, 2 구현)
             
             default: return null;
         }    
