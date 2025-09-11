@@ -40,21 +40,23 @@ public static class SkillFactoryManager
             case "SPPS003" : return new SPPS003(skillNode);
             case "SPPS004" : return new SPPS004(skillNode);
             
-            //활
             case "BOAS001" : return new BOAS001(skillNode);
             case "BOAS002" : return new BOAS002(skillNode);
             case "BOAS003" : return new BOAS003(skillNode);
             case "BOAS004" : return new BOAS004(skillNode);
             case "BOAS005" : return new BOAS005(skillNode);
-            case "BOAS006" : return new BOAS006(skillNode);
-            case "BOAS007" : return new BOAS007(skillNode);
-            case "BOAS008" : return new BOAS008(skillNode);
-            case "BOAS009" : return new BOAS009(skillNode);
-            case "BOAS010" : return new BOAS010(skillNode);
-            case "BOPS001" : return new BOPS001(skillNode);
-            case "BOPS002" : return new BOPS002(skillNode);
-            case "BOPS003" : return new BOPS003(skillNode);
-            case "BOPS004" : return new BOPS004(skillNode);
+            
+            case "WDAS001" : return new WDAS001(skillNode);
+            case "WDAS002" : return new WDAS002(skillNode);
+            case "WDAS003" : return new WDAS003(skillNode);
+            case "WDAS004" : return new WDAS004(skillNode);
+            case "WDAS005" : return new WDAS005(skillNode);
+            case "WDAS006" : return new WDAS006(skillNode);
+            case "WDAS007" : return new WDAS007(skillNode);
+            case "WDAS008" : return new WDAS008(skillNode);
+            case "WDAS009" : return new WDAS009(skillNode);
+            case "WDAS010" : return new WDAS010(skillNode);
+            
             default: return null;
         }    
     } 

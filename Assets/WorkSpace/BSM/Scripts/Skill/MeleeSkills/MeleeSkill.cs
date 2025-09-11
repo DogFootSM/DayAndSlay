@@ -193,6 +193,7 @@ public abstract class MeleeSkill : SkillFactory
     protected void ExecuteSlow(IEffectReceiver monster, float duration, float ratio)
     {
         monster.ReceiveSlow(duration, ratio);
+        Debug.Log("슬로우 걸림");
     }
 
     /// <summary>

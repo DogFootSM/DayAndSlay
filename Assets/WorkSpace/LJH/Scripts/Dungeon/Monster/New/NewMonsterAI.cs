@@ -46,7 +46,7 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         animator = GetComponent<NewMonsterAnimator>();
         rigid = GetComponent<Rigidbody2D>();
         lastPlayerPos = transform.position;
-        markObject.SetActive(false);
+        //markObject.SetActive(false);
     }
 
     protected virtual void Start()

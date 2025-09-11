@@ -42,6 +42,8 @@ public class PlayerSkillReceiver : MonoBehaviour
     private int monsterLayer;
     private bool isSearching;
     private bool isDashDone;
+    
+    private bool isNeedCasting = true;
     public bool IsDashDone => isDashDone;
 
     private void Awake()
@@ -59,6 +61,11 @@ public class PlayerSkillReceiver : MonoBehaviour
     private void OnDisable()
     {
         MonsterCounterEvent -= MonsterCounterRegister;
+    }
+
+    private void Update()
+    {
+        Debug.Log(isNeedCasting);
     }
 
     /// <summary>
@@ -190,6 +197,8 @@ public class PlayerSkillReceiver : MonoBehaviour
         //TODO: 캐스팅 타임은 모델에서 가져오는 방식?
         playerModel.IsCasting = true;
         
+        castingTime = isNeedCasting ? castingTime : 0f;
+        
         while (elapsedTime < castingTime)
         {
             elapsedTime += Time.deltaTime;
@@ -206,6 +215,22 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(castingCo);
             castingCo = null;
         }
+    }
+
+    public IEnumerator RemoveCastingTimeCoroutine(float duration)
+    {
+        isNeedCasting = false;
+        
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        isNeedCasting = true;
+        
     }
     
     /// <summary>
