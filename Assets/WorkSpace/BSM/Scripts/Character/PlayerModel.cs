@@ -452,6 +452,19 @@ public class PlayerModel : MonoBehaviour, ISavable
        playerStats.AgilityFactor = agility;
     }
     
+    //스킬 캐스팅 시간
+    public float CastingTimeReduction { get; private set; } = 0f;
+    
+    /// <summary>
+    /// 캐스팅 시간 계산
+    /// </summary>
+    /// <param name="value"></param>
+    ///
+    public void UpdateCastingTimeReduction(float value)
+    {
+        CastingTimeReduction = value;
+    }
+    
     /// <summary>
     /// 경험치 획득 후 레벨업 가능 여부 판단
     /// </summary>

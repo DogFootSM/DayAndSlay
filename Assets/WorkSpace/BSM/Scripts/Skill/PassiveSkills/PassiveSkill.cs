@@ -52,6 +52,33 @@ public abstract class PassiveSkill : SkillFactory
     }
 
     /// <summary>
+    /// 지능 증가 버프
+    /// 기본 지능 + factor 값만큼 지능 증가
+    /// </summary>
+    /// <param name="baseFactor"></param>
+    protected void IntelligenceBuff(float baseFactor)
+    {
+        float inteligenceFactor = skillNode.PlayerModel.PlayerStats.baseIntelligence + baseFactor;
+        skillNode.PlayerModel.UpdateStrengthFactor(inteligenceFactor);
+    }
+
+    /// <summary>
+    /// 마법 공격력 증가 버프
+    /// 기본 마공 * factor만큼 마공 증가
+    /// </summary>
+    /// <param name="baseFactor"></param>
+    protected void SkillAttackBuff(float baseFactor, float levelFactor)
+    {   
+        float skillLevelPerStats = (skillNode.CurSkillLevel - 1) * levelFactor;
+        
+        //기본 Factor + 레벨당 추가 Factor 값에 기본 공격 속도를 곱한 증가할 공격 속도 값
+        float skillAttackFactor = (skillNode.PlayerModel.PlayerStats.SkillAttack * (baseFactor + skillLevelPerStats));
+        //모델에 해당 함수 추가해야함
+        //skillNode.PlayerModel.UpdateSkillAttackFactor(skillAttackFactor);
+    }
+    
+    
+    /// <summary>
     /// 크리티컬 확률 증가 버프
     /// 기본 크리티컬 확률 + factor 만큼 증가한 값
     /// </summary>
@@ -126,6 +153,19 @@ public abstract class PassiveSkill : SkillFactory
     {
         float agilityFactor = skillNode.PlayerModel.PlayerStats.baseAgility * baseFactor;
         skillNode.PlayerModel.UpdateAgilityStats(agilityFactor);
+    }
+
+    protected void ReduceCastingTimeBuff(float baseFactor, float levelFactor)
+    {
+        float reductionFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
+        skillNode.PlayerModel.UpdateCastingTimeReduction(reductionFactor);
+    }
+
+    protected void TeleportCooldownBuff(float baseFactor, float levelFactor)
+    {
+        float skillLevelPerStats = baseFactor + (skillNode.CurSkillLevel - 1) * levelFactor;
+        //플레이어 모델에 추가해야함
+        //skillNode.PlayerModel.UpdatreDodgeCooldown(skillLevelPerStats);
     }
     
     public abstract void RevertPassiveEffects();
