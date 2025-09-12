@@ -29,7 +29,7 @@ public class WDPS001 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        IntelligenceBuff(0);
+        IntelligenceBuff(-inteligenceFactor);
         SkillAttackBuff(0, 0);
         
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
