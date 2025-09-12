@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class WDAS001 : ProjectileSkill
 { 
-    private Coroutine delayFireCo;
-    private Vector2 target = new Vector2();
-    private float maxDistance = 0f;
     private int effectIndex = 0;
-    
-    private MagicMissile missile;
     
     public WDAS001(SkillNode skillNode) : base(skillNode)
     {

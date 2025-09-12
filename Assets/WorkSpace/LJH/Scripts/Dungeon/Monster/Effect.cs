@@ -32,10 +32,11 @@ public class Effect : MonoBehaviour
         
         else if (skillType == DamageType.DOTDAMAGE)
         {
-            GetComponent<ParticleSystem>().startLifetime = duration;
-            float damagePerTick = damage / (duration / tick);
+            ParticleSystem.MainModule main = GetComponent<ParticleSystem>().main;
+
+            main.startLifetime = new ParticleSystem.MinMaxCurve(duration);
             
-            damage = damagePerTick;
+            damage /= duration / tick;
         }
     }
     
