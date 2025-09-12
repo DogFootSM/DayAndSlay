@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class MagicMissile : MonoBehaviour
 {
-    
-    private Vector2 startPos = new Vector2();
     private LayerMask monsterLayer;
 
     private int hitCount;
