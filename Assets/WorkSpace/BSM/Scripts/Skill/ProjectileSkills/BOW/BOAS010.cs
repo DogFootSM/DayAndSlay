@@ -26,20 +26,7 @@ public class BOAS010 : MeleeSkill
         
         
         
-        // if (cols.Length > 0)
-        // { 
-        //     skillActions.Add(new List<Action>()); 
-        //     for (int i = 0; i < cols.Length; i++)
-        //     {
-        //         IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-        //         
-        //         skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-        //         triggerModules[0].AddCollider(cols[i]); 
-        //     }
-        //     
-        //     skillActions[0].Add(() => RemoveTriggerModuleList(0));
-        //     interactions[0].ReceiveAction(skillActions[0]);
-        // }
+        
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
