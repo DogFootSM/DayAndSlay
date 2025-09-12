@@ -213,7 +213,12 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="castingTime">스킬 사용에 걸리는 시간</param>
     protected void ExecuteCasting(float castingTime)
     {
-        skillNode.PlayerSkillReceiver.ReceiveCasting(castingTime);
+        float finalCastingTime = castingTime - skillNode.PlayerModel.CastingTimeReduction;
+        
+        // 캐스팅 시간이 0보다 작아지지 않도록 최소값 설정
+        finalCastingTime = Mathf.Max(0, finalCastingTime);
+        
+        skillNode.PlayerSkillReceiver.ReceiveCasting(finalCastingTime);
     }
     
     /// <summary>

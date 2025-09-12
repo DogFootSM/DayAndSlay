@@ -12,30 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b47c56a880b1794eba4a2fb48f18638, type: 3}
   m_Name: WDAS002
   m_EditorClassIdentifier: 
-  SkillId: WDAS002
-  SkillName: "\uC775\uC2A4\uD50C\uB85C\uC83C"
-  PrerequisiteSkillsId:
-  - WDAS001
-  SkillDescription: "\uD654\uC5FC\uC758 \uD798\uC744 \uD3ED\uBC1C\uC2DC\uCF1C \uC801\uB4E4\uC5D0\uAC8C
-    \uD654\uC0C1\uC744 \uC785\uD78C\uB2E4."
+  SkillId: WDAS001
+  SkillName: "\uB9E4\uC9C1 \uBBF8\uC0AC\uC77C"
+  PrerequisiteSkillsId: []
+  SkillDescription: "\uB9C8\uBC95\uC758 \uD798\uC744 \uBAA8\uC544 \uB2E8\uC77C \uC801\uC5D0\uAC8C
+    \uB9C8\uBC95 \uD53C\uD574\uB97C \uC900\uB2E4."
   SkillEffectPrefab:
-<<<<<<< HEAD
-  - {fileID: 7253567174859556916, guid: dc9635d06f4025e4f85a65c01db8f46e, type: 3}
-=======
   - {fileID: 0}
->>>>>>> parent of b209bbdb ([Feat] 완드 스킬 1, 2 구현)
-  SkillCooldown: 11
+  SkillCooldown: 5
   SkillMaxLevel: 6
-  SkillDamage: 2
-  SkillDamageIncreaseRate: 0.15
+  SkillDamage: 1.7
+  SkillDamageIncreaseRate: 0.12
   SkillIcon: {fileID: 0}
   RequiredWeapon: 3
-  UseSkillDelay: 1.2
+  UseSkillDelay: 0.6
   IsActive: 1
   UseSkillDelayDecreaseRate: 0.05
-  SkillRange: 5
-  SkillRadiusRange: 6
+  SkillRange: 6
+  SkillRadiusRange: 0
   SkillHitCount: 1
-  SkillCastingTime: 0.3
+  SkillCastingTime: 0.2
   BuffDuration: 0
-  DeBuffDuration: 5
+  DeBuffDuration: 10

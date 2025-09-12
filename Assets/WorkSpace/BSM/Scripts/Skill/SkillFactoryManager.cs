@@ -57,6 +57,11 @@ public static class SkillFactoryManager
             case "WDAS009" : return new WDAS009(skillNode);
             case "WDAS010" : return new WDAS010(skillNode);
             
+            case "WDPS001" : return new WDPS001(skillNode);
+            case "WDPS002" : return new WDPS002(skillNode);
+            case "WDPS003" : return new WDPS003(skillNode);
+            case "WDPS004" : return new WDPS004(skillNode);
+            
             default: return null;
         }    
     } 

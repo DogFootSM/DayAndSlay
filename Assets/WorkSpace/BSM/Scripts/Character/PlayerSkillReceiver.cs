@@ -63,11 +63,6 @@ public class PlayerSkillReceiver : MonoBehaviour
         MonsterCounterEvent -= MonsterCounterRegister;
     }
 
-    private void Update()
-    {
-        Debug.Log(isNeedCasting);
-    }
-
     /// <summary>
     /// 공격력 버프 & 방어력 감소 스킬 효과 리시버
     /// </summary>
