@@ -14,7 +14,9 @@ public class WDPS004 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
-        CriticalRateBuff(8f, 3f);
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+        
+        CriticalRateBuff(skillNode.skillData.SkillAbilityValue, skillNode.skillData.SkillAbilityFactor);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
@@ -24,7 +26,7 @@ public class WDPS004 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        CriticalRateBuff(0f, 0f);
+        CriticalRateBuff(-skillNode.skillData.SkillAbilityValue, -skillNode.skillData.SkillAbilityFactor);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }

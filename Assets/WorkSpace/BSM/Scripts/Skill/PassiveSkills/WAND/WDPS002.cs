@@ -14,6 +14,8 @@ public class WDPS002 : PassiveSkill
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
+        if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
+        
         TeleportCooldownBuff(0.1f, 0.1f);
         
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();

@@ -73,12 +73,12 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         if (tree == null) return;
         tree.Tick();
 
-#if UNITY_EDITOR
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             method.DropItem();
         }
-#endif
+        */
     }
 
     protected virtual BTNode BuildRoot()
