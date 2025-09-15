@@ -246,8 +246,8 @@ public class AstarPath : MonoBehaviour
     /// <param name="grid"></param>
     public void SetGridAndTilemap(Grid grid)
     {
-        mapTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
-        obstacleTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
+        mapTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
+        obstacleTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
         this.mapGrid = grid;
     }
 

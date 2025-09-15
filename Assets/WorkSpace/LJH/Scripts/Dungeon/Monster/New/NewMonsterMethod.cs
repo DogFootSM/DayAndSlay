@@ -170,7 +170,7 @@ public class NewMonsterMethod : MonoBehaviour
         
         //»ç¸Á ÀÌÆåÆ® Àç»ý
         DropItem();
-        gameObject.SetActive(false);
+        Destroy(gameObject);
         
         
     }
@@ -193,7 +193,7 @@ public class NewMonsterMethod : MonoBehaviour
         
         float randomNum = Random.Range(0, 100);
 
-        Instantiate(itemPrefab, transform.position, Quaternion.identity);
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
+        Instantiate(itemPrefab, transform.position, Quaternion.identity);
     }
 }

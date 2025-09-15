@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 295333524080243007}
   - component: {fileID: 3226788430190893274}
   - component: {fileID: -2829234086739164384}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Banshee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,8 +708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70b98268e66be34488011b1dcd012c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-
-  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
+  markObject: {fileID: 0}
   monsterData: {fileID: 0}
   player: {fileID: 0}
   isAttacking: 0
@@ -772,6 +771,7 @@ MonoBehaviour:
   Name: 
   MaxHp: 0
   Hp: 0
+  def: 0
   Attack: 0
   AttackRange: 0
   ChaseRange: 0
@@ -786,14 +786,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6566479308208419710}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

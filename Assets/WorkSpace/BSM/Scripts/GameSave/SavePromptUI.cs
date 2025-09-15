@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Zenject;
 
 public class SavePromptUI : MonoBehaviour
 { 
@@ -13,6 +14,7 @@ public class SavePromptUI : MonoBehaviour
     [SerializeField] private Button saveCancelButton;
     [SerializeField] private GameSaveHandler saveHandler;
     
+    [SerializeField] private DayManager dayManager;
     private GameManager gameManager => GameManager.Instance;
     
     private readonly string[] saveAlertText =
@@ -33,7 +35,11 @@ public class SavePromptUI : MonoBehaviour
 
     private void OnEnable()
     { 
-        OnChangeSaveAlertText(gameManager.CurDayState);
+        //해당 부분 수정함 _ LJH
+        //OnChangeSaveAlertText(gameManager.CurDayState);
+        
+        //DayManager에게서 낮,밤을 따와서 인식
+        OnChangeSaveAlertText((int)dayManager.GetDayOrNight());
     }
  
     /// <summary>

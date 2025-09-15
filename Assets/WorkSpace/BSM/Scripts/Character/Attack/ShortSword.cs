@@ -9,7 +9,7 @@ public class ShortSword : IAttackHandler
     private Vector2 overlapSize;
 
     private LayerMask monsterLayer;
-    private Monster targetMonster;
+    private NewMonsterAI targetMonster;
     private float distance;
 
     public ShortSword()
@@ -49,7 +49,8 @@ public class ShortSword : IAttackHandler
         //감지된 몬스터가 1마리일 경우 바로 타겟 설정
         if (monsterColliders.Length == 1)
         {
-            targetMonster = monsterColliders[0].GetComponent<Monster>();
+            //targetMonster = monsterColliders[0].GetComponent<Monster>();
+            targetMonster = monsterColliders[0].GetComponent<NewMonsterAI>();
         }
         else
         {
@@ -80,7 +81,7 @@ public class ShortSword : IAttackHandler
             if (distance > compareDistance)
             {
                 distance = compareDistance;
-                targetMonster = colliders[i].gameObject.GetComponent<Monster>();
+                targetMonster = colliders[i].gameObject.GetComponent<NewMonsterAI>();
             }
         }
     }

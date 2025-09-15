@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae98c6cdb65100c4f935cff1938b5a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
   rushEffect: {fileID: 2167000236993955665, guid: ab9c5b4791704e64c8ef75945994450e, type: 3}
 --- !u!114 &-4237787542458343866
 MonoBehaviour:
@@ -190,6 +191,7 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+  dropItems: []
 --- !u!61 &-977983183303633917
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -224,7 +226,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5925213130866722637}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
