@@ -12,7 +12,11 @@ public class BOAS010 : MeleeSkill
 
     private Vector2 pos;
     private Vector2 dir;
-
+    private float offset = 4f;
+    private float minRot = 235f;
+    private float maxRot = 255f;
+    private float verticalDistance = 2f;
+    
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
@@ -34,6 +38,7 @@ public class BOAS010 : MeleeSkill
         float minX = -overlapSize.x / 2;
         float maxX = overlapSize.x / 2;
         float maxY = overlapSize.y / 2;
+        int index = 0;
         
         while (elapsedTime < 1f)
         {
@@ -42,27 +47,21 @@ public class BOAS010 : MeleeSkill
             float x = Random.Range(minX, maxX);
             float y = Random.Range(0, maxY);
             
-            GameObject instance = particlePooling.GetSkillPool($"{skillNode.skillData.SkillId}_1_Particle",
-                skillNode.skillData.SkillEffectPrefab[0]);
+            SkillEffect(playerPosition + (direction * offset) + new Vector2(x, y), index, $"{skillNode.skillData.SkillId}_1_Particle",skillNode.skillData.SkillEffectPrefab[0]);
             
-            instance.SetActive(true);
-            instance.transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(235, 255));
-            instance.transform.position = playerPosition + (direction * 4) + new Vector2(x, y);
+            instance.transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(minRot, maxRot));
             
-            ParticleSystem particleSystem = instance.GetComponent<ParticleSystem>();
-            particleSystem.Play();
-            
-            ParticleInteraction interaction = instance.GetComponent<ParticleInteraction>();
-            interaction.EffectId = $"{skillNode.skillData.SkillId}_1_Particle";
-            interaction.LinearProjectile(0, instance.transform.right, 2);
- 
+            interactions[index++].LinearProjectile(0, instance.transform.right, verticalDistance);
             yield return WaitCache.GetWait(0.01f);
         }
-
+        
+        interactions[0].SetHitEffectId($"{skillNode.skillData.SkillId}_3_Particle");
+        
         for (int i = 0; i < cols.Length; i++)
         {
             IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
+            interactions[0].PlayHitEffect(cols[i].transform.position, Vector2.zero);
         }
         
     }
