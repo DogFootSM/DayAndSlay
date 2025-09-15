@@ -41,6 +41,8 @@ public class ParticleInteraction : MonoBehaviour
     /// </summary>
     /// <param name="delaySeconds">딜레이 시간, 몇 초 후에 몬스터 방향으로 이동할지</param>
     /// <param name="targetDirection">파티클이 날라갈 방향</param>
+    /// <param name="maxDistance">날라갈 최대 사거리</param>
+    /// <param name="projectileSpeed">날라갈 속도, 기본 값은 15</param>
     public void LinearProjectile(float delaySeconds, Vector2 targetDirection, float maxDistance, float projectileSpeed = 15f)
     {
         if (projectileCo != null)
@@ -90,13 +92,15 @@ public class ParticleInteraction : MonoBehaviour
     /// <summary>
     /// 타격 이펙트 재생
     /// </summary>
-    public void PlayHitEffect()
+    public void PlayHitEffect(Vector2 hitEffectPosition, Vector2 effectDirection)
     {
         //타격 이펙트 풀에서 꺼내옴
         GameObject hitInstance = SkillParticlePooling.Instance.GetSkillPool(hitEffectId, hitParticlePrefab);
         hitInstance.SetActive(true);
-        hitInstance.transform.position = transform.position;
-        hitInstance.transform.right = transform.right;
+        hitInstance.transform.position = hitEffectPosition;
+        
+        //TODO: 방향을 설정할지, 아니면 그냥 결대로 이펙트에 맞게 타격 방향도 따라갈지
+        hitInstance.transform.right = effectDirection;
                 
         //타격 이펙트 풀에 반납할 ID 설정
         ParticleInteraction hitInteraction = hitInstance.GetComponent<ParticleInteraction>();

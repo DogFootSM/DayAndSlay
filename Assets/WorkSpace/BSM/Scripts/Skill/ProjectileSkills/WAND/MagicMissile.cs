@@ -25,7 +25,7 @@ public class MagicMissile : MonoBehaviour
         {
             Hit(collider.GetComponent<IEffectReceiver>(), hitCount, damage);
             particleInteraction.IsProjectileStopped = true;
-            particleInteraction.PlayHitEffect();
+            particleInteraction.PlayHitEffect(transform.position, transform.right);
         }
     }
     
