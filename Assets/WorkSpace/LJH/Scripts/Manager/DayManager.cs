@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class DayManager : MonoBehaviour, ISavable
 {
+    [SerializeField] private Image sun;
+    [SerializeField] private Image moon;
+    
+    
     public static DayManager instance;
 
     public DayAndNight dayOrNight;
     // 9Minute
-    const int DefaultDayCount = 540;
-    const int DayEndTime = 0;
+    private const int DefaultDayCount = 54;
+    private const int DayEndTime = 0;
     private int dayCount;
     private WaitForSeconds seconds = new WaitForSeconds(1f);
 
@@ -21,7 +27,8 @@ public class DayManager : MonoBehaviour, ISavable
     [Inject]DataManager dataManager;
     [Inject]SqlManager sqlManager;
     [Inject]SaveManager saveManager;
-
+    
+    public DayAndNight GetDayOrNight() => dayOrNight;
     private void Awake()
     {
         if (instance == null)
@@ -34,7 +41,7 @@ public class DayManager : MonoBehaviour, ISavable
             Destroy(gameObject);
         }
 
-        saveManager.SavableRegister(this);
+        //saveManager.SavableRegister(this);
 
     }
 
@@ -74,6 +81,10 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
+        //태양 달 이미지 fillAmount 초기화
+        sun.fillAmount = 1f;
+        moon.fillAmount = 0f;
+        
         SetDayCount(DefaultDayCount);
         dayOrNight = DayAndNight.DAY;
         
@@ -94,6 +105,11 @@ public class DayManager : MonoBehaviour, ISavable
         {
             yield return seconds;
             dayCount--;
+
+            sun.fillAmount -= 1f / DefaultDayCount;
+            moon.fillAmount += 1f / DefaultDayCount;
+            
+            Debug.Log(sun.fillAmount);
 
             if(dayCount <= DayEndTime)
             {
