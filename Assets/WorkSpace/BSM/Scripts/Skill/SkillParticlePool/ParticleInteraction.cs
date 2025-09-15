@@ -66,27 +66,13 @@ public class ParticleInteraction : MonoBehaviour
 
         while (Vector2.Distance(transform.position, startPos) < maxDistance)
         {
-            transform.Translate(Vector2.right * 15f * Time.deltaTime);
+            transform.Translate(Vector2.right * projectileSpeed * Time.deltaTime);
 
             //날라가는 이펙트 중지 상태가 됐을 경우
             if (isProjectileStopped)
             {
                 //기존에 날라가던 이펙트 중지
                 particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                
-                //타격 이펙트 풀에서 꺼내옴
-                GameObject hitInstance = SkillParticlePooling.Instance.GetSkillPool(hitEffectId, hitParticlePrefab);
-                hitInstance.SetActive(true);
-                hitInstance.transform.position = transform.position;
-                hitInstance.transform.right = transform.right;
-                
-                //타격 이펙트 풀에 반납할 ID 설정
-                ParticleInteraction hitInteraction = hitInstance.GetComponent<ParticleInteraction>();
-                hitInteraction.EffectId = hitEffectId;
-                
-                //타격 이펙트 재생
-                ParticleSystem hitParticleSystem = hitInstance.GetComponent<ParticleSystem>();
-                hitParticleSystem.Play();
                 break;
             }
             
@@ -101,6 +87,26 @@ public class ParticleInteraction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 타격 이펙트 재생
+    /// </summary>
+    public void PlayHitEffect()
+    {
+        //타격 이펙트 풀에서 꺼내옴
+        GameObject hitInstance = SkillParticlePooling.Instance.GetSkillPool(hitEffectId, hitParticlePrefab);
+        hitInstance.SetActive(true);
+        hitInstance.transform.position = transform.position;
+        hitInstance.transform.right = transform.right;
+                
+        //타격 이펙트 풀에 반납할 ID 설정
+        ParticleInteraction hitInteraction = hitInstance.GetComponent<ParticleInteraction>();
+        hitInteraction.EffectId = hitEffectId;
+                
+        //타격 이펙트 재생
+        ParticleSystem hitParticleSystem = hitInstance.GetComponent<ParticleSystem>();
+        hitParticleSystem.Play();
+    }
+    
     /// <summary>
     /// 타격 이펙트를 풀에 반납할 ID 설정
     /// </summary>
