@@ -41,7 +41,7 @@ public class WDAS001 : ProjectileSkill
         surroundInteraction[effectIndex].SetHitEffectId($"{skillNode.skillData.SkillId}_2_Particle");
         
         //바라보는 방향으로 발사
-        surroundInteraction[effectIndex].LinearProjectile(0, direction, skillNode.skillData.SkillRange, 8f);
+        surroundInteraction[effectIndex].LinearProjectile(0, direction, skillNode.skillData.SkillRange, 5f);
     } 
     
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)

@@ -21,10 +21,11 @@ public class MagicMissile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.CompareTag("Monster") || collider.CompareTag("Boss"))
+        if ((1 << collider.gameObject.layer & monsterLayer) != 0)
         {
             Hit(collider.GetComponent<IEffectReceiver>(), hitCount, damage);
             particleInteraction.IsProjectileStopped = true;
+            particleInteraction.PlayHitEffect();
         }
     }
     
