@@ -2,9 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WDAS003 : MeleeSkill
 {
+    private Action action;
+    private Coroutine castingCo;
+    
     public WDAS003(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -15,26 +19,51 @@ public class WDAS003 : MeleeSkill
         
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-        
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
-                 
-        if (cols.Length > 0)
-        {
-            skillActions.Add(new List<Action>());
-            //TODO: 넉백 방향 수정해야 될듯?
-            for (int i = 0; i < cols.Length; i++)
-            {
-                IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                skillActions[0].Add(() => ExecuteSlow(receiver, skillNode.skillData.DeBuffDuration, skillNode.skillData.SkillAbilityValue));
-                triggerModules[0].AddCollider(cols[i]);
-            }
-        
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(skillActions[0]);
-        } 
+
+        action = () => ExecutePostCastAction(playerPosition);
+        castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action)); 
     }
 
+    /// <summary>
+    /// 캐스팅 이후 동작
+    /// </summary>
+    /// <param name="playerPosition"></param>
+    private void ExecutePostCastAction(Vector2 playerPosition)
+    {
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
+    
+        //레벨당 슬로우 효과
+        float slowLevelPer = 0.3f + ((skillNode.CurSkillLevel - 1) * 0.03f);
+        
+        for (int i = 0; i < cols.Length; i++)
+        {
+            IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
+            ExecuteSlow(receiver, skillNode.skillData.DeBuffDuration,slowLevelPer);
+        }
+        
+        skillNode.PlayerSkillReceiver.StartCoroutine(PostCastRoutine(playerPosition));
+    }
+
+    private IEnumerator PostCastRoutine(Vector2 playerPosition)
+    {
+        float elapsedTime = 0;
+        int index = 0;
+        
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime * 3f;
+            
+            float offsetX = Random.Range(-overlapSize.x / 2, overlapSize.x / 2);
+            float offsetY = Random.Range(-overlapSize.y / 2, overlapSize.y / 2);
+            
+            Vector2 randOffset = new Vector2(offsetX, offsetY);
+            
+            SkillEffect(playerPosition + randOffset, index++, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+            
+            yield return WaitCache.GetWait(0.02f);
+        } 
+    }
+    
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
