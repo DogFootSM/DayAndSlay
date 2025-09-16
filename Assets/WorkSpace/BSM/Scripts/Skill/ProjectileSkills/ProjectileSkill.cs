@@ -6,14 +6,13 @@ using UnityEngine;
 public abstract class ProjectileSkill : SkillFactory
 {
     private SkillParticlePooling skillParticlePool => SkillParticlePooling.Instance;
-    private ParticleSystem surroundParticleSystem;
     
     protected List<List<Action>> actions = new List<List<Action>>();
-    
-    protected GameObject surroundEffectInstance;
     protected List<ParticleInteraction> surroundInteraction = new List<ParticleInteraction>();
     protected List<ParticleSystemRenderer> particleSystemRenderer = new List<ParticleSystemRenderer>();
-
+    protected ParticleSystem surroundParticleSystem;
+    protected GameObject surroundEffectInstance;
+    
     protected float skillDamage;
     
     public ProjectileSkill(SkillNode skillNode) : base(skillNode)

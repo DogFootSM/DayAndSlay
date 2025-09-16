@@ -32,13 +32,14 @@ public class WDAS001 : ProjectileSkill
     /// <returns></returns>
     private void ExecutePostCastAction(Vector2 position, Vector2 direction)
     {
-        skillNode.skillData.SkillEffectPrefab[0].GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
-
+        skillNode.skillData.SkillEffectPrefab[1].GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
+        SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", effectIndex);
+        
         //몸 주변에 발사 이펙트 재생
-        SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 0);
+        SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", ++effectIndex);
         
         //히트 이펙트 풀에 반납할 ID 설정
-        surroundInteraction[effectIndex].SetHitEffectId($"{skillNode.skillData.SkillId}_2_Particle");
+        surroundInteraction[effectIndex].SetHitEffectId($"{skillNode.skillData.SkillId}_3_Particle");
         
         //바라보는 방향으로 발사
         surroundInteraction[effectIndex].LinearProjectile(0, direction, skillNode.skillData.SkillRange, 5f);
