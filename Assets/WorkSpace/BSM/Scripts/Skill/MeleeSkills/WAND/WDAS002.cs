@@ -5,41 +5,52 @@ using UnityEngine;
 
 public class WDAS002 : MeleeSkill
 {
+    private Coroutine castingCo;
+    
     public WDAS002(SkillNode skillNode) : base(skillNode)
     {
     }
 
+    private Vector2 pos;
+    private Vector2 dir;
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-        GetSkillDamage();
+        skillDamage = GetSkillDamage();
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
         
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        SkillEffect(SpacingSkillRange(direction, playerPosition), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        pos = playerPosition;
+        dir = direction;
         
-        Collider2D[] cols = Physics2D.OverlapBoxAll(SpacingSkillRange(direction, playerPosition), overlapSize, 0, monsterLayer);
-                 
+        Vector2 particleSpawnPos = SpacingSkillRange(direction, playerPosition);
+        Collider2D[] cols = Physics2D.OverlapBoxAll(particleSpawnPos, overlapSize, 0, monsterLayer);
+        
         if (cols.Length > 0)
         {
-            skillActions.Add(new List<Action>());
-            
-            for (int i = 0; i < cols.Length; i++)
-            {
-                IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-            
-                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                skillActions[0].Add(() => ExecuteDot(receiver, skillNode.skillData.DeBuffDuration, skillNode.skillData.SkillHitCount, skillDamage / 5));
-                triggerModules[0].AddCollider(cols[i]);
-            }
-        
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(skillActions[0]);
+            castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(particleSpawnPos, cols));
         } 
     }
 
+    private IEnumerator WaitCastingRoutine(Vector2 particleSpawnPos, Collider2D[] cols)
+    {
+        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
+        SkillEffect(particleSpawnPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
-    public Vector2 SpacingSkillRange(Vector2 direction, Vector2 playerPosition)
+        //레벨당 +1 초 지속 시간
+        float duration = skillNode.skillData.DeBuffDuration + (skillNode.CurSkillLevel - 1);
+        
+        for (int i = 0; i < cols.Length; i++)
+        {
+            IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
+            Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
+            ExecuteDot(receiver, duration, 1f, skillDamage / 5);
+        }
+        
+    }
+    
+
+    private Vector2 SpacingSkillRange(Vector2 direction, Vector2 playerPosition)
     {
         return playerPosition + (direction * skillNode.skillData.SkillRange);
     }
@@ -50,5 +61,8 @@ public class WDAS002 : MeleeSkill
 
     public override void Gizmos()
     {
+        UnityEngine.Gizmos.color = Color.yellow;
+        UnityEngine.Gizmos.DrawWireCube(pos + (dir * skillNode.skillData.SkillRange), overlapSize);
+        
     }
 }
