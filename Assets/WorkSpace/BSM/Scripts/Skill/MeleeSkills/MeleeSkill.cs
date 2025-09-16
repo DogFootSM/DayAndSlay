@@ -404,5 +404,16 @@ public abstract class MeleeSkill : SkillFactory
     {
         receiver.ReceiveAttackDeBuff(duration, deBuffPer);
     }
+
+    /// <summary>
+    /// 캐스팅 이후 수행할 동작 코루틴
+    /// </summary>
+    /// <param name="action">캐스팅 완료 후 수행할 동작</param>
+    /// <returns></returns>
+    protected IEnumerator WaitCastingRoutine(Action action)
+    {
+        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
+        action?.Invoke();
+    }
     
 }

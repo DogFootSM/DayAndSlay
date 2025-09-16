@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class WDAS002 : MeleeSkill
 {
     private Coroutine castingCo;
-    
+    private Action action;
     public WDAS002(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -28,13 +28,13 @@ public class WDAS002 : MeleeSkill
         
         if (cols.Length > 0)
         {
-            castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(particleSpawnPos, cols));
+            action = () => ExecutePostCastAction(particleSpawnPos, cols);
+            castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action));
         } 
     }
 
-    private IEnumerator WaitCastingRoutine(Vector2 particleSpawnPos, Collider2D[] cols)
+    private void ExecutePostCastAction(Vector2 particleSpawnPos, Collider2D[] cols)
     {
-        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
         SkillEffect(particleSpawnPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         //레벨당 +1 초 지속 시간
@@ -46,10 +46,8 @@ public class WDAS002 : MeleeSkill
             Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
             ExecuteDot(receiver, duration, 1f, skillDamage / 5);
         }
-        
     }
     
-
     private Vector2 SpacingSkillRange(Vector2 direction, Vector2 playerPosition)
     {
         return playerPosition + (direction * skillNode.skillData.SkillRange);

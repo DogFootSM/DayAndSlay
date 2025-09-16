@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class WDAS001 : ProjectileSkill
-{ 
+{
+    private Coroutine castingCo;
+    private Action action;
     private int effectIndex = 0;
     
     public WDAS001(SkillNode skillNode) : base(skillNode)
@@ -15,22 +18,19 @@ public class WDAS001 : ProjectileSkill
         SetSkillDamage(skillNode.skillData.SkillDamage);
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
         
-        skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(playerPosition, direction));
-    }
+        action = () => ExecutePostCastAction(playerPosition, direction);
 
-    private IEnumerator WaitCastingRoutine(Vector2 position, Vector2 direction)
-    {
-        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
-        Fire(position, direction);
+        castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastRoutine(action));
     }
-    
+  
     /// <summary>
-    /// 미사일 발사
+    /// 캐스팅 이후 수행할 동작
+    /// 매직 미사일 파티클 발사
     /// </summary>
     /// <param name="position">발사가 시작될 위치</param>
     /// <param name="direction">발사될 방향</param>
     /// <returns></returns>
-    private void Fire(Vector2 position, Vector2 direction)
+    private void ExecutePostCastAction(Vector2 position, Vector2 direction)
     {
         skillNode.skillData.SkillEffectPrefab[0].GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
 
