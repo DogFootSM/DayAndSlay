@@ -116,8 +116,8 @@ public class DungeonRoomSpawner : MonoBehaviour
                 }
             }
         }
-
     }
+
     private void Init()
     {
         roomsDict[nameof(StageNum.STAGE1)] = rooms_Stage1;
