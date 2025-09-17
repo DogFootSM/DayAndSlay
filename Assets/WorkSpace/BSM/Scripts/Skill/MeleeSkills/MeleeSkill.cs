@@ -375,17 +375,18 @@ public abstract class MeleeSkill : SkillFactory
     {
         skillNode.PlayerSkillReceiver.ReceiveJumpAttackInPlace(effectAction);   
     }
- 
+
     /// <summary>
     /// 주변 몬스터 지속 감지 및 스킬 행동 실행
     /// </summary>
+    /// <param name="radius">몬스터 감지 범위</param>
     /// <param name="tick">몇 초 간격으로 감지한 몬스터에게 행동을 취할지에 대한 시간</param>
     /// <param name="action">감지한 몬스터에게 어떤 행동을 취할지</param>
     /// <param name="duration">스킬 지속 시간</param>
     /// <typeparam name="T1"></typeparam>
-    protected void ExecuteFindNearByMonsters<T1>(float tick, T1 action, float duration)
+    protected void ExecuteFindNearByMonsters<T1>(float radius, float tick, T1 action, float duration)
     {
-        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(tick, action, duration);
+        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(radius, tick, action, duration);
     }
 
     /// <summary>
@@ -399,8 +400,16 @@ public abstract class MeleeSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveFollowCharacterWithParticle(effectPrefab, duration, effectId);
     }
     
-    
-    public void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
+    /// <summary>
+    /// 파티클 랜덤 위치 생성
+    /// </summary>
+    /// <param name="spawnPos">파티클 재생 위치</param>
+    /// <param name="radiusRange">스킬 범위</param>
+    /// <param name="duration">스킬 지속 시간</param>
+    /// <param name="particlePrefab">재생할 파티클 프리팹</param>
+    /// <param name="effectId">풀에 반납할 이펙트 id</param>
+    /// <param name="prefabCount">재생할 파티클 개수</param>
+    protected void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
     {
         skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount);
     }

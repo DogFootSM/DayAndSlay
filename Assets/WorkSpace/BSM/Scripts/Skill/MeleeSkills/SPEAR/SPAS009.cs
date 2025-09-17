@@ -15,7 +15,7 @@ public class SPAS009 : MeleeSkill
     {
         ListClear();
         ExecuteFollowCharacterWithParticle(skillNode.skillData.SkillEffectPrefab[0], skillNode.skillData.BuffDuration, $"{skillNode.skillData.SkillId}_1_Particle");
-        ExecuteFindNearByMonsters(1f, this, skillNode.skillData.BuffDuration);
+        ExecuteFindNearByMonsters(skillNode.skillData.SkillRadiusRange ,1f, this, skillNode.skillData.BuffDuration);
     }
     
     /// <summary>
