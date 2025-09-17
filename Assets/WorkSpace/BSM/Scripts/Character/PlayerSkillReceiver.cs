@@ -624,23 +624,34 @@ public class PlayerSkillReceiver : MonoBehaviour
     }
 
     /// <summary>
-    /// 스킬 지속 시간만큼 스킬 이펙트가 캐릭터를 따라 이동
     /// 주변 몬스터 감지 후 감지된 몬스터에게 행동을 취함
     /// </summary>
     /// <param name="tick">몇 초 간격으로 몬스터에게 행동을 취할지에 대한 시간</param>
     /// <param name="skillAction">각 스킬 별 클래스를 넘겨 받아 각 스킬의 Action 메서드를 실행하여 감지한 몬스터들에게 행동을 수행</param>
-    /// <param name="effectId">캐릭터를 따라 다닐 스킬 이펙트 ID</param>
-    /// <param name="duration">캐릭터를 따라 다닐 스킬 이펙트 지속 시간</param>
-    /// <param name="skillEffectPrefab">캐릭터를 따라 다닐 스킬 이펙트, 따라 다닐 이펙트가 없다면 매개변수 미입력</param>
+    /// <param name="duration">스킬 효과 지속 시간</param>
     /// <typeparam name="T1"></typeparam>
-    public void ReceiveFindNearByMonsters<T1>(float tick, T1 skillAction, string effectId, float duration, GameObject skillEffectPrefab = null)
+    public void ReceiveFindNearByMonsters<T1>(float tick, T1 skillAction, float duration)
+    {
+        if (findNearByMonstersCo == null)
+        {
+            findNearByMonstersCo = StartCoroutine(FindNearByMonstersRoutine(duration, tick, skillAction));
+        } 
+    }
+
+    /// <summary>
+    /// 스킬 지속시간 만큼 스킬 이펙트가 캐릭터를 따라 이동
+    /// </summary>
+    /// <param name="effectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <param name="duration">캐릭터를 따라 다닐 스킬 이펙트 지속 시간</param>
+    /// <param name="effectId">캐릭터를 따라 다닐 스킬 이펙트 ID</param>
+    public void ReceiveFollowCharacterWithParticle(GameObject effectPrefab, float duration, string effectId)
     {
         ParticleSystem particle = null;
         
         //캐릭터를 따라다닐 스킬 이펙트를 풀에서 꺼내오거나 새로 생성
-        if (skillEffectPrefab != null)
+        if (effectPrefab != null)
         {
-            GameObject effectInstance = SkillParticlePooling.Instance.GetSkillPool(effectId, skillEffectPrefab);
+            GameObject effectInstance = SkillParticlePooling.Instance.GetSkillPool(effectId, effectPrefab);
             effectInstance.SetActive(true);
             effectInstance.transform.position = transform.position + new Vector3(0, 0.2f);
         
@@ -658,19 +669,16 @@ public class PlayerSkillReceiver : MonoBehaviour
         {
             skillEffectFollowCharacterCo = StartCoroutine(FollowCharacterWithParticleRoutine(particle, duration));
         }
-        
-        if (findNearByMonstersCo == null)
-        {
-            findNearByMonstersCo = StartCoroutine(FindNearByMonstersRoutine(tick, skillAction));
-        } 
     }
-
-    private IEnumerator FindNearByMonstersRoutine<T1>(float tick, T1 skillAction)
+    
+    private IEnumerator FindNearByMonstersRoutine<T1>(float duration, float tick, T1 skillAction)
     {
         Vector2 overlapSize = new Vector2(2f, 2f);
+
+        float elapsedTime = 0;
         
         //현재 주변을 감지하고 있는 상태
-        while (isSearching)
+        while (elapsedTime < duration)
         {
             Collider2D[] cols = Physics2D.OverlapBoxAll(transform.position, overlapSize, 0, monsterMask);
             
@@ -681,6 +689,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             }
 
             yield return WaitCache.GetWait(tick);
+            elapsedTime += tick;
         }
         
         //코루틴 종료 처리

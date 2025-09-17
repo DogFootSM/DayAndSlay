@@ -377,18 +377,28 @@ public abstract class MeleeSkill : SkillFactory
     }
  
     /// <summary>
-    /// 스킬 이펙트 캐릭터 위치 추적 및 주변 몬스터 지속 감지
+    /// 주변 몬스터 지속 감지 및 스킬 행동 실행
     /// </summary>
     /// <param name="tick">몇 초 간격으로 감지한 몬스터에게 행동을 취할지에 대한 시간</param>
     /// <param name="action">감지한 몬스터에게 어떤 행동을 취할지</param>
-    /// <param name="effectId">캐릭터를 따라 다닐 이펙트 id</param>
-    /// <param name="duration">캐릭터를 따라 다닐 지속 시간</param>
-    /// <param name="skillEffectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <param name="duration">스킬 지속 시간</param>
     /// <typeparam name="T1"></typeparam>
-    protected void ExecuteFindNearByMonsters<T1>(float tick, T1 action, string effectId, float duration, GameObject skillEffectPrefab = null)
+    protected void ExecuteFindNearByMonsters<T1>(float tick, T1 action, float duration)
     {
-        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(tick, action, effectId, duration, skillEffectPrefab);
+        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(tick, action, duration);
     }
+
+    /// <summary>
+    /// 스킬 이펙트 캐릭터 위치 따라 이동
+    /// </summary>
+    /// <param name="effectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <param name="duration">캐릭터를 따라 다닐 지속 시간</param>
+    /// <param name="effectId">캐릭터를 따라 다닐 이펙트 id</param>
+    protected void ExecuteFollowCharacterWithParticle(GameObject effectPrefab, float duration, string effectId)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveFollowCharacterWithParticle(effectPrefab, duration, effectId);
+    }
+    
     
     public void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
     {
