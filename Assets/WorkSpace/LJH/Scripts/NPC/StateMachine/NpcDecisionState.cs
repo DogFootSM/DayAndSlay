@@ -18,7 +18,6 @@ public class NpcDecisionState : INpcState
 
         if (DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
-            Debug.Log("밤이라 집으로 돌아감");
             Vector3 castlePos = targetSensor.GetCastleDoorPosition();
             npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
             return;
@@ -26,7 +25,6 @@ public class NpcDecisionState : INpcState
 
         if (npc.IsBuyer)
         {
-            Debug.Log($"{npc.name} 이게 터졉림");
             if (npc.CheckHeIsAngry())
             {
                 Vector3 castlePos = targetSensor.GetCastleDoorPosition();

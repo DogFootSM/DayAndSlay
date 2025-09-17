@@ -13,7 +13,6 @@ public class NpcGoOutState : INpcState
     
     public void Enter()
     {
-        Debug.Log($"{npc.name} 고아웃 스테이트 진입헀음");
         npc.GoHome();
     }
 
