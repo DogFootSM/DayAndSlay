@@ -35,6 +35,13 @@ public class WDAS004 : MeleeSkill
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * skillNode.skillData.SkillRange),
             overlapSize, 0, monsterLayer);
 
+        //감지 몬스터가 없을 경우 바라보는 방향에 낙뢰 위치 표시 재생 후 return
+        if (cols.Length < 1)
+        {
+            SkillEffect(playerPosition + (direction * skillNode.skillData.SkillRange), 0,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
+            return;
+        }
+        
         for (int i = 0; i < cols.Length; i++)
         {
             SkillEffect(cols[i].transform.position + new Vector3(0, -0.5f), i,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
