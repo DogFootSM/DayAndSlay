@@ -167,9 +167,22 @@ public class Npc : MonoBehaviour
         playerCol = player.GetComponent<Collider2D>();
     }
 
+    private bool isNight = false;
+
+    public void SetIsNightTrue()
+    {
+        isNight = true;
+    }
+    
     private void Update()
     {
         StateMachine.Tick();
+
+        if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
+        {
+            isNight = true;
+            StateMachine.ChangeState(new NpcGoOutState(this));
+        }
     }
 
     private void Init()
@@ -399,10 +412,52 @@ public class Npc : MonoBehaviour
         StateMachine.ChangeState(new NpcLoggingState(this));
     }
 
+    /// <summary>
+    /// NPC 떠남
+    /// </summary>
     public void NpcGone()
     {
         WantItemMarkOnOff(Emoji.ANGRY);
         gameObject.SetActive(false);
+    }
+    
+    /// <summary>
+    /// 저녁시간이 되어 모든 NPC 복귀
+    /// </summary>
+    public void GoHome()
+    {
+        string _in = "가게 안";
+        string _out = "가게 밖";
+
+        string curWhere;
+        
+        if (IsInOutsideGrid())
+            curWhere = _out;
+        else
+            curWhere = _in;
+        
+        
+        
+        
+        
+        Debug.Log($"{gameObject.name} GoHome 실행됨");
+        if (IsInOutsideGrid())
+        {
+            Debug.Log($"{gameObject.name} 은 현재 {curWhere}입니다.");
+            var targetSensor = GetComponentInChildren<TargetSensorInNpc>();
+
+            Vector3 castlePos = targetSensor.GetCastleDoorPosition();
+
+            StateMachine.ChangeState(new NpcMoveState(this, castlePos, new NpcGoneState(this)));
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} 은 현재 {curWhere}입니다.");
+            Vector3 doorPos = targetSensor.GetLeavePosition();
+            Vector3 castlePos = targetSensor.GetCastleDoorPosition();
+            
+            StateMachine.ChangeState(new NpcMoveState(this, doorPos, new NpcMoveState(this, castlePos, new NpcGoOutState(this))));
+        }
     }
 }
 
