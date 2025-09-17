@@ -6,8 +6,6 @@ using UnityEngine;
 public class BOAS004 : ProjectileSkill
 {
     private Coroutine delayFireCo;
-    private Vector2 target = new Vector2();
-    private float maxDistance = 0f;
     private int effectIndex = 0;
     
     public BOAS004(SkillNode skillNode) : base(skillNode)

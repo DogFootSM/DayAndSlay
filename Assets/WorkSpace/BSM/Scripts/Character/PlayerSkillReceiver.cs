@@ -41,7 +41,6 @@ public class PlayerSkillReceiver : MonoBehaviour
 
     private int playerLayer;
     private int monsterLayer;
-    private bool isSearching;
     private bool isDashDone;
     
     private bool isNeedCasting = true;
@@ -709,18 +708,12 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         float elapsedTime = 0;
         
-        //주변을 감지하고 있는 상태 On
-        isSearching = true;
-        
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         
-        //주변을 감지하고 있는 상태 Off
-        isSearching = false;
-
         if (particle != null)
         {
             particle.Stop();
@@ -749,8 +742,6 @@ public class PlayerSkillReceiver : MonoBehaviour
     private IEnumerator SpawnParticleAtRandomPositionRoutine(Vector2 spawnPos, float radiusRange, float duration,
         GameObject particlePrefab, string effectId, int prefabCount)
     {
-        float elapsedTime = 0;
-
         yield return WaitCache.GetWait(1f);
         
         //TODO: 조금만 생성하고 while 돌면서 돌려쓸지 말지 생각

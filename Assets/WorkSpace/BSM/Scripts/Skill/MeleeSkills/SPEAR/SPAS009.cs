@@ -5,8 +5,6 @@ using System;
 
 public class SPAS009 : MeleeSkill
 {
-    private int i = 0;
-    
     public SPAS009(SkillNode skillNode) : base(skillNode)
     {
     }

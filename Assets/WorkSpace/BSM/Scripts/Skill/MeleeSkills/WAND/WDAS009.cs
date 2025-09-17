@@ -14,6 +14,7 @@ public class WDAS009 : MeleeSkill
         ListClear();
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         
+        
         skillNode.PlayerSkillReceiver.StartCoroutine(skillNode.PlayerSkillReceiver.RemoveCastingTimeCoroutine(skillNode.skillData.BuffDuration));
     }
 
