@@ -19,8 +19,6 @@ public class MinoAI : BossMonsterAI
         skillSecondCooldown = stompCooldown;
         skillThirdCooldown = buffCooldown;
         skillFourthCooldown = ultCooldown;
-        
-        Debug.Log("스타트동작");
     }
 
     // ---------------- BT patterns ----------------

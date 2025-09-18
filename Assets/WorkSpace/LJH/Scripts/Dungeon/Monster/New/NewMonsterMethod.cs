@@ -164,15 +164,13 @@ public class NewMonsterMethod : MonoBehaviour
     /// <summary>
     /// Die : »ç¸Á Ã³¸®
     /// </summary>
-    public void DieMethod()
+    public virtual void DieMethod()
     {
         Debug.Log("»ç¸Á");
         
         //»ç¸Á ÀÌÆåÆ® Àç»ý
         DropItem();
         Destroy(gameObject);
-        
-        
     }
 
 

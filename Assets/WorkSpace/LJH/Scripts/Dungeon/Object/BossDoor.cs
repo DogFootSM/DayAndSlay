@@ -23,14 +23,20 @@ public class BossDoor : InteractableObj
         dungeonExitPopUp.SetActive(true);
     }
 
+    /// <summary>
+    /// 팝업_예스 버튼 : 상점씬으로 이동
+    /// </summary>
     private void YesButton()
     {
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
     }
 
+    /// <summary>
+    /// 팝업_노 버튼 : 팝업 닫기
+    /// </summary>
     private void NoButton()
     {
-        
+        dungeonExitPopUp.SetActive(false);
     }
 }
