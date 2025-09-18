@@ -443,5 +443,84 @@ public abstract class MeleeSkill : SkillFactory
     {
         skillNode.PlayerSkillReceiver.ReceiveRemoveCastTime(duration);
     }
+
+    //몬스터 위치를 저장할 임시 배열
+    private Collider2D[] sortArr;
+    
+    /// <summary>
+    /// 플레이어아 가까운 위치 기준으로 몬스터 배열 정렬
+    /// </summary>
+    /// <param name="cols"></param>
+    /// <param name="playerPosition"></param>
+    protected void SortMonstersByNearest(Collider2D[] cols, Vector2 playerPosition)
+    {
+        sortArr = new Collider2D[cols.Length];
+        MergeSort(cols, 0, cols.Length -1, playerPosition);
+    }
+
+    /// <summary>
+    /// 병합 정렬 재귀 호출
+    /// </summary>
+    /// <param name="arr">몬스터 원본 배열</param>
+    /// <param name="start">비교 시작할 좌측 인덱스</param>
+    /// <param name="end">비교 끝낼 우측 인덱스</param>
+    /// <param name="playerPosition">플레이어의 위치</param>
+    private void MergeSort(Collider2D[] arr, int start, int end, Vector2 playerPosition)
+    {
+        if (start >= end) return;
+
+        int middle = (start + end) / 2;
+        MergeSort(arr, start, middle, playerPosition);
+        MergeSort(arr, middle + 1, end, playerPosition);
+        Merge(arr, start, middle, end, playerPosition);
+    }
+    
+    /// <summary>
+    /// 가까운 순으로 정렬 진행
+    /// </summary>
+    /// <param name="arr">몬스터 원본 배열</param>
+    /// <param name="start">비교 시작할 좌측 인덱스</param>
+    /// <param name="middle">분할할 중앙 인덱스</param>
+    /// <param name="end">비교 끝낼 우측 인덱스</param>
+    /// <param name="playerPosition">플레이어 위치</param>
+    private void Merge(Collider2D[] arr, int start, int middle, int end, Vector2 playerPosition)
+    {
+        int i = start;
+        int j = middle + 1;
+        int temp = 0;
+
+        while (i <= middle && j <= end)
+        {
+            //플레이어 위치와 비교해 가장 가까운 순으로 정렬
+            if (Vector2.Distance(playerPosition, arr[i].transform.position) <
+                Vector2.Distance(playerPosition, arr[j].transform.position))
+            {
+                sortArr[temp++] = arr[i++];
+            }
+            else
+            {
+                sortArr[temp++] = arr[j++];
+            }
+        }
+
+        while (i <= middle)
+        {
+            sortArr[temp++] = arr[i++];
+        }
+
+        while (j <= end)
+        {
+            sortArr[temp++] = arr[j++];
+        }
+
+        i = start;
+        temp = 0;
+
+        while (i <= end)
+        {
+            arr[i++] = sortArr[temp++];
+        }
+        
+    }
     
 }
