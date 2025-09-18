@@ -116,8 +116,6 @@ public class DayManager : MonoBehaviour, ISavable
         evening.color = new Color(evening.color.r, evening.color.g, evening.color.b, 0f);
     }
 
-    bool tf = true;
-
     /// <summary>
     /// TimeControlled Coroutine
     /// </summary>
