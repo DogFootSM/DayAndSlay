@@ -5,49 +5,52 @@ using UnityEngine;
 
 public class WDAS010 : MeleeSkill
 {
+    private Action action;
+    private Coroutine castingCo;
+    private Coroutine delayCo;
+
     public WDAS010(SkillNode skillNode) : base(skillNode)
     {
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-        GetSkillDamage();
-        ExecuteCasting(skillNode.skillData.SkillCastingTime);
-        
         ListClear();
-        
+        ExecuteCasting(skillNode.skillData.SkillCastingTime);
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        SkillEffect(SpacingSkillRange(direction, playerPosition), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-        
-        Collider2D[] cols = Physics2D.OverlapBoxAll(SpacingSkillRange(direction, playerPosition), overlapSize, 0, monsterLayer);
-                 
-        if (cols.Length > 0)
-        {
-            skillActions.Add(new List<Action>());
-            
-            for (int i = 0; i < cols.Length; i++)
-            {
-                IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-            
-                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                triggerModules[0].AddCollider(cols[i]);
-            }
-        
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(skillActions[0]);
-        } 
-    }
-    
-    public Vector2 SpacingSkillRange(Vector2 direction, Vector2 playerPosition)
-    {
-        return playerPosition + (direction * skillNode.skillData.SkillRange);
+        skillDamage = GetSkillDamage();
+        action = () => ExecutePostCastAction(direction, playerPosition);
+        castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action)); 
     }
 
+    private void ExecutePostCastAction(Vector2 direction, Vector2 playerPosition)
+    { 
+        SpawnParticleAtRandomPosition(playerPosition + (direction * (skillNode.skillData.SkillRange / 2)), skillNode.skillData.SkillRadiusRange, 0, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 8);
+        
+        delayCo = skillNode.PlayerSkillReceiver.StartCoroutine(DelayHitRoutine(direction, playerPosition));
+    }
+
+    private IEnumerator DelayHitRoutine(Vector2 direction, Vector2 playerPosition)
+    {
+        yield return WaitCache.GetWait(0.55f);
+        
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * (skillNode.skillData.SkillRange / 2)),
+            overlapSize, 0, monsterLayer);
+
+        for (int i = 0; i < cols.Length; i++)
+        {
+            IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
+            Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
+        } 
+    }
+        
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
 
     public override void Gizmos()
     {
+        //UnityEngine.Gizmos.color = Color.black;
+        //UnityEngine.Gizmos.DrawWireCube(pos + (dir * (skillNode.skillData.SkillRange / 2)), overlapSize);
     }
 }

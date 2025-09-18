@@ -748,19 +748,19 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <summary>
     /// 일정 범위 안에 스킬 이펙트 생성
     /// </summary> 
-    public void ReceiveSpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration,
+    public void ReceiveSpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float delay,
         GameObject particlePrefab, string effectId, int prefabCount, Action lightingAction = null)
     {
         if (spawnParticleAtRandomPosition == null)
         {
-            spawnParticleAtRandomPosition = StartCoroutine(SpawnParticleAtRandomPositionRoutine(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount));
+            spawnParticleAtRandomPosition = StartCoroutine(SpawnParticleAtRandomPositionRoutine(spawnPos, radiusRange, delay, particlePrefab, effectId, prefabCount));
         }
     }
 
-    private IEnumerator SpawnParticleAtRandomPositionRoutine(Vector2 spawnPos, float radiusRange, float duration,
+    private IEnumerator SpawnParticleAtRandomPositionRoutine(Vector2 spawnPos, float radiusRange, float delay,
         GameObject particlePrefab, string effectId, int prefabCount)
     {
-        yield return WaitCache.GetWait(1f);
+        yield return WaitCache.GetWait(delay);
         
         //TODO: 조금만 생성하고 while 돌면서 돌려쓸지 말지 생각
         for (int i = 0; i < prefabCount; i++)

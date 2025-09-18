@@ -405,13 +405,13 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="spawnPos">파티클 재생 위치</param>
     /// <param name="radiusRange">스킬 범위</param>
-    /// <param name="duration">스킬 지속 시간</param>
+    /// <param name="delay">스킬 이펙트 재생 지연 시간</param>
     /// <param name="particlePrefab">재생할 파티클 프리팹</param>
     /// <param name="effectId">풀에 반납할 이펙트 id</param>
     /// <param name="prefabCount">재생할 파티클 개수</param>
-    protected void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
+    protected void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float delay, GameObject particlePrefab, string effectId, int prefabCount)
     {
-        skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount);
+        skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, delay, particlePrefab, effectId, prefabCount);
     }
     
     /// <summary>
