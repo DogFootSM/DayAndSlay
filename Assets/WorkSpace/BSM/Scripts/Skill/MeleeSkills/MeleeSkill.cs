@@ -434,5 +434,14 @@ public abstract class MeleeSkill : SkillFactory
         yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
         action?.Invoke();
     }
+
+    /// <summary>
+    /// 캐스팅 시간 삭제 버프 실행
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    protected void ExecuteRemoveCast(float duration)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveRemoveCastTime(duration);
+    }
     
 }

@@ -31,6 +31,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine skillEffectFollowCharacterCo;
     private Coroutine findNearByMonstersCo;
     private Coroutine spawnParticleAtRandomPosition;
+    private Coroutine removeCastCo;
     private ParticleSystem followParticle = null;
     
     private bool isPowerTradeBuffActive;
@@ -247,7 +248,19 @@ public class PlayerSkillReceiver : MonoBehaviour
         }
     }
 
-    public IEnumerator RemoveCastingTimeCoroutine(float duration)
+    /// <summary>
+    /// 캐스팅 시간 삭제 버프 리시브
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    public void ReceiveRemoveCastTime(float duration)
+    {
+        if (removeCastCo == null)
+        {
+            removeCastCo = StartCoroutine(RemoveCastingTimeCoroutine(duration));
+        } 
+    }
+    
+    private IEnumerator RemoveCastingTimeCoroutine(float duration)
     {
         isNeedCasting = false;
         
@@ -260,7 +273,12 @@ public class PlayerSkillReceiver : MonoBehaviour
         }
         
         isNeedCasting = true;
-        
+
+        if (removeCastCo != null)
+        {
+            StopCoroutine(removeCastCo);
+            removeCastCo = null;
+        } 
     }
      
     /// <summary>
