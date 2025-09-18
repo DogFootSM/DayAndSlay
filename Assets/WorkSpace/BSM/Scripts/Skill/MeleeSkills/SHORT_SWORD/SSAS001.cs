@@ -19,7 +19,8 @@ public class SSAS001 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {   
         ListClear();
-        
+        pos = playerPosition;
+        dir = direction;
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         
         SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);

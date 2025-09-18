@@ -20,11 +20,11 @@ MonoBehaviour:
     \uD3BC\uCCD0 \uC801\uC758 \uC774\uB3D9\uC744 \uB2A6\uCD98\uB2E4."
   SkillEffectPrefab:
   - {fileID: 3771670535674163005, guid: 90a98e3c382a5844fbdf26498d645e6a, type: 3}
-  SkillCooldown: 1
+  SkillCooldown: 10
   SkillMaxLevel: 6
-  SkillDamage: 1.5
-  SkillDamageIncreaseRate: 0.12
-  SkillIcon: {fileID: 0}
+  SkillDamage: 0
+  SkillDamageIncreaseRate: 0
+  SkillIcon: {fileID: 21300000, guid: bacfb16598b9882479aa5686c8aae370, type: 2}
   RequiredWeapon: 3
   UseSkillDelay: 1
   IsActive: 1
@@ -32,9 +32,9 @@ MonoBehaviour:
   SkillRange: 0
   SkillRadiusRange: 6
   SkillHitCount: 0
-  SkillCastingTime: 1.5
+  SkillCastingTime: 0.4
   BuffDuration: 0
   DeBuffDuration: 5
-  SkillAbilityValue: 0
-  SkillAbilityFactor: 0
-  DetectedCount: 0
+  SkillAbilityValue: 0.3
+  SkillAbilityFactor: 0.03
+  DetectedCount: 9999

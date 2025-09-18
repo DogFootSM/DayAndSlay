@@ -32,7 +32,7 @@ public class SkillParser : MonoBehaviour
     private Dictionary<string, int> headerMap = new Dictionary<string, int>();
     
     //구글 시트 주소
-    private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:V60&gid=117661071";
+    private const string skillDataUrlPath = "https://docs.google.com/spreadsheets/d/1qy-UZH2OCVpJoAEroGsVQxFnvbZVeYt8-P1trYRojOk/export?format=tsv&range=B4:Y60&gid=117661071";
 
     public void StartDownload(bool renameFiles)
     {

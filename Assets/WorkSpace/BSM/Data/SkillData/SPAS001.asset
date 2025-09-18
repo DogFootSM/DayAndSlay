@@ -20,7 +20,7 @@ MonoBehaviour:
   SkillEffectPrefab:
   - {fileID: 730166888016790013, guid: 7dbfecb9e4700884681c995106e13b92, type: 3}
   - {fileID: 911896501419245903, guid: 58cdd7ec14ce3594689850d0e4da0df1, type: 3}
-  SkillCooldown: 1
+  SkillCooldown: 6
   SkillMaxLevel: 6
   SkillDamage: 1.5
   SkillDamageIncreaseRate: 0.11
@@ -30,8 +30,11 @@ MonoBehaviour:
   IsActive: 1
   UseSkillDelayDecreaseRate: 0.05
   SkillRange: 4
-  SkillRadiusRange: 0
+  SkillRadiusRange: 1
   SkillHitCount: 1
   SkillCastingTime: 0
   BuffDuration: 0
   DeBuffDuration: 1
+  SkillAbilityValue: 0
+  SkillAbilityFactor: 0
+  DetectedCount: 9999
