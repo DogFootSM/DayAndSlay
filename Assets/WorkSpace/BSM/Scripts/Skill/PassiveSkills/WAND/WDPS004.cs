@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WDPS004 : PassiveSkill
 {
+    private float baseCriticalRate = 0.08f;
+    private float levelCriticalRate = 0.03f;
+    
     public WDPS004(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -16,7 +19,7 @@ public class WDPS004 : PassiveSkill
     {
         if (weaponType != skillNode.PlayerModel.ModelCurWeaponType) return;
         
-        CriticalRateBuff(skillNode.skillData.SkillAbilityValue, skillNode.skillData.SkillAbilityFactor);
+        CriticalRateBuff(baseCriticalRate, levelCriticalRate);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 
@@ -26,7 +29,7 @@ public class WDPS004 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        CriticalRateBuff(-skillNode.skillData.SkillAbilityValue, -skillNode.skillData.SkillAbilityFactor);
+        CriticalRateBuff(0, 0);
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();
     }
 }
