@@ -41,8 +41,11 @@ public class SSAS003 : MeleeSkill
             for (int i = 0; i < detectedCount; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
-
-                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
+                
+                //TODO: 몬스터 방어력 무시 계산?
+                float defensePenetration = monsterReceiver.GetDefense() * defensePenetrationRate;
+                
+                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage + defensePenetration, skillNode.skillData.SkillHitCount));
                 triggerModules[0].AddCollider(detectedMonster[i]);
             }
             
