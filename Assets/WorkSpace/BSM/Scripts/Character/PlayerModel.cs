@@ -358,7 +358,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float GetFactoredMoveSpeed()
     {
         //기본 이동 속도에 factor만큼 증가한 값을 반환
-        return playerStats.baseMoveSpeed + moveSpeedFactor;
+        return playerStats.baseMoveSpeed + (moveSpeedFactor * playerStats.baseMoveSpeed);
     }
     
     /// <summary>
