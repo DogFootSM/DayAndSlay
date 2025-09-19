@@ -77,7 +77,7 @@ public abstract class MeleeSkill : SkillFactory
     /// <returns></returns>
     protected float GetDeBuffDurationIncreasePerLevel(float increaseValue)
     {
-        return skillNode.skillData.DeBuffDuration + (skillNode.CurSkillLevel * increaseValue);
+        return skillNode.skillData.DeBuffDuration + ((skillNode.CurSkillLevel -1) * increaseValue);
     }
     
     /// <summary>
@@ -192,8 +192,8 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="ratio">둔화 효과 적용 비율</param>
     protected void ExecuteSlow(IEffectReceiver monster, float duration, float ratio)
     {
+        
         monster.ReceiveSlow(duration, ratio);
-        Debug.Log("슬로우 걸림");
     }
 
     /// <summary>
@@ -240,9 +240,9 @@ public abstract class MeleeSkill : SkillFactory
 
     /// <summary>
     /// 이동속도 증가 버프 호출
-    /// </summary>
     /// <param name="duration">버프 지속 시간</param>
     /// <param name="factor">이동 속도 증가값</param>
+    /// </summary>
     protected void ExecuteMoveSpeedBuff(float duration, float factor)
     {
         skillNode.PlayerSkillReceiver.ReceiveMoveSpeedBuff(duration, factor);
@@ -262,10 +262,10 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="monster">감지한 몬스터</param>
     /// <param name="duration">디버프 지속 시간</param>
-    /// <param name="deBuffPercent">방어력 감소 비율</param>
-    protected void ExecuteDefenseDeBuff(IEffectReceiver monster, float duration, float deBuffPercent)
+    /// <param name="factor">방어력 감소 비율</param>
+    protected void ExecuteDefenseDeBuff(IEffectReceiver monster, float duration, float factor)
     {
-        monster.ReceiveDefenseDeBuff(duration, deBuffPercent);
+        monster.ReceiveDefenseDeBuff(duration, factor);
     }
 
     /// <summary>

@@ -143,7 +143,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         while (elapsedTime < duration)
         {
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed() * speedDecrease;
-            playerModel.FinalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
+            playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense * defenseIncrease;
             elapsedTime += Time.deltaTime;
             yield return null;
         }

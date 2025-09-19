@@ -5,7 +5,7 @@ using System;
 
 public class SSAS006 : MeleeSkill
 {
-    private float deBuffRatio = 0.3f;
+    private Vector2 hitPos;
     
     public SSAS006(SkillNode skillNode) : base(skillNode)
     {
@@ -14,23 +14,26 @@ public class SSAS006 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
-        
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         skillDamage = GetSkillDamage();
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
+        
+        Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
+        SortMonstersByNearest(cols, playerPosition);
 
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
-
+        float defenseDeBuffFactor = skillNode.skillData.SkillAbilityValue +
+                                    ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
+        
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());
-            float deBuffDuration = GetDeBuffDurationIncreasePerLevel(1);
             
             for (int i = 0; i < 1; i++)
             {
                 SkillEffect(cols[i].transform.position - new Vector3(0, 0.5f), i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[i]);
                 
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-                skillActions[i].Add(() => ExecuteDefenseDeBuff(receiver, deBuffDuration, deBuffRatio));
+                skillActions[i].Add(() => ExecuteDefenseDeBuff(receiver, skillNode.skillData.DeBuffDuration, defenseDeBuffFactor));
                 skillActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
                 triggerModules[i].AddCollider(cols[0]);
             }
@@ -66,5 +69,8 @@ public class SSAS006 : MeleeSkill
 
     public override void Gizmos()
     {
+        UnityEngine.Gizmos.color = Color.red;
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
+
     }
 }

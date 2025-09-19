@@ -33,7 +33,8 @@ public class SSAS002 : MeleeSkill
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
         
         //이동 속도 증가 버프
-        ExecuteMoveSpeedBuff();
+        float speedBuffFactor = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
+        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, speedBuffFactor);
         
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
         
