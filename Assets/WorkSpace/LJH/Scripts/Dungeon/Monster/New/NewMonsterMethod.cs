@@ -164,15 +164,13 @@ public class NewMonsterMethod : MonoBehaviour
     /// <summary>
     /// Die : »ç¸Á Ã³¸®
     /// </summary>
-    public void DieMethod()
+    public virtual void DieMethod()
     {
         Debug.Log("»ç¸Á");
         
         //»ç¸Á ÀÌÆåÆ® Àç»ý
         DropItem();
-        gameObject.SetActive(false);
-        
-        
+        Destroy(gameObject);
     }
 
 
@@ -193,7 +191,7 @@ public class NewMonsterMethod : MonoBehaviour
         
         float randomNum = Random.Range(0, 100);
 
-        Instantiate(itemPrefab, transform.position, Quaternion.identity);
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
+        Instantiate(itemPrefab, transform.position, Quaternion.identity);
     }
 }

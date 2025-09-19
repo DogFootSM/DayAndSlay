@@ -15493,6 +15493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc1b55ddcff98a4da1be11edb1f481b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
   effect: {fileID: 0}
   stompEffect: {fileID: 5448149028283512045}
   labyrinth: {fileID: 0}
@@ -15542,6 +15543,7 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+  dropItems: []
 --- !u!50 &2450185539440437247
 Rigidbody2D:
   serializedVersion: 4
@@ -15550,7 +15552,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8227391919022582039}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

@@ -8,7 +8,7 @@ public class Spear : IAttackHandler
      private Vector3 pos;
     private Vector3 dir;
     private LayerMask monsterLayer;
-    private Monster targetMonster;
+    private NewMonsterAI targetMonster;
     private float distance = 9999f;
      
     public Spear()
@@ -72,7 +72,7 @@ public class Spear : IAttackHandler
             if (distance > compareDistance)
             {
                 distance = compareDistance;
-                targetMonster = colliders[i].gameObject.GetComponent<Monster>();
+                targetMonster = colliders[i].gameObject.GetComponent<NewMonsterAI>();
             } 
         }
     }

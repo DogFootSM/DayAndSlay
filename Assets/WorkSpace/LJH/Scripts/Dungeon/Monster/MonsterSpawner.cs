@@ -176,6 +176,9 @@ public class MonsterSpawner : MonoBehaviour
 
         foreach (GameObject mon in monsterList)
         {
+            //몬스터가 이미 죽은 경우 넘어감
+            if(mon == null) continue;
+            
             GridReFerence(mon);             // 그리드/타일 참조 갱신
             mon.SetActive(playerInside);    // 방 안이면 전부 On, 밖이면 Off
         }

@@ -25,4 +25,14 @@ public abstract class BossMonsterMethod : NewMonsterMethod
         }
         effect.Play(true);
     }
+    
+    public override void DieMethod()
+    {
+        Debug.Log("»ç¸Á");
+        
+        //»ç¸Á ÀÌÆåÆ® Àç»ý
+        //DropItem();
+        DungeonManager.Instance.BossDoorOpen();
+        Destroy(gameObject);
+    }
 }

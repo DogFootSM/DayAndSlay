@@ -32,11 +32,14 @@ public class Arrow : MonoBehaviour
         //화살이 몬스터에 닿았을 경우
         if ((1 << other.gameObject.layer & monsterLayer) != 0)
         {
-            Monster monster = other.gameObject.GetComponent<Monster>();
+            //Monster monster = other.gameObject.GetComponent<Monster>();
+            //monster.TakeDamage(damage);
+            
+            NewMonsterAI monster = other.gameObject.GetComponent<NewMonsterAI>();
             monster.TakeDamage(damage);
             
             //현재 화살이 슬로우 스킬 화살이며 몬스터가 슬로우 적용중이지 않은 상태
-            if (isSlowSkill && !monster.IsSlow)
+            if (isSlowSkill /*&& !monster.IsSlow*/)
             {
                 IEffectReceiver receiver = other.gameObject.GetComponent<IEffectReceiver>();
                 receiver.ReceiveSlow(slowDuration, slowRatio); 

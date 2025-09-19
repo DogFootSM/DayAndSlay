@@ -16,9 +16,15 @@ public class NpcDecisionState : INpcState
     {
         var targetSensor = npc.GetComponentInChildren<TargetSensorInNpc>();
 
+        if (DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
+        {
+            Vector3 castlePos = targetSensor.GetCastleDoorPosition();
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
+            return;
+        }
+
         if (npc.IsBuyer)
         {
-
             if (npc.CheckHeIsAngry())
             {
                 Vector3 castlePos = targetSensor.GetCastleDoorPosition();

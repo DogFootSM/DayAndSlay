@@ -26,10 +26,14 @@ public class NpcIdleState : INpcState
         //템 사고 나온놈은 캐슬도어로 가서 사라져야함
 
         yield return new WaitForSeconds(1f);
+        //저녁일 경우 바로 성으로 돌아감
+        
         if (npc.IsInOutsideGrid())
         {
+            
             npc.StateMachine.ChangeState(new NpcDecisionState(npc));
         }
+        
         else
         {
             npc.StateMachine.ChangeState(new NpcSearchTableState(npc));
@@ -44,4 +48,5 @@ public class NpcIdleState : INpcState
 
     public void Update() { }
     public void Exit() { }
+
 }

@@ -10,6 +10,7 @@ public class Item : MonoBehaviour
 
     public void SetItem(ItemData itemData)
     {
+        gameObject.name = itemData.Name;
         this.itemData = itemData;
         ItemId = itemData.ItemId;
     }

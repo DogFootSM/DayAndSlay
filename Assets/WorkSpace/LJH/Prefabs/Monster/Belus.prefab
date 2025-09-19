@@ -59043,7 +59043,7 @@ GameObject:
   - component: {fileID: 7439626506249827495}
   - component: {fileID: -4063632472117323754}
   - component: {fileID: 745124399150741237}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Belus
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -59213,6 +59213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab7843662f347e94da74149a6270651a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
   effect: {fileID: 0}
   bellusHealEffect: {fileID: 3551058120283668913}
   malusHealEffect: {fileID: 8713850328552891024}
@@ -59271,6 +59272,7 @@ MonoBehaviour:
   ChaseRange: 0
   MoveSpeed: 0
   AttackCooldown: 0
+  dropItems: []
 --- !u!61 &-4063632472117323754
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -59305,7 +59307,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7439626506249827491}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
