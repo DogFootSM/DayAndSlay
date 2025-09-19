@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SSAS003 : MeleeSkill
 {
+    private Vector2 hitPos;
+ 
     public SSAS003(SkillNode skillNode) : base(skillNode)
     {
         leftDeg = 180f; 
@@ -13,27 +15,30 @@ public class SSAS003 : MeleeSkill
         upDeg = 90f; 
     }
 
-    private Vector2 dir;
-    private Vector2 pos;
-
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
-
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
+        
+        SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction,rightDeg, leftDeg, upDeg, downDeg);
         SetParticleRotationX(direction);
         skillDamage = GetSkillDamage();
         
-        Collider2D[] detectedMonster =
-            Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0f, monsterLayer);
-
+        Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
+        
+        //TODO: 몬스터 방어력 무시 수치를 어떤식으로 전달?
+        float defensePenetrationRate = skillNode.skillData.SkillAbilityValue +
+                                       ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
+        
         if (detectedMonster.Length > 0)
         {
             skillActions.Add(new List<Action>());
             
-            for (int i = 0; i < 1; i++)
+            int detectedCount = skillNode.skillData.DetectedCount <= detectedMonster.Length ? skillNode.skillData.DetectedCount : detectedMonster.Length;
+            
+            for (int i = 0; i < detectedCount; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
 
@@ -74,6 +79,6 @@ public class SSAS003 : MeleeSkill
     {
         UnityEngine.Gizmos.color = Color.blue;
 
-        UnityEngine.Gizmos.DrawWireCube(pos + (dir.normalized * 1f), overlapSize);
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
     }
 }
