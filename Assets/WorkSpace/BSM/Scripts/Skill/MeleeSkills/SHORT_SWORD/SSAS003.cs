@@ -28,10 +28,6 @@ public class SSAS003 : MeleeSkill
         
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
         
-        //TODO: 몬스터 방어력 무시 수치를 어떤식으로 전달?
-        float defensePenetrationRate = skillNode.skillData.SkillAbilityValue +
-                                       ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
-        
         if (detectedMonster.Length > 0)
         {
             skillActions.Add(new List<Action>());
@@ -42,10 +38,7 @@ public class SSAS003 : MeleeSkill
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
                 
-                //TODO: 몬스터 방어력 무시 계산?
-                float defensePenetration = monsterReceiver.GetDefense() * defensePenetrationRate;
-                
-                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage + defensePenetration, skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage + GeteDefensePenetrationDamage(monsterReceiver), skillNode.skillData.SkillHitCount));
                 triggerModules[0].AddCollider(detectedMonster[i]);
             }
             

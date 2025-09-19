@@ -19,7 +19,7 @@ public class SSAS006 : MeleeSkill
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
-        SortMonstersByNearest(cols, playerPosition);
+        Sort.SortMonstersByNearest(cols, playerPosition);
 
         float defenseDeBuffFactor = skillNode.skillData.SkillAbilityValue +
                                     ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);

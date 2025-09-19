@@ -35,8 +35,9 @@ public class SPAS007 : MeleeSkill
     private void RegisterAction(Collider2D[] cols)
     {
         skillActions.Add(new List<Action>());
+        int detectedCount = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
 
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < detectedCount; i++)
         {
             IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 

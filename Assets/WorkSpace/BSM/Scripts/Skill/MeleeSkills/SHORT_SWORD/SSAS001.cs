@@ -27,7 +27,7 @@ public class SSAS001 : MeleeSkill
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
          
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
-        SortMonstersByNearest(detectedMonster, playerPosition);
+        Sort.SortMonstersByNearest(detectedMonster, playerPosition);
         
         if (detectedMonster.Length > 0)
         {
