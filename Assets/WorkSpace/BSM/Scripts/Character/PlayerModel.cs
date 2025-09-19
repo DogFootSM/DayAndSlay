@@ -344,7 +344,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         //MoveSpeed에 증가할 값인 moveSpeedFactor 변수
         moveSpeedFactor = speedFactor;
-        
+
         //증가된 값을 MoveSpeed에 적용
         MoveSpeed = GetFactoredMoveSpeed();
         
@@ -382,12 +382,12 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
     
     /// <summary>
-    /// 현재 캐릭터의 이동 속도를 가져옴
+    /// 현재 캐릭터의 공격 속도를 가져옴
     /// </summary>
     /// <returns></returns>
-    public float GetFactorAttackSpeed()
+    private float GetFactorAttackSpeed()
     {
-        return playerStats.baseAttackSpeed + attackSpeedFactor;
+        return playerStats.baseAttackSpeed + (attackSpeedFactor * playerStats.baseAttackSpeed);
     }
 
     /// <summary>
