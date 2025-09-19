@@ -375,24 +375,43 @@ public abstract class MeleeSkill : SkillFactory
     {
         skillNode.PlayerSkillReceiver.ReceiveJumpAttackInPlace(effectAction);   
     }
- 
+
     /// <summary>
-    /// 스킬 이펙트 캐릭터 위치 추적 및 주변 몬스터 지속 감지
+    /// 주변 몬스터 지속 감지 및 스킬 행동 실행
     /// </summary>
+    /// <param name="radius">몬스터 감지 범위</param>
     /// <param name="tick">몇 초 간격으로 감지한 몬스터에게 행동을 취할지에 대한 시간</param>
     /// <param name="action">감지한 몬스터에게 어떤 행동을 취할지</param>
-    /// <param name="effectId">캐릭터를 따라 다닐 이펙트 id</param>
-    /// <param name="duration">캐릭터를 따라 다닐 지속 시간</param>
-    /// <param name="skillEffectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <param name="duration">스킬 지속 시간</param>
     /// <typeparam name="T1"></typeparam>
-    protected void ExecuteFindNearByMonsters<T1>(float tick, T1 action, string effectId, float duration, GameObject skillEffectPrefab = null)
+    protected void ExecuteFindNearByMonsters<T1>(float radius, float tick, T1 action, float duration)
     {
-        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(tick, action, effectId, duration, skillEffectPrefab);
+        skillNode.PlayerSkillReceiver.ReceiveFindNearByMonsters(radius, tick, action, duration);
+    }
+
+    /// <summary>
+    /// 스킬 이펙트 캐릭터 위치 따라 이동
+    /// </summary>
+    /// <param name="effectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <param name="duration">캐릭터를 따라 다닐 지속 시간</param>
+    /// <param name="effectId">캐릭터를 따라 다닐 이펙트 id</param>
+    protected void ExecuteFollowCharacterWithParticle(GameObject effectPrefab, float duration, string effectId)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveFollowCharacterWithParticle(effectPrefab, duration, effectId);
     }
     
-    public void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration, GameObject particlePrefab, string effectId, int prefabCount)
+    /// <summary>
+    /// 파티클 랜덤 위치 생성
+    /// </summary>
+    /// <param name="spawnPos">파티클 재생 위치</param>
+    /// <param name="radiusRange">스킬 범위</param>
+    /// <param name="delay">스킬 이펙트 재생 지연 시간</param>
+    /// <param name="particlePrefab">재생할 파티클 프리팹</param>
+    /// <param name="effectId">풀에 반납할 이펙트 id</param>
+    /// <param name="prefabCount">재생할 파티클 개수</param>
+    protected void SpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float delay, GameObject particlePrefab, string effectId, int prefabCount)
     {
-        skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount);
+        skillNode.PlayerSkillReceiver.ReceiveSpawnParticleAtRandomPosition(spawnPos, radiusRange, delay, particlePrefab, effectId, prefabCount);
     }
     
     /// <summary>
@@ -403,6 +422,105 @@ public abstract class MeleeSkill : SkillFactory
     protected void ExecuteAttackDeBuffByMonster(IEffectReceiver receiver, float duration, float deBuffPer)
     {
         receiver.ReceiveAttackDeBuff(duration, deBuffPer);
+    }
+
+    /// <summary>
+    /// 캐스팅 이후 수행할 동작 코루틴
+    /// </summary>
+    /// <param name="action">캐스팅 완료 후 수행할 동작</param>
+    /// <returns></returns>
+    protected IEnumerator WaitCastingRoutine(Action action)
+    {
+        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
+        action?.Invoke();
+    }
+
+    /// <summary>
+    /// 캐스팅 시간 삭제 버프 실행
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    protected void ExecuteRemoveCast(float duration)
+    {
+        skillNode.PlayerSkillReceiver.ReceiveRemoveCastTime(duration);
+    }
+
+    //몬스터 위치를 저장할 임시 배열
+    private Collider2D[] sortArr;
+    
+    /// <summary>
+    /// 플레이어아 가까운 위치 기준으로 몬스터 배열 정렬
+    /// </summary>
+    /// <param name="cols"></param>
+    /// <param name="playerPosition"></param>
+    protected void SortMonstersByNearest(Collider2D[] cols, Vector2 playerPosition)
+    {
+        sortArr = new Collider2D[cols.Length];
+        MergeSort(cols, 0, cols.Length -1, playerPosition);
+    }
+
+    /// <summary>
+    /// 병합 정렬 재귀 호출
+    /// </summary>
+    /// <param name="arr">몬스터 원본 배열</param>
+    /// <param name="start">비교 시작할 좌측 인덱스</param>
+    /// <param name="end">비교 끝낼 우측 인덱스</param>
+    /// <param name="playerPosition">플레이어의 위치</param>
+    private void MergeSort(Collider2D[] arr, int start, int end, Vector2 playerPosition)
+    {
+        if (start >= end) return;
+
+        int middle = (start + end) / 2;
+        MergeSort(arr, start, middle, playerPosition);
+        MergeSort(arr, middle + 1, end, playerPosition);
+        Merge(arr, start, middle, end, playerPosition);
+    }
+    
+    /// <summary>
+    /// 가까운 순으로 정렬 진행
+    /// </summary>
+    /// <param name="arr">몬스터 원본 배열</param>
+    /// <param name="start">비교 시작할 좌측 인덱스</param>
+    /// <param name="middle">분할할 중앙 인덱스</param>
+    /// <param name="end">비교 끝낼 우측 인덱스</param>
+    /// <param name="playerPosition">플레이어 위치</param>
+    private void Merge(Collider2D[] arr, int start, int middle, int end, Vector2 playerPosition)
+    {
+        int i = start;
+        int j = middle + 1;
+        int temp = 0;
+
+        while (i <= middle && j <= end)
+        {
+            //플레이어 위치와 비교해 가장 가까운 순으로 정렬
+            if (Vector2.Distance(playerPosition, arr[i].transform.position) <
+                Vector2.Distance(playerPosition, arr[j].transform.position))
+            {
+                sortArr[temp++] = arr[i++];
+            }
+            else
+            {
+                sortArr[temp++] = arr[j++];
+            }
+        }
+
+        while (i <= middle)
+        {
+            sortArr[temp++] = arr[i++];
+        }
+
+        while (j <= end)
+        {
+            sortArr[temp++] = arr[j++];
+        }
+
+        i = start;
+        temp = 0;
+
+        while (i <= end)
+        {
+            arr[i++] = sortArr[temp++];
+        }
+        
     }
     
 }

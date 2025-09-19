@@ -31,6 +31,8 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine skillEffectFollowCharacterCo;
     private Coroutine findNearByMonstersCo;
     private Coroutine spawnParticleAtRandomPosition;
+    private Coroutine removeCastCo;
+    private ParticleSystem followParticle = null;
     
     private bool isPowerTradeBuffActive;
     private bool isDefenceTradeBuffActive;
@@ -40,7 +42,6 @@ public class PlayerSkillReceiver : MonoBehaviour
 
     private int playerLayer;
     private int monsterLayer;
-    private bool isSearching;
     private bool isDashDone;
     
     private bool isNeedCasting = true;
@@ -170,6 +171,41 @@ public class PlayerSkillReceiver : MonoBehaviour
     }
 
     /// <summary>
+    /// 보호막 스킬 적용 코루틴
+    /// </summary>
+    /// <param name="shieldCount"></param>
+    /// <param name="defenseBoostMultiplier"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    private IEnumerator ShieldRoutine(int shieldCount, float defenseBoostMultiplier, float duration)
+    {
+        float elapsedTime = 0f;
+
+        //쉴드 개수 및 추가 쉴드량 변경
+        playerModel.ShieldCount = shieldCount;
+        playerModel.DefenseBoostMultiplier = defenseBoostMultiplier;
+        //TODO: 모델의 CastingSpeed는 뭐어떻게?
+
+        while (playerModel.ShieldCount > 0 && elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        //캐릭터를 따라 이동할 이펙트 코루틴 종료 및 파티클 중지
+        if (skillEffectFollowCharacterCo != null)
+        {
+            followParticle.Stop();
+            StopCoroutine(skillEffectFollowCharacterCo);
+            skillEffectFollowCharacterCo = null;
+        }
+        
+        //쉴드 개수 및 추가 쉴드량 초기화
+        playerModel.DefenseBoostMultiplier = 0;
+        playerModel.ShieldCount = 0;
+    }
+    
+    /// <summary>
     /// 마법 스킬 캐스팅 실행
     /// </summary>
     /// <param name="castingTime">캐스팅 필요 시간</param>
@@ -212,7 +248,19 @@ public class PlayerSkillReceiver : MonoBehaviour
         }
     }
 
-    public IEnumerator RemoveCastingTimeCoroutine(float duration)
+    /// <summary>
+    /// 캐스팅 시간 삭제 버프 리시브
+    /// </summary>
+    /// <param name="duration">스킬 지속 시간</param>
+    public void ReceiveRemoveCastTime(float duration)
+    {
+        if (removeCastCo == null)
+        {
+            removeCastCo = StartCoroutine(RemoveCastingTimeCoroutine(duration));
+        } 
+    }
+    
+    private IEnumerator RemoveCastingTimeCoroutine(float duration)
     {
         isNeedCasting = false;
         
@@ -225,39 +273,14 @@ public class PlayerSkillReceiver : MonoBehaviour
         }
         
         isNeedCasting = true;
-        
-    }
-    
-    /// <summary>
-    /// 보호막 스킬 적용 코루틴
-    /// </summary>
-    /// <param name="shieldCount"></param>
-    /// <param name="defenseBoostMultiplier"></param>
-    /// <param name="duration"></param>
-    /// <returns></returns>
-    private IEnumerator ShieldRoutine(int shieldCount, float defenseBoostMultiplier, float duration)
-    {
-        float elapsedTime = 0f;
 
-        //캐스팅이 끝날때까지 대기
-        yield return new WaitUntil(() => !playerModel.IsCasting);
- 
-        //쉴드 개수 및 추가 쉴드량 변경
-        playerModel.ShieldCount = shieldCount;
-        playerModel.DefenseBoostMultiplier = defenseBoostMultiplier;
-        //TODO: 모델의 CastingSpeed는 뭐어떻게?
-
-        while (playerModel.ShieldCount > 0 && elapsedTime < duration)
+        if (removeCastCo != null)
         {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        //쉴드 개수 및 추가 쉴드량 초기화
-        playerModel.DefenseBoostMultiplier = 0;
-        playerModel.ShieldCount = 0;
+            StopCoroutine(removeCastCo);
+            removeCastCo = null;
+        } 
     }
-    
+     
     /// <summary>
     /// 대쉬 스킬 리시버
     /// </summary>
@@ -624,53 +647,29 @@ public class PlayerSkillReceiver : MonoBehaviour
     }
 
     /// <summary>
-    /// 스킬 지속 시간만큼 스킬 이펙트가 캐릭터를 따라 이동
     /// 주변 몬스터 감지 후 감지된 몬스터에게 행동을 취함
     /// </summary>
+    /// <param name="radius">몬스터 감지 범위</param>
     /// <param name="tick">몇 초 간격으로 몬스터에게 행동을 취할지에 대한 시간</param>
     /// <param name="skillAction">각 스킬 별 클래스를 넘겨 받아 각 스킬의 Action 메서드를 실행하여 감지한 몬스터들에게 행동을 수행</param>
-    /// <param name="effectId">캐릭터를 따라 다닐 스킬 이펙트 ID</param>
-    /// <param name="duration">캐릭터를 따라 다닐 스킬 이펙트 지속 시간</param>
-    /// <param name="skillEffectPrefab">캐릭터를 따라 다닐 스킬 이펙트, 따라 다닐 이펙트가 없다면 매개변수 미입력</param>
+    /// <param name="duration">스킬 효과 지속 시간</param>
     /// <typeparam name="T1"></typeparam>
-    public void ReceiveFindNearByMonsters<T1>(float tick, T1 skillAction, string effectId, float duration, GameObject skillEffectPrefab = null)
+    public void ReceiveFindNearByMonsters<T1>(float radius, float tick, T1 skillAction, float duration)
     {
-        ParticleSystem particle = null;
-        
-        //캐릭터를 따라다닐 스킬 이펙트를 풀에서 꺼내오거나 새로 생성
-        if (skillEffectPrefab != null)
-        {
-            GameObject effectInstance = SkillParticlePooling.Instance.GetSkillPool(effectId, skillEffectPrefab);
-            effectInstance.SetActive(true);
-            effectInstance.transform.position = transform.position + new Vector3(0, 0.2f);
-        
-            //캐릭터 자식으로 설정
-            effectInstance.transform.parent = transform;
-        
-            //풀에 반납하기 위한 이펙트 ID 설정
-            ParticleInteraction particleInteraction = effectInstance.GetComponent<ParticleInteraction>();
-            particleInteraction.EffectId = effectId;
-        
-            particle = effectInstance.GetComponent<ParticleSystem>();
-        }
-        
-        if (skillEffectFollowCharacterCo == null)
-        {
-            skillEffectFollowCharacterCo = StartCoroutine(FollowCharacterWithParticleRoutine(particle, duration));
-        }
-        
         if (findNearByMonstersCo == null)
         {
-            findNearByMonstersCo = StartCoroutine(FindNearByMonstersRoutine(tick, skillAction));
+            findNearByMonstersCo = StartCoroutine(FindNearByMonstersRoutine(radius, duration, tick, skillAction));
         } 
     }
 
-    private IEnumerator FindNearByMonstersRoutine<T1>(float tick, T1 skillAction)
+    private IEnumerator FindNearByMonstersRoutine<T1>(float radius, float duration, float tick, T1 skillAction)
     {
-        Vector2 overlapSize = new Vector2(2f, 2f);
+        Vector2 overlapSize = new Vector2(radius, radius);
+
+        float elapsedTime = 0;
         
         //현재 주변을 감지하고 있는 상태
-        while (isSearching)
+        while (elapsedTime < duration)
         {
             Collider2D[] cols = Physics2D.OverlapBoxAll(transform.position, overlapSize, 0, monsterMask);
             
@@ -681,6 +680,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             }
 
             yield return WaitCache.GetWait(tick);
+            elapsedTime += tick;
         }
         
         //코루틴 종료 처리
@@ -691,12 +691,40 @@ public class PlayerSkillReceiver : MonoBehaviour
         } 
     }
     
+    /// <summary>
+    /// 스킬 지속시간 만큼 스킬 이펙트가 캐릭터를 따라 이동
+    /// </summary>
+    /// <param name="effectPrefab">캐릭터를 따라 다닐 스킬 이펙트</param>
+    /// <param name="duration">캐릭터를 따라 다닐 스킬 이펙트 지속 시간</param>
+    /// <param name="effectId">캐릭터를 따라 다닐 스킬 이펙트 ID</param>
+    public void ReceiveFollowCharacterWithParticle(GameObject effectPrefab, float duration, string effectId)
+    {
+        //캐릭터를 따라다닐 스킬 이펙트를 풀에서 꺼내오거나 새로 생성
+        if (effectPrefab != null)
+        {
+            GameObject effectInstance = SkillParticlePooling.Instance.GetSkillPool(effectId, effectPrefab);
+            effectInstance.SetActive(true);
+            effectInstance.transform.position = transform.position + new Vector3(0, 0.2f);
+        
+            //캐릭터 자식으로 설정
+            effectInstance.transform.parent = transform;
+        
+            //풀에 반납하기 위한 이펙트 ID 설정
+            ParticleInteraction particleInteraction = effectInstance.GetComponent<ParticleInteraction>();
+            particleInteraction.EffectId = effectId;
+        
+            followParticle = effectInstance.GetComponent<ParticleSystem>();
+        }
+        
+        if (skillEffectFollowCharacterCo == null)
+        {
+            skillEffectFollowCharacterCo = StartCoroutine(FollowCharacterWithParticleRoutine(followParticle, duration));
+        }
+    }
+     
     private IEnumerator FollowCharacterWithParticleRoutine(ParticleSystem particle, float duration)
     {
         float elapsedTime = 0;
-        
-        //주변을 감지하고 있는 상태 On
-        isSearching = true;
         
         while (elapsedTime < duration)
         {
@@ -704,9 +732,6 @@ public class PlayerSkillReceiver : MonoBehaviour
             yield return null;
         }
         
-        //주변을 감지하고 있는 상태 Off
-        isSearching = false;
-
         if (particle != null)
         {
             particle.Stop();
@@ -723,21 +748,19 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <summary>
     /// 일정 범위 안에 스킬 이펙트 생성
     /// </summary> 
-    public void ReceiveSpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float duration,
+    public void ReceiveSpawnParticleAtRandomPosition(Vector2 spawnPos, float radiusRange, float delay,
         GameObject particlePrefab, string effectId, int prefabCount, Action lightingAction = null)
     {
         if (spawnParticleAtRandomPosition == null)
         {
-            spawnParticleAtRandomPosition = StartCoroutine(SpawnParticleAtRandomPositionRoutine(spawnPos, radiusRange, duration, particlePrefab, effectId, prefabCount));
+            spawnParticleAtRandomPosition = StartCoroutine(SpawnParticleAtRandomPositionRoutine(spawnPos, radiusRange, delay, particlePrefab, effectId, prefabCount));
         }
     }
 
-    private IEnumerator SpawnParticleAtRandomPositionRoutine(Vector2 spawnPos, float radiusRange, float duration,
+    private IEnumerator SpawnParticleAtRandomPositionRoutine(Vector2 spawnPos, float radiusRange, float delay,
         GameObject particlePrefab, string effectId, int prefabCount)
     {
-        float elapsedTime = 0;
-
-        yield return WaitCache.GetWait(1f);
+        yield return WaitCache.GetWait(delay);
         
         //TODO: 조금만 생성하고 while 돌면서 돌려쓸지 말지 생각
         for (int i = 0; i < prefabCount; i++)

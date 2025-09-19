@@ -6,14 +6,13 @@ using UnityEngine;
 public abstract class ProjectileSkill : SkillFactory
 {
     private SkillParticlePooling skillParticlePool => SkillParticlePooling.Instance;
-    private ParticleSystem surroundParticleSystem;
     
     protected List<List<Action>> actions = new List<List<Action>>();
-    
-    protected GameObject surroundEffectInstance;
     protected List<ParticleInteraction> surroundInteraction = new List<ParticleInteraction>();
     protected List<ParticleSystemRenderer> particleSystemRenderer = new List<ParticleSystemRenderer>();
-
+    protected ParticleSystem surroundParticleSystem;
+    protected GameObject surroundEffectInstance;
+    
     protected float skillDamage;
     
     public ProjectileSkill(SkillNode skillNode) : base(skillNode)
@@ -109,6 +108,17 @@ public abstract class ProjectileSkill : SkillFactory
         {
             receiver.TakeDamage(damage);
         }
+    }
+
+    /// <summary>
+    /// 캐스팅 이후 수행할 동작 코루틴
+    /// </summary>
+    /// <param name="action">캐스팅 완료 후 수행할 함수</param>
+    /// <returns></returns>
+    protected IEnumerator WaitCastRoutine(Action action)
+    {
+        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
+        action?.Invoke();
     }
     
 }

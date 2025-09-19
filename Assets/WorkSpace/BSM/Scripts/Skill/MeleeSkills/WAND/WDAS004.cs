@@ -6,63 +6,86 @@ using UnityEngine;
 
 public class WDAS004 : MeleeSkill
 {
+    private Action action;
+    private Coroutine castingCo;
+
+    private int thunderCount = 2;
+    
     public WDAS004(SkillNode skillNode) : base(skillNode)
     {
-    }
-
-    private Coroutine asd;
+    } 
     
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
-        GetSkillDamage();
-        ExecuteCasting(skillNode.skillData.SkillCastingTime);
-        
-        ListClear();
-        
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        CoroutineHelper.Instance.StartCoroutine(DelayCoroutine(direction, playerPosition));
-        
-        Collider2D[] cols = Physics2D.OverlapBoxAll(SpacingSkillRange(direction, playerPosition), overlapSize, 0, monsterLayer);
-                 
-        if (cols.Length > 0)
+        skillDamage = GetSkillDamage();
+        ExecuteCasting(skillNode.skillData.SkillCastingTime);
+
+        action = () => ExecutePostCastAction(direction, playerPosition);
+        castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action)); 
+    }
+
+    /// <summary>
+    /// 캐스팅 이후 수행할 동작
+    /// </summary>
+    /// <param name="direction">캐릭터가 스킬 사용시 바라본 방향</param>
+    /// <param name="playerPosition">캐릭터가 스킬을 사용한 위치</param>
+    private void ExecutePostCastAction(Vector2 direction, Vector2 playerPosition)
+    {
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * skillNode.skillData.SkillRange),
+            overlapSize, 0, monsterLayer);
+
+        //감지 몬스터가 없을 경우 바라보는 방향에 낙뢰 위치 표시 재생 후 return
+        if (cols.Length < 1)
         {
-            skillActions.Add(new List<Action>());
-            
-            for (int i = 0; i < cols.Length; i++)
-            {
-                IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
-            
-                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                skillActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
-                triggerModules[0].AddCollider(cols[i]);
-            }
+            SkillEffect(playerPosition + (direction * skillNode.skillData.SkillRange), 0,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
+            return;
+        }
         
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(skillActions[0]);
+        for (int i = 0; i < cols.Length; i++)
+        {
+            SkillEffect(cols[i].transform.position + new Vector3(0, -0.5f), i,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
+        }
+
+        skillNode.PlayerSkillReceiver.StartCoroutine(ThunderEffectRoutine(cols));
+    }
+
+    /// <summary>
+    /// 번개 이펙트 코루틴
+    /// </summary> 
+    /// <returns></returns>
+    private IEnumerator ThunderEffectRoutine(Collider2D[] cols)
+    { 
+        for (int i = 0; i < thunderCount; i++)
+        {
+            ListClear();
+            
+            for (int j = 0; j < cols.Length; j++)
+            {
+                SkillEffect(cols[j].transform.position, j, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
+                
+                skillActions.Add(new List<Action>());
+                
+                IEffectReceiver receiver = cols[j].GetComponent<IEffectReceiver>();
+                
+                skillActions[j].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
+                skillActions[j].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
+                skillActions[j].Add(() => RemoveTriggerModuleList(0));
+                
+                triggerModules[j].AddCollider(cols[j]);
+                interactions[j].ReceiveAction(skillActions[j]);
+            }
+
+            yield return WaitCache.GetWait(0.6f);
         } 
     }
-
-    private IEnumerator DelayCoroutine(Vector2 direction, Vector2 playerPosition)
-    {
-        SkillEffect(SpacingSkillRange(direction, playerPosition), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-
-        yield return WaitCache.GetWait(0.5f);
-        
-        SkillEffect(SpacingSkillRange(direction, playerPosition), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-    }
     
-    public Vector2 SpacingSkillRange(Vector2 direction, Vector2 playerPosition)
-    {
-        return playerPosition + (direction * skillNode.skillData.SkillRange);
-    }
-
+     
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
 
     public override void Gizmos()
     {
-    }
-
-    
+    } 
 }

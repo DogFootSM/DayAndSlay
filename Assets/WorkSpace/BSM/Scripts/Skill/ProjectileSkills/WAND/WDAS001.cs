@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class WDAS001 : ProjectileSkill
-{ 
+{
+    private Coroutine castingCo;
+    private Action action;
     private int effectIndex = 0;
     
     public WDAS001(SkillNode skillNode) : base(skillNode)
@@ -14,43 +17,33 @@ public class WDAS001 : ProjectileSkill
     {
         SetSkillDamage(skillNode.skillData.SkillDamage);
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
-        Fire(playerPosition, direction);
+        
+        action = () => ExecutePostCastAction(playerPosition, direction);
 
+        castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastRoutine(action));
     }
-
+  
     /// <summary>
-    /// 미사일 발사
+    /// 캐스팅 이후 수행할 동작
+    /// 매직 미사일 파티클 발사
     /// </summary>
     /// <param name="position">발사가 시작될 위치</param>
     /// <param name="direction">발사될 방향</param>
     /// <returns></returns>
-    private void Fire(Vector2 position, Vector2 direction)
+    private void ExecutePostCastAction(Vector2 position, Vector2 direction)
     {
-        skillNode.skillData.SkillEffectPrefab[0].GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
+        skillNode.skillData.SkillEffectPrefab[1].GetComponent<MagicMissile>().SetData(skillNode.skillData.SkillHitCount, skillNode.skillData.SkillDamage);
+        SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", effectIndex);
         
         //몸 주변에 발사 이펙트 재생
-        SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 0);
+        SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", ++effectIndex);
         
+        //히트 이펙트 풀에 반납할 ID 설정
+        surroundInteraction[effectIndex].SetHitEffectId($"{skillNode.skillData.SkillId}_3_Particle");
         
-        //회전 방향 조절
-        SetSurroundPrefabLocalRotation(direction, 180f, 0f, 90f, 270f);
-
-        //SortingOrder 조절
-        SetSurroundSortingOrder(direction, 0);
-
-        //요놈도 사거리제한
-        surroundInteraction[effectIndex].LinearProjectile(0, direction, skillNode.skillData.SkillRange);
-    }
-    
-
-    /// <summary>
-    /// 현재 캐릭터가 바라보는 방향에 따라 Order layer 설정
-    /// </summary>
-    /// <param name="dir">캐릭터가 바라보는 방향</param>
-    private void SetSurroundSortingOrder(Vector2 dir, int index)
-    {
-        particleSystemRenderer[index].sortingOrder = dir.y > 0 ? -1 : 0; 
-    }
+        //바라보는 방향으로 발사
+        surroundInteraction[effectIndex].LinearProjectile(0, direction, skillNode.skillData.SkillRange, 5f);
+    } 
     
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {

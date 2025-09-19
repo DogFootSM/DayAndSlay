@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ActionBOAS004 : MonoBehaviour
 {
+    [SerializeField] private ParticleInteraction particleInteraction;
+    
     private LayerMask monsterLayer;
     
     private int detectedCount;
@@ -27,6 +29,7 @@ public class ActionBOAS004 : MonoBehaviour
                 {
                     //몬스터 Hit 호출
                     other.gameObject.GetComponent<IEffectReceiver>().TakeDamage(damage);
+                    particleInteraction.PlayHitEffect(other.gameObject.transform.position, transform.right);
                 } 
                 
                 //타격했으면 감지 개수 감소
@@ -36,7 +39,7 @@ public class ActionBOAS004 : MonoBehaviour
             //감지 개수가 0 일 경우 발사체 파티클 정지
             if (detectedCount == 0)
             {
-                gameObject.GetComponent<ParticleSystem>().Stop();
+                particleInteraction.IsProjectileStopped = true;
             } 
         }
     }

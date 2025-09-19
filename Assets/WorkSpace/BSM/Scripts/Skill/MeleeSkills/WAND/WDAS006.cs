@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class WDAS006 : MeleeSkill
 {
+    private Action action;
+    private Vector2 targetPos;
+    
+    private Coroutine castingCo;
+    private Collider2D targetCollider;
+    
+    private float minDistance = 99999f;
+    
     public WDAS006(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -12,37 +20,38 @@ public class WDAS006 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
-        SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        Fire(playerPosition, direction);
-    }
-
-    private void Fire(Vector2 playerPosition, Vector2 direction)
-    {
-        ListClear();
-        SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-        
+        ExecuteCasting(skillNode.skillData.SkillCastingTime);
+        SetOverlapSize(direction, skillNode.skillData.SkillRange);
         skillDamage = GetSkillDamage();
         
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
-        
-        if (cols.Length > 0)
-        {
-            skillActions.Add(new List<Action>());
-            
-            for (int i = 0; i < cols.Length; i++)
-            {
-                
-                IEffectReceiver receiver = cols[0].GetComponent<IEffectReceiver>();
+        action = () => ExecutePostCastAction(playerPosition, direction);
+        castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action));
 
-                SkillEffect(cols[0].transform.position, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
-                skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                triggerModules[0].AddCollider(cols[0]);
-            }
+    }
+
+    private void ExecutePostCastAction(Vector2 playerPosition, Vector2 direction)
+    {
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * (skillNode.skillData.SkillRange / 2)),
+            overlapSize, 0, monsterLayer);
+
+        //감지된 적이 없으면 return
+        if (cols.Length < 1) return;
         
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
-            interactions[0].ReceiveAction(skillActions[0]);
-        } 
+        //가장 가까운 적 위치 탐색
+        for (int i = 0; i < cols.Length; i++)
+        {
+            if (Vector2.Distance(playerPosition, cols[i].transform.position) < minDistance)
+            {
+                minDistance = Vector2.Distance(playerPosition, cols[i].transform.position);
+                targetPos = cols[i].transform.position;
+                targetCollider = cols[i];
+            } 
+        }
+
+        IEffectReceiver receiver = targetCollider.GetComponent<IEffectReceiver>();
+        
+        SkillEffect(targetPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
@@ -51,5 +60,7 @@ public class WDAS006 : MeleeSkill
 
     public override void Gizmos()
     {
+        //UnityEngine.Gizmos.color = Color.red;
+        //UnityEngine.Gizmos.DrawWireCube(pos + (dir.normalized * (skillNode.skillData.SkillRange /2)), overlapSize);
     }
 }

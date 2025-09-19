@@ -7,6 +7,7 @@ public class SSAS002 : MeleeSkill
 {
     private float moveSpeedPer = 0.3f;
     private float moveSpeedLevelPer = 0.05f;
+    private Vector2 hitPos;
     
     public SSAS002(SkillNode skillNode) : base(skillNode)
     {
@@ -19,35 +20,39 @@ public class SSAS002 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     { 
         ListClear();
+        SetOverlapSize(skillNode.skillData.SkillRadiusRange);
+        skillDamage = GetSkillDamage();
         
-        SetOverlapSize(direction, skillNode.skillData.SkillRadiusRange);
-        SkillEffect(playerPosition + direction, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        //타격 위치 및 이펙트 재생 위치
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
+        
+        //이펙트 재생
+        SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        
+        //바라보는 방향에 따른 이펙트 회전
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
         
-        float buffLevelPer = moveSpeedPer + ((skillNode.CurSkillLevel - 1) * moveSpeedLevelPer);
-        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, buffLevelPer);
+        //이동 속도 증가 버프
+        float moveSpeedBuff = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
+        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, moveSpeedBuff);
         
-        Collider2D[] detectedMonster =
-            Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0f, monsterLayer);
-        skillDamage = GetSkillDamage();
- 
+        Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
+        
         if (detectedMonster.Length > 0)
         {
+            int detectedCount = skillNode.skillData.DetectedCount <= detectedMonster.Length ? skillNode.skillData.DetectedCount : detectedMonster.Length;
+            
             skillActions.Add(new List<Action>());
  
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < detectedCount; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
                 skillActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
-
-                if (triggerModules[0].enabled)
-                {
-                    triggerModules[0].AddCollider(detectedMonster[i]);
-                    interactions[0].ReceiveAction(skillActions[0]);
-                }
+                triggerModules[0].AddCollider(detectedMonster[i]);
             }
-             
+            
             skillActions[0].Add(() => RemoveTriggerModuleList(0)); 
+            interactions[0].ReceiveAction(skillActions[0]);
         } 
     }
 
@@ -55,6 +60,8 @@ public class SSAS002 : MeleeSkill
 
     public override void Gizmos()
     {
-        
+        UnityEngine.Gizmos.color = Color.blue;
+
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
     }
 }
