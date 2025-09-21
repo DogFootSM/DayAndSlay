@@ -73,12 +73,12 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         if (tree == null) return;
         tree.Tick();
 
-        /*
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            method.DropItem();
+            ReceiveKnockBack(player.transform.position, Vector2.zero);
         }
-        */
+        
     }
 
     protected virtual BTNode BuildRoot()
@@ -248,34 +248,38 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     {
         animator.PlayHit();
         
-        Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
+        //Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
+        //
+        //if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
+        //{
+        //    if (playerDir.x > 0)
+        //    {
+        //        //오른쪽 방향으로
+        //        knockBackDir = Vector2.right;
+        //    }
+        //    else
+        //    {
+        //        //왼쪽 방향으로
+        //        knockBackDir = Vector2.left;
+        //    }
+        //}
+        //else
+        //{
+        //    if (playerDir.y > 0)
+        //    {
+        //        //윗 방향으로
+        //        knockBackDir = Vector2.up;
+        //    }
+        //    else
+        //    {
+        //        //아랫 방향으로
+        //        knockBackDir = Vector2.down;
+        //    }
+        //}
         
-        if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
-        {
-            if (playerDir.x > 0)
-            {
-                //오른쪽 방향으로
-                knockBackDir = Vector2.right;
-            }
-            else
-            {
-                //왼쪽 방향으로
-                knockBackDir = Vector2.left;
-            }
-        }
-        else
-        {
-            if (playerDir.y > 0)
-            {
-                //윗 방향으로
-                knockBackDir = Vector2.up;
-            }
-            else
-            {
-                //아랫 방향으로
-                knockBackDir = Vector2.down;
-            }
-        }
+        //벡터로 계산해버리면?
+        knockBackDir = ((Vector2)transform.position - playerPos);
+        
 
         if (knockBackCo != null)
         {
