@@ -46,7 +46,7 @@ public class BOAS004 : ProjectileSkill
         SingleEffect(playerPosition + direction, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", effectIndex);
         
         //해당 스킬 발사체 파티클 데이터 설정
-        surroundEffectInstance.GetComponent<ActionBOAS004>().SetSkillData(3, skillNode.skillData.SkillHitCount, skillDamage);
+        surroundEffectInstance.GetComponent<ActionBOAS004>().SetSkillData(skillNode.skillData.DetectedCount, skillNode.skillData.SkillHitCount, skillDamage);
         
         surroundInteraction[effectIndex].SetHitEffectId($"{skillNode.skillData.SkillId}_3_Particle");
         
