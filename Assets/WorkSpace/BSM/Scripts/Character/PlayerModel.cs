@@ -369,7 +369,12 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         playerStats.StrengthFactor = strengthFactor;
     }
-     
+
+    public void UpdateIntelligenceFactor(float intelligenceFactor)
+    {
+        playerStats.IntelligenceFactor = intelligenceFactor;
+    }
+    
     /// <summary>
     /// 현재 스피드에 Factor만큼 스피드 증가
     /// </summary>

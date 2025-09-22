@@ -55,8 +55,8 @@ public abstract class PassiveSkill : SkillFactory
     /// <param name="baseFactor"></param>
     protected void IntelligenceBuff(float baseFactor)
     {
-        float inteligenceFactor = skillNode.PlayerModel.PlayerStats.baseIntelligence + baseFactor;
-        skillNode.PlayerModel.UpdateStrengthFactor(inteligenceFactor);
+        float intelligenceFactor = skillNode.PlayerModel.PlayerStats.baseIntelligence * baseFactor;
+        skillNode.PlayerModel.UpdateIntelligenceFactor(intelligenceFactor);
     }
 
     /// <summary>
