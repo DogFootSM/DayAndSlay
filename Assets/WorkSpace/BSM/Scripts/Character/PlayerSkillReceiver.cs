@@ -225,7 +225,6 @@ public class PlayerSkillReceiver : MonoBehaviour
     private IEnumerator SkillCastingRoutine(float castingTime)
     {
         float elapsedTime = 0f;
-        //TODO: 캐스팅 타임은 모델에서 가져오는 방식?
         playerModel.IsCasting = true;
         
         castingTime = isNeedCasting ? castingTime : 0f;
