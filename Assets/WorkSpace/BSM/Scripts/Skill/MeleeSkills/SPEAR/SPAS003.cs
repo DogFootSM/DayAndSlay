@@ -59,7 +59,7 @@ public class SPAS003 : MeleeSkill
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
 
-                skillActions[0].Add(() => Hit(receiver, skillDamage + GeteDefensePenetrationDamage(receiver), skillNode.skillData.SkillHitCount));
+                skillActions[0].Add(() => Hit(receiver, skillDamage + GetDefensePenetrationDamage(receiver), skillNode.skillData.SkillHitCount));
                 
                 triggerModules[0].AddCollider(cols[i]);
             }

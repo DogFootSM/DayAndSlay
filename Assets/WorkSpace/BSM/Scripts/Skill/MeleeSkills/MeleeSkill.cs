@@ -199,7 +199,7 @@ public abstract class MeleeSkill : SkillFactory
     /// </summary>
     /// <param name="receiver"></param>
     /// <returns></returns>
-    protected float GeteDefensePenetrationDamage(IEffectReceiver receiver)
+    protected float GetDefensePenetrationDamage(IEffectReceiver receiver)
     {
         //TODO: 몬스터 방어력 무시 수치를 어떤식으로 전달?
         float defensePenetrationRate = skillNode.skillData.SkillAbilityValue +
