@@ -10,8 +10,7 @@ public class BOAS010 : MeleeSkill
     {
     }
 
-    private Vector2 pos;
-    private Vector2 dir;
+    private Vector2 hitPos;
     private float offset = 4f;
     private float minRot = 235f;
     private float maxRot = 255f;
@@ -22,11 +21,9 @@ public class BOAS010 : MeleeSkill
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
         skillDamage = GetSkillDamage();
-
-        pos = playerPosition;
-        dir = direction;
-
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * 4), overlapSize, 0, monsterLayer);
+        
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
+        Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
         
         skillNode.PlayerSkillReceiver.StartCoroutine(SkillEffectRoutine(playerPosition, direction, cols)); 
     }
@@ -47,7 +44,7 @@ public class BOAS010 : MeleeSkill
             float x = Random.Range(minX, maxX);
             float y = Random.Range(0, maxY);
             
-            SkillEffect(playerPosition + (direction * offset) + new Vector2(x, y), index, $"{skillNode.skillData.SkillId}_1_Particle",skillNode.skillData.SkillEffectPrefab[0]);
+            SkillEffect(hitPos + new Vector2(x, y), index, $"{skillNode.skillData.SkillId}_1_Particle",skillNode.skillData.SkillEffectPrefab[0]);
             
             instance.transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(minRot, maxRot));
             
@@ -73,6 +70,6 @@ public class BOAS010 : MeleeSkill
     public override void Gizmos()
     {
         UnityEngine.Gizmos.color = Color.yellow;
-        UnityEngine.Gizmos.DrawWireCube(pos + (dir * 4), overlapSize);
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
     }
 }

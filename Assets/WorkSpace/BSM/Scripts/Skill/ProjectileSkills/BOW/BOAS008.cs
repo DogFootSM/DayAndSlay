@@ -12,8 +12,11 @@ public class BOAS008 : MeleeSkill
     {
         ListClear();
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+
+        float buffFactor = skillNode.skillData.SkillAbilityValue +
+                           ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
-        ExecuteMoveSpeedBuff();
+        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, buffFactor);
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
