@@ -5,8 +5,6 @@ using System;
 
 public class SSAS002 : MeleeSkill
 {
-    private float moveSpeedPer = 0.3f;
-    private float moveSpeedLevelPer = 0.05f;
     private Vector2 hitPos;
     
     public SSAS002(SkillNode skillNode) : base(skillNode)

@@ -38,16 +38,11 @@ public class WDAS006 : MeleeSkill
         if (cols.Length < 1) return;
         
         //가장 가까운 적 위치 탐색
-        for (int i = 0; i < cols.Length; i++)
-        {
-            if (Vector2.Distance(playerPosition, cols[i].transform.position) < minDistance)
-            {
-                minDistance = Vector2.Distance(playerPosition, cols[i].transform.position);
-                targetPos = cols[i].transform.position;
-                targetCollider = cols[i];
-            } 
-        }
-
+        Sort.SortMonstersByNearest(cols, playerPosition);
+         
+        targetPos = cols[0].transform.position;
+        targetCollider = cols[0];
+        
         IEffectReceiver receiver = targetCollider.GetComponent<IEffectReceiver>();
         
         SkillEffect(targetPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);

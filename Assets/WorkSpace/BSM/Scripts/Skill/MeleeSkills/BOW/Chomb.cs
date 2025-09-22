@@ -82,7 +82,7 @@ public class Chomb : MonoBehaviour
                     for (int i = 0; i < index; i++)
                     {
                         receivers[i].TakeDamage(damage);
-                        receivers[i].ReceiveStun(damage);
+                        receivers[i].ReceiveStun(stunDuration);
                     }
                      
                     SkillParticlePooling.Instance.ReturnSkillParticlePool(effectId, gameObject);

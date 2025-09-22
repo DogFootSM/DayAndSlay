@@ -11,7 +11,6 @@ public class BOAS010 : MeleeSkill
     }
 
     private Vector2 hitPos;
-    private float offset = 4f;
     private float minRot = 235f;
     private float maxRot = 255f;
     private float verticalDistance = 2f;
