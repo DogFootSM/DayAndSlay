@@ -9,7 +9,7 @@ public class ShortSword : IAttackHandler
     private Vector2 overlapSize;
 
     private LayerMask monsterLayer;
-    private NewMonsterAI targetMonster;
+    private MonsterAI targetMonster;
     private float distance;
 
     public ShortSword()
@@ -50,7 +50,7 @@ public class ShortSword : IAttackHandler
         if (monsterColliders.Length == 1)
         {
             //targetMonster = monsterColliders[0].GetComponent<Monster>();
-            targetMonster = monsterColliders[0].GetComponent<NewMonsterAI>();
+            targetMonster = monsterColliders[0].GetComponent<MonsterAI>();
         }
         else
         {
@@ -81,7 +81,7 @@ public class ShortSword : IAttackHandler
             if (distance > compareDistance)
             {
                 distance = compareDistance;
-                targetMonster = colliders[i].gameObject.GetComponent<NewMonsterAI>();
+                targetMonster = colliders[i].gameObject.GetComponent<MonsterAI>();
             }
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D.Animation;
 
 [RequireComponent(typeof(Animator))]
-public class NewMonsterAnimator : MonoBehaviour
+public class MonsterAnimator : MonoBehaviour
 {
     protected Animator animator;
     protected SpriteLibrary spriteLibrary;

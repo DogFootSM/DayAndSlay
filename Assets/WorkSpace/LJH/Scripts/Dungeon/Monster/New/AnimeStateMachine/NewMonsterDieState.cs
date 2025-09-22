@@ -1,7 +1,7 @@
 public class NewMonsterDieState : NewIMonsterState
 {
 
-    public void Enter(NewMonsterAnimator animator)
+    public void Enter(MonsterAnimator animator)
     {
         animator.PlayDie();
     }

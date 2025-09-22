@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 모든 보스 몬스터의 공통 로직을 담는 추상 클래스
-public abstract class BossMonsterAI : NewMonsterAI
+public abstract class BossMonsterAI : MonsterAI
 {
     // 네펜데스AI에서 가져온 공통 쿨타임 변수들
     [Header("공통 스킬 쿨타임 조정")]

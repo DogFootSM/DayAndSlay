@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-public abstract class BossMonsterMethod : NewMonsterMethod
+public abstract class BossMonsterMethod : MonsterMethod
 {
     public ParticleSystem effect;
     

@@ -11,7 +11,7 @@ public class NewMonsterSkillThirdState : NewIMonsterState
         this.playerTransform = playerT;
     }
 
-    public void Enter(NewMonsterAnimator animator)
+    public void Enter(MonsterAnimator animator)
     {
         // 1. 플레이어를 향하는 방향 계산
         Vector2 directionToPlayer = playerTransform.position - monsterTransform.position;

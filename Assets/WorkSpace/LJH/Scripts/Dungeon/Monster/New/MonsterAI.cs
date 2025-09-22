@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewMonsterAI : MonoBehaviour, IEffectReceiver
+public class MonsterAI : MonoBehaviour, IEffectReceiver
 {
     [SerializeField] private GameObject markObject;
     [SerializeField] protected MonsterData monsterData;
@@ -10,8 +10,8 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     
     protected BehaviourTree tree;
     protected MonsterModel model;
-    protected NewMonsterMethod method;
-    protected NewMonsterAnimator animator;
+    protected MonsterMethod method;
+    protected MonsterAnimator animator;
 
     protected NewMonsterStateMachine stateMachine;
     
@@ -42,8 +42,8 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     protected virtual void Awake()
     {
         model = GetComponent<MonsterModel>();
-        method = GetComponent<NewMonsterMethod>();
-        animator = GetComponent<NewMonsterAnimator>();
+        method = GetComponent<MonsterMethod>();
+        animator = GetComponent<MonsterAnimator>();
         rigid = GetComponent<Rigidbody2D>();
         lastPlayerPos = transform.position;
         //markObject.SetActive(false);
@@ -73,11 +73,11 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
         if (tree == null) return;
         tree.Tick();
 
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ReceiveKnockBack(player.transform.position, Vector2.zero);
-        }
+        //테스트 시에만 주석 해제
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    ReceiveKnockBack(player.transform.position, Vector2.zero);
+        //}
         
     }
 
@@ -191,8 +191,8 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
 
     public MonsterData GetMonsterData() => monsterData;
     public MonsterModel GetMonsterModel() => model;
-    public NewMonsterMethod GetMonsterMethod() => method;
-    public NewMonsterAnimator GetMonsterAnimator() => animator;
+    public MonsterMethod GetMonsterMethod() => method;
+    public MonsterAnimator GetMonsterAnimator() => animator;
     
     public float GetChaseRange() => monsterData.ChaseRange;
     public void TakeDamage(float damage)
@@ -247,35 +247,6 @@ public class NewMonsterAI : MonoBehaviour, IEffectReceiver
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         animator.PlayHit();
-        
-        //Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
-        //
-        //if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
-        //{
-        //    if (playerDir.x > 0)
-        //    {
-        //        //오른쪽 방향으로
-        //        knockBackDir = Vector2.right;
-        //    }
-        //    else
-        //    {
-        //        //왼쪽 방향으로
-        //        knockBackDir = Vector2.left;
-        //    }
-        //}
-        //else
-        //{
-        //    if (playerDir.y > 0)
-        //    {
-        //        //윗 방향으로
-        //        knockBackDir = Vector2.up;
-        //    }
-        //    else
-        //    {
-        //        //아랫 방향으로
-        //        knockBackDir = Vector2.down;
-        //    }
-        //}
         
         //벡터로 계산해버리면?
         knockBackDir = ((Vector2)transform.position - playerPos);

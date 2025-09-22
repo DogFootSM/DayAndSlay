@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BansheeAnimator : NewMonsterAnimator
+public class BansheeAnimator : MonsterAnimator
 {
     protected override void DictionaryInit()
     {

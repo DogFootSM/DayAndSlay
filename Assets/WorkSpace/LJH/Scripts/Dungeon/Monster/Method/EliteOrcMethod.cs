@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EliteOrcMethod : NewMonsterMethod
+public class EliteOrcMethod : MonsterMethod
 {
     private BossMonsterAI eliteOrc;
     

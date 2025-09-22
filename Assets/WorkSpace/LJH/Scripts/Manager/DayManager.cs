@@ -54,7 +54,7 @@ public class DayManager : MonoBehaviour, ISavable
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -71,7 +71,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// <summary>
     /// This method changes day & night
     /// </summary>
-    public void SetDayNight()
+    public void ToggleDayNight()
     {
         if (dayOrNight == DayAndNight.DAY)
         {
@@ -83,13 +83,13 @@ public class DayManager : MonoBehaviour, ISavable
         }
     }
 
-    private void SetDayCount(int value)
+    private void CheckDayProgress(int value)
     {
         dayCount = value;
 
         if (dayCount <= DayEndTime && dayOrNight == DayAndNight.DAY)
         {
-            SetDayNight();
+            ToggleDayNight();
         }
     }
 
@@ -99,7 +99,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
-        SetDayCount(DefaultDayCount);
+        CheckDayProgress(DefaultDayCount);
         dayOrNight = DayAndNight.DAY;
 
         if (timeCoroutine == null)
@@ -135,7 +135,7 @@ public class DayManager : MonoBehaviour, ISavable
             elapsedClockTime += Time.deltaTime * gameClockScale;
 
             Debug.Log((int)(elapsedGameTime));
-
+            
             int currentTotalMinutes = Mathf.FloorToInt(elapsedClockTime);
             if (currentTotalMinutes != lastTotalMinutes)
             {
@@ -163,7 +163,7 @@ public class DayManager : MonoBehaviour, ISavable
 
             if (elapsedGameTime >= DefaultDayCount)
             {
-                SetDayCount(DayEndTime);
+                CheckDayProgress(DayEndTime);
                 break;
             }
 

@@ -35,7 +35,7 @@ public class Arrow : MonoBehaviour
             //Monster monster = other.gameObject.GetComponent<Monster>();
             //monster.TakeDamage(damage);
             
-            NewMonsterAI monster = other.gameObject.GetComponent<NewMonsterAI>();
+            MonsterAI monster = other.gameObject.GetComponent<MonsterAI>();
             monster.TakeDamage(damage);
             
             //현재 화살이 슬로우 스킬 화살이며 몬스터가 슬로우 적용중이지 않은 상태

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class NewMonsterMethod : MonoBehaviour
+public class MonsterMethod : MonoBehaviour
 {
     [SerializeField] GameObject itemPrefab;
     
     protected MonsterData monsterData;
     protected MonsterModel model;
     protected AstarPath astarPath;
-    protected NewMonsterAI ai;
-    protected NewMonsterAnimator animator;
+    protected MonsterAI ai;
+    protected MonsterAnimator animator;
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
     protected GameObject player;
@@ -35,7 +35,7 @@ public class NewMonsterMethod : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         astarPath = GetComponentInChildren<AstarPath>();
-        ai = GetComponentInChildren<NewMonsterAI>();
+        ai = GetComponentInChildren<MonsterAI>();
         animator = ai.GetMonsterAnimator();
         sensor = GetComponentInChildren<TargetSensor>();
         coll = GetComponent<Collider2D>();
@@ -191,6 +191,10 @@ public class NewMonsterMethod : MonoBehaviour
         
         float randomNum = Random.Range(0, 100);
 
+        Debug.Log(
+            model.DropItemPick(randomNum).Name
+            );
+        
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
         Instantiate(itemPrefab, transform.position, Quaternion.identity);
     }

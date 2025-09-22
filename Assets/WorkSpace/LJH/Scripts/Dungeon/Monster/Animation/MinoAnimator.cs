@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinoAnimator : NewMonsterAnimator
+public class MinoAnimator : MonsterAnimator
 {
     protected override void DictionaryInit()
     {

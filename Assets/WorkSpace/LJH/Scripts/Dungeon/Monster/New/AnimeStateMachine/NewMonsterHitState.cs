@@ -1,7 +1,7 @@
 public class NewMonsterHitState : NewIMonsterState
 {
 
-    public void Enter(NewMonsterAnimator animator)
+    public void Enter(MonsterAnimator animator)
     {
         animator.PlayHit();
     }
