@@ -24,7 +24,8 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     protected Coroutine defenseDeBuffCo;
     
     protected Vector2 knockBackDir;
-    
+
+    protected bool isSlow;
     protected bool isStun = false;
     protected bool isDot;
     protected bool isDefenseDeBuffed;
@@ -32,7 +33,8 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     protected float knockBackPower = 5f;
     private float defenseDeBuffRatio;
     protected bool GetIsStun() => isStun;
-
+    public bool IsSlow => isSlow;
+    
     public bool isAttacking = false;
 
     private Rigidbody2D rigid;
@@ -382,20 +384,21 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         StartCoroutine(SlowCoroutine(duration, ratio));
     }
 
-    private IEnumerator SlowCoroutine(float duration, float ratio)
+    protected virtual IEnumerator SlowCoroutine(float duration, float ratio)
     {
         float elapsedTime = 0f;
+        isSlow = true;
 
         float originMoveSpeed = model.MoveSpeed;
 
-        model.MoveSpeed *= (100 - ratio) / 100;
-        
+        model.MoveSpeed -= (model.MoveSpeed * ratio);
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
+        isSlow = false;
         model.MoveSpeed = originMoveSpeed;
     }
     #endregion
