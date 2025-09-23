@@ -35,6 +35,7 @@ public class SSAS002 : MeleeSkill
         ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, speedBuffFactor);
         
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
+        Sort.SortMonstersByNearest(detectedMonster, playerPosition);
         
         if (detectedMonster.Length > 0)
         {

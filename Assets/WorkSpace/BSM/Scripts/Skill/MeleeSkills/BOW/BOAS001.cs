@@ -19,7 +19,8 @@ public class BOAS001 : MeleeSkill
         skillDamage = GetSkillDamage();
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
-                 
+        Sort.SortMonstersByNearest(cols, playerPosition);
+        
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());

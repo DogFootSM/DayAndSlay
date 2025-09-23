@@ -27,8 +27,9 @@ public class SSAS006 : MeleeSkill
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());
+            int detected = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
             
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < detected; i++)
             {
                 SkillEffect(cols[i].transform.position - new Vector3(0, 0.5f), i, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[i]);
                 

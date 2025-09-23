@@ -27,6 +27,7 @@ public class SSAS003 : MeleeSkill
         skillDamage = GetSkillDamage();
         
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
+        Sort.SortMonstersByNearest(detectedMonster, playerPosition);
         
         if (detectedMonster.Length > 0)
         {

@@ -21,6 +21,7 @@ public class BOAS005 : MeleeSkill
         
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
         skillDamage = GetSkillDamage();
         ListClear();
         

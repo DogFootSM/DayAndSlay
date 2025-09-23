@@ -672,6 +672,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         while (elapsedTime < duration)
         {
             Collider2D[] cols = Physics2D.OverlapBoxAll(transform.position, overlapSize, 0, monsterMask);
+            Sort.SortMonstersByNearest(cols, transform.position);
             
             //사용 스킬이 SPAS009이면 아래 실행
             if (skillAction is SPAS009 spas009)

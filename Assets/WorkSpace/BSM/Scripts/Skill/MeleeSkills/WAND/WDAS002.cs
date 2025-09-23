@@ -22,6 +22,7 @@ public class WDAS002 : MeleeSkill
 
         hitPos = SpacingSkillRange(direction, playerPosition);
         Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
         
         if (cols.Length > 0)
         {
