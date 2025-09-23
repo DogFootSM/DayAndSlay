@@ -39,7 +39,7 @@ public class Arrow : MonoBehaviour
             monster.TakeDamage(damage);
             
             //현재 화살이 슬로우 스킬 화살이며 몬스터가 슬로우 적용중이지 않은 상태
-            if (isSlowSkill /*&& !monster.IsSlow*/)
+            if (isSlowSkill && !monster.IsSlow)
             {
                 IEffectReceiver receiver = other.gameObject.GetComponent<IEffectReceiver>();
                 receiver.ReceiveSlow(slowDuration, slowRatio); 

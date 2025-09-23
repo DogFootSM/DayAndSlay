@@ -19,12 +19,14 @@ public class BOAS001 : MeleeSkill
         skillDamage = GetSkillDamage();
         
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
-                 
+        Sort.SortMonstersByNearest(cols, playerPosition);
+        
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());
-            //TODO: 넉백 방향 수정해야 될듯?
-            for (int i = 0; i < cols.Length; i++)
+            int detected = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
+            
+            for (int i = 0; i < detected; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             

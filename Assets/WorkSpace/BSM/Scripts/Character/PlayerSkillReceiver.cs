@@ -143,7 +143,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         while (elapsedTime < duration)
         {
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed() * speedDecrease;
-            playerModel.FinalPhysicalDefense = (int)(playerModel.PlayerStats.PhysicalDefense * defenseIncrease);
+            playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense * defenseIncrease;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -225,7 +225,6 @@ public class PlayerSkillReceiver : MonoBehaviour
     private IEnumerator SkillCastingRoutine(float castingTime)
     {
         float elapsedTime = 0f;
-        //TODO: 캐스팅 타임은 모델에서 가져오는 방식?
         playerModel.IsCasting = true;
         
         castingTime = isNeedCasting ? castingTime : 0f;
@@ -611,7 +610,8 @@ public class PlayerSkillReceiver : MonoBehaviour
         float jumpVelocity = 5f;
         float fallVelocity = 0;
         float gravity = 9f;
-
+        
+        //TODO: 점프했을 때 충돌끄고, 착지했을 때 충돌 켜야 될듯
         //제자리 점프
         while (jumpVelocity > 0)
         {
@@ -672,6 +672,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         while (elapsedTime < duration)
         {
             Collider2D[] cols = Physics2D.OverlapBoxAll(transform.position, overlapSize, 0, monsterMask);
+            Sort.SortMonstersByNearest(cols, transform.position);
             
             //사용 스킬이 SPAS009이면 아래 실행
             if (skillAction is SPAS009 spas009)

@@ -13,10 +13,10 @@ public class BOAS007 : ProjectileSkill
         SetSkillDamage(skillNode.skillData.SkillDamage);
         GameObject chombInstance = particlePooling.GetSkillPool($"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         chombInstance.transform.position = playerPosition;
-        chombInstance.SetActive(true);
         
         Chomb chomb = chombInstance.GetComponent<Chomb>();
-        chomb.SetSkillData(skillDamage, $"{skillNode.skillData.SkillId}_1_Particle");
+        chomb.SetSkillData(skillNode.skillData.DetectedCount, skillDamage, $"{skillNode.skillData.SkillId}_1_Particle");
+        chombInstance.SetActive(true);
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)

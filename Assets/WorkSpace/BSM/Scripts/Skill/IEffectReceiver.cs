@@ -15,6 +15,13 @@ public interface IEffectReceiver
     /// </summary>
     /// <returns></returns>
     public float GetMaxHp();
+
+    /// <summary>
+    /// 몬스터 현재 방어력 수치 반환
+    /// </summary>
+    /// <returns></returns>
+    public float GetDefense();
+    
     
     /// <summary>
     /// 넉백 리시버

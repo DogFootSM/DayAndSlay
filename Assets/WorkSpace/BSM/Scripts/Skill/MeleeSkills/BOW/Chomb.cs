@@ -6,7 +6,8 @@ using UnityEngine;
 public class Chomb : MonoBehaviour
 {
     [SerializeField] private Animator chombAnimator;
-
+    
+    private IEffectReceiver[] receivers;
     private Coroutine explosionDelayCo;
     private LayerMask monsterLayerMask;
     private float damage;
@@ -15,7 +16,7 @@ public class Chomb : MonoBehaviour
     private int explosionAnimHash;
     private string effectId;
     private string curStateAnimationName = "Chomb_Bomb_Clip";
-    
+    private int index = 0;
     private void Awake()
     {
         explosionAnimHash = Animator.StringToHash("Explosion");
@@ -36,7 +37,12 @@ public class Chomb : MonoBehaviour
             chombAnimator.SetTrigger(explosionAnimHash);
             
             IEffectReceiver receiver = other.gameObject.GetComponent<IEffectReceiver>();
-            
+
+            if (index < receivers.Length)
+            {
+                receivers[index++] = receiver;  
+            }
+             
             if (explosionDelayCo == null)
             {
                 explosionDelayCo = StartCoroutine(ExplosionDelayRoutine(receiver));
@@ -46,6 +52,8 @@ public class Chomb : MonoBehaviour
  
     private void OnDisable()
     {
+        index = 0;
+        
         if (explosionDelayCo != null)
         {
             StopCoroutine(explosionDelayCo);
@@ -71,9 +79,12 @@ public class Chomb : MonoBehaviour
                 if (delayTime >= 1f)
                 {
                     //Hit
-                    receiver.TakeDamage(damage);
-                    receiver.ReceiveStun(stunDuration);
-                    
+                    for (int i = 0; i < index; i++)
+                    {
+                        receivers[i].TakeDamage(damage);
+                        receivers[i].ReceiveStun(stunDuration);
+                    }
+                     
                     SkillParticlePooling.Instance.ReturnSkillParticlePool(effectId, gameObject);
                     break;
                 }
@@ -87,9 +98,10 @@ public class Chomb : MonoBehaviour
     /// 스킬 데이터 설정
     /// </summary>
     /// <param name="damage"></param>
-    public void SetSkillData(float damage, string effectId)
+    public void SetSkillData(int detectedCount, float damage, string effectId)
     {
         this.damage = damage;
         this.effectId = effectId;
+        receivers = new IEffectReceiver[detectedCount];
     }
 }

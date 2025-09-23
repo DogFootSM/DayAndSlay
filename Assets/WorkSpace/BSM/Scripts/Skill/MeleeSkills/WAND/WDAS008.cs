@@ -31,7 +31,7 @@ public class WDAS008 : MeleeSkill
 
         if (cols.Length > 0)
         {
-            SpawnParticleAtRandomPosition(playerPosition, skillNode.skillData.SkillRadiusRange, 2f, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", 10);
+            SpawnParticleAtRandomPosition(playerPosition, skillNode.skillData.SkillRadiusRange, 0.5f, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", 10);
 
             for (int i = 0; i < cols.Length; i++)
             {

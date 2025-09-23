@@ -26,13 +26,15 @@ public class WDAS007 : MeleeSkill
     private void ExecutePostCastAction(Vector2 direction, Vector2 playerPosition)
     {
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * (skillNode.skillData.SkillRange / 2)), overlapSize, 0, monsterLayer);
-
+        Sort.SortMonstersByNearest(cols, playerPosition);
         float cx = 0;
         float cy = 0;
 
         if (cols.Length > 0)
         {
-            for (int i = 0; i < cols.Length; i++)
+            int detected = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
+            
+            for (int i = 0; i < detected; i++)
             {
                 cx += cols[i].transform.position.x;
                 cy += cols[i].transform.position.y;
@@ -42,7 +44,7 @@ public class WDAS007 : MeleeSkill
             SkillEffect(cVector, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
             skillActions.Add(new List<Action>());
 
-            for (int i = 0; i < cols.Length; i++)
+            for (int i = 0; i < detected; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 

@@ -12,8 +12,9 @@ public class SPAS006 : MeleeSkill
     {
         ListClear();
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        
         //현재 스킬 레벨 당 +10% 추가
-        float multiplier = 0.5f + ((skillNode.CurSkillLevel - 1) * 0.1f);
+        float multiplier = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         ExecuteNextSkillDamageBuff(skillNode.skillData.BuffDuration, multiplier);
         
     }

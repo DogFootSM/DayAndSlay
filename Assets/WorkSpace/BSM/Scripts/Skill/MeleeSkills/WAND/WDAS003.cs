@@ -33,7 +33,7 @@ public class WDAS003 : MeleeSkill
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
     
         //레벨당 슬로우 효과
-        float slowLevelPer = 0.3f + ((skillNode.CurSkillLevel - 1) * 0.03f);
+        float slowLevelPer = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
         for (int i = 0; i < cols.Length; i++)
         {

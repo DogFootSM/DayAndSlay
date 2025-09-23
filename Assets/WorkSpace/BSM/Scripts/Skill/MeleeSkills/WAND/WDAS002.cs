@@ -6,12 +6,12 @@ public class WDAS002 : MeleeSkill
 {
     private Coroutine castingCo;
     private Action action;
+    private Vector2 hitPos;
+    
     public WDAS002(SkillNode skillNode) : base(skillNode)
     {
     }
 
-    private Vector2 pos;
-    private Vector2 dir;
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         skillDamage = GetSkillDamage();
@@ -19,27 +19,28 @@ public class WDAS002 : MeleeSkill
         
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        pos = playerPosition;
-        dir = direction;
-        
-        Vector2 particleSpawnPos = SpacingSkillRange(direction, playerPosition);
-        Collider2D[] cols = Physics2D.OverlapBoxAll(particleSpawnPos, overlapSize, 0, monsterLayer);
+
+        hitPos = SpacingSkillRange(direction, playerPosition);
+        Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
         
         if (cols.Length > 0)
         {
-            action = () => ExecutePostCastAction(particleSpawnPos, cols);
+            action = () => ExecutePostCastAction(hitPos, cols);
             castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action));
         } 
     }
 
     private void ExecutePostCastAction(Vector2 particleSpawnPos, Collider2D[] cols)
     {
+        //TODO: 스킬 이펙트 재생 위치 조정
         SkillEffect(particleSpawnPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         //레벨당 +1 초 지속 시간
         float duration = skillNode.skillData.DeBuffDuration + (skillNode.CurSkillLevel - 1);
+        int detectedCount = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
         
-        for (int i = 0; i < cols.Length; i++)
+        for (int i = 0; i < detectedCount; i++)
         {
             IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
@@ -49,7 +50,7 @@ public class WDAS002 : MeleeSkill
     
     private Vector2 SpacingSkillRange(Vector2 direction, Vector2 playerPosition)
     {
-        return playerPosition + (direction * skillNode.skillData.SkillRange);
+        return playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
@@ -59,7 +60,7 @@ public class WDAS002 : MeleeSkill
     public override void Gizmos()
     {
         UnityEngine.Gizmos.color = Color.yellow;
-        UnityEngine.Gizmos.DrawWireCube(pos + (dir * skillNode.skillData.SkillRange), overlapSize);
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
         
     }
 }

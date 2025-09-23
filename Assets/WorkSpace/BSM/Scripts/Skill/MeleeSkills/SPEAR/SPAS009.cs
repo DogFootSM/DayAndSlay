@@ -24,8 +24,9 @@ public class SPAS009 : MeleeSkill
     {
         ListClear();
         skillDamage = GetSkillDamage();
+        int detectedCount = skillNode.skillData.DetectedCount <= cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
         
-        for (int i = 0; i < cols.Length; i++)
+        for (int i = 0; i < detectedCount; i++)
         {
             IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             SkillEffect(cols[i].transform.position + Vector3.up, i, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);

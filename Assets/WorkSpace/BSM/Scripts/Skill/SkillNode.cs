@@ -60,7 +60,7 @@ public class SkillNode
             PassiveSkill passiveSkill = SkillFactoryManager.GetSkillFactory(this) as PassiveSkill;
 
             if (passiveSkill != null)
-            {Debug.Log("Apply Skill Level");
+            {
                 passiveSkill.ApplyPassiveEffects(curWeapon);
             } 
         }
@@ -116,8 +116,9 @@ public class SkillNode
             overlapSize = new Vector2(1f, skillData.SkillRange);
         }
 
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
-
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * (skillData.SkillRange / 2)), overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
+        
         if (cols.Length > 0)
         {
             targetCollider = cols[0];

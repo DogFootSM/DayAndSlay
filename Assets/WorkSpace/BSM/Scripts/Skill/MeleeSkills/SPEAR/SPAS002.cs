@@ -16,15 +16,16 @@ public class SPAS002 : MeleeSkill
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
         skillDamage = GetSkillDamage();
-        Debug.Log(skillDamage);
-        
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
+         
+        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
         
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());
+            int detectedCount = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
             
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < detectedCount; i++)
             {
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));

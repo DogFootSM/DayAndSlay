@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WDPS001 : PassiveSkill
 {
-    private float inteligenceFactor = 15f;
+    private float inteligenceFactor = 0.15f;
     public WDPS001(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -29,7 +29,7 @@ public class WDPS001 : PassiveSkill
 
     public override void RevertPassiveEffects()
     {
-        IntelligenceBuff(-inteligenceFactor);
+        IntelligenceBuff(0);
         SkillAttackBuff(0, 0);
         
         skillNode.PlayerModel.ApplyPassiveSkillModifiers();

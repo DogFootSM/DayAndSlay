@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BOAS005 : MeleeSkill
 {
+    private Vector2 hitPos;
+    
     public BOAS005(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -14,9 +16,12 @@ public class BOAS005 : MeleeSkill
         ListClear();
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetDirectionToRotation(direction);
+
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + direction, overlapSize, 0, monsterLayer);
+        Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
         skillDamage = GetSkillDamage();
         ListClear();
         
@@ -30,9 +35,10 @@ public class BOAS005 : MeleeSkill
     {
         yield return WaitCache.GetWait(1f);
 
-        float deBuffLevelPer = 0.3f + ((skillNode.CurSkillLevel -1) * 0.05f);
+        float deBuffLevelPer = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel -1) * skillNode.skillData.SkillAbilityFactor);
+        int detectedCount = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
         
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < detectedCount; i++)
         {
             skillActions.Add(new List<Action>());
             SkillEffect(cols[i].transform.position, i, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
@@ -61,5 +67,7 @@ public class BOAS005 : MeleeSkill
 
     public override void Gizmos()
     {
+        UnityEngine.Gizmos.color = Color.red;
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
     }
 }

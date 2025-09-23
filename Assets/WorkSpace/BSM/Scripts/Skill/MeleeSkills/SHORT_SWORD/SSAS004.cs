@@ -20,14 +20,14 @@ public class SSAS004 : MeleeSkill
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
         Collider2D[] detected = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
-        SortMonstersByNearest(detected, playerPosition);
+        Sort.SortMonstersByNearest(detected, playerPosition);
+        
+        //현재 스킬 레벨당 슬로우 비율 계산
+        float slowRatio = skillNode.skillData.SkillAbilityValue +
+                          ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);           
         
         if (detected.Length > 0)
         {
-            //현재 스킬 레벨당 슬로우 비율 계산
-            float slowRatio = skillNode.skillData.SkillAbilityValue +
-                              ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);             
-            
             //몬스터 감지 가능 수와 감지한 수 비교 후 타격할 몬스터 수 설정
             int detectedCount = skillNode.skillData.DetectedCount <= detected.Length ? skillNode.skillData.DetectedCount : detected.Length;
             

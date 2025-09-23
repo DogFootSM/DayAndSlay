@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SPAS005 : MeleeSkill
 {
-    private float damageReductionPer = 0.06f;
-    private float healthRegen = 0.06f;
-    
     public SPAS005(SkillNode skillNode) : base(skillNode)
     {
     }
@@ -18,10 +15,10 @@ public class SPAS005 : MeleeSkill
         ExecuteMovementBlock(skillNode.skillData.BuffDuration);
 
         //스킬 레벵 당 초당 회복량
-        float healthRegenPerLevel = healthRegen + ((skillNode.CurSkillLevel - 1) * 0.01f);
+        float healthRegenPerLevel = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
         //피해량 감소 6% 고정
-        ExecuteDamageReduction(skillNode.skillData.BuffDuration, damageReductionPer);
+        ExecuteDamageReduction(skillNode.skillData.BuffDuration, skillNode.skillData.SkillAbilityValue);
         
         //초당 체력 회복 6% + 레벨 당 0.01%;
         ExecuteHealthRegenTick(skillNode.skillData.BuffDuration, healthRegenPerLevel);

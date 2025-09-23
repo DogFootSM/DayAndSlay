@@ -344,7 +344,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         //MoveSpeed에 증가할 값인 moveSpeedFactor 변수
         moveSpeedFactor = speedFactor;
-        
+
         //증가된 값을 MoveSpeed에 적용
         MoveSpeed = GetFactoredMoveSpeed();
         
@@ -358,7 +358,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float GetFactoredMoveSpeed()
     {
         //기본 이동 속도에 factor만큼 증가한 값을 반환
-        return playerStats.baseMoveSpeed + moveSpeedFactor;
+        return playerStats.baseMoveSpeed + (moveSpeedFactor * playerStats.baseMoveSpeed);
     }
     
     /// <summary>
@@ -369,7 +369,12 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         playerStats.StrengthFactor = strengthFactor;
     }
-     
+
+    public void UpdateIntelligenceFactor(float intelligenceFactor)
+    {
+        playerStats.IntelligenceFactor = intelligenceFactor;
+    }
+    
     /// <summary>
     /// 현재 스피드에 Factor만큼 스피드 증가
     /// </summary>
@@ -382,12 +387,12 @@ public class PlayerModel : MonoBehaviour, ISavable
     }
     
     /// <summary>
-    /// 현재 캐릭터의 이동 속도를 가져옴
+    /// 현재 캐릭터의 공격 속도를 가져옴
     /// </summary>
     /// <returns></returns>
-    public float GetFactorAttackSpeed()
+    private float GetFactorAttackSpeed()
     {
-        return playerStats.baseAttackSpeed + attackSpeedFactor;
+        return playerStats.baseAttackSpeed + (attackSpeedFactor * playerStats.baseAttackSpeed);
     }
 
     /// <summary>

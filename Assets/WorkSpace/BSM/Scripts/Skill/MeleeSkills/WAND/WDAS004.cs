@@ -7,8 +7,10 @@ using UnityEngine;
 public class WDAS004 : MeleeSkill
 {
     private Action action;
+    private Vector2 hitPos;
     private Coroutine castingCo;
-
+    
+    
     private int thunderCount = 2;
     
     public WDAS004(SkillNode skillNode) : base(skillNode)
@@ -20,8 +22,9 @@ public class WDAS004 : MeleeSkill
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
         skillDamage = GetSkillDamage();
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
-
-        action = () => ExecutePostCastAction(direction, playerPosition);
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
+        
+        action = () => ExecutePostCastAction(playerPosition);
         castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action)); 
     }
 
@@ -30,20 +33,22 @@ public class WDAS004 : MeleeSkill
     /// </summary>
     /// <param name="direction">캐릭터가 스킬 사용시 바라본 방향</param>
     /// <param name="playerPosition">캐릭터가 스킬을 사용한 위치</param>
-    private void ExecutePostCastAction(Vector2 direction, Vector2 playerPosition)
+    private void ExecutePostCastAction(Vector2 playerPosition)
     {
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * skillNode.skillData.SkillRange),
-            overlapSize, 0, monsterLayer);
-
+        Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
+        Sort.SortMonstersByNearest(cols, playerPosition);
         //감지 몬스터가 없을 경우 바라보는 방향에 낙뢰 위치 표시 재생 후 return
         if (cols.Length < 1)
         {
-            SkillEffect(playerPosition + (direction * skillNode.skillData.SkillRange), 0,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
+            SkillEffect(hitPos, 0,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
             return;
         }
         
-        for (int i = 0; i < cols.Length; i++)
+        int detected = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;
+        
+        for (int i = 0; i < detected; i++)
         {
+            //몬스터 하단 번개 위치 이펙트
             SkillEffect(cols[i].transform.position + new Vector3(0, -0.5f), i,$"{skillNode.skillData.SkillId}_1_Particle" ,skillNode.skillData.SkillEffectPrefab[0]);
         }
 

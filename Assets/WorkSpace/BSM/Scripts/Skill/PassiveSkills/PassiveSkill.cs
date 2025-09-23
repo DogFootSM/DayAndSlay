@@ -20,8 +20,7 @@ public abstract class PassiveSkill : SkillFactory
     /// <param name="levelFactor">레벨당 추가 증가값</param>
     protected void MoveSpeedBuff(float factor, float levelFactor = 0)
     {
-        float perLevel = (skillNode.CurSkillLevel - 1) * levelFactor;
-        float moveFactor = skillNode.PlayerModel.PlayerStats.baseMoveSpeed * (factor + perLevel);
+        float moveFactor = factor + ((skillNode.CurSkillLevel - 1) * levelFactor);
         skillNode.PlayerModel.UpdateMoveSpeedFactor(moveFactor);
     }
     
@@ -33,10 +32,8 @@ public abstract class PassiveSkill : SkillFactory
     protected void AttackSpeedBuff(float baseFactor, float levelFactor)
     {
         //현재 스킬 레벨당 추가 Factor
-        float skillLevelPerStats = (skillNode.CurSkillLevel - 1) * levelFactor;
+        float attackFactor = baseFactor + ((skillNode.CurSkillLevel - 1) * levelFactor);
         
-        //기본 Factor + 레벨당 추가 Factor 값에 기본 공격 속도를 곱한 증가할 공격 속도 값
-        float attackFactor = (skillNode.PlayerModel.PlayerStats.baseAttackSpeed * (baseFactor + skillLevelPerStats));
         skillNode.PlayerModel.UpdateAttackSpeedFactor(attackFactor);
     }
 
@@ -58,8 +55,8 @@ public abstract class PassiveSkill : SkillFactory
     /// <param name="baseFactor"></param>
     protected void IntelligenceBuff(float baseFactor)
     {
-        float inteligenceFactor = skillNode.PlayerModel.PlayerStats.baseIntelligence + baseFactor;
-        skillNode.PlayerModel.UpdateStrengthFactor(inteligenceFactor);
+        float intelligenceFactor = skillNode.PlayerModel.PlayerStats.baseIntelligence * baseFactor;
+        skillNode.PlayerModel.UpdateIntelligenceFactor(intelligenceFactor);
     }
 
     /// <summary>
