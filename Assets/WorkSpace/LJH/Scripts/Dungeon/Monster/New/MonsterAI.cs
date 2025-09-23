@@ -220,9 +220,22 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     }
 
 
+    /// <summary>
+    /// 현재 몬스터 최대 체력 반환
+    /// </summary>
+    /// <returns></returns>
     public float GetMaxHp()
     {
         return model.GetMonsterMaxHp();
+    }
+
+    /// <summary>
+    /// 현재 몬스터 방어력 반환
+    /// </summary>
+    /// <returns></returns>
+    public float GetDefense()
+    {
+        return model.def;
     }
 
     public void ReceiveMarkOnTarget()

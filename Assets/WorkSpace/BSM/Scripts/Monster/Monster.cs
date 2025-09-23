@@ -119,6 +119,11 @@ public class Monster : MonoBehaviour, IEffectReceiver
         return maxHp;
     }
 
+    public float GetDefense()
+    {
+        return defense;
+    }
+
     /// <summary>
     /// 디버프에 따른 방어력 계산
     /// </summary>
