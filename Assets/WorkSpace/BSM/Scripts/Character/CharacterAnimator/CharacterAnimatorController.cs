@@ -37,6 +37,8 @@ public class CharacterAnimatorController : MonoBehaviour
             WeaponAnimator.gameObject.SetActive(true);
         }
         
+        //TODO: Body, Hair, Shirt 라이브러리도 변경 필요?
+        
         WeaponAnimator.runtimeAnimatorController = WeaponAnimators[curWeaponIndex].runtimeAnimatorController;
         WeaponLibrary.spriteLibraryAsset = EquipmentLibraryAsset[curWeaponIndex];
     }
