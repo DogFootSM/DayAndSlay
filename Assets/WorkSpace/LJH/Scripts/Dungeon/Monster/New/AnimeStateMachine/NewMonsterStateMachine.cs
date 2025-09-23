@@ -1,9 +1,9 @@
 public class NewMonsterStateMachine
 {
     public NewIMonsterState currentState;
-    NewMonsterAnimator animator;
+    MonsterAnimator animator;
 
-    public NewMonsterStateMachine(NewMonsterAnimator animator)
+    public NewMonsterStateMachine(MonsterAnimator animator)
     {
         this.animator = animator;
     }

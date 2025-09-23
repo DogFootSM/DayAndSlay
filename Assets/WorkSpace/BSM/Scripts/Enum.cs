@@ -239,7 +239,15 @@ public enum Direction
 public enum MapType
 {
     //TODO: 추후 내용 수정 필요
-    TOWN, DEONGEON
+    TOWN_OUTSIDE,
+    TOWN_STORE1F,
+    TOWN_STORE2F,
+    DUNGEON_0,
+    DUNGEON_1,
+    DUNGEON_2,
+    DUNGEON_3,
+    DUNGEON_4,
+    DUNGEON_BOSS,
 } 
 
 /// <summary>

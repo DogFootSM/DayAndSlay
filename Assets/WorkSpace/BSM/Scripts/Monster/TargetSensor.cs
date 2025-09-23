@@ -28,7 +28,7 @@ public class TargetSensor : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        findCollider.radius = GetComponentInParent<NewMonsterAI>().GetChaseRange() / 6;
+        findCollider.radius = GetComponentInParent<MonsterAI>().GetChaseRange() / 6;
         targetLayer = LayerMask.GetMask("Player");
     }
 

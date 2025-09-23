@@ -18,9 +18,23 @@ public class BossDoor : InteractableObj
         yesButton.onClick.AddListener(YesButton);
         noButton.onClick.AddListener(NoButton);
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            player.transform.position = transform.position + new Vector3(0, -2, 0);
+        }
+    }
     public override void Interaction()
     {
         dungeonExitPopUp.SetActive(true);
+    }
+
+    public override void UiOnOffMethod(Collider2D collider)
+    {
+        dungeonExitPopUp.SetActive(!dungeonExitPopUp.activeSelf);
     }
 
     /// <summary>
