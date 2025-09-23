@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     [Inject] private TableManager tableManager;
     [Inject] private PlayerContext playerContext;
     
-    [SerializeField] private GameObject shieldObject;
     [SerializeField] private GameObject quiverObject;
     [SerializeField] private SkillTree curSkillTree;
     [SerializeField] private InventoryInteraction inventoryInteraction;
@@ -147,9 +146,6 @@ public class PlayerController : MonoBehaviour
         
         //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
-        
-        //장착 무기가 ShortSword 외엔 방패 오브젝트 비활성화
-        shieldObject.SetActive(curWeaponType == CharacterWeaponType.SHORT_SWORD);
         
         //장착 무기가 bow 외엔 화살통 오브젝트 비활성화
         quiverObject.SetActive(curWeaponType == CharacterWeaponType.BOW);
