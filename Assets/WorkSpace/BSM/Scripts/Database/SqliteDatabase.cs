@@ -61,6 +61,7 @@ public class SqliteDatabase
         //캐릭터 테이블 생성
         using (dbCommand = dbConnection.CreateCommand())
         {
+            //TODO: 모자, 망토 추가
             dbCommand.CommandText = @"
                                 CREATE TABLE IF NOT EXISTS Character
                                 (

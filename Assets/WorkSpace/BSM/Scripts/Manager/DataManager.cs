@@ -247,6 +247,7 @@ public class DataManager : MonoBehaviour
             },
             new[]
             {
+                //TODO: 지급 무기 수정
                 $"{100001 + (curWeapon * 100)}", //지급할 Item_id
                 $"{SlotId}", //해당 캐릭터 slotId
                 "1", //지급할 개수
@@ -273,9 +274,10 @@ public class DataManager : MonoBehaviour
     {
         //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
         SlotId = 1;
-
+        
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
             {
+                //TODO:망토, 모자 등 애니메이션 추가 필요 데이터 테이블 컬럼에도 추가해야함
                 sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
@@ -362,7 +364,7 @@ public class DataManager : MonoBehaviour
             }
         }
 
-        characterAnimatorController.WeaponAnimatorChange(weaponIndex);
+        characterAnimatorController.AnimatorChange(weaponIndex);
     }
 
     /// <summary>
