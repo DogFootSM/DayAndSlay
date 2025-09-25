@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
         }
         //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경
         //TODO: NotWeapon 처리 필요
-        characterAnimatorController.AnimatorChange((int)weaponType);
+        characterAnimatorController.AnimatorChange((int)weaponType, true);
         playerModel.UpdateWeaponType(weaponType);
         
         //웨폰에 따른 스킬 트리 변경

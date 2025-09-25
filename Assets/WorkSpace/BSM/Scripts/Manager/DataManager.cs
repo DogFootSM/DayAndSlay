@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using UnityEditor.Compilation;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 using Zenject;
 
@@ -274,11 +275,6 @@ public class DataManager : MonoBehaviour
     {
         //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
         SlotId = 1;
-        //스프라이트 가져오는 방식 갈아 엎어야 할 것 같음
-        
-        //리소스 가져오는 작업 어떻게?
-        //무기를 교체할 때마다 라이브러리 에셋 갈아줘야 할 것 같은데
-        
         
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
             {
@@ -372,6 +368,37 @@ public class DataManager : MonoBehaviour
         characterAnimatorController.AnimatorChange(weaponIndex);
     }
 
+    
+    /// <summary>
+    /// 무기 변경 시 공격 애니메이션에 대한 라이브러리 에셋 변경
+    /// Hair, Body, Shirt 등
+    /// </summary>
+    /// <param name="libraryAssets">공격 애니메이션 변경할 스프라이트 라이브러리 에셋</param>
+    /// <param name="weaponType">변경할 무기 타입</param>
+    public void ChangeAttackSpriteLibraryAsset(SpriteLibraryAsset[] libraryAssets, int weaponType)
+    { 
+        //라이브러리 에셋 크기만큼 반복
+        for (int i = 0; i < libraryAssets.Length; i++)
+        {
+            //공격 애니메이션부터 변경
+            for (int j = (int)CharacterAnimationType.SIDEATTACK; j < (int)CharacterAnimationType.SIZE; j++)
+            {
+                changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/" +
+                                                             $"{((BodyPartsType)i)}/" +
+                                                             $"{spriteNames[i]}/" +
+                                                             $"{(CharacterAnimationType)j}/" +
+                                                             $"{(CharacterWeaponType)weaponType}");
+                 
+                for (int k = 0; k < changeSprites[i].Length; k++)
+                {
+                    libraryAssets[i].AddCategoryLabel(changeSprites[i][k],
+                        ((CharacterAnimationType)j).ToString(),
+                        $"{((CharacterAnimationType)j) + "_" + k}");
+                }
+            } 
+        }
+    }
+    
     /// <summary>
     /// 캐릭터 생성 여부 업데이트
     /// </summary>
