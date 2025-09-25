@@ -377,6 +377,7 @@ public class DataManager : MonoBehaviour
     /// <param name="weaponType">변경할 무기 타입</param>
     public void ChangeAttackSpriteLibraryAsset(SpriteLibraryAsset[] libraryAssets, int weaponType)
     { 
+        //TODO: 라이브러리 에셋에 기본 공격 2, 3번째 동작 추가 필요, 캐릭터 애니메이션 타입도 2,3 번째 타입을 추가해야 할듯
         //라이브러리 에셋 크기만큼 반복
         for (int i = 0; i < libraryAssets.Length; i++)
         {
