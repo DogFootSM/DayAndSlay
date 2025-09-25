@@ -43,7 +43,9 @@ public class CharacterAnimatorController : MonoBehaviour
             WeaponAnimator.gameObject.SetActive(true);
         }
         //TODO: 무기 교체했을 때 몸, 모자, 옷 애니메이터 컨트롤러 및 스프라이트 라이브러리 에셋 교체 필요
-
+        
+        //Body, Shirt, Hair 공격 스프라이트 라이브러리 변경 해줘야 함
+        
         //화살통 라이브러리 추가 필요
         WeaponAnimator.runtimeAnimatorController = WeaponAnimators[curWeaponIndex].runtimeAnimatorController;
         WeaponLibrary.spriteLibraryAsset = EquipmentLibraryAsset[curWeaponIndex];
