@@ -9,6 +9,7 @@ public class Room : MonoBehaviour
 
     public Tilemap obstacleTilemap;
     public Tilemap mapTilemap;
+    public Tilemap roadTilemap;
 
     public List<GameObject> GetDoorList()
     {

@@ -15,7 +15,6 @@ public class NpcPreFishingState : INpcState
     }
     public void Enter()
     {
-        npc.transform.position = npc.GetSensor().GetFishingRandomPosition();
         npc.StopMove();
         npc.StateMachine.ChangeState(new NpcFishingState(npc));
     }

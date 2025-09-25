@@ -10,19 +10,13 @@ public class TargetPosStorage : MonoBehaviour
     [SerializeField] private List<Grid> gridList;
     [SerializeField] private List<Tilemap> mapTile;
     [SerializeField] private List<Tilemap> obstacleTile;
+    [SerializeField] private List<Tilemap> roadTile;
 
     [SerializeField] private GameObject storeDoor;
     [SerializeField] private GameObject outsideDoor;
     [SerializeField] private GameObject castleDoor;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject desk;
-    [SerializeField] private GameObject fishingPos;
-    [SerializeField] private GameObject loggingPos;
-
-    [SerializeField] private List<GameObject> fishingRandomPosList;
-    [SerializeField] private GameObject fishingRandomPos;
-    [SerializeField] private List<GameObject> loggingRandomPosList;
-    [SerializeField] private GameObject loggingRandomPos;
 
     [SerializeField] private List<GameObject> randomPosList;
     [SerializeField] private GameObject randomPos;
@@ -33,10 +27,6 @@ public class TargetPosStorage : MonoBehaviour
     public Vector3 CastleDoorPos => castleDoor.transform.position + new Vector3(0, -4, 0);
     public Vector3 PlayerPos => playerPos;
     public Vector3 DeskPos => desk.transform.position + new Vector3(-1.5f, 0.5f, 0);
-    public Vector3 FishingPos => fishingPos.transform.position;
-    public Vector3 LoggingPos => loggingPos.transform.position;
-    public Vector3 FishingRandomPos => fishingRandomPos.transform.position;
-    public Vector3 LoggingrandomPos => loggingRandomPos.transform.position;
     public Vector3 RandomPos => randomPos.transform.position;
     public Vector3 RandomPosInStore => randomPosInStore.transform.position;
 
@@ -77,8 +67,6 @@ public class TargetPosStorage : MonoBehaviour
         {
             randomPos = randomPosList[Random.Range(0, randomPosList.Count - 1)];
             randomPosInStore = randomPosInStoreList[Random.Range(0, randomPosInStoreList.Count - 1)];
-            fishingRandomPos = fishingRandomPosList[Random.Range(0, fishingRandomPosList.Count - 1)];
-            loggingRandomPos = loggingRandomPosList[Random.Range(0, loggingRandomPosList.Count - 1)];
 
             yield return delay;
         }
@@ -87,4 +75,5 @@ public class TargetPosStorage : MonoBehaviour
     public List<Grid> GetGridList() => gridList;
     public List<Tilemap> GetMapTileList() => mapTile;
     public List<Tilemap> GetObstacleTileList() => obstacleTile;
+    public List<Tilemap> GetRoadTileList() => roadTile;
 }

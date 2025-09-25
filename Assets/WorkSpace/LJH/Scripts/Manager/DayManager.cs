@@ -133,8 +133,6 @@ public class DayManager : MonoBehaviour, ISavable
             elapsedGameTime += Time.deltaTime;
             // 게임 내 시계 시간은 gameClockScale 배속으로 누적
             elapsedClockTime += Time.deltaTime * gameClockScale;
-
-            Debug.Log((int)(elapsedGameTime));
             
             int currentTotalMinutes = Mathf.FloorToInt(elapsedClockTime);
             if (currentTotalMinutes != lastTotalMinutes)
