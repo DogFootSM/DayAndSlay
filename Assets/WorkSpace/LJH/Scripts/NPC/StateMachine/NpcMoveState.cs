@@ -37,16 +37,6 @@ public class NpcMoveState : INpcState
         {
             npc.StateMachine.ChangeState(new WaitForPlayerState(npc));
         }
-
-        if(Vector3.Distance(npc.transform.position, npc.GetSensor().GetFishingPosition()) <= 1f)
-        {
-            npc.StateMachine.ChangeState(new NpcPreFishingState(npc));
-        }
-
-        if(Vector3.Distance(npc.transform.position, npc.GetSensor().GetLoggingPosition()) <= 1f)
-        {
-            npc.StateMachine.ChangeState(new NpcPreLoggingState(npc));
-        }
     }
     public void Exit() { }
 }

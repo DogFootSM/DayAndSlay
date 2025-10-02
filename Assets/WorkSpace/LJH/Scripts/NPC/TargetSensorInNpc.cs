@@ -11,13 +11,10 @@ public class TargetSensorInNpc : MonoBehaviour
     [SerializeField] private List<Grid> gridList = new();
     [SerializeField] private List<Tilemap> mapList = new();
     [SerializeField] private List<Tilemap> obstacleList = new();
+    [SerializeField] private List<Tilemap> roadList = new();
     [SerializeField] private Vector3 inStoreDoorPos;
     [SerializeField] private Vector3 outStoreDoorPos;
     [SerializeField] private Vector3 castleDoorPos;
-    [SerializeField] private Vector3 fishingPos;
-    [SerializeField] private Vector3 fishingRandomPos;
-    [SerializeField] private Vector3 loggingPos;
-    [SerializeField] private Vector3 loggingRandomPos;
     [SerializeField] private Vector3 deskPos;
     [SerializeField] private Vector3 randomPos;
     [SerializeField] private Vector3 randomPosInStore;
@@ -29,11 +26,11 @@ public class TargetSensorInNpc : MonoBehaviour
         gridList = new List<Grid>(storage.GetGridList());
         mapList = new List<Tilemap>(storage.GetMapTileList());
         obstacleList = new List<Tilemap>(storage.GetObstacleTileList());
+        roadList = new List<Tilemap>(storage.GetRoadTileList());
+        
         inStoreDoorPos = storage.OutsideDoorPos;
         outStoreDoorPos = storage.StoreDoorPos;
         castleDoorPos = storage.CastleDoorPos;
-        fishingPos = storage.FishingPos;
-        loggingPos = storage.LoggingPos;
         deskPos = storage.DeskPos;
         StartCoroutine(RandominitCoroutine());
 
@@ -47,8 +44,6 @@ public class TargetSensorInNpc : MonoBehaviour
         {
             randomPos = storage.RandomPos;
             randomPosInStore = storage.RandomPosInStore;
-            fishingRandomPos = storage.FishingRandomPos;
-            loggingRandomPos = storage.LoggingrandomPos;
 
             yield return new WaitForSeconds(1f);
         }
@@ -59,10 +54,6 @@ public class TargetSensorInNpc : MonoBehaviour
     public Vector3 GetEnterPosition() => inStoreDoorPos;
     public Vector3 GetLeavePosition() => outStoreDoorPos;
     public Vector3 GetCastleDoorPosition() => castleDoorPos;
-    public Vector3 GetFishingPosition() => fishingPos;
-    public Vector3 GetLoggingPosition() => loggingPos;
-    public Vector3 GetFishingRandomPosition() => fishingRandomPos;
-    public Vector3 GetLoggingRandomPosition() => loggingRandomPos;
     public Vector3 GetDeskPosition() => deskPos;
 
     public Grid GetCurrentGrid(Vector3 worldPos)

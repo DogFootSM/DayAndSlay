@@ -222,13 +222,23 @@ public class Npc : MonoBehaviour
 
     public void MoveTo(Vector3 targetPos, System.Action onArrive = null)
     {
-        UpdateGrid();
-
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
+    
+        // 새로운 코루틴 시작: SetGrid 후 1프레임 대기 로직 포함
+        moveCoroutine = StartCoroutine(MoveToAndDetectCoroutine(targetPos, onArrive));
+    }
+
+    private IEnumerator MoveToAndDetectCoroutine(Vector3 targetPos, System.Action onArrive)
+    {
+        UpdateGrid(); 
+    
+        // 1프레임 대기
+        yield return null; 
 
         astarPath.DetectTarget(transform.position, targetPos);
-        moveCoroutine = StartCoroutine(MoveCoroutine(targetPos, onArrive));
+    
+        yield return StartCoroutine(MoveCoroutine(targetPos, onArrive));
     }
 
     

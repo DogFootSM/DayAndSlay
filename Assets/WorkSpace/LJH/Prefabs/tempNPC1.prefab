@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
+  roadTileMap: {fileID: 0}
   mapGrid: {fileID: 0}
   path: []
 --- !u!114 &8860974922601209158
@@ -166,13 +167,10 @@ MonoBehaviour:
   gridList: []
   mapList: []
   obstacleList: []
+  roadList: []
   inStoreDoorPos: {x: 0, y: 0, z: 0}
   outStoreDoorPos: {x: 0, y: 0, z: 0}
   castleDoorPos: {x: 0, y: 0, z: 0}
-  fishingPos: {x: 0, y: 0, z: 0}
-  fishingRandomPos: {x: 0, y: 0, z: 0}
-  loggingPos: {x: 0, y: 0, z: 0}
-  loggingRandomPos: {x: 0, y: 0, z: 0}
   deskPos: {x: 0, y: 0, z: 0}
   randomPos: {x: 0, y: 0, z: 0}
   randomPosInStore: {x: 0, y: 0, z: 0}
@@ -208,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 832779036389049667}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3647298921923015789}
@@ -367,7 +365,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.75, y: 0.75}
   m_EdgeRadius: 0
 --- !u!50 &5383581747100013587
 Rigidbody2D:

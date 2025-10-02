@@ -14,7 +14,6 @@ public class NpcPreLoggingState : INpcState
     }
     public void Enter()
     {
-        npc.transform.position = npc.GetSensor().GetLoggingRandomPosition();
         npc.StopMove();
         npc.StateMachine.ChangeState(new NpcLoggingState(npc));
     }
