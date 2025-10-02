@@ -270,6 +270,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         //TODO: 테스트 용도로 슬롯ID 1으로 고정, 추후 제거하기
         slotId = 1;
         //slotId = dataManager.SlotId; 
+        
         dataReader = sqlManager.ReadDataColumn(
             new[]
             {

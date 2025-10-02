@@ -6,6 +6,7 @@ using UnityEngine;
 public class WDAS010 : MeleeSkill
 {
     private Action action;
+    private Vector2 hitPos;
     private Coroutine castingCo;
     private Coroutine delayCo;
 
@@ -19,13 +20,15 @@ public class WDAS010 : MeleeSkill
         ExecuteCasting(skillNode.skillData.SkillCastingTime);
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
         skillDamage = GetSkillDamage();
+        
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
         action = () => ExecutePostCastAction(direction, playerPosition);
         castingCo = skillNode.PlayerSkillReceiver.StartCoroutine(WaitCastingRoutine(action)); 
     }
 
     private void ExecutePostCastAction(Vector2 direction, Vector2 playerPosition)
     { 
-        SpawnParticleAtRandomPosition(playerPosition + (direction * (skillNode.skillData.SkillRange / 2)), skillNode.skillData.SkillRadiusRange, 0, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 8);
+        SpawnParticleAtRandomPosition(hitPos, skillNode.skillData.SkillRadiusRange, 0, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 8);
         
         delayCo = skillNode.PlayerSkillReceiver.StartCoroutine(DelayHitRoutine(direction, playerPosition));
     }
@@ -34,8 +37,7 @@ public class WDAS010 : MeleeSkill
     {
         yield return WaitCache.GetWait(0.55f);
         
-        Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * (skillNode.skillData.SkillRange / 2)),
-            overlapSize, 0, monsterLayer);
+        Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
 
         for (int i = 0; i < cols.Length; i++)
         {
@@ -50,7 +52,7 @@ public class WDAS010 : MeleeSkill
 
     public override void Gizmos()
     {
-        //UnityEngine.Gizmos.color = Color.black;
-        //UnityEngine.Gizmos.DrawWireCube(pos + (dir * (skillNode.skillData.SkillRange / 2)), overlapSize);
+        UnityEngine.Gizmos.color = Color.black;
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
     }
 }

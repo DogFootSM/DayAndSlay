@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using UnityEditor.Compilation;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 using Zenject;
 
@@ -226,14 +227,14 @@ public class DataManager : MonoBehaviour
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
 
-        StartItemDataInsert();
+        StartItemDataInsert(WeaponType);
         StartSkillDataInsert();
     }
 
     /// <summary>
     /// 초기 캐릭터 생성 시 아이템 지급
     /// </summary>
-    private void StartItemDataInsert()
+    private void StartItemDataInsert(int weaponType)
     {
         //TODO: 아이템 ID 양식 정립되면 수정하기.
         sqlManager.UpsertItemDataColumn(
@@ -247,7 +248,8 @@ public class DataManager : MonoBehaviour
             },
             new[]
             {
-                $"{100001 + (curWeapon * 100)}", //지급할 Item_id
+                //TODO: 지급 무기 수정
+                $"{100001 + (weaponType * 100)}", //지급할 Item_id
                 $"{SlotId}", //해당 캐릭터 slotId
                 "1", //지급할 개수
                 "0", //인벤토리 슬롯의 위치
@@ -273,9 +275,10 @@ public class DataManager : MonoBehaviour
     {
         //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
         SlotId = 1;
-
+        
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
             {
+                //TODO:망토, 모자 등 애니메이션 추가 필요 데이터 테이블 컬럼에도 추가해야함
                 sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
@@ -362,9 +365,41 @@ public class DataManager : MonoBehaviour
             }
         }
 
-        characterAnimatorController.WeaponAnimatorChange(weaponIndex);
+        characterAnimatorController.AnimatorChange(weaponIndex);
     }
 
+    
+    /// <summary>
+    /// 무기 변경 시 공격 애니메이션에 대한 라이브러리 에셋 변경
+    /// Hair, Body, Shirt 등
+    /// </summary>
+    /// <param name="libraryAssets">공격 애니메이션 변경할 스프라이트 라이브러리 에셋</param>
+    /// <param name="weaponType">변경할 무기 타입</param>
+    public void ChangeAttackSpriteLibraryAsset(SpriteLibraryAsset[] libraryAssets, int weaponType)
+    { 
+        //TODO: 라이브러리 에셋에 기본 공격 2, 3번째 동작 추가 필요, 캐릭터 애니메이션 타입도 2,3 번째 타입을 추가해야 할듯
+        //라이브러리 에셋 크기만큼 반복
+        for (int i = 0; i < libraryAssets.Length; i++)
+        {
+            //공격 애니메이션부터 변경
+            for (int j = (int)CharacterAnimationType.SIDEATTACK; j < (int)CharacterAnimationType.SIZE; j++)
+            {
+                changeSprites[i] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/" +
+                                                             $"{((BodyPartsType)i)}/" +
+                                                             $"{spriteNames[i]}/" +
+                                                             $"{(CharacterAnimationType)j}/" +
+                                                             $"{(CharacterWeaponType)weaponType}");
+                 
+                for (int k = 0; k < changeSprites[i].Length; k++)
+                {
+                    libraryAssets[i].AddCategoryLabel(changeSprites[i][k],
+                        ((CharacterAnimationType)j).ToString(),
+                        $"{((CharacterAnimationType)j) + "_" + k}");
+                }
+            } 
+        }
+    }
+    
     /// <summary>
     /// 캐릭터 생성 여부 업데이트
     /// </summary>
