@@ -15,7 +15,10 @@ public class NpcStateMachine
     public void Tick()
     {
         currentState?.Update();
+        
+        Debug.Log($"현재 상태 {currentState}");
     }
 
     public INpcState CurrentState => currentState;
+    
 }

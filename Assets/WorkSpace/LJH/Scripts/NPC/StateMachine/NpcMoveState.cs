@@ -18,6 +18,10 @@ public class NpcMoveState : INpcState
 
     public void Enter()
     {
+        //ÃÊ±âÈ­
+        npc.StopMove();
+        npc.UpdateGrid();
+        
         npc.MoveTo(target, () =>
         {
             if (npc.StateMachine.CurrentState == this)
@@ -33,10 +37,15 @@ public class NpcMoveState : INpcState
         if (npc.StateMachine.CurrentState != this)
             return;
 
+
         if (npc.ArrivedDesk() && npc.GetStoreManager().PeekInNpcQue() == npc)
         {
             npc.StateMachine.ChangeState(new WaitForPlayerState(npc));
         }
     }
-    public void Exit() { }
+
+    public void Exit()
+    {
+        npc.StopMove();
+    }
 }

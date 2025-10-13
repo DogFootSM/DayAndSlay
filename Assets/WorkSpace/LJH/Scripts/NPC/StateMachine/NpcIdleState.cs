@@ -8,6 +8,8 @@ public class NpcIdleState : INpcState
 {
     private Npc npc;
     private Grid grid;
+    
+    private Coroutine decideCo;
 
     public NpcIdleState(Npc npc)
     {
@@ -16,37 +18,41 @@ public class NpcIdleState : INpcState
 
     public void Enter()
     {
-        npc.StartCoroutine(WaitAndDecide());
+        
+        decideCo = npc.StartCoroutine(WaitAndDecide());
     }
 
     private IEnumerator WaitAndDecide()
     {
-        //1등은 카운터로 나머지만 가게 뺑뺑이 로직 추가해야함
-
-        //템 사고 나온놈은 캐슬도어로 가서 사라져야함
-
         yield return new WaitForSeconds(1f);
         //저녁일 경우 바로 성으로 돌아감
         
+        ///Npc의 현재 위치가 Outside인 경우
         if (npc.IsInOutsideGrid())
         {
-            
+            Debug.Log("외부로 인식됨");
             npc.StateMachine.ChangeState(new NpcDecisionState(npc));
         }
         
+        ///Npc의 현재 위치가 상점 내부인 경우
         else
         {
             npc.StateMachine.ChangeState(new NpcSearchTableState(npc));
+            
 
             if (npc.GetStoreManager().PeekInNpcQue() == npc)
             {
-                npc.StateMachine.ChangeState(new NpcMoveState(npc, npc.GetSensor().GetDeskPosition()));
+                //npc.StateMachine.ChangeState(new NpcMoveState(npc, npc.GetSensor().GetDeskPosition()));
             }
 
         }
     }
 
     public void Update() { }
-    public void Exit() { }
+
+    public void Exit()
+    {
+        npc.StopCoroutine(decideCo);
+    }
 
 }
