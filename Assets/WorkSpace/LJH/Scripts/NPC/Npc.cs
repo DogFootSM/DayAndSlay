@@ -244,7 +244,7 @@ public class Npc : MonoBehaviour
     
     private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
-        List<Vector3> path = astarPath.path;
+        List<Vector3> path = new List<Vector3>(astarPath.path);
         
         if (path == null || path.Count == 0)
         {
@@ -252,7 +252,7 @@ public class Npc : MonoBehaviour
             PlayDirectionAnimation(Vector3.zero);
             yield break;
         }
-
+        
         foreach (Vector3 point in path)
         {
             // X√‡ ¿Ãµø
