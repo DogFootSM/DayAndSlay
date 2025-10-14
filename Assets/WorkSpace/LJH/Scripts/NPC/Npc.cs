@@ -222,6 +222,7 @@ public class Npc : MonoBehaviour
     {
         if (moveCoroutine != null)
         {
+            animator.Play("Idle");
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
@@ -245,7 +246,7 @@ public class Npc : MonoBehaviour
 
         astarPath.DetectTarget(transform.position, targetPos);
     
-        yield return StartCoroutine(MoveCoroutine(targetPos, onArrive));
+        yield return MoveCoroutine(targetPos, onArrive);
     }
 
     
@@ -359,7 +360,8 @@ public class Npc : MonoBehaviour
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();
-        StateMachine.ChangeState(new NpcMoveState(this, door));
+        Instantiate(TestObj, door, Quaternion.identity);
+        StateMachine.ChangeState(new NpcMoveState(this, door + new Vector3(0, -2, 0), new NpcGoneState(this)));
     }
     
 
@@ -441,7 +443,7 @@ public class Npc : MonoBehaviour
 
     private IEnumerator GoneCoroutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         
         gameObject.SetActive(false);
     }

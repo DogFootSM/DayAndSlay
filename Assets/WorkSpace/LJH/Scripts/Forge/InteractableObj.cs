@@ -12,7 +12,7 @@ public abstract class InteractableObj : MonoBehaviour
 
     public void OnCollisionExit2D(Collision2D collision)
     {
-        UiOnOffMethod(collision);
+        //UiOnOffMethod(collision);
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

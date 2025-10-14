@@ -22,6 +22,7 @@ public class NpcMoveState : INpcState
         npc.StopMove();
         npc.UpdateGrid();
         
+        Debug.Log($"목표 위치는 {target}");
         npc.MoveTo(target, () =>
         {
             if (npc.StateMachine.CurrentState == this)

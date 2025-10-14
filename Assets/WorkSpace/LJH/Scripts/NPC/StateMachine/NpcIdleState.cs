@@ -18,7 +18,7 @@ public class NpcIdleState : INpcState
 
     public void Enter()
     {
-        
+        npc.StopMove();
         decideCo = npc.StartCoroutine(WaitAndDecide());
     }
 

@@ -21,14 +21,12 @@ public class NpcDecisionInStoreState : INpcState
         if (npc == store.PeekInNpcQue())
         {
             //카운터로 이동
-            Debug.Log("카운터로 이동 후에 웨잇폴 플레이어 스테이트가 됨");
             Vector3 deskPos = targetSensor.GetDeskPosition();
             npc.StateMachine.ChangeState(new NpcMoveState(npc, deskPos, new WaitForPlayerState(npc)));
 
         }
         else
         {
-            
             // 랜덤 포지션으로 이동
             Vector3 randomPos = targetSensor.GetRandomPositionInStore();
             npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos, new NpcDecisionInStoreState(npc, store, targetSensor)));

@@ -15,7 +15,6 @@ public class NpcSearchTableState : INpcState
 
     public void Enter()
     {
-        Debug.Log("서치테이블");
         Table table = npc.SearchTable();
 
         if (table != null)

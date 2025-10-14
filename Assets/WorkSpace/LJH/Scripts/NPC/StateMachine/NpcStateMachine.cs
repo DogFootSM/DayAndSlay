@@ -6,8 +6,10 @@ public class NpcStateMachine
 
     public void ChangeState(INpcState newState)
     {
+        Debug.Log($"{currentState} 종료됨");
         currentState?.Exit();
         currentState = newState;
+        Debug.Log($"{currentState} 진입함");
         currentState?.Enter();
 
     }
@@ -16,7 +18,7 @@ public class NpcStateMachine
     {
         currentState?.Update();
         
-        Debug.Log($"현재 상태 {currentState}");
+        
     }
 
     public INpcState CurrentState => currentState;

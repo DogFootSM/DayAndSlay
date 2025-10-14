@@ -15,7 +15,7 @@ public class WaitForPlayerState : INpcState
 
     public void Enter()
     {
-        npc.PauseMovement();
+        npc.StopMove();
         npc.RigidbodyZero();  
         
         if (npc.GetStoreManager().PeekInNpcQue() == npc)

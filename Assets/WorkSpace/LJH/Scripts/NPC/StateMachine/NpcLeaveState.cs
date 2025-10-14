@@ -15,6 +15,7 @@ public class NpcLeaveState : INpcState
 
     public void Enter()
     {
+        npc.StopMove();
         storeManager.DequeueInNpcQue();
         npc.LeaveStore();
     }
