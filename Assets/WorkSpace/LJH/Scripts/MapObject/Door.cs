@@ -51,7 +51,6 @@ public class Door : InteractableObj
             if(doorType == DoorType.DOOR)
             {
                 Npc npc = collision.gameObject.GetComponent<Npc>();
-                Debug.Log($"{npc.name}, 컬리젼 발동됐음");
                 npc.StopMove();
                 npc.transform.position = movePos;
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
