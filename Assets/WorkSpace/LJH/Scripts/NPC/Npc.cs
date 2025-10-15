@@ -176,8 +176,7 @@ public class Npc : MonoBehaviour
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             isNight = true;
-            StateMachine.ChangeState(new NpcMoveState(this, GetSensor().GetCastleDoorPosition(), new NpcGoneState(this))); 
-            //StateMachine.ChangeState(new NpcGoneState(this));
+            StateMachine.ChangeState(new NpcMoveState(this, GetSensor().GetCastleDoorPosition(), new NpcGoneState(this)));
         }
     }
 
