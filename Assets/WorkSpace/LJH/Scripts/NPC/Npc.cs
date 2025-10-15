@@ -6,12 +6,6 @@ using Zenject;
 
 public class Npc : MonoBehaviour
 {
-    public GameObject TestObj;
-
-    public void Instantiate(Vector3 pos)
-    {
-        Instantiate(TestObj, pos, Quaternion.identity);
-    }
     
     private Rigidbody2D rb;
     [Inject] PlayerContext playerContext;
@@ -72,12 +66,6 @@ public class Npc : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public bool CheckHeIsAngry() => isAngry;
-
-    public void SetNpcType(GenderType gender, AgeType age)
-    {
-        this.gender = gender;
-        this.age = age;
-    }
 
     public (GenderType, AgeType) GetNpcType() => (gender, age);
 
@@ -188,7 +176,8 @@ public class Npc : MonoBehaviour
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             isNight = true;
-            StateMachine.ChangeState(new NpcGoneState(this));
+            StateMachine.ChangeState(new NpcMoveState(this, GetSensor().GetCastleDoorPosition(), new NpcGoneState(this))); 
+            //StateMachine.ChangeState(new NpcGoneState(this));
         }
     }
 
@@ -360,7 +349,6 @@ public class Npc : MonoBehaviour
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();
-        Instantiate(TestObj, door, Quaternion.identity);
         StateMachine.ChangeState(new NpcMoveState(this, door + new Vector3(0, -2, 0), new NpcGoneState(this)));
     }
     
@@ -397,6 +385,7 @@ public class Npc : MonoBehaviour
 
     public void WantItemMarkOnOff(Emoji num)
     {
+        
         GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
     }
@@ -422,22 +411,13 @@ public class Npc : MonoBehaviour
         TalkExit();
     }
 
-    public void Fishing()
-    {
-        StateMachine.ChangeState(new NpcFishingState(this));
-    }
-
-    public void Logging()
-    {
-        StateMachine.ChangeState(new NpcLoggingState(this));
-    }
-
     /// <summary>
     /// NPC ¶°³²
     /// </summary>
     public void NpcGone()
     {
-        WantItemMarkOnOff(Emoji.ANGRY);
+        if(isAngry) WantItemMarkOnOff(Emoji.ANGRY);
+        
         StartCoroutine(GoneCoroutine());
     }
 
