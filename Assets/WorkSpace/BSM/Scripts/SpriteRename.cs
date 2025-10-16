@@ -50,11 +50,6 @@ public class SpriteRename : EditorWindow
                string newName = i.ToString();
                
                string error = AssetDatabase.RenameAsset(path, newName);
-
-               if (string.IsNullOrEmpty(error))
-               {
-                    Debug.Log($"{obj.name} -> {newName}");
-               } 
           }
           AssetDatabase.SaveAssets();
           
