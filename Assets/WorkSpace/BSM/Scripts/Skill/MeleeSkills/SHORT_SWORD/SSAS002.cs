@@ -6,19 +6,18 @@ using System;
 public class SSAS002 : MeleeSkill
 {
     private Vector2 hitPos;
-    
-    private int leftHash = Animator.StringToHash("LeftSSAS002");
-    private int rightHash = Animator.StringToHash("RightSSAS002");
-    private int upHash = Animator.StringToHash("UpSSAS002");
-    private int downHash = Animator.StringToHash("DownSSAS002");
-    
-    
+  
     public SSAS002(SkillNode skillNode) : base(skillNode)
     {
         leftDeg = 90f; 
         rightDeg = 270f;
         downDeg = 180f;
         upDeg = 0f;
+        
+        leftHash = Animator.StringToHash("LeftSSAS002");
+        rightHash = Animator.StringToHash("RightSSAS002");
+        upHash = Animator.StringToHash("UpSSAS002");
+        downHash = Animator.StringToHash("DownSSAS002");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
@@ -72,17 +71,7 @@ public class SSAS002 : MeleeSkill
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType) {}
-
-    public override int SendSkillAnimationHash(Vector2 direction)
-    {
-        if (direction == Vector2.right) return rightHash;
-        if (direction == -Vector2.right) return leftHash;
-        if (direction == Vector2.up) return upHash;
-        if (direction == -Vector2.up) return downHash;
-
-        return 0;
-    }
-    
+  
     public override void Gizmos()
     {
         UnityEngine.Gizmos.color = Color.blue;

@@ -9,6 +9,11 @@ public abstract class SkillFactory
     protected Vector2 overlapSize;
     protected SkillParticlePooling particlePooling => SkillParticlePooling.Instance;
     
+    protected int leftHash;
+    protected int rightHash;
+    protected int upHash;
+    protected int downHash;
+    
     public SkillFactory(SkillNode skillNode)
     {
         this.skillNode = skillNode;
@@ -36,10 +41,14 @@ public abstract class SkillFactory
     /// </summary>
     /// <param name="direction">현재 캐릭터가 바라보고 있는 방향</param>
     /// <returns></returns>
-    public virtual int SendSkillAnimationHash(Vector2 direction)
+    public int SendSkillAnimationHash(Vector2 direction)
     {
-        //TODO: 애니메이션 작업 끝나면 추상메서드로 변경하기
-        return 0;
+        if (direction == Vector2.right) return rightHash;
+        if (direction == -Vector2.right) return leftHash;
+        if (direction == Vector2.up) return upHash;
+        if (direction == -Vector2.up) return downHash;
+
+        return 0; 
     }
     
     //TODO: 기즈모 테스트용
