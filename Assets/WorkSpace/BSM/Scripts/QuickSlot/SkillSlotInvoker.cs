@@ -8,13 +8,21 @@ using UnityEngine.Events;
 public class SkillSlotInvoker : MonoBehaviour
 {
     private SkillFactory slotSkill;
-
+    private SkillNode skillNode;
+    private PlayerController playerController;
+    
     private Vector2 curDirection = Vector2.down;
     public UnityAction<Vector2> OnDirectionChanged;
 
     private Coroutine markDashWaitCo;
     private KeyCode inputQuickSlotKey;
     private SkillCoolDown beforeChangedSkillCooldown;
+
+    private void Start()
+    {
+        playerController = GetComponent<PlayerController>();
+    }
+
     private void OnEnable()
     {
         OnDirectionChanged += ChangedDirection;
@@ -42,13 +50,17 @@ public class SkillSlotInvoker : MonoBehaviour
     /// <returns>해당 스킬의 후딜레이 시간</returns>
     public float InvokeSkillFromSlot(QuickSlotType quickSlotType, CharacterWeaponType weaponType)
     {
-        SkillNode skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
+        skillNode = QuickSlotData.WeaponQuickSlotDict[weaponType][quickSlotType];
         
         //쿨다운이 리셋된 상태이며, 캐스팅이 진행중이지 않는 상태일 경우 스킬 사용
         if (skillNode.IsCoolDownReset && !skillNode.PlayerModel.IsCasting)
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-
+            
+            //스킬 애니메이션 재생
+            playerController.BodyAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
+            playerController.WeaponAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
+            
             //특정 스킬을 사용했는지?
             if (slotSkill is SPAS008 spas008)
             {
@@ -105,10 +117,10 @@ public class SkillSlotInvoker : MonoBehaviour
             //TODO: 스킬 쿨타임 사용 불가 UI 라던지 사용 불가 사운드 
             Debug.Log($"{skillNode.skillData.SkillName} 쿨타임 초기화 x");
         }
-
+        
         return 0;
     }
-
+    
     private IEnumerator WaitForMarkDashInput(SkillNode skillNode, QuickSlotType quickSlotType)
     {
         float elapsedTime = 5f;

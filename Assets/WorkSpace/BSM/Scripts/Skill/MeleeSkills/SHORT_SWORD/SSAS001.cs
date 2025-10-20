@@ -7,6 +7,11 @@ public class SSAS001 : MeleeSkill
 {
     private Vector2 hitPos; 
     
+    private int leftHash = Animator.StringToHash("LeftSSAS001");
+    private int rightHash = Animator.StringToHash("RightSSAS001");
+    private int upHash = Animator.StringToHash("UpSSAS001");
+    private int downHash = Animator.StringToHash("DownSSAS001");
+    
     public SSAS001(SkillNode skillNode) : base(skillNode)
     { 
         leftDeg = 270f; 
@@ -25,7 +30,16 @@ public class SSAS001 : MeleeSkill
         
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
-         
+
+        if (direction.x > 0 || direction.y > 0)
+        {
+            particleSystemRenderer.flip = new Vector3(1f, 0, 0);
+        }
+        else
+        {
+            particleSystemRenderer.flip = new Vector3(0, 0, 0);
+        }
+          
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
         Sort.SortMonstersByNearest(detectedMonster, playerPosition);
         
@@ -49,6 +63,16 @@ public class SSAS001 : MeleeSkill
              
             skillActions[0].Add(() => RemoveTriggerModuleList(0));
         } 
+    }
+
+    public override int SendSkillAnimationHash(Vector2 direction)
+    {
+        if (direction == Vector2.right) return rightHash;
+        if (direction == -Vector2.right) return leftHash;
+        if (direction == Vector2.up) return upHash;
+        if (direction == -Vector2.up) return downHash;
+
+        return 0;
     }
     
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType) { }
