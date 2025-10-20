@@ -9,6 +9,7 @@ public class SSAS005 : MeleeSkill
     
     public SSAS005(SkillNode skillNode) : base(skillNode)
     {
+
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
