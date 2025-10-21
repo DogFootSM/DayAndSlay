@@ -32,6 +32,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     private Coroutine findNearByMonstersCo;
     private Coroutine spawnParticleAtRandomPosition;
     private Coroutine removeCastCo;
+    private Coroutine dashAfterImageCo;
     private ParticleSystem followParticle = null;
     
     private bool isPowerTradeBuffActive;
@@ -286,33 +287,50 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <param name="chargeDirection">대쉬할 방향</param>
     public void ReceiveDash(Vector2 chargeDirection)
     {
-        playerController.CharacterRb.velocity = chargeDirection * 8f;
-
+        //대시 파워
+        playerController.CharacterRb.velocity = chargeDirection * 14f;
+        
         if (dashCo != null)
         {
             StopCoroutine(dashCo);
             dashCo = null;
         }
 
+        if (dashAfterImageCo != null)
+        {
+            StopCoroutine(dashAfterImageCo);
+            dashAfterImageCo = null;
+        }
+        
         dashCo = StartCoroutine(DashRoutine());
+        dashAfterImageCo = StartCoroutine(AfterImageInstantiateRoutine());
     }
 
     /// <summary>
-    /// 대쉬 후 몬스터 스턴 동작
+    /// 대시 잔상 이미지 생성 코루틴
     /// </summary>
-    /// <param name="receivers">대쉬 스킬에 맞은 몬스터</param>
-    /// <param name="duration">스턴 지속 시간</param>
-    public void ReceiveDashStun(IEffectReceiver receivers, float duration)
+    /// <returns></returns>
+    private IEnumerator AfterImageInstantiateRoutine()
     {
-        if (dashStunCo != null)
+        //옷, 헤어, 무기도 보여야 되는거면 여기서 교체
+        bool isFlip = playerController.LastMoveKey == Direction.Right;
+        
+        //대시 진행중일 경우 잔상 이미지 생성
+        while (!isDashDone)
         {
-            StopCoroutine(dashStunCo);
-            dashStunCo = null;
+            yield return WaitCache.GetWait(0.05f);
+            GameObject dashInstance = Instantiate(playerController.DashObject, transform.position, transform.rotation);
+        
+            //대시 스킬 사용 시 Body 스프라이트로 교체
+            Sprite dashSprite = GetComponentInChildren<SpriteRenderer>().sprite;
+
+            SpriteRenderer dashInstanceRenderer = dashInstance.GetComponent<SpriteRenderer>();
+            dashInstanceRenderer.sprite = dashSprite;
+            dashInstanceRenderer.flipX = isFlip;
         }
-
-        dashStunCo = StartCoroutine(DashStunRoutine(receivers, duration));
+        //대시도 풀링으로?
     }
-
+    
     /// <summary>
     /// 대쉬 코루틴
     /// </summary>
@@ -329,7 +347,23 @@ public class PlayerSkillReceiver : MonoBehaviour
         isDashDone = true;
         playerController.CharacterRb.velocity = Vector2.zero;
     }
+    
+    /// <summary>
+    /// 대쉬 후 몬스터 스턴 동작
+    /// </summary>
+    /// <param name="receivers">대쉬 스킬에 맞은 몬스터</param>
+    /// <param name="duration">스턴 지속 시간</param>
+    public void ReceiveDashStun(IEffectReceiver receivers, float duration)
+    {
+        if (dashStunCo != null)
+        {
+            StopCoroutine(dashStunCo);
+            dashStunCo = null;
+        }
 
+        dashStunCo = StartCoroutine(DashStunRoutine(receivers, duration));
+    }
+  
     /// <summary>
     /// 대쉬 후 몬스터 스턴 동작 코루틴
     /// </summary>

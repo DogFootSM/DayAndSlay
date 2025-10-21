@@ -35,8 +35,13 @@ public class PlayerController : MonoBehaviour
     public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
     public CharacterWeaponType CurrentWeaponType => curWeaponType;
     
+    
     [Header("무기 오브젝트")]
     public GameObject WeaponObject;
+
+    [Header("대시 이펙트 오브젝트")] 
+    public GameObject DashObject;
+    
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private ArrowPool arrowPool => ArrowPool.Instance;
