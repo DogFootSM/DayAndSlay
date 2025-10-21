@@ -7,6 +7,7 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     public Sprite ItemImage;
+    public int ItemImageId;
 
     public int ItemId;
     public bool IsEquipment;

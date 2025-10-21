@@ -14,6 +14,7 @@ public class WeaponForge : InteractableObj
 
     public override void Interaction()
     {
+        Debug.Log("웨펀포지 열기 실행");
         popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using UnityEngine.UI;
@@ -10,9 +11,53 @@ public class WeaponForgeUI : BaseForgeUI
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> weaponStorage;
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, ItemData> subWeaponStorage;
 
+    [SerializeField] private List<ItemData> itemDataStorage = new List<ItemData>();
+    [SerializeField] private List<ItemData> subItemStorage = new List<ItemData>();
+    
     [SerializeField] private WeaponType weaponType;
     [SerializeField] private SubWeaponType subWeaponType;
 
+    protected override void StartInit()
+    {
+        itemDataStorage = ItemDatabaseManager.instance.GetNormalWeaponItem();
+        subItemStorage = ItemDatabaseManager.instance.GetSubWeaponItem();
+
+        // 리스트 정렬
+        itemDataStorage = itemDataStorage
+            .OrderBy(item => item.ItemId) // ItemId를 기준으로 오름차순 정렬
+            .ToList();                    // 결과를 다시 List<ItemData>로 변환하여 할당
+
+        subItemStorage = subItemStorage
+            .OrderBy(item => item.ItemId)
+            .ToList();
+        
+        /*
+        List<int> weaponTempList = new List<int>();
+        List<int> subweaponTempList = new List<int>();
+        foreach (ItemData item in itemDataStorage)
+        {
+            weaponTempList.Add(item.ItemId);
+        }
+        foreach (ItemData item in subItemStorage)
+        {
+            subweaponTempList.Add(item.ItemId);
+        }
+        
+        weaponTempList.Sort();
+        subweaponTempList.Sort();
+        
+        itemDataStorage.Clear();
+        subItemStorage.Clear();
+        
+        foreach (int id in weaponTempList)
+        {
+            itemDataStorage.Add(ItemDatabaseManager.instance.GetItemByID(id));
+        }
+        foreach (int id in subweaponTempList)
+        {
+            subItemStorage.Add(ItemDatabaseManager.instance.GetItemByID(id));
+        }*/
+    }
 
     protected override void SetTypeButton(Parts parts)
     {
