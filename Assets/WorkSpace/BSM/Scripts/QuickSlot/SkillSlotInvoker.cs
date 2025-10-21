@@ -56,7 +56,8 @@ public class SkillSlotInvoker : MonoBehaviour
         if (skillNode.IsCoolDownReset && !skillNode.PlayerModel.IsCasting)
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-            
+
+             
             //스킬 애니메이션 재생
             playerController.BodyAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
             playerController.WeaponAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
@@ -92,7 +93,7 @@ public class SkillSlotInvoker : MonoBehaviour
                         StopCoroutine(markDashWaitCo);
                         markDashWaitCo = null;
                     }
-
+                     
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
                     
@@ -120,7 +121,7 @@ public class SkillSlotInvoker : MonoBehaviour
         
         return 0;
     }
-    
+  
     private IEnumerator WaitForMarkDashInput(SkillNode skillNode, QuickSlotType quickSlotType)
     {
         float elapsedTime = 5f;

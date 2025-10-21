@@ -27,12 +27,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
     [SerializeField] private CharacterAnimatorController characterAnimatorController;
     
+    
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
     public Animator BodyAnimator => bodyAnimator;
     public Weapon CurWeapon => curWeapon;
     public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
     public CharacterWeaponType CurrentWeaponType => curWeaponType;
+    
+    [Header("무기 오브젝트")]
+    public GameObject WeaponObject;
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private ArrowPool arrowPool => ArrowPool.Instance;
