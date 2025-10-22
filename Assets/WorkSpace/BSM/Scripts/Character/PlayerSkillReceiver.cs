@@ -320,7 +320,9 @@ public class PlayerSkillReceiver : MonoBehaviour
         {
             yield return WaitCache.GetWait(0.05f);
             GameObject dashInstance = Instantiate(playerController.DashObject, transform.position, transform.rotation);
-        
+            //껐다 킬 경우 여기서 켜주고 위치값 = 현재 위치로 설정
+            
+            
             //대시 스킬 사용 시 Body 스프라이트로 교체
             Sprite dashSprite = GetComponentInChildren<SpriteRenderer>().sprite;
 
