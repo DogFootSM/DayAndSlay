@@ -6,13 +6,18 @@ using System;
 public class SSAS002 : MeleeSkill
 {
     private Vector2 hitPos;
-    
+  
     public SSAS002(SkillNode skillNode) : base(skillNode)
     {
         leftDeg = 90f; 
         rightDeg = 270f;
         downDeg = 180f;
         upDeg = 0f;
+        
+        leftHash = Animator.StringToHash("LeftSSAS002");
+        rightHash = Animator.StringToHash("RightSSAS002");
+        upHash = Animator.StringToHash("UpSSAS002");
+        downHash = Animator.StringToHash("DownSSAS002");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
@@ -29,6 +34,16 @@ public class SSAS002 : MeleeSkill
         
         //바라보는 방향에 따른 이펙트 회전
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
+
+        if (direction.x < 0 || direction.y < 0)
+        {
+            particleSystemRenderer.flip = new Vector3(1f, 0, 0);
+        }
+        else
+        {
+            particleSystemRenderer.flip = new Vector3(0, 0, 0);
+        }
+        
         
         //이동 속도 증가 버프
         float speedBuffFactor = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
@@ -56,7 +71,7 @@ public class SSAS002 : MeleeSkill
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType) {}
-
+  
     public override void Gizmos()
     {
         UnityEngine.Gizmos.color = Color.blue;

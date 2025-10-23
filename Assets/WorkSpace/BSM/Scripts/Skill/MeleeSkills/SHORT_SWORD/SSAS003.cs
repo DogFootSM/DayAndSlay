@@ -6,13 +6,18 @@ using UnityEngine;
 public class SSAS003 : MeleeSkill
 {
     private Vector2 hitPos;
- 
+    
     public SSAS003(SkillNode skillNode) : base(skillNode)
     {
         leftDeg = 180f; 
         rightDeg = 0f;
         downDeg = 270f;
-        upDeg = 90f; 
+        upDeg = 90f;
+
+        leftHash = Animator.StringToHash("LeftSSAS003");
+        rightHash = Animator.StringToHash("RightSSAS003");
+        upHash = Animator.StringToHash("UpSSAS003");
+        downHash = Animator.StringToHash("DownSSAS003"); 
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)

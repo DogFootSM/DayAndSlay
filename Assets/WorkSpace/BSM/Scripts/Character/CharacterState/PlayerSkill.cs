@@ -28,9 +28,9 @@ public class PlayerSkill : PlayerState
     /// </summary>
     private void ExecuteSkillFromSlot()
     {
-        //TODO: 스킬에 맞는 애니메이션?
+        //사용 스킬의 후딜레이 시간을 받아옴
         afterDelay = playerController.SkillSlotInvoker.InvokeSkillFromSlot(keyToQuickSlotMap[skillInputKey], playerController.CurrentWeaponType);
- 
+        
         if (afterDelayCo == null)
         {
             afterDelayCo = playerController.StartCoroutine(AfterDelayRoutine());
@@ -43,6 +43,7 @@ public class PlayerSkill : PlayerState
     /// <returns></returns>
     private IEnumerator AfterDelayRoutine()
     { 
+        //후딜레이 후 캐릭터 IDLE 상태로 전환
         yield return WaitCache.GetWait(afterDelay); 
         playerController.ChangeState(CharacterStateType.IDLE);
     }

@@ -6,13 +6,18 @@ using UnityEngine;
 public class SSAS001 : MeleeSkill
 {
     private Vector2 hitPos; 
-    
+   
     public SSAS001(SkillNode skillNode) : base(skillNode)
     { 
         leftDeg = 270f; 
         rightDeg = 90f;
         downDeg = 0f;
         upDeg = 180f;
+        
+        leftHash = Animator.StringToHash("LeftSSAS001");
+        rightHash = Animator.StringToHash("RightSSAS001");
+        upHash = Animator.StringToHash("UpSSAS001");
+        downHash = Animator.StringToHash("DownSSAS001");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
@@ -25,7 +30,16 @@ public class SSAS001 : MeleeSkill
         
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
-         
+
+        if (direction.x > 0 || direction.y > 0)
+        {
+            particleSystemRenderer.flip = new Vector3(1f, 0, 0);
+        }
+        else
+        {
+            particleSystemRenderer.flip = new Vector3(0, 0, 0);
+        }
+          
         Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
         Sort.SortMonstersByNearest(detectedMonster, playerPosition);
         
@@ -50,7 +64,7 @@ public class SSAS001 : MeleeSkill
             skillActions[0].Add(() => RemoveTriggerModuleList(0));
         } 
     }
-    
+ 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType) { }
     
     public override void Gizmos()

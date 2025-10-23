@@ -9,8 +9,8 @@ Sprite:
   m_Name: 1
   m_Rect:
     serializedVersion: 2
-    x: 256
-    y: 384
+    x: 64
+    y: 128
     width: 64
     height: 64
   m_Offset: {x: 0, y: 0}
@@ -22,12 +22,12 @@ Sprite:
   m_AtlasName: 
   m_PackingTag: 
   m_RenderDataKey:
-    62bafd69ae61bee449d7d21dc5220d6e: -258498638
+    faafefb99dd2e3d40ab2543519b4f4c0: -100848861
   m_AtlasTags: []
   m_SpriteAtlas: {fileID: 0}
   m_RD:
     serializedVersion: 3
-    texture: {fileID: 2800000, guid: 62bafd69ae61bee449d7d21dc5220d6e, type: 3}
+    texture: {fileID: 2800000, guid: faafefb99dd2e3d40ab2543519b4f4c0, type: 3}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -103,22 +103,22 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 160
-      _typelessdata: 0000803e0000a03e000000000000403e0000003d000000000000803e0000c03d000000000000003e0000083f00000000000020be0000083f00000000000060be0000003d000000000000c0be0000a03e000000000000c0be0000803d000000000000143f0000553f0000133f0080503f0000143f0080513f0000123f0080583f00800d3f0080583f00800c3f0080503f00000a3f0000553f00000a3f0000513f
+      _typelessdata: 0000803e0000903e000000000000203e0000003d000000000000803e0000003e000000000000c03d0000003f00000000000020be0000003f000000000000a0be0000003d000000000000c0be0000b03e000000000000c0be0000603e000000000000503e0000a93e00004a3e0000a13e0000503e0000a43e0000463e0000b03e0000363e0000b03e00002c3e0000a13e0000283e0000ab3e0000283e0000a73e
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 276.02676
-      y: 417.0761
-      width: 19.946497
-      height: 15.847755
-    textureRectOffset: {x: 20.026764, y: 33.07611}
+      x: 84.051315
+      y: 161.07613
+      width: 19.87256
+      height: 14.847755
+    textureRectOffset: {x: 20.051315, y: 33.076126}
     atlasRectOffset: {x: -1, y: -1}
     settingsRaw: 64
-    uvTransform: {x: 32, y: 288, z: 32, w: 416}
+    uvTransform: {x: 32, y: 96, z: 32, w: 160}
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 2800000, guid: 62bafd69ae61bee449d7d21dc5220d6e, type: 3}
+    texture: {fileID: 2800000, guid: faafefb99dd2e3d40ab2543519b4f4c0, type: 3}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -194,27 +194,27 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 160
-      _typelessdata: 0000803e0000a03e000000000000403e0000003d000000000000803e0000c03d000000000000003e0000083f00000000000020be0000083f00000000000060be0000003d000000000000c0be0000a03e000000000000c0be0000803d000000000000143f0000553f0000133f0080503f0000143f0080513f0000123f0080583f00800d3f0080583f00800c3f0080503f00000a3f0000553f00000a3f0000513f
+      _typelessdata: 0000803e0000903e000000000000203e0000003d000000000000803e0000003e000000000000c03d0000003f00000000000020be0000003f000000000000a0be0000003d000000000000c0be0000b03e000000000000c0be0000603e000000000000503e0000a93e00004a3e0000a13e0000503e0000a43e0000463e0000b03e0000363e0000b03e00002c3e0000a13e0000283e0000ab3e0000283e0000a73e
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 276.02676
-      y: 417.0761
-      width: 19.946497
-      height: 15.847755
-    textureRectOffset: {x: 20.026764, y: 33.07611}
+      x: 84.051315
+      y: 161.07613
+      width: 19.87256
+      height: 14.847755
+    textureRectOffset: {x: 20.051315, y: 33.076126}
     atlasRectOffset: {x: -1, y: -1}
     settingsRaw: 64
-    uvTransform: {x: 32, y: 288, z: 32, w: 416}
+    uvTransform: {x: 32, y: 96, z: 32, w: 160}
     downscaleMultiplier: 1
   m_PhysicsShape:
-  - - {x: -0.15625, y: 0.53125}
-    - {x: -0.375, y: 0.3125}
-    - {x: -0.375, y: 0.0625}
-    - {x: -0.21875, y: 0.03125}
-    - {x: 0.1875, y: 0.03125}
-    - {x: 0.25, y: 0.09375}
-    - {x: 0.25, y: 0.3125}
-    - {x: 0.125, y: 0.53125}
+  - - {x: -0.15625, y: 0.5}
+    - {x: -0.375, y: 0.34375}
+    - {x: -0.375, y: 0.21875}
+    - {x: -0.3125, y: 0.03125}
+    - {x: 0.15625, y: 0.03125}
+    - {x: 0.25, y: 0.125}
+    - {x: 0.25, y: 0.28125}
+    - {x: 0.09375, y: 0.5}
   m_Bones: []
-  m_SpriteID: ba99af358dd73094faca931c6ef67256
+  m_SpriteID: 3befab26202338f40a01ad78e550a66e
