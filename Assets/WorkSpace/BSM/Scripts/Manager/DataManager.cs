@@ -249,7 +249,7 @@ public class DataManager : MonoBehaviour
             new[]
             {
                 //TODO: 지급 무기 수정
-                $"{100001 + (weaponType * 100)}", //지급할 Item_id
+                $"{100001 + (weaponType * 100)}02", //지급할 Item_id
                 $"{SlotId}", //해당 캐릭터 slotId
                 "1", //지급할 개수
                 "0", //인벤토리 슬롯의 위치
