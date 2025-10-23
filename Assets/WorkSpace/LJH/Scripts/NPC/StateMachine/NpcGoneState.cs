@@ -15,6 +15,7 @@ public class NpcGoneState : INpcState
     }
     public void Enter()
     {
+        npc.StopMove();
         npc.NpcGone();
     }
 

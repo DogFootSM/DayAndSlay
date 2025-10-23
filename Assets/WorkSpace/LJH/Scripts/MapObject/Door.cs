@@ -51,6 +51,7 @@ public class Door : InteractableObj
             if(doorType == DoorType.DOOR)
             {
                 Npc npc = collision.gameObject.GetComponent<Npc>();
+                npc.StopMove();
                 npc.transform.position = movePos;
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
 
@@ -90,6 +91,7 @@ public class Door : InteractableObj
             if(doorType == DoorType.DOOR)
             {
                 Npc npc = collider.gameObject.GetComponent<Npc>();
+                npc.StopMove();
                 npc.transform.position = movePos;
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
 

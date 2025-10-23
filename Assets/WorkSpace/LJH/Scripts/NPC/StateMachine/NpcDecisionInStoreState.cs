@@ -22,7 +22,7 @@ public class NpcDecisionInStoreState : INpcState
         {
             //카운터로 이동
             Vector3 deskPos = targetSensor.GetDeskPosition();
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, deskPos));
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, deskPos, new WaitForPlayerState(npc)));
 
         }
         else

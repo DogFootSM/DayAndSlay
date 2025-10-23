@@ -17,6 +17,10 @@ public class ArmorForgeUI : BaseForgeUI
 
     [SerializeField] private MaterialType materialType;
 
+    protected override void StartInit()
+    {
+        
+    }
 
     protected override void SetTypeButton(Parts parts)
     {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Globalization;
 
 public class ItemParser
 {
@@ -47,36 +48,52 @@ public class ItemParser
                 continue;
             }
 
+            // 오류 추적을 위한 변수 선언. catch 블록에서만 사용됨.
+            int parsingFieldIndex = -1;
+
             try
             {
                 ItemData item = ScriptableObject.CreateInstance<ItemData>();
+                
+                parsingFieldIndex = 0; item.ItemId = int.Parse(values[0]);
+                item.ItemImageId = item.ItemId;
+                
+                parsingFieldIndex = 1; item.IsEquipment = bool.Parse(values[1]);
+                parsingFieldIndex = 2; item.IsOverlaped = bool.Parse(values[2]);
+                
+                parsingFieldIndex = 3; item.Parts = (Parts)System.Enum.Parse(typeof(Parts), values[3]);
+                parsingFieldIndex = 4; item.ItemSet = (ItemSet)System.Enum.Parse(typeof(ItemSet), values[4]);
+                parsingFieldIndex = 5; item.WeaponType = (WeaponType)System.Enum.Parse(typeof(WeaponType), values[5]);
+                parsingFieldIndex = 6; item.SubWeaponType = (SubWeaponType)System.Enum.Parse(typeof(SubWeaponType), values[6]);
+                
+                parsingFieldIndex = 7; item.Tier = int.Parse(values[7]);
+                
+                item.Name = values[8]; 
+                
+                parsingFieldIndex = 9; item.Strength = int.Parse(values[9]);
+                parsingFieldIndex = 10; item.Agility = int.Parse(values[10]);
+                parsingFieldIndex = 11; item.Intelligence = int.Parse(values[11]);
 
-                item.ItemId = int.Parse(values[0]);
-                item.IsEquipment = bool.Parse(values[1]);
-                item.IsOverlaped = bool.Parse(values[2]);
-                item.Parts = (Parts)System.Enum.Parse(typeof(Parts), values[3]);
-                item.ItemSet = (ItemSet)System.Enum.Parse(typeof(ItemSet), values[4]);
-                item.WeaponType = (WeaponType)System.Enum.Parse(typeof(WeaponType), values[5]);
-                item.SubWeaponType = (SubWeaponType)System.Enum.Parse(typeof(SubWeaponType), values[6]);
-                item.Tier = int.Parse(values[7]);
-                item.Name = values[8];
-                item.Strength = int.Parse(values[9]);
-                item.Agility = int.Parse(values[10]);
-                item.Intelligence = int.Parse(values[11]);
-                item.Critical = float.Parse(values[12]);
-                item.Hp = int.Parse(values[13]);
-                item.Attack = int.Parse(values[14]);
-                item.Defence = int.Parse(values[15]);
-                item.Range = float.Parse(values[16]);
-                item.SellPrice = int.Parse(values[17]);
+                parsingFieldIndex = 12; item.Critical = float.Parse(values[12], CultureInfo.InvariantCulture);
+                
+                parsingFieldIndex = 13; item.Hp = int.Parse(values[13]);
+                parsingFieldIndex = 14; item.Attack = int.Parse(values[14]);
+                parsingFieldIndex = 15; item.Defence = int.Parse(values[15]);
+                
+                parsingFieldIndex = 16; item.Range = float.Parse(values[16], CultureInfo.InvariantCulture);
+                
+                parsingFieldIndex = 17; item.SellPrice = int.Parse(values[17]);
+                
                 item.ItemDescA = values[18];
-                //장비 아이템일 경우에만 재료 영역 파싱
+
                 if (item.IsEquipment)
                 {
-                    item.ingredients_1 = int.Parse(values[19]);
-                    item.ingredients_2 = int.Parse(values[20]);
-                    item.ingredients_3 = int.Parse(values[21]);
-                    item.ingredients_4 = int.Parse(values[22]);
+                    int temp;
+                    
+                    item.ingredients_1 = int.TryParse(values[19], out temp) ? temp : 0;
+                    item.ingredients_2 = int.TryParse(values[20], out temp) ? temp : 0;
+                    item.ingredients_3 = int.TryParse(values[21], out temp) ? temp : 0;
+                    item.ingredients_4 = int.TryParse(values[22], out temp) ? temp : 0;
                     
                     item.Ingrediants.Add(item.ingredients_1);
                     item.Ingrediants.Add(item.ingredients_2);
@@ -99,7 +116,12 @@ public class ItemParser
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"라인 {i} 처리 중 오류 발생: {ex.Message}");
+                // 인덱스가 유효한지 확인 후 메시지를 구성합니다.
+                string valueDetail = (parsingFieldIndex >= 0 && parsingFieldIndex < values.Length) 
+                    ? $"인덱스 [{parsingFieldIndex}] (값: '{values[parsingFieldIndex]}')."
+                    : "인덱스 추적 실패.";
+                    
+                Debug.LogError($"라인 {i} 처리 중 오류 발생: {valueDetail} {ex.Message}");
             }
         }
 

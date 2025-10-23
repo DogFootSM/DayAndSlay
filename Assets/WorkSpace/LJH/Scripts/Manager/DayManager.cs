@@ -147,14 +147,12 @@ public class DayManager : MonoBehaviour, ISavable
 
             if (!isAfternoonStarted && elapsedGameTime >= DefaultDayCount * 2 / 3f)
             {
-                Debug.Log("오전 >> 오후");
                 StartCoroutine(FadeOutCoroutine(morning, afternoon));
                 isAfternoonStarted = true;
             }
 
             if (!isEveningStarted && elapsedGameTime >= DefaultDayCount - (DefaultDayCount * 0.01f))
             {
-                Debug.Log("오후 >> 저녁");
                 StartCoroutine(FadeOutCoroutine(afternoon, evening));
                 isEveningStarted = true;
             }

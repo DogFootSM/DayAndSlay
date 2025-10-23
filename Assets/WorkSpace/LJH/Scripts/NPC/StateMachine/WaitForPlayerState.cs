@@ -15,6 +15,9 @@ public class WaitForPlayerState : INpcState
 
     public void Enter()
     {
+        npc.StopMove();
+        npc.RigidbodyZero();  
+        
         if (npc.GetStoreManager().PeekInNpcQue() == npc)
         {
             npc.WantItemMarkOnOff(Emoji.EXCLAMATION);
@@ -26,4 +29,4 @@ public class WaitForPlayerState : INpcState
     {
     }
     public void Exit() { }
-}
+}   

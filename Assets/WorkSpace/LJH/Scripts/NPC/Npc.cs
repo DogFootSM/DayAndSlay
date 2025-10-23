@@ -6,6 +6,7 @@ using Zenject;
 
 public class Npc : MonoBehaviour
 {
+    
     private Rigidbody2D rb;
     [Inject] PlayerContext playerContext;
     [Inject] private StoreManager storeManager;
@@ -65,12 +66,6 @@ public class Npc : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public bool CheckHeIsAngry() => isAngry;
-
-    public void SetNpcType(GenderType gender, AgeType age)
-    {
-        this.gender = gender;
-        this.age = age;
-    }
 
     public (GenderType, AgeType) GetNpcType() => (gender, age);
 
@@ -181,7 +176,7 @@ public class Npc : MonoBehaviour
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             isNight = true;
-            StateMachine.ChangeState(new NpcGoOutState(this));
+            StateMachine.ChangeState(new NpcMoveState(this, GetSensor().GetCastleDoorPosition(), new NpcGoneState(this)));
         }
     }
 
@@ -215,6 +210,7 @@ public class Npc : MonoBehaviour
     {
         if (moveCoroutine != null)
         {
+            animator.Play("Idle");
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
@@ -238,13 +234,13 @@ public class Npc : MonoBehaviour
 
         astarPath.DetectTarget(transform.position, targetPos);
     
-        yield return StartCoroutine(MoveCoroutine(targetPos, onArrive));
+        yield return MoveCoroutine(targetPos, onArrive);
     }
 
     
     private IEnumerator MoveCoroutine(Vector3 target, System.Action onArrive)
     {
-        List<Vector3> path = astarPath.path;
+        List<Vector3> path = new List<Vector3>(astarPath.path);
         
         if (path == null || path.Count == 0)
         {
@@ -252,7 +248,7 @@ public class Npc : MonoBehaviour
             PlayDirectionAnimation(Vector3.zero);
             yield break;
         }
-
+        
         foreach (Vector3 point in path)
         {
             // X축 이동
@@ -352,7 +348,7 @@ public class Npc : MonoBehaviour
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();
-        StateMachine.ChangeState(new NpcMoveState(this, door));
+        StateMachine.ChangeState(new NpcMoveState(this, door + new Vector3(0, -2, 0), new NpcGoneState(this)));
     }
     
 
@@ -388,6 +384,7 @@ public class Npc : MonoBehaviour
 
     public void WantItemMarkOnOff(Emoji num)
     {
+        
         GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
     }
@@ -395,7 +392,7 @@ public class Npc : MonoBehaviour
 
     public bool ArrivedDesk()
     {
-        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 0.5f;
+        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 1f;
     }
 
     public void TestCoroutine()
@@ -405,6 +402,7 @@ public class Npc : MonoBehaviour
 
     private IEnumerator TestCo()
     {
+        PauseMovement();
         yield return new WaitForSeconds(3f);
         TalkToPlayer();
         StateMachine.ChangeState(new NpcWaitItemState(this));
@@ -412,46 +410,29 @@ public class Npc : MonoBehaviour
         TalkExit();
     }
 
-    public void Fishing()
-    {
-        StateMachine.ChangeState(new NpcFishingState(this));
-    }
-
-    public void Logging()
-    {
-        StateMachine.ChangeState(new NpcLoggingState(this));
-    }
-
     /// <summary>
     /// NPC 떠남
     /// </summary>
     public void NpcGone()
     {
-        WantItemMarkOnOff(Emoji.ANGRY);
+        if(isAngry) WantItemMarkOnOff(Emoji.ANGRY);
+        
+        StartCoroutine(GoneCoroutine());
+    }
+
+    private IEnumerator GoneCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        
         gameObject.SetActive(false);
     }
     
-    /// <summary>
-    /// 저녁시간이 되어 모든 NPC 복귀
-    /// </summary>
-    public void GoHome()
+    public void RigidbodyZero()
     {
-        if (IsInOutsideGrid())
-        {
-            var targetSensor = GetComponentInChildren<TargetSensorInNpc>();
-
-            Vector3 castlePos = targetSensor.GetCastleDoorPosition();
-
-            StateMachine.ChangeState(new NpcMoveState(this, castlePos, new NpcGoneState(this)));
-        }
-        else
-        {
-            Vector3 doorPos = targetSensor.GetLeavePosition();
-            Vector3 castlePos = targetSensor.GetCastleDoorPosition();
-            
-            StateMachine.ChangeState(new NpcMoveState(this, doorPos, new NpcMoveState(this, castlePos, new NpcGoOutState(this))));
-        }
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb) rb.velocity = Vector2.zero;
     }
+    
 }
 
 
