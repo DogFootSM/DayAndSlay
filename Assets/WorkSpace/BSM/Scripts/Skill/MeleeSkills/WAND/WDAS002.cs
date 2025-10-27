@@ -10,6 +10,10 @@ public class WDAS002 : MeleeSkill
     
     public WDAS002(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("SkillMotion_Left_1");
+        rightHash = Animator.StringToHash("SkillMotion_Right_1");
+        upHash = Animator.StringToHash("SkillMotion_Up_1");
+        downHash = Animator.StringToHash("SkillMotion_Down_1");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
