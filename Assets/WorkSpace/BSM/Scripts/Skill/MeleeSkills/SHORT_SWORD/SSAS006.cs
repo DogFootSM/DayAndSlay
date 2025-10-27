@@ -9,10 +9,10 @@ public class SSAS006 : MeleeSkill
     
     public SSAS006(SkillNode skillNode) : base(skillNode)
     {
-        leftHash = Animator.StringToHash("LeftSSAS006");
-        rightHash = Animator.StringToHash("RightSSAS006");
-        upHash = Animator.StringToHash("UpSSAS006");
-        downHash = Animator.StringToHash("DownSSAS006");
+        leftHash = Animator.StringToHash("SkillMotion_Left_6");
+        rightHash = Animator.StringToHash("SkillMotion_Right_6");
+        upHash = Animator.StringToHash("SkillMotion_Up_6");
+        downHash = Animator.StringToHash("SkillMotion_Down_6");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
