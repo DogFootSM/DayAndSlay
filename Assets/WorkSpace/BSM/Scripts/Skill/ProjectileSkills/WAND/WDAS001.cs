@@ -11,6 +11,10 @@ public class WDAS001 : ProjectileSkill
     
     public WDAS001(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("SkillMotion_Left_4");
+        rightHash = Animator.StringToHash("SkillMotion_Right_4");
+        upHash = Animator.StringToHash("SkillMotion_Up_4");
+        downHash = Animator.StringToHash("SkillMotion_Down_4");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
