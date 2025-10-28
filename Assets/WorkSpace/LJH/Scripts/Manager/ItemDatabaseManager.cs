@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemDatabaseManager : MonoBehaviour
@@ -46,7 +47,10 @@ public class ItemDatabaseManager : MonoBehaviour
             }
         }
 
-        return list;
+        return list
+            .Where(item => item.IsEquipment)
+            .OrderBy(item => item.ItemId)
+            .ToList();
     }
 
     /// <summary>
