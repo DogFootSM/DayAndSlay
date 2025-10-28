@@ -8,6 +8,10 @@ public class BOAS010 : MeleeSkill
 {
     public BOAS010(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("SkillMotion_Left_3");
+        rightHash = Animator.StringToHash("SkillMotion_Right_3");
+        upHash = Animator.StringToHash("SkillMotion_Up_3");
+        downHash = Animator.StringToHash("SkillMotion_Down_3");
     }
 
     private Vector2 hitPos;
