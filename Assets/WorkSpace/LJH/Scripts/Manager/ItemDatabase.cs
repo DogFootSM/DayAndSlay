@@ -9,6 +9,7 @@ public class ItemDatabase : ScriptableObject
 {
     public List<ItemData> items;
     public List<int> ids;
+    public List<Sprite> sprites;
 
     //최적화를 위해 Dictionary로 변환하여 관리
     [SerializeField][SerializedDictionary] SerializedDictionary<int, ItemData> itemIdToDataDict;
@@ -48,7 +49,27 @@ public class ItemDatabase : ScriptableObject
         }
 
 
+        foreach (ItemData item in items)
+        {
+            item.ItemImageId =  item.ItemId;
+            item.ItemImage = GetItemImage(item.ItemImageId);
+        }
+
+
         
+    }
+
+    private Sprite GetItemImage(int id)
+    {
+        foreach (Sprite sprite in sprites)
+        {
+            if (sprite.name == id.ToString())
+            {
+                return sprite;
+            }
+        }
+        
+        return null;
     }
 
     public ItemData GetItemByID(int id)

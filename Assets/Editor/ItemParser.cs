@@ -42,9 +42,9 @@ public class ItemParser
 
             Debug.Log($"[라인 {i}] 필드 수: {values.Length} / 내용: {line}");
 
-            if (values.Length < 23)
+            if (values.Length < 26)
             {
-                Debug.LogWarning($"라인 {i} 필드 부족: {values.Length}개 (필요: 23개)");
+                Debug.LogWarning($"라인 {i} 필드 부족: {values.Length}개 (필요: 26개)");
                 continue;
             }
 
@@ -91,9 +91,9 @@ public class ItemParser
                     int temp;
                     
                     item.ingredients_1 = int.TryParse(values[19], out temp) ? temp : 0;
-                    item.ingredients_2 = int.TryParse(values[20], out temp) ? temp : 0;
-                    item.ingredients_3 = int.TryParse(values[21], out temp) ? temp : 0;
-                    item.ingredients_4 = int.TryParse(values[22], out temp) ? temp : 0;
+                    item.ingredients_2 = int.TryParse(values[21], out temp) ? temp : 0;
+                    item.ingredients_3 = int.TryParse(values[23], out temp) ? temp : 0;
+                    item.ingredients_4 = int.TryParse(values[25], out temp) ? temp : 0;
                     
                     item.Ingrediants.Add(item.ingredients_1);
                     item.Ingrediants.Add(item.ingredients_2);
