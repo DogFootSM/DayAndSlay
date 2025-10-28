@@ -10,6 +10,10 @@ public class BOAS004 : ProjectileSkill
     
     public BOAS004(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("LeftAttack1");
+        rightHash = Animator.StringToHash("RightAttack1");
+        upHash = Animator.StringToHash("UpAttack1");
+        downHash = Animator.StringToHash("DownAttack1");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
