@@ -763,12 +763,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 20
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -532, y: -180}
+  m_AnchoredPosition: {x: -203.09015, y: -220.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &68092114
@@ -1015,6 +1015,7 @@ GameObject:
   - component: {fileID: 97658308}
   - component: {fileID: 97658307}
   - component: {fileID: 97658306}
+  - component: {fileID: 97658309}
   m_Layer: 5
   m_Name: Type5
   m_TagString: Untagged
@@ -1125,6 +1126,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97658304}
   m_CullTransparentMesh: 1
+--- !u!114 &97658309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97658304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  - {fileID: 237964126}
+  - {fileID: 97658309}
+  itemButtonList:
+  - {fileID: 2035675374}
+  - {fileID: 1049872539}
+  - {fileID: 1109701969}
+  - {fileID: 1467000580}
+  - {fileID: 1734672668}
+  material: 0
 --- !u!1 &114178557
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,6 +2048,7 @@ GameObject:
   - component: {fileID: 237964125}
   - component: {fileID: 237964124}
   - component: {fileID: 237964123}
+  - component: {fileID: 237964126}
   m_Layer: 5
   m_Name: Type4
   m_TagString: Untagged
@@ -2131,6 +2159,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 237964121}
   m_CullTransparentMesh: 1
+--- !u!114 &237964126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237964121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  - {fileID: 237964126}
+  - {fileID: 97658309}
+  itemButtonList:
+  - {fileID: 2035675374}
+  - {fileID: 1049872539}
+  - {fileID: 1109701969}
+  - {fileID: 1467000580}
+  - {fileID: 1734672668}
+  material: 0
 --- !u!1 &253293703
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,12 +2864,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 16
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -213.59943, y: -180}
+  m_AnchoredPosition: {x: 115.310425, y: -220.5}
   m_SizeDelta: {x: 375.5595, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &307488402
@@ -3171,6 +3225,7 @@ GameObject:
   - component: {fileID: 351705425}
   - component: {fileID: 351705424}
   - component: {fileID: 351705423}
+  - component: {fileID: 351705427}
   m_Layer: 5
   m_Name: ForgeCanvas
   m_TagString: Untagged
@@ -3262,6 +3317,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &351705427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351705422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e61a32c2d70d5408790821c7bb8d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curParts: 0
 --- !u!1 &352358175
 GameObject:
   m_ObjectHideFlags: 0
@@ -3634,10 +3702,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parts: 0
-  typeButtons: []
+  forge: {fileID: 351705427}
+  parts: 1
+  typeButtons:
+  - {fileID: 564323100}
+  - {fileID: 1072881112}
+  - {fileID: 1666407387}
+  - {fileID: 672045813}
   weaponList: 
-  subweaponList: 
+  subweaponList: 00000000010000000200000003000000
+  armorList: 
 --- !u!114 &380352606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3681,19 +3755,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 380352607}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI_WeaponForge, Assembly-CSharp
-        m_MethodName: PageFlipNext
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &380352607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3879,6 +3941,7 @@ GameObject:
   - component: {fileID: 402793781}
   - component: {fileID: 402793780}
   - component: {fileID: 402793779}
+  - component: {fileID: 402793782}
   m_Layer: 5
   m_Name: Type1
   m_TagString: Untagged
@@ -3989,6 +4052,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402793777}
   m_CullTransparentMesh: 1
+--- !u!114 &402793782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402793777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  - {fileID: 237964126}
+  - {fileID: 97658309}
+  itemButtonList:
+  - {fileID: 2035675374}
+  - {fileID: 1049872539}
+  - {fileID: 1109701969}
+  - {fileID: 1467000580}
+  - {fileID: 1734672668}
+  material: 0
 --- !u!1 &408056155
 GameObject:
   m_ObjectHideFlags: 0
@@ -5436,6 +5525,7 @@ GameObject:
   - component: {fileID: 496362636}
   - component: {fileID: 496362635}
   - component: {fileID: 496362634}
+  - component: {fileID: 496362637}
   m_Layer: 5
   m_Name: Type3
   m_TagString: Untagged
@@ -5546,6 +5636,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496362632}
   m_CullTransparentMesh: 1
+--- !u!114 &496362637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496362632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  - {fileID: 237964126}
+  - {fileID: 97658309}
+  itemButtonList:
+  - {fileID: 2035675374}
+  - {fileID: 1049872539}
+  - {fileID: 1109701969}
+  - {fileID: 1467000580}
+  - {fileID: 1734672668}
+  material: 0
 --- !u!1 &508078975
 GameObject:
   m_ObjectHideFlags: 0
@@ -5558,6 +5674,7 @@ GameObject:
   - component: {fileID: 508078979}
   - component: {fileID: 508078978}
   - component: {fileID: 508078977}
+  - component: {fileID: 508078980}
   m_Layer: 5
   m_Name: ArmTab
   m_TagString: Untagged
@@ -5680,6 +5797,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508078975}
   m_CullTransparentMesh: 1
+--- !u!114 &508078980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508078975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  parts: 5
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  weaponList: 
+  subweaponList: 
+  armorList: 000000000100000002000000
 --- !u!1 &537595585
 GameObject:
   m_ObjectHideFlags: 0
@@ -5983,7 +6121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forgeUi: {fileID: 995754782}
-  itemData: {fileID: 11400000, guid: 4f156ff0038cca244a36670d7b209d9a, type: 2}
+  itemData: {fileID: 0}
 --- !u!114 &563960982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6201,18 +6339,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
   typeButtons:
   - {fileID: 564323100}
   - {fileID: 1072881112}
   - {fileID: 1666407387}
   - {fileID: 672045813}
-  typeName: 
   itemButtonList:
   - {fileID: 563960981}
   - {fileID: 659207511}
   - {fileID: 1750767952}
   - {fileID: 735675980}
   - {fileID: 1281359272}
+  material: 0
 --- !u!1 &564347367
 GameObject:
   m_ObjectHideFlags: 0
@@ -6320,12 +6459,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 15
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -213.59943, y: -130}
+  m_AnchoredPosition: {x: 115.310425, y: -170.5}
   m_SizeDelta: {x: 375.5595, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &564987679
@@ -6590,12 +6729,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 11
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -417, y: -80}
+  m_AnchoredPosition: {x: -88.09015, y: -120.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597839220
@@ -6748,9 +6887,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   typeButtons: []
-  typeName: 
   itemButtonList: []
+  material: 0
 --- !u!114 &597992339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7089,12 +7229,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 9
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -356, y: 311}
+  m_AnchoredPosition: {x: -27.090149, y: 270.5}
   m_SizeDelta: {x: 551.8539, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &634591685
@@ -7249,7 +7389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forgeUi: {fileID: 995754782}
-  itemData: {fileID: 11400000, guid: 741bf11a4adbc764f8e1f2a7ee9ebdb1, type: 2}
+  itemData: {fileID: 0}
 --- !u!114 &659207512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7385,10 +7525,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
   parts: 0
-  typeButtons: []
-  weaponList: 
+  typeButtons:
+  - {fileID: 564323100}
+  - {fileID: 1072881112}
+  - {fileID: 1666407387}
+  - {fileID: 672045813}
+  weaponList: 00000000010000000200000003000000
   subweaponList: 
+  armorList: 
 --- !u!114 &667619830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7606,18 +7752,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
   typeButtons:
   - {fileID: 564323100}
   - {fileID: 1072881112}
   - {fileID: 1666407387}
   - {fileID: 672045813}
-  typeName: 
   itemButtonList:
   - {fileID: 563960981}
   - {fileID: 659207511}
   - {fileID: 1750767952}
   - {fileID: 735675980}
   - {fileID: 1281359272}
+  material: 0
 --- !u!1 &709274784
 GameObject:
   m_ObjectHideFlags: 0
@@ -7671,9 +7818,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   typeButtons: []
-  typeName: 
   itemButtonList: []
+  material: 0
 --- !u!114 &709274787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8029,9 +8177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   typeButtons: []
-  typeName: 
   itemButtonList: []
+  material: 0
 --- !u!114 &719445417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9061,6 +9210,7 @@ GameObject:
   - component: {fileID: 972587061}
   - component: {fileID: 972587060}
   - component: {fileID: 972587059}
+  - component: {fileID: 972587062}
   m_Layer: 5
   m_Name: HelmetTab
   m_TagString: Untagged
@@ -9171,6 +9321,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972587057}
   m_CullTransparentMesh: 1
+--- !u!114 &972587062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972587057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  parts: 2
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  weaponList: 
+  subweaponList: 
+  armorList: 000000000100000002000000
 --- !u!1 &989807698
 GameObject:
   m_ObjectHideFlags: 0
@@ -9201,12 +9372,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 14
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -213.59943, y: -80}
+  m_AnchoredPosition: {x: 115.310425, y: -120.5}
   m_SizeDelta: {x: 375.5595, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &989807700
@@ -9835,7 +10006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86015c627c5bc5a439b703b94566a073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forgeUi: {fileID: 0}
+  forgeUi: {fileID: 1162092401}
   itemData: {fileID: 0}
 --- !u!114 &1049872540
 MonoBehaviour:
@@ -10297,18 +10468,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
   typeButtons:
   - {fileID: 564323100}
   - {fileID: 1072881112}
   - {fileID: 1666407387}
   - {fileID: 672045813}
-  typeName: 
   itemButtonList:
   - {fileID: 563960981}
   - {fileID: 659207511}
   - {fileID: 1750767952}
   - {fileID: 735675980}
   - {fileID: 1281359272}
+  material: 0
 --- !u!1 &1090418297
 GameObject:
   m_ObjectHideFlags: 0
@@ -10339,12 +10511,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 19
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -532, y: -130}
+  m_AnchoredPosition: {x: -203.09015, y: -170.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1090418299
@@ -10633,7 +10805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86015c627c5bc5a439b703b94566a073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forgeUi: {fileID: 0}
+  forgeUi: {fileID: 1162092401}
   itemData: {fileID: 0}
 --- !u!114 &1109701970
 MonoBehaviour:
@@ -11302,6 +11474,7 @@ GameObject:
   - component: {fileID: 1154792440}
   - component: {fileID: 1154792439}
   - component: {fileID: 1154792438}
+  - component: {fileID: 1154792441}
   m_Layer: 5
   m_Name: PantsTab
   m_TagString: Untagged
@@ -11424,6 +11597,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1154792436}
   m_CullTransparentMesh: 1
+--- !u!114 &1154792441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154792436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  parts: 4
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  weaponList: 
+  subweaponList: 
+  armorList: 000000000100000002000000
 --- !u!1 &1160760567
 GameObject:
   m_ObjectHideFlags: 0
@@ -11559,6 +11753,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160760567}
   m_CullTransparentMesh: 1
+--- !u!1 &1162092399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1162092400}
+  - component: {fileID: 1162092401}
+  m_Layer: 5
+  m_Name: PreviewUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1162092400
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162092399}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 634591684}
+  - {fileID: 1673478273}
+  - {fileID: 597839219}
+  - {fileID: 1786657488}
+  - {fileID: 1729378268}
+  - {fileID: 989807699}
+  - {fileID: 564987678}
+  - {fileID: 307488401}
+  - {fileID: 1856397845}
+  - {fileID: 1312468597}
+  - {fileID: 1090418298}
+  - {fileID: 68092113}
+  m_Father: {fileID: 2074247030}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -328.90985, y: 40.5}
+  m_SizeDelta: {x: 606.1803, y: 591}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1162092401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162092399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631a7b3b4b1ac5540a78da02fdcf23f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: {fileID: 0}
+  itemImage: {fileID: 0}
+  itemAtk: {fileID: 0}
+  itemDef: {fileID: 0}
+  itemHp: {fileID: 0}
+  itemIngredient1: {fileID: 0}
+  itemIngredient2: {fileID: 0}
+  itemIngredient3: {fileID: 0}
+  itemIngredient4: {fileID: 0}
 --- !u!1 &1173743132
 GameObject:
   m_ObjectHideFlags: 0
@@ -12408,6 +12672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   parts: 0
   typeButtons:
   - {fileID: 719445416}
@@ -12417,6 +12682,7 @@ MonoBehaviour:
   - {fileID: 597992338}
   weaponList: 
   subweaponList: 
+  armorList: 
 --- !u!114 &1241421373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12658,6 +12924,7 @@ GameObject:
   - component: {fileID: 1249812480}
   - component: {fileID: 1249812479}
   - component: {fileID: 1249812478}
+  - component: {fileID: 1249812481}
   m_Layer: 5
   m_Name: Type2
   m_TagString: Untagged
@@ -12768,6 +13035,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249812476}
   m_CullTransparentMesh: 1
+--- !u!114 &1249812481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249812476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  - {fileID: 237964126}
+  - {fileID: 97658309}
+  itemButtonList:
+  - {fileID: 2035675374}
+  - {fileID: 1049872539}
+  - {fileID: 1109701969}
+  - {fileID: 1467000580}
+  - {fileID: 1734672668}
+  material: 0
 --- !u!1 &1259763863
 GameObject:
   m_ObjectHideFlags: 0
@@ -13350,12 +13643,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 18
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -532, y: -80}
+  m_AnchoredPosition: {x: -203.09015, y: -120.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1312468598
@@ -14026,6 +14319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   parts: 1
   typeButtons:
   - {fileID: 719445416}
@@ -14035,6 +14329,7 @@ MonoBehaviour:
   - {fileID: 597992338}
   weaponList: 
   subweaponList: 
+  armorList: 
 --- !u!114 &1360629847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15286,6 +15581,7 @@ GameObject:
   - component: {fileID: 1467000579}
   - component: {fileID: 1467000578}
   - component: {fileID: 1467000577}
+  - component: {fileID: 1467000580}
   m_Layer: 5
   m_Name: Item4
   m_TagString: Untagged
@@ -15397,6 +15693,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467000575}
   m_CullTransparentMesh: 1
+--- !u!114 &1467000580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467000575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86015c627c5bc5a439b703b94566a073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forgeUi: {fileID: 1162092401}
+  itemData: {fileID: 0}
 --- !u!1 &1469721450
 GameObject:
   m_ObjectHideFlags: 0
@@ -15720,9 +16030,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   typeButtons: []
-  typeName: 
   itemButtonList: []
+  material: 0
 --- !u!114 &1486698413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16948,6 +17259,7 @@ GameObject:
   - component: {fileID: 1535512405}
   - component: {fileID: 1535512404}
   - component: {fileID: 1535512403}
+  - component: {fileID: 1535512406}
   m_Layer: 5
   m_Name: WeaponForgeUI
   m_TagString: Untagged
@@ -17041,6 +17353,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1535512401}
   m_CullTransparentMesh: 1
+--- !u!114 &1535512406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535512401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb26b99479b88741aafbd0cdd165095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
 --- !u!1 &1568978085
 GameObject:
   m_ObjectHideFlags: 0
@@ -17486,18 +17811,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
   typeButtons:
   - {fileID: 564323100}
   - {fileID: 1072881112}
   - {fileID: 1666407387}
   - {fileID: 672045813}
-  typeName: 
   itemButtonList:
   - {fileID: 563960981}
   - {fileID: 659207511}
   - {fileID: 1750767952}
   - {fileID: 735675980}
   - {fileID: 1281359272}
+  material: 0
 --- !u!1 &1668747863
 GameObject:
   m_ObjectHideFlags: 0
@@ -17658,17 +17984,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673478272}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 10
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -356, y: 98.767456}
+  m_AnchoredPosition: {x: -27.090149, y: 58.267456}
   m_SizeDelta: {x: 312.2209, y: 283.3842}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1673478274
@@ -17739,12 +18065,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 13
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -417, y: -180}
+  m_AnchoredPosition: {x: -88.09015, y: -220.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1729378269
@@ -17856,6 +18182,7 @@ GameObject:
   - component: {fileID: 1734672667}
   - component: {fileID: 1734672666}
   - component: {fileID: 1734672665}
+  - component: {fileID: 1734672668}
   m_Layer: 5
   m_Name: Item5
   m_TagString: Untagged
@@ -17967,6 +18294,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734672663}
   m_CullTransparentMesh: 1
+--- !u!114 &1734672668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734672663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86015c627c5bc5a439b703b94566a073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forgeUi: {fileID: 1162092401}
+  itemData: {fileID: 0}
 --- !u!1 &1750767950
 GameObject:
   m_ObjectHideFlags: 0
@@ -18281,12 +18622,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 12
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -417, y: -130}
+  m_AnchoredPosition: {x: -88.09015, y: -170.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1786657489
@@ -18439,9 +18780,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49eca9f59b0c9243b7e99bb5b22a92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forge: {fileID: 0}
   typeButtons: []
-  typeName: 
   itemButtonList: []
+  material: 0
 --- !u!114 &1807867244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18959,12 +19301,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2074247030}
-  m_RootOrder: 17
+  m_Father: {fileID: 1162092400}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -213.59943, y: -230}
+  m_AnchoredPosition: {x: 115.310425, y: -270.5}
   m_SizeDelta: {x: 375.5595, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1856397846
@@ -19719,6 +20061,7 @@ GameObject:
   - component: {fileID: 2014604496}
   - component: {fileID: 2014604495}
   - component: {fileID: 2014604494}
+  - component: {fileID: 2014604497}
   m_Layer: 5
   m_Name: ArmorTab
   m_TagString: Untagged
@@ -19841,6 +20184,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014604492}
   m_CullTransparentMesh: 1
+--- !u!114 &2014604497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014604492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  parts: 3
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  weaponList: 
+  subweaponList: 
+  armorList: 000000000100000002000000
 --- !u!1 &2035675372
 GameObject:
   m_ObjectHideFlags: 0
@@ -19895,7 +20259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86015c627c5bc5a439b703b94566a073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forgeUi: {fileID: 0}
+  forgeUi: {fileID: 1162092401}
   itemData: {fileID: 0}
 --- !u!114 &2035675375
 MonoBehaviour:
@@ -20166,6 +20530,7 @@ GameObject:
   - component: {fileID: 2061984986}
   - component: {fileID: 2061984985}
   - component: {fileID: 2061984984}
+  - component: {fileID: 2061984987}
   m_Layer: 5
   m_Name: ShoesTab
   m_TagString: Untagged
@@ -20288,6 +20653,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2061984982}
   m_CullTransparentMesh: 1
+--- !u!114 &2061984987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061984982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0900fedfacddd4ba9659acf1831a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
+  parts: 6
+  typeButtons:
+  - {fileID: 402793782}
+  - {fileID: 1249812481}
+  - {fileID: 496362637}
+  weaponList: 
+  subweaponList: 
+  armorList: 000000000100000002000000
 --- !u!1 &2074247029
 GameObject:
   m_ObjectHideFlags: 0
@@ -20300,7 +20686,7 @@ GameObject:
   - component: {fileID: 2074247034}
   - component: {fileID: 2074247033}
   - component: {fileID: 2074247032}
-  - component: {fileID: 2074247031}
+  - component: {fileID: 2074247035}
   m_Layer: 5
   m_Name: ArmorForgeUI
   m_TagString: Untagged
@@ -20329,18 +20715,7 @@ RectTransform:
   - {fileID: 353160033}
   - {fileID: 723128498}
   - {fileID: 253293704}
-  - {fileID: 634591684}
-  - {fileID: 1673478273}
-  - {fileID: 597839219}
-  - {fileID: 1786657488}
-  - {fileID: 1729378268}
-  - {fileID: 989807699}
-  - {fileID: 564987678}
-  - {fileID: 307488401}
-  - {fileID: 1856397845}
-  - {fileID: 1312468597}
-  - {fileID: 1090418298}
-  - {fileID: 68092113}
+  - {fileID: 1162092400}
   m_Father: {fileID: 351705426}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20349,18 +20724,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2400, y: 1600}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2074247031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074247029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dc57a17e82c6c74f93bdc199cae9957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &2074247032
 Animator:
   serializedVersion: 5
@@ -20420,6 +20783,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074247029}
   m_CullTransparentMesh: 1
+--- !u!114 &2074247035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074247029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4d9fdc31876f94f9e93ea16740251a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forge: {fileID: 351705427}
 --- !u!1 &2106300483
 GameObject:
   m_ObjectHideFlags: 0
