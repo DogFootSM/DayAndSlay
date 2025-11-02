@@ -17,12 +17,16 @@ public class TypeButton : MonoBehaviour
     [Header("ArmorForge")]
     [SerializeField] private MaterialType_kr material;
 
-    private void Start()
+    private void Awake()
     {
         buttonName = GetComponentInChildren<TextMeshProUGUI>();
-        SetItemButtons(typeButtons.IndexOf(this));
 
         GetComponent<Button>().onClick.AddListener(() => SetItemButtons(typeButtons.IndexOf(this)));
+    }
+
+    private void Start()
+    {
+        SetItemButtons(typeButtons.IndexOf(this));
     }
     
     /// <summary>
@@ -49,7 +53,7 @@ public class TypeButton : MonoBehaviour
             }
         }
 
-        // (4) 아이템 버튼을 설정합니다.
+        // 아이템 버튼을 설정
         for (int i = 0; i < itemButtonList.Count; i++)
         {
             if (i < itemDataList.Count)

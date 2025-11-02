@@ -3709,9 +3709,8 @@ MonoBehaviour:
   - {fileID: 1072881112}
   - {fileID: 1666407387}
   - {fileID: 672045813}
-  weaponList: 
-  subweaponList: 00000000010000000200000003000000
-  armorList: 
+  typeDict:
+    _serializedList: []
 --- !u!114 &380352606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5815,9 +5814,8 @@ MonoBehaviour:
   - {fileID: 402793782}
   - {fileID: 1249812481}
   - {fileID: 496362637}
-  weaponList: 
-  subweaponList: 
-  armorList: 000000000100000002000000
+  typeDict:
+    _serializedList: []
 --- !u!1 &537595585
 GameObject:
   m_ObjectHideFlags: 0
@@ -7532,9 +7530,8 @@ MonoBehaviour:
   - {fileID: 1072881112}
   - {fileID: 1666407387}
   - {fileID: 672045813}
-  weaponList: 00000000010000000200000003000000
-  subweaponList: 
-  armorList: 
+  typeDict:
+    _serializedList: []
 --- !u!114 &667619830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9339,9 +9336,8 @@ MonoBehaviour:
   - {fileID: 402793782}
   - {fileID: 1249812481}
   - {fileID: 496362637}
-  weaponList: 
-  subweaponList: 
-  armorList: 000000000100000002000000
+  typeDict:
+    _serializedList: []
 --- !u!1 &989807698
 GameObject:
   m_ObjectHideFlags: 0
@@ -11615,9 +11611,8 @@ MonoBehaviour:
   - {fileID: 402793782}
   - {fileID: 1249812481}
   - {fileID: 496362637}
-  weaponList: 
-  subweaponList: 
-  armorList: 000000000100000002000000
+  typeDict:
+    _serializedList: []
 --- !u!1 &1160760567
 GameObject:
   m_ObjectHideFlags: 0
@@ -12680,9 +12675,8 @@ MonoBehaviour:
   - {fileID: 1807867243}
   - {fileID: 709274786}
   - {fileID: 597992338}
-  weaponList: 
-  subweaponList: 
-  armorList: 
+  typeDict:
+    _serializedList: []
 --- !u!114 &1241421373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14327,9 +14321,8 @@ MonoBehaviour:
   - {fileID: 1807867243}
   - {fileID: 709274786}
   - {fileID: 597992338}
-  weaponList: 
-  subweaponList: 
-  armorList: 
+  typeDict:
+    _serializedList: []
 --- !u!114 &1360629847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17266,7 +17259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1535512402
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17366,6 +17359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forge: {fileID: 351705427}
+  defaultButton: {fileID: 667619830}
 --- !u!1 &1568978085
 GameObject:
   m_ObjectHideFlags: 0
@@ -20202,9 +20196,8 @@ MonoBehaviour:
   - {fileID: 402793782}
   - {fileID: 1249812481}
   - {fileID: 496362637}
-  weaponList: 
-  subweaponList: 
-  armorList: 000000000100000002000000
+  typeDict:
+    _serializedList: []
 --- !u!1 &2035675372
 GameObject:
   m_ObjectHideFlags: 0
@@ -20671,9 +20664,8 @@ MonoBehaviour:
   - {fileID: 402793782}
   - {fileID: 1249812481}
   - {fileID: 496362637}
-  weaponList: 
-  subweaponList: 
-  armorList: 000000000100000002000000
+  typeDict:
+    _serializedList: []
 --- !u!1 &2074247029
 GameObject:
   m_ObjectHideFlags: 0
@@ -20693,7 +20685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2074247030
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20796,6 +20788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forge: {fileID: 351705427}
+  defaultButton: {fileID: 972587059}
 --- !u!1 &2106300483
 GameObject:
   m_ObjectHideFlags: 0
