@@ -14,10 +14,10 @@ public class SSAS002 : MeleeSkill
         downDeg = 180f;
         upDeg = 0f;
         
-        leftHash = Animator.StringToHash("LeftSSAS002");
-        rightHash = Animator.StringToHash("RightSSAS002");
-        upHash = Animator.StringToHash("UpSSAS002");
-        downHash = Animator.StringToHash("DownSSAS002");
+        leftHash = Animator.StringToHash("SkillMotion_Left_2");
+        rightHash = Animator.StringToHash("SkillMotion_Right_2");
+        upHash = Animator.StringToHash("SkillMotion_Up_2");
+        downHash = Animator.StringToHash("SkillMotion_Down_2");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)

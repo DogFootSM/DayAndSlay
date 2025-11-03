@@ -9,10 +9,10 @@ public class SSAS004 : MeleeSkill
     
     public SSAS004(SkillNode skillNode) : base(skillNode)
     {
-        leftHash = Animator.StringToHash("LeftSSAS004");
-        rightHash = Animator.StringToHash("RightSSAS004");
-        upHash = Animator.StringToHash("UpSSAS004");
-        downHash = Animator.StringToHash("DownSSAS004");
+        leftHash = Animator.StringToHash("SkillMotion_Left_4");
+        rightHash = Animator.StringToHash("SkillMotion_Right_4");
+        upHash = Animator.StringToHash("SkillMotion_Up_4");
+        downHash = Animator.StringToHash("SkillMotion_Down_4");
         
     }
 

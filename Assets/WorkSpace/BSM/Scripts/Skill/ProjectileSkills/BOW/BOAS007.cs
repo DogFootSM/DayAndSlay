@@ -6,6 +6,10 @@ public class BOAS007 : ProjectileSkill
 {
     public BOAS007(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("SkillMotion_Left_5");
+        rightHash = Animator.StringToHash("SkillMotion_Right_5");
+        upHash = Animator.StringToHash("SkillMotion_Up_5");
+        downHash = Animator.StringToHash("SkillMotion_Down_5");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
