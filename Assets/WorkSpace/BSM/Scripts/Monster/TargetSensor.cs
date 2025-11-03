@@ -55,8 +55,8 @@ public class TargetSensor : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.blue;
-        //Gizmos.DrawWireSphere(transform.position, GetComponentInParent<NewMonsterAI>().GetChaseRange());
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, GetComponentInParent<MonsterAI>().GetChaseRange());
     }
 
     public void SetGrid(Grid grid) => this.grid = grid;
