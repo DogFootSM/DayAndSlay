@@ -78,7 +78,7 @@ public class TypeButton : MonoBehaviour
                 return item.WeaponType == (WeaponType)typeButtonIndex && item.ItemId % 2 == 0;
     
             case Parts_kr.보조무기:
-                return item.SubWeaponType == (SubWeaponType)typeButtonIndex && item.ItemId % 2 == 0;
+                return item.SubWeaponType == (SubWeaponType)typeButtonIndex;
 
         
             case Parts_kr.투구:
