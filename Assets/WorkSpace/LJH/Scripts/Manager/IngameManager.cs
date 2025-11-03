@@ -8,6 +8,12 @@ public class IngameManager : MonoBehaviour
     
     public StageNum curStage;
 
+    public float debt;
+    public float interest;
+           
+    public float upkeepCost;
+    public float facilityCost;
+
     private void Awake()
     {
         SingletonInit();
@@ -27,12 +33,16 @@ public class IngameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetStage(StageNum stage)
+    public void SetStage(StageNum stage) 
     {
         curStage = stage;
     }
 
     public StageNum GetStage() => curStage;
+
+    private float GetInterest() => interest = debt * 0.01f;
+    
+    
 
 
 

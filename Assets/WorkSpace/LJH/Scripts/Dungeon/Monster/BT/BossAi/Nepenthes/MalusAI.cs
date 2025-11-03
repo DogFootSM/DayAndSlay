@@ -4,7 +4,7 @@ using UnityEngine;
 public class MalusAI : NepenthesAI
 {
     [Header("소환 조건 조정")]
-    [SerializeField] private float summonThresholdPercent = 0;
+    //[SerializeField] private float summonThresholdPercent = 0;
 
     [SerializeField] private float rootAttackCooldown = 10f;
     [SerializeField] private float summonCooldown = 10f;
