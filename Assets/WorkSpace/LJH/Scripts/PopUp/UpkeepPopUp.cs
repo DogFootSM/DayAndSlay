@@ -6,6 +6,9 @@ using UnityEngine;
 public class UpkeepPopUp : MonoBehaviour
 {
     private Animator animator;
+    private AudioSource audio;
+    private AudioClip clip;
+    
     [SerializeField]private List<GameObject> Upkeeptexts;
     
     [SerializeField] private float animationDuration = 0.75f; 
@@ -13,16 +16,20 @@ public class UpkeepPopUp : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
+        clip = audio.clip;
     }
 
     public void PlayOpen()
     {
+        audio.PlayOneShot(clip);
         animator.Play("UpkeepOpen");
         StartCoroutine(OpenAnimationCompleteCoroutine());
     }
 
     public void PlayClose()
     {
+        audio.PlayOneShot(clip);
         animator.Play("UpkeepClose");
         StartCoroutine(CloseAnimationCompleteCoroutine());
     }
