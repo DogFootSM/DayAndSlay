@@ -7,6 +7,10 @@ public class SPAS002 : MeleeSkill
 {
     public SPAS002(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("SkillMotion_Left_2");
+        rightHash = Animator.StringToHash("SkillMotion_Right_2");
+        upHash = Animator.StringToHash("SkillMotion_Up_2");
+        downHash = Animator.StringToHash("SkillMotion_Down_2");
     }
 
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
@@ -16,7 +20,17 @@ public class SPAS002 : MeleeSkill
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
         skillDamage = GetSkillDamage();
-         
+
+        if (direction.x > 0)
+        {
+            particleSystemRenderer.flip = Vector3.zero;
+        }
+        else
+        {
+            particleSystemRenderer.flip = new Vector3(0, 1, 0);
+        }
+        
+        
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
         Sort.SortMonstersByNearest(cols, playerPosition);
         
