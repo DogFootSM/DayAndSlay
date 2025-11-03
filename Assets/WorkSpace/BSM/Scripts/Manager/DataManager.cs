@@ -274,7 +274,7 @@ public class DataManager : MonoBehaviour
     public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
     {
         //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
-        SlotId = 2;
+        SlotId = 1;
         
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
             {
