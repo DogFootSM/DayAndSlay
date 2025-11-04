@@ -10,7 +10,10 @@ public class SPAS010 : MeleeSkill
     
     public SPAS010(SkillNode skillNode) : base(skillNode)
     {
-        
+        leftHash = Animator.StringToHash("SkillMotion_Left_10");
+        rightHash = Animator.StringToHash("SkillMotion_Right_10");
+        upHash = Animator.StringToHash("SkillMotion_Up_10");
+        downHash = Animator.StringToHash("SkillMotion_Down_10");
     }
     
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
