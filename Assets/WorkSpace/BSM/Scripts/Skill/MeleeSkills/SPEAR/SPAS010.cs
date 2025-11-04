@@ -17,9 +17,8 @@ public class SPAS010 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
-        
-        LightManager.Instance.LightningFlash();
         GetMonstersCenter(playerPosition);
+        
         //TODO: Hit Action 추가 필요
         pos = playerPosition; 
     }
@@ -52,22 +51,16 @@ public class SPAS010 : MeleeSkill
         }
         
         Vector2 center = new Vector2(cx, cy);
-        skillNode.PlayerSkillReceiver.StartCoroutine(WaitForDarknessRoutine(center, cols.Length));
-    }
-
-    private IEnumerator WaitForDarknessRoutine(Vector2 center, int length)
-    {
-        //번개 화면 연출이 끝날 때까지 대기
-        yield return new WaitUntil(() => LightManager.Instance.IsLightningFlash);
+        
         SkillEffect(center, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         //감지된 몬스터가 있을 경우에만 창 이펙트 재생
-        if (length > 0)
+        if (cols.Length > 0)
         {
             SpawnParticleAtRandomPosition(center, skillNode.skillData.SkillRadiusRange, 2f, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", 50);
         }
     }
-    
+
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
