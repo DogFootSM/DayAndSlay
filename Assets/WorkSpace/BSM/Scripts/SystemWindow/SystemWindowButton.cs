@@ -10,7 +10,7 @@ public class SystemWindowButton : MonoBehaviour
     [SerializeField] private SystemWindowController windowController;
 
     private Button systemWindowButton;
-
+    
     private void Awake() => Init();
 
     private void Init()

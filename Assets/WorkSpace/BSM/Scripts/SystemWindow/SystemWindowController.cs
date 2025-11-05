@@ -14,7 +14,7 @@ public class SystemWindowController : MonoBehaviour
     [SerializeField] private GameObject quickSlotCanvas;
     
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
-    private SystemType currentSystemType;
+    private SystemType currentSystemType = SystemType.SIZE;
     
     private void Update()
     {
