@@ -12,6 +12,7 @@ using Zenject;
 
 public class InventoryInteraction :
     InventoryController,
+    IPointerDownHandler, IPointerUpHandler,
     IPointerClickHandler,
     IDragHandler, IBeginDragHandler, IEndDragHandler,
     ISavable
@@ -24,7 +25,8 @@ public class InventoryInteraction :
     [SerializeField] private Button equipButton;
     [SerializeField] private TextMeshProUGUI equipStateButtonText;
     [SerializeField] private SystemWindowController systemWindowController;
- 
+    [SerializeField] private ScrollRect inventoryScrollRect;
+    
     [Inject] private SaveManager saveManager;
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
@@ -33,6 +35,8 @@ public class InventoryInteraction :
     private InventorySlot beginSlot;
     private InventorySlot endSlot;
     private InventorySlot selectedSlot;
+    
+    private CustomScrollRect customScrollRect = new CustomScrollRect();
     
     private bool beginSlotNullCheck => beginSlot != null && beginSlot.CurSlotItem == null;
     private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY;
@@ -141,10 +145,23 @@ public class InventoryInteraction :
         }  
     }
     
+    
+    public void OnPointerDown(PointerEventData eventData)
+    { 
+        //inventoryScrollRect.enabled = false;
+        customScrollRect.allowDrag = false;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        //inventoryScrollRect.enabled = true;
+        customScrollRect.allowDrag = true;
+    }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         if (closeInventory) return;
-
+        Debug.Log("클릭");
         results.Clear();
         
         inventoryRayCanvas.Raycast(eventData, results);
@@ -172,7 +189,7 @@ public class InventoryInteraction :
     {
         if (beginSlotNullCheck) return;
         if (closeInventory) return;
- 
+        
         //마우스가 이동하는 위치로 아이템 이미지 위치 변경
         dragItemImage.transform.position = eventData.position;
     }
@@ -181,7 +198,7 @@ public class InventoryInteraction :
     {
         if (closeInventory) return;
         results.Clear(); 
-        
+
         inventoryRayCanvas.Raycast(eventData, results);
         
         if(results.Count < 1) return;
@@ -206,8 +223,8 @@ public class InventoryInteraction :
         if (dragItemImage.gameObject.activeSelf)
         {
             dragItemImage.gameObject.SetActive(false);
-        } 
-        
+        }
+
         inventoryRayCanvas.Raycast(eventData, results);
 
         foreach (RaycastResult pde in results)
@@ -219,7 +236,7 @@ public class InventoryInteraction :
                 SwapInventorySlot(endSlot, beginSlot);
                 break;
             } 
-        } 
+        }
     }
 
     /// <summary>
@@ -360,5 +377,6 @@ public class InventoryInteraction :
                 }
             );
         }
-    }  
+    }
+
 }
