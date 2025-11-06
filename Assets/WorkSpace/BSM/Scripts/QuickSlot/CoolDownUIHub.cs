@@ -17,7 +17,14 @@ public static class CoolDownUIHub
         if (!CoolDownImageMap.ContainsKey(quickSlotType))
         {
             CoolDownImageMap.Add(quickSlotType, coolDownImage);
-        } 
+            Debug.Log($"퀵슬롯 추가됨 {quickSlotType}");
+        }
+        else
+        {
+            CoolDownImageMap[quickSlotType] = coolDownImage;
+            
+            Debug.Log($"{quickSlotType} : {CoolDownImageMap[quickSlotType].Equals(coolDownImage)}");
+        }
     }
 
     /// <summary>
