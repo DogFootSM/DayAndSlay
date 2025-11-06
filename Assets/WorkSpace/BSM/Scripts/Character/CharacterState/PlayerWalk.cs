@@ -39,6 +39,7 @@ public class PlayerWalk : PlayerState
             playerController.ChangeState(CharacterStateType.ATTACK);
         }
         
+        CheckSkillKeyInput();
     }
     
     public override void FixedUpdate()

@@ -10,10 +10,14 @@ public class SPAS008 : MeleeSkill
     
     public SPAS008(SkillNode skillNode) : base(skillNode)
     {
+        leftHash = Animator.StringToHash("LeftAttack3");
+        rightHash = Animator.StringToHash("RightAttack3");
+        upHash = Animator.StringToHash("UpAttack3");
+        downHash = Animator.StringToHash("DownAttack3");
     }
     
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
-    {
+    { 
         ListClear();
         //타겟 위치로 이동 후 표식 설정 Off
         skillNode.IsMarkOnTarget = false;

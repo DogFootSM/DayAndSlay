@@ -56,12 +56,7 @@ public class SkillSlotInvoker : MonoBehaviour
         if (skillNode.IsCoolDownReset && !skillNode.PlayerModel.IsCasting)
         {
             slotSkill = SkillFactoryManager.GetSkillFactory(skillNode);
-
-             
-            //스킬 애니메이션 재생
-            playerController.BodyAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
-            playerController.WeaponAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
-            
+ 
             //특정 스킬을 사용했는지?
             if (slotSkill is SPAS008 spas008)
             {
@@ -93,7 +88,35 @@ public class SkillSlotInvoker : MonoBehaviour
                         StopCoroutine(markDashWaitCo);
                         markDashWaitCo = null;
                     }
-                     
+                    
+                    //현재 캐릭터 위치와 타겟 몬스터 위치 비교하여 방향 보정
+                    if (Mathf.Abs(curDirection.x) > Mathf.Abs(curDirection.y))
+                    {
+                        if (skillNode.GetMarkOnTarget().transform.position.x > transform.position.x)
+                        {
+                            curDirection = Vector2.right;
+                        }
+                        else
+                        {
+                            curDirection = Vector2.left;
+                        } 
+                    }
+                    else
+                    {
+                        if (skillNode.GetMarkOnTarget().transform.position.y > transform.position.y)
+                        {
+                            curDirection = Vector2.up;
+                        }
+                        else
+                        {
+                            curDirection = Vector2.down;
+                        } 
+                    }
+                    
+                    //스킬 애니메이션 재생
+                    playerController.BodyAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
+                    playerController.WeaponAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
+                    
                     slotSkill.UseSkill(curDirection, transform.position);
                     skillNode.IsCoolDownReset = false;
                     
@@ -105,8 +128,13 @@ public class SkillSlotInvoker : MonoBehaviour
                     return skillNode.skillData.UseSkillDelay;
                 }
             }
+            //창 8번 표식 스킬 외 스킬 사용
             else
             {
+                //스킬 애니메이션 재생
+                playerController.BodyAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
+                playerController.WeaponAnimator.Play(slotSkill.SendSkillAnimationHash(curDirection));
+                 
                 slotSkill.UseSkill(curDirection, transform.position);
                 skillNode.IsCoolDownReset = false;
                 CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
