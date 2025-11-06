@@ -70,10 +70,10 @@ public class InventorySlot : MonoBehaviour
     /// </summary>
     /// <param name="item">슬롯에 변경할 아이템</param>
     /// <param name="count">변경할 아이템 개수</param> 
-    public void ChangeItem(ItemData item, int count)
+    public void ChangeItem(ItemData item, int count, Sprite sprite)
     {
         curSlotItem = item;
-        itemImage.sprite = item.ItemImage;
+        itemImage.sprite = sprite;
         itemCount = count;
         CountTextActive();
 
