@@ -21,7 +21,6 @@ public class SystemWindowController : MonoBehaviour
     
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
     private SystemType currentSystemType = SystemType.SIZE;
-    private SystemType beforeSystemType;
     private Coroutine _flippingCo;
     
     private int _bookFlippingAnimHash = Animator.StringToHash("BookFlipping");
@@ -47,9 +46,6 @@ public class SystemWindowController : MonoBehaviour
     {
         GameObject openWindow = systemWindows[systemType];
 
-        //이전에 오픈되어 있던 타입
-        beforeSystemType = currentSystemType;
-        
         //새로 오픈된 시스템 타입 할당
         currentSystemType = systemType;
         

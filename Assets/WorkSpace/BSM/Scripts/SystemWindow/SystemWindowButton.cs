@@ -14,7 +14,6 @@ public class SystemWindowButton : MonoBehaviour
     private Button systemWindowButton;
     private int _tabOpenAnimHash = Animator.StringToHash("TabOpen");
     private int _tabCloseAnimHash = Animator.StringToHash("TabClose");
-    private int _tablCloseTrigger = Animator.StringToHash("TabClose");
     
     private void Awake() => Init();
 
@@ -29,16 +28,16 @@ public class SystemWindowButton : MonoBehaviour
     public void SwitchTab(bool isOpen)
     {
         isActive = isOpen;
-        
-        int playAnim = isOpen ? _tabOpenAnimHash : _tabCloseAnimHash;
-        
-        _tabAnimator.Play(playAnim);
+
+        _tabAnimator.Rebind();
+        _tabAnimator.Play(_tabOpenAnimHash);
     }
 
     public void CloseTab()
     {
         isActive = false;
-        _tabAnimator.SetTrigger(_tablCloseTrigger);
+        
+        _tabAnimator.Play(_tabCloseAnimHash);
     }
     
 }
