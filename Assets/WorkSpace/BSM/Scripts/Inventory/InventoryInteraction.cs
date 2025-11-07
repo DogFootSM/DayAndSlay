@@ -13,7 +13,6 @@ using Zenject;
 public class InventoryInteraction :
     InventoryController,
     IPointerClickHandler,
-    IDragHandler, IBeginDragHandler, IEndDragHandler,
     ISavable
 {
     [SerializeField] GraphicRaycaster inventoryRayCanvas;
@@ -24,7 +23,9 @@ public class InventoryInteraction :
     [SerializeField] private Button equipButton;
     [SerializeField] private TextMeshProUGUI equipStateButtonText;
     [SerializeField] private SystemWindowController systemWindowController;
- 
+    [SerializeField] private ScrollRect inventoryScrollRect;
+    [SerializeField] private CustomScrollRect customScrollRect;
+
     [Inject] private SaveManager saveManager;
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
@@ -33,16 +34,15 @@ public class InventoryInteraction :
     private InventorySlot beginSlot;
     private InventorySlot endSlot;
     private InventorySlot selectedSlot;
+
     
     private bool beginSlotNullCheck => beginSlot != null && beginSlot.CurSlotItem == null;
     private bool closeInventory => systemWindowController.GetSystemType() != SystemType.INVENTORY;
-    private LayerMask dimmedLayer;
 
     new void Awake()
     {
         base.Awake();
         saveManager.SavableRegister(this);
-        dimmedLayer = LayerMask.GetMask("Dimmed");
         //SetSlotItemData();
         //SetOwnedItemSet(); 
         //equipButton.onClick.AddListener(Equip);
@@ -55,6 +55,19 @@ public class InventoryInteraction :
         SetOwnedItemSet();
         equipButton.onClick.AddListener(Equip);
     }
+
+    private void OnEnable()
+    {
+        InventorySlotEvent.OnSlotBeginDrag += HandleBeginDrag;
+        InventorySlotEvent.OnSlotDrag += HandleDrag;
+        InventorySlotEvent.OnSlotEndDrag += HandleEndDrag;
+    }
+
+    private void OnDisable()
+    {
+        InventorySlotEvent.OnSlotBeginDrag -= HandleBeginDrag;
+        InventorySlotEvent.OnSlotDrag -= HandleDrag;
+        InventorySlotEvent.OnSlotEndDrag -= HandleEndDrag;    }
 
     /// <summary>
     /// 인벤토리 슬롯의 장비 아이템 장착, 장착 해제
@@ -144,7 +157,6 @@ public class InventoryInteraction :
     public void OnPointerClick(PointerEventData eventData)
     {
         if (closeInventory) return;
-
         results.Clear();
         
         inventoryRayCanvas.Raycast(eventData, results);
@@ -163,25 +175,17 @@ public class InventoryInteraction :
             UpdateEquipButton();
         } 
     }
-    
+
     /// <summary>
-    /// 아이템 슬롯 드래그 동작
+    /// 아이템 드래그 시작 동작을 Inventory Slot에게 전달 받음
     /// </summary>
     /// <param name="eventData"></param>
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (beginSlotNullCheck) return;
-        if (closeInventory) return;
- 
-        //마우스가 이동하는 위치로 아이템 이미지 위치 변경
-        dragItemImage.transform.position = eventData.position;
-    }
- 
-    public void OnBeginDrag(PointerEventData eventData)
+    private void HandleBeginDrag(PointerEventData eventData)
     {
         if (closeInventory) return;
         results.Clear(); 
-        
+        CustomScrollRect.allowDrag = true;
+
         inventoryRayCanvas.Raycast(eventData, results);
         
         if(results.Count < 1) return;
@@ -199,15 +203,33 @@ public class InventoryInteraction :
         } 
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    /// <summary>
+    /// 아이템 드래그 중인 동작을 Inventory Slot에게 전달 받음
+    /// </summary>
+    /// <param name="eventData"></param>
+    private void HandleDrag(PointerEventData eventData)
+    {
+        if (beginSlotNullCheck) return;
+        if (closeInventory) return;
+        
+        //마우스가 이동하는 위치로 아이템 이미지 위치 변경
+        dragItemImage.transform.position = eventData.position;
+    }
+
+    /// <summary>
+    /// 아이템 드래그 끝난 동작을 전달 받음
+    /// </summary>
+    /// <param name="eventData"></param>
+    private void HandleEndDrag(PointerEventData eventData)
     {
         if (closeInventory) return;
         
         if (dragItemImage.gameObject.activeSelf)
         {
             dragItemImage.gameObject.SetActive(false);
-        } 
-        
+        }
+        CustomScrollRect.allowDrag = false;
+
         inventoryRayCanvas.Raycast(eventData, results);
 
         foreach (RaycastResult pde in results)
@@ -219,9 +241,9 @@ public class InventoryInteraction :
                 SwapInventorySlot(endSlot, beginSlot);
                 break;
             } 
-        } 
+        }
     }
-
+    
     /// <summary>
     /// 인벤토리 슬롯 스왑
     /// </summary>
@@ -229,36 +251,37 @@ public class InventoryInteraction :
     /// <param name="beginSlot">처음 감지한 슬롯</param>
     private void SwapInventorySlot(InventorySlot endSlot, InventorySlot beginSlot)
     {
+        if (endSlot == null || beginSlot == null) return;
+        
         if (beginSlot.CurSlotItem == null) return;
         
         if (endSlot.CurSlotItem == null)
         {
-            endSlot.ChangeItem(beginSlot.CurSlotItem, beginSlot.ItemCount); 
-            beginSlot.RemoveItem();
+            Sprite endSlotImage = endSlot.GetComponent<Image>().sprite;
+            
+            endSlot.ChangeItem(beginSlot.CurSlotItem, beginSlot.ItemCount, beginSlot.CurSlotItem.ItemImage); 
+            beginSlot.ChangeItem(null, 0, endSlotImage);
             
             endSlot.IsEquip = beginSlot.IsEquip;
-            UpdateEquipSlot(endSlot); 
-            
             beginSlot.IsEquip = false;
+            UpdateEquipSlot(endSlot); 
+            UpdateEquipSlot(beginSlot); 
         }
         else
         { 
             ItemData beginSlotItem = beginSlot.CurSlotItem;
             bool beginEquipState = beginSlot.IsEquip;
             int beginSlotCount = beginSlot.ItemCount;
-
-            beginSlot.ChangeItem(endSlot.CurSlotItem, endSlot.ItemCount);
+        
+            beginSlot.ChangeItem(endSlot.CurSlotItem, endSlot.ItemCount, endSlot.CurSlotItem.ItemImage);
             beginSlot.IsEquip = endSlot.IsEquip;
              
-            endSlot.ChangeItem(beginSlotItem, beginSlotCount);
+            endSlot.ChangeItem(beginSlotItem, beginSlotCount, beginSlotItem.ItemImage);
             endSlot.IsEquip = beginEquipState;
-  
+        
             UpdateEquipSlot(beginSlot);
             UpdateEquipSlot(endSlot); 
-        }
- 
-        UpdateEquipDetailTab();
-        UpdateEquipButton();
+        }  
     }
 
     /// <summary>
@@ -360,5 +383,6 @@ public class InventoryInteraction :
                 }
             );
         }
-    }  
+    }
+
 }

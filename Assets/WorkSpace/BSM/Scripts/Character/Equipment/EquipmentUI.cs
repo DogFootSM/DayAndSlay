@@ -25,21 +25,18 @@ public class EquipmentUI : MonoBehaviour
 
     /// <summary>
     /// 장착 아이템에 따른 이미지 변경
-    /// </summary>
-    /// <param name="equipmentSlot"></param>
+    /// </summary> 
     private void EquipItemUI(ItemData newItem, bool isEquip)
     {
         Parts key = newItem.Parts;
-
-        //장착과 장착 해제
+        
+        //아이템 장착, 해제 여부에 따른 슬롯 이미지 활성화, 비활성화
+        partsUIDict[key].gameObject.SetActive(isEquip);
+        
+        //장착 시 아이템 이미지 할당
         if (isEquip)
         {
             partsUIDict[key].sprite = newItem.ItemImage;
-        }
-        else
-        {
-            partsUIDict[key].sprite = null;
-        }
-        
+        } 
     }
 }
