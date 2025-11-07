@@ -264,7 +264,7 @@ public enum MapType
 [Serializable]
 public enum SystemType
 {
-    STATUS, INVENTORY, SKILL, RECIPE, SETTING, SIZE
+    STATUS, INVENTORY, SKILL, RECIPE, SETTING, WEAPON, SUBWEAPON, HELMET, ARMOR, PANTS, GLOVE, SHOES, SIZE
 }
 
 /// <summary>
