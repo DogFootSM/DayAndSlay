@@ -32,13 +32,17 @@ public class ForgeUI : BaseUI
         itemDef.text = itemData.Defence.ToString();
         itemHp.text = itemData.Hp.ToString();
 
-        itemIngredient1.text = itemDatabaseManager.GetItemByID(itemData.ingredients_1).ToString();
-        itemIngredient2.text = itemDatabaseManager.GetItemByID(itemData.ingredients_2).ToString();
-        itemIngredient3.text = itemDatabaseManager.GetItemByID(itemData.ingredients_3).ToString();
+        itemIngredient1.text = itemDatabaseManager.GetItemByID(itemData.ingredients_1).Name;
+        itemIngredient2.text = itemDatabaseManager.GetItemByID(itemData.ingredients_2).Name;
+        itemIngredient3.text = itemDatabaseManager.GetItemByID(itemData.ingredients_3).Name;
 
         if (itemData.ingredients_4 != 000000)
         {
-            itemIngredient4.text = itemDatabaseManager.GetItemByID(itemData.ingredients_4).ToString();
+            itemIngredient4.text = itemDatabaseManager.GetItemByID(itemData.ingredients_4).Name;
+        }
+        else
+        {
+            itemIngredient4.text = "";
         }
     }
 
