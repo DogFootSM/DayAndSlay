@@ -16,6 +16,7 @@ public class ItemData : ScriptableObject
     public Parts Parts;
     public WeaponType WeaponType;
     public SubWeaponType SubWeaponType;
+    public MaterialType MaterialType;
     public ItemSet ItemSet;
 
     public string Name;

@@ -4,22 +4,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TypeButton : MonoBehaviour
+public class TypeButton_Armor : MonoBehaviour
 {
   
-    [SerializeField][SerializedDictionary] private SerializedDictionary<WeaponType_kr, List<ItemData>> dict;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<MaterialType_kr, List<ItemData>> mateDict;
 
-    [SerializeField] private List<TypeButton> typeButtons;    
+    [SerializeField] private List<TypeButton_Armor> typeButtons;    
     [SerializeField] private List<ItemButton> itemButtons;
 
 
     private void Start()
     {
-        dict[WeaponType_kr.활] = ItemDatabaseManager.instance.GetWantTypeItem(WeaponType.BOW);
-        dict[WeaponType_kr.한손검] = ItemDatabaseManager.instance.GetWantTypeItem(WeaponType.SHORT_SWORD);
-        dict[WeaponType_kr.창] = ItemDatabaseManager.instance.GetWantTypeItem(WeaponType.SPEAR);
-        dict[WeaponType_kr.완드] = ItemDatabaseManager.instance.GetWantTypeItem(WeaponType.WAND);
-
+        
+        mateDict[MaterialType_kr.천] = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.CLOTH);
+        mateDict[MaterialType_kr.가죽] = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.LEATHER);
+        mateDict[MaterialType_kr.중갑] = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.PLATE);
         SetMyName();
         
         Button btn = GetComponent<Button>();
@@ -32,7 +31,7 @@ public class TypeButton : MonoBehaviour
     {
         TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
         
-        text.text = ((WeaponType_kr)typeButtons.IndexOf(this)).ToString();;
+        text.text = ((MaterialType_kr)typeButtons.IndexOf(this)+1).ToString();;
     }
     
     /// <summary>
@@ -47,8 +46,7 @@ public class TypeButton : MonoBehaviour
     {
         for (int i = 0; i < itemButtons.Count; i++)
         {
-            
-            itemButtons[i].SetButtonItem(dict[(WeaponType_kr)index][i]);
+            itemButtons[i].SetButtonItem(mateDict[(MaterialType_kr)index+1][i]);
         }
     }
 

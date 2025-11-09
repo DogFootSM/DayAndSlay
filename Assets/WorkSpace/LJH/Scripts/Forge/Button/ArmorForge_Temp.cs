@@ -13,8 +13,4 @@ public class ArmorForge_Temp : MonoBehaviour
         defaultButton.onClick.Invoke();
     }
 
-    private void Start()
-    {
-        defaultButton.onClick.Invoke();
-    }
 }

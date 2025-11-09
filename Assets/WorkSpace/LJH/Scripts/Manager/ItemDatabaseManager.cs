@@ -105,4 +105,67 @@ public class ItemDatabaseManager : MonoBehaviour
 
         return list;
     }
+
+
+    /// <summary>
+    /// 원하는 무기타입의 아이템을 가져오는 함수
+    /// </summary>
+    /// <param name="weapon">무기 타입 입력</param>
+    /// <returns></returns>
+    public List<ItemData> GetWantTypeItem(WeaponType weapon)
+    {
+        List<ItemData> list = new List<ItemData>();
+
+        foreach (ItemData item in GetNormalWeaponItem())
+        {
+            if (item.WeaponType == weapon)
+            {
+                list.Add(item);
+            }
+        }
+        
+        return list;
+    }
+    
+    /// <summary>
+    /// 원하는 보조무기타입의 아이템을 가져오는 함수
+    /// </summary>
+    /// <param name="subweapon">보조 무기 타입 입력</param>
+    /// <returns></returns>
+    public List<ItemData> GetWantTypeItem(SubWeaponType subweapon)
+    {
+        List<ItemData> list = new  List<ItemData>();
+
+        foreach (ItemData item in GetSubWeaponItem())
+        {
+            if (item.SubWeaponType == subweapon)
+            {
+                list.Add(item);
+            }
+        }
+        
+        return list;
+    }
+    
+    /// <summary>
+    /// 원하는 방어구 재질의 아이템을 가져오는 함수
+    /// </summary>
+    /// <param name="armorParts">방어구 재질 입력</param>
+    /// <returns></returns>
+    public List<ItemData> GetWantTypeItem(MaterialType armorMaterial)
+    {
+        List<ItemData> list = new List<ItemData>();
+
+        
+        foreach (ItemData item in GetAllEquipItem())
+        {
+            if (item.MaterialType == armorMaterial)
+            {
+                list.Add(item);
+            }
+        }
+        
+        return list;
+    }
+    
 }
