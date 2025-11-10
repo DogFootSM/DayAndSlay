@@ -69,7 +69,7 @@ public class ItemDatabaseManager : MonoBehaviour
             }
         }
 
-        return list;
+        return list.OrderBy(item => item.ItemId).ToList();
     }
 
     public List<ItemData> GetSubWeaponItem()
@@ -84,7 +84,7 @@ public class ItemDatabaseManager : MonoBehaviour
             }
         }
         
-        return list;
+        return list.OrderBy(item => item.ItemId).ToList();
     }
 
     /// <summary>

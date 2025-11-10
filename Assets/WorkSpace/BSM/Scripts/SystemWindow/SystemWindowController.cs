@@ -69,7 +69,7 @@ public class SystemWindowController : MonoBehaviour
     /// <summary>
     /// 시스템 창 종료
     /// </summary>
-    private void AllCloseSystemWindows()
+    public void AllCloseSystemWindows()
     {
         while (canvasStack.Count != 0)
         {
