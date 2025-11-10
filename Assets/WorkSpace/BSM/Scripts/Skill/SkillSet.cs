@@ -14,6 +14,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI skillCurLevelText;
     [SerializeField] private TextMeshProUGUI skillMaxLevelText;
     [SerializeField] private GraphicRaycaster skillRaycaster;
+    [SerializeField] private TextMeshProUGUI skillNameText;
     
     private List<RaycastResult> results = new List<RaycastResult>();
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
@@ -43,6 +44,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     private void InitSkill()
     {
         skillIconImage.sprite = CurSkillNode.skillData.SkillIcon;
+        skillNameText.text = CurSkillNode.skillData.SkillName;
         UpdateSkillLevelUI();
     }
     

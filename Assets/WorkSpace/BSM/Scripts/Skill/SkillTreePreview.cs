@@ -73,7 +73,7 @@ public class SkillTreePreview : MonoBehaviour
             for (int j = 0; j < skillCount; j++)
             {
                 GameObject skillInstance =
-                    Instantiate(skillSetPrefab, skillTabs[i].transform.GetChild(0).GetChild(0).transform);
+                    Instantiate(skillSetPrefab, skillTabs[i].transform.GetChild(1).GetChild(0).transform);
 
                 SkillSet skillSet = skillInstance.GetComponent<SkillSet>();
                 skillSet.CurSkillNode = skillNode[(WeaponType)i][j];
@@ -104,7 +104,7 @@ public class SkillTreePreview : MonoBehaviour
         if (!previewTab.activeSelf) previewTab.SetActive(true);
         
         selectedSkillNode = skillNode;
-        previewSkillNameText.text = skillNode.skillData.SkillId;
+        previewSkillNameText.text = skillNode.skillData.SkillName;
         previewSkillDescriptionText.text = skillNode.skillData.SkillDescription;
         previewSkillIcon.sprite = skillNode.skillData.SkillIcon;
         
@@ -131,13 +131,13 @@ public class SkillTreePreview : MonoBehaviour
 
         if (prerequisiteCount == 0) return;
         
-        string prerequisite = "";
+        string prerequisite = "* ";
 
         for (int i = 0; i < selectedSkillNode.PrerequisiteSkillNode.Count; i++)
         {
             if (selectedSkillNode.PrerequisiteSkillNode[i].CurSkillLevel < 1)
             {
-                prerequisite += selectedSkillNode.PrerequisiteSkillNode[i].skillData.SkillId;
+                prerequisite += selectedSkillNode.PrerequisiteSkillNode[i].skillData.SkillName;
                 
                 if (i < prerequisiteCount - 1)
                 {
@@ -146,7 +146,7 @@ public class SkillTreePreview : MonoBehaviour
             } 
         } 
         
-        prerequisite += " 스킬의 선행 조건 달성이 필요합니다.";
+        prerequisite += " 달성 필요";
         previewSkillPrerequisiteText.text = prerequisite; 
     }
     
