@@ -18,6 +18,18 @@ public class TypeButton : MonoBehaviour
 
     private void Start()
     {
+        DictInit();
+
+        SetMyName();
+        
+        Button btn = GetComponent<Button>();
+        SetItemButtonData(0);
+        btn.onClick.AddListener(() => SetItemButtonData(typeButtons.IndexOf(this)));
+
+    }
+
+    private void DictInit()
+    {
         ItemDatabaseManager IDM = ItemDatabaseManager.instance;
 
         if (parentsTapButton.WhoAmI() == 0)
@@ -35,12 +47,6 @@ public class TypeButton : MonoBehaviour
             _dict[SubWeaponType_kr.¿¥ºí·½] = IDM.GetWantTypeItem(SubWeaponType.EMBLEM);
             _dict[SubWeaponType_kr.¸¶µµ¼­] = IDM.GetWantTypeItem(SubWeaponType.BOOK);
         }
-
-        SetMyName();
-        
-        Button btn = GetComponent<Button>();
-        SetItemButtonData(typeButtons.IndexOf(this));
-        btn.onClick.AddListener(() => SetItemButtonData(typeButtons.IndexOf(this)));
 
     }
 

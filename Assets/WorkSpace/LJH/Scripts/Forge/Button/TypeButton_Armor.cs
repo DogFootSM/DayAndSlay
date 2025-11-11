@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using TMPro;
@@ -15,6 +16,20 @@ public class TypeButton_Armor : MonoBehaviour
 
 
     private void Start()
+    {
+        SetMyName();
+        
+        Button btn = GetComponent<Button>();
+        
+        btn.onClick.AddListener(() => SetItemButtonData(typeButtons.IndexOf(this)));
+        
+        MateDictInit();
+        
+        SetItemButtonData(0);
+
+    }
+
+    public void MateDictInit()
     {
         GameObject tap_armor = null;
 
@@ -61,13 +76,6 @@ public class TypeButton_Armor : MonoBehaviour
         }
         
         mateDict[MaterialType_kr.Áß°©] = tempPlateList;
-        
-        SetMyName();
-        
-        Button btn = GetComponent<Button>();
-        SetItemButtonData(typeButtons.IndexOf(this));
-        btn.onClick.AddListener(() => SetItemButtonData(typeButtons.IndexOf(this)));
-
     }
 
     private void SetMyName()
@@ -78,12 +86,26 @@ public class TypeButton_Armor : MonoBehaviour
     }
     
 
-    private void SetItemButtonData(int index)
+    public void SetItemButtonData(int index)
     {
-        for (int i = 0; i < itemButtons.Count; i++)
+        if (mateDict == null)
         {
-            itemButtons[i].SetButtonItem(mateDict[(MaterialType_kr)index+1][i]);
+            StartCoroutine(DelayCoroutine());
         }
+
+        else
+        {
+            for (int i = 0; i < itemButtons.Count; i++)
+            {
+                itemButtons[i].SetButtonItem(mateDict[(MaterialType_kr)index + 1][i]);
+            }
+        }
+    }
+
+    private IEnumerator DelayCoroutine()
+    {
+        yield return new WaitForSeconds(0.05f);
+        SetItemButtonData(0);
     }
 
 
