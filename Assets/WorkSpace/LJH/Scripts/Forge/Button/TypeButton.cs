@@ -47,24 +47,38 @@ public class TypeButton : MonoBehaviour
     private void SetMyName()
     {
         TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
-        
-        text.text = ((WeaponType_kr)typeButtons.IndexOf(this)).ToString();;
-    }
-    
-    /// <summary>
-    /// 버튼 설정(다른 클래스에서 사용)
-    /// </summary>
-    public void SetThisButton(string typeName)
-    {
-        
+
+
+        if (parentsTapButton.WhoAmI() == 0)
+        {
+            text.text = ((WeaponType_kr)typeButtons.IndexOf(this)).ToString();
+        }
+
+        else
+        {
+            text.text = ((SubWeaponType_kr)typeButtons.IndexOf(this)).ToString();
+        }
+
+        ;
     }
 
     private void SetItemButtonData(int index)
     {
-        for (int i = 0; i < itemButtons.Count; i++)
+        if (parentsTapButton.WhoAmI() == 0)
         {
+            for (int i = 0; i < itemButtons.Count; i++)
+            {
+
+                itemButtons[i].SetButtonItem(dict[(WeaponType_kr)index][i]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < itemButtons.Count; i++)
+            {
             
-            itemButtons[i].SetButtonItem(dict[(WeaponType_kr)index][i]);
+                itemButtons[i].SetButtonItem(_dict[(SubWeaponType_kr)index][i]);
+            }
         }
     }
 

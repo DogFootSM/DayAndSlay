@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class TypeButton_Armor : MonoBehaviour
 {
-  
-    [SerializeField][SerializedDictionary] private SerializedDictionary<MaterialType_kr, List<ItemData>> mateDict;
+
+    [SerializeField] private List<GameObject> taps;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<MaterialType_kr, List<ItemData>> mateDict = new SerializedDictionary<MaterialType_kr, List<ItemData>>();
 
     [SerializeField] private List<TypeButton_Armor> typeButtons;    
     [SerializeField] private List<ItemButton> itemButtons;
@@ -15,10 +16,52 @@ public class TypeButton_Armor : MonoBehaviour
 
     private void Start()
     {
+        GameObject tap_armor = null;
+
+        foreach (GameObject tap in taps)
+        {
+            if (tap.gameObject.activeSelf)
+            {
+                tap_armor = tap;
+            }
+        }
         
-        mateDict[MaterialType_kr.천] = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.CLOTH);
-        mateDict[MaterialType_kr.가죽] = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.LEATHER);
-        mateDict[MaterialType_kr.중갑] = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.PLATE);
+        List<ItemData> list = new List<ItemData>();
+        list = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.CLOTH);
+        
+        List<ItemData> tempClothList = new List<ItemData>();
+        List<ItemData> tempLeatherList = new List<ItemData>();
+        List<ItemData> tempPlateList = new List<ItemData>();
+        
+        foreach (ItemData item in list)
+        {
+            if (item.Parts == (Parts)taps.IndexOf(tap_armor) + 2)
+            {
+                tempClothList.Add(item);
+            }
+        }
+        mateDict[MaterialType_kr.천] = tempClothList;
+        list = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.LEATHER);
+        foreach (ItemData item in list)
+        {
+            if (item.Parts == (Parts)taps.IndexOf(tap_armor) + 2)
+            {
+                tempLeatherList.Add(item);
+            }
+        }
+        mateDict[MaterialType_kr.가죽] = tempLeatherList;
+        
+        list = ItemDatabaseManager.instance.GetWantTypeItem(MaterialType.PLATE);
+        foreach (ItemData item in list)
+        {
+            if (item.Parts == (Parts)taps.IndexOf(tap_armor) + 2)
+            {
+                tempPlateList.Add(item);
+            }
+        }
+        
+        mateDict[MaterialType_kr.중갑] = tempPlateList;
+        
         SetMyName();
         
         Button btn = GetComponent<Button>();
@@ -34,13 +77,6 @@ public class TypeButton_Armor : MonoBehaviour
         text.text = ((MaterialType_kr)typeButtons.IndexOf(this)+1).ToString();;
     }
     
-    /// <summary>
-    /// 버튼 설정(다른 클래스에서 사용)
-    /// </summary>
-    public void SetThisButton(string typeName)
-    {
-        
-    }
 
     private void SetItemButtonData(int index)
     {

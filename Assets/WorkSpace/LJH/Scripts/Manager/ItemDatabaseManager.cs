@@ -124,7 +124,7 @@ public class ItemDatabaseManager : MonoBehaviour
             }
         }
         
-        return list;
+        return list.OrderBy(item => item.ItemId).ToList();
     }
     
     /// <summary>
@@ -144,7 +144,7 @@ public class ItemDatabaseManager : MonoBehaviour
             }
         }
         
-        return list;
+        return list.OrderBy(item => item.ItemId).ToList();
     }
     
     /// <summary>
@@ -165,7 +165,7 @@ public class ItemDatabaseManager : MonoBehaviour
             }
         }
         
-        return list;
+        return list.OrderBy(item => item.ItemId).ToList();
     }
     
 }

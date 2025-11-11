@@ -5,43 +5,25 @@ using UnityEngine.UI;
 
 public class TapButton_Armor : MonoBehaviour
 {
-    //추후 인젝트로 변경
-    [SerializeField] private ForgeCanvas forge;
-    [SerializeField] private Parts_kr parts;
-
+    [SerializeField] private List<TapButton_Armor> tapButtons;
     [SerializeField] private List<TypeButton_Armor> typeButtons;
 
     [SerializeField] [SerializedDictionary] private SerializedDictionary<Parts_kr, List<string>> typeDict;
     private void Start()
     {
         TypeDictInit();
-        
-        GetComponent<Button>().onClick.AddListener(SetTypeButtons);
-        SetTypeButtons();
+        GetComponent<Button>().onClick.AddListener(TypeDictInit);
     }
     
 
-public void SetTypeButtons()
+    /// <summary>
+    /// 해당 버튼이 웨펀인지 서브웨펀인지 알려주는 메서드
+    /// </summary>
+    /// <returns></returns>
+    public int WhoAmI()
     {
-        //현재 선택된 Parts 등록
-        forge.SetCurParts(parts);
-        
-        {
-            for (int i = 0; i < typeButtons.Count; i++)
-            {
-                typeButtons[i].SetThisButton(typeDict[Parts_kr.갑옷][i]);
-            }
-        }
-        
-        
-        if (typeButtons.Count > 0)
-        {
-            // 첫 번째 버튼의 클릭 이벤트 호출
-            typeButtons[0].GetComponent<Button>().onClick.Invoke(); 
-        }
-        
+        return tapButtons.IndexOf(this);
     }
-
 
 
     /// <summary>

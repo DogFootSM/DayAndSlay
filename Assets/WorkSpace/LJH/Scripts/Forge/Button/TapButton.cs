@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class TapButton : MonoBehaviour
 {
-    //추후 인젝트로 변경
-    [SerializeField] private ForgeCanvas forge;
-    [SerializeField] private Parts_kr parts;
 
     [SerializeField] private List<TapButton> tapButtons;
     [SerializeField] private List<TypeButton> typeButtons;
