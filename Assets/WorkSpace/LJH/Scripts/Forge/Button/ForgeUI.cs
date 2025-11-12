@@ -31,19 +31,44 @@ public class ForgeUI : BaseUI
         itemAtk.text = itemData.Attack.ToString();
         itemDef.text = itemData.Defence.ToString();
         itemHp.text = itemData.Hp.ToString();
-
-        itemIngredient1.text = itemDatabaseManager.GetItemByID(itemData.ingredients_1).Name;
-        itemIngredient2.text = itemDatabaseManager.GetItemByID(itemData.ingredients_2).Name;
-        itemIngredient3.text = itemDatabaseManager.GetItemByID(itemData.ingredients_3).Name;
+        
+        SetIngredientTextColor(itemIngredient1, itemDatabaseManager.GetItemByID(itemData.ingredients_1));
+        SetIngredientTextColor(itemIngredient2, itemDatabaseManager.GetItemByID(itemData.ingredients_2));
+        SetIngredientTextColor(itemIngredient3, itemDatabaseManager.GetItemByID(itemData.ingredients_3));
 
         if (itemData.ingredients_4 != 000000)
         {
-            itemIngredient4.text = itemDatabaseManager.GetItemByID(itemData.ingredients_4).Name;
+            itemIngredient4.transform.parent.gameObject.SetActive(true);
+            SetIngredientTextColor(itemIngredient4, itemDatabaseManager.GetItemByID(itemData.ingredients_4));
         }
         else
         {
-            itemIngredient4.text = "";
+            itemIngredient4.transform.parent.gameObject.SetActive(false);
         }
+    }
+
+    private void SetIngredientTextColor(TextMeshProUGUI text, ItemData itemData)
+    {
+        //B4A721 희귀 재료 색
+        //6F3232 기본 재료 색
+        Color color = text.color;
+        
+        if (itemData.Parts == Parts.RARE_INGREDIANT)
+        {
+            ColorUtility.TryParseHtmlString("#B4A721", out color);
+        }
+
+        else if (itemData.Parts == Parts.INGREDIANT)
+        {
+            ColorUtility.TryParseHtmlString("#6F3232", out color);
+        }
+
+        else
+        {
+            Debug.LogWarning("재료 아이템이 아닙니다.");
+        }
+        text.color = color;
+        text.text = itemData.Name;
     }
 
 
