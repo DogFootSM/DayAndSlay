@@ -240,6 +240,7 @@ public class GameManager : MonoBehaviour
         dataManager.SaveAudioData(soundManager.GetMasterVolume(), soundManager.GetBgmVolume(), soundManager.GetSfxVolume());
         dataManager.SaveQuickSlotSetting();
         //TODO: 캐릭터 스탯 정보, 아이템 착용 정보, 스킬 정보, 인벤토리 정보 업데이트
+        
         Application.Quit();
     }
      
