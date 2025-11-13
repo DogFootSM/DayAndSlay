@@ -23,6 +23,9 @@ public class Door : InteractableObj
     [SerializeField] private List<Grid> gridList;
     private Grid grid;
 
+    [SerializeField] private List<Tilemap> floorTilemap;
+    [Inject] MapManager mapManager;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -40,8 +43,30 @@ public class Door : InteractableObj
         
         animator.Play("DoorOpenAni");
         //SceneManager.LoadSceneAsync(loadingScene.Name, LoadSceneMode.Additive);
+        MapGridChecker();
         player.transform.position = movePos;
 
+    }
+
+    /// <summary>
+    /// 목적지를 대조하여 맞는 방위치로 카메라 맵을 변경해주는 메서드
+    /// </summary>
+    private void MapGridChecker()
+    {
+        Debug.Log("MapGridChecker 호출됨");
+        Vector3 checkPosition = movePos;
+
+
+        foreach (Tilemap tilemap in floorTilemap)
+        {
+            Vector3Int gridPosition = tilemap.WorldToCell(checkPosition);
+            
+            if (tilemap.HasTile(gridPosition))
+            {
+                Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap)}으로 MapGridChecker 실행됨");
+                mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap));
+            }
+        }
     }
 
     public override void UiOnOffMethod(Collision2D collision)
