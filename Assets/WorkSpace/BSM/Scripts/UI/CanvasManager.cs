@@ -3,13 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using Zenject;
 
 public class CanvasManager : MonoBehaviour
 {
     [SerializedDictionary("Canvas Type", "Canvas Object")] [SerializeField]
-    private SerializedDictionary<CanvasType, GameObject> canvasDict; 
+    private AYellowpaper.SerializedCollections.SerializedDictionary<CanvasType, GameObject> canvasDict;
+    
+    [Header("Background Blur Canvas")]
+    [SerializeField] private Volume _blurVolume;
+
+    [Header("Dimmed Image")] 
+    [SerializeField] private Image _dimmedImage;
+    
     private GameObject curCanvas;
     
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
@@ -34,7 +43,9 @@ public class CanvasManager : MonoBehaviour
           
         canvasStack.Push(canvasDict[canvasType]);
         
-        canvasDict[canvasType].SetActive(true);    
+        canvasDict[canvasType].SetActive(true);
+        _blurVolume.weight = 1;
+        _dimmedImage.raycastTarget = true;
     }
     
     /// <summary>
@@ -56,6 +67,8 @@ public class CanvasManager : MonoBehaviour
         { 
             curCanvas = canvasStack.Pop();
             curCanvas.SetActive(false);
+            _blurVolume.weight = 0;
+            _dimmedImage.raycastTarget = false;
         } 
     }
     
