@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class DungeonManager : MonoBehaviour
     
     //Ä«¸Þ¶ó
     [SerializeField] private Camera doorCamera;
+    [Inject] MapManager mapManager;
 
     public void SetStoneInBossDoor(GameObject stone)
     {
@@ -26,6 +28,7 @@ public class DungeonManager : MonoBehaviour
     private void Start()
     {
         Init();
+        mapManager.MapChange(MapType.DUNGEON_0);
     }
 
     void Init()

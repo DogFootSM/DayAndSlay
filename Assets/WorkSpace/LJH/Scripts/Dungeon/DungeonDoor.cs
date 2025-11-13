@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -19,17 +20,25 @@ public class DungeonDoor : MonoBehaviour
     /// </summary>
     private Grid toGrid;
     
+    [SerializeField] private List<Tilemap> floorTilemap =  new List<Tilemap>();
+    
     
     //테스트용
 
     private void Start()
     {
-        
+        StartCoroutine(CoCoCo());
     }
 
     private IEnumerator CoCoCo()
     {
         yield return new WaitForSeconds(0.05f);
+        floorTilemap.Add(GameObject.Find("Room_0").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_1").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_2").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_3").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_4").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("BossRoom").transform.GetChild(1).GetComponent<Tilemap>());
     }
     
     
@@ -88,23 +97,24 @@ public class DungeonDoor : MonoBehaviour
             rb.angularVelocity = 0f;
         }
     }
-
-    private List<Tilemap> floorTilemap =  new List<Tilemap>();
     
     /// <summary>
     /// 목적지를 대조하여 맞는 방위치로 카메라 맵을 변경해주는 메서드
     /// </summary>
     private void MapGridChecker()
     {
+        Debug.Log("MapGridChecker 호출됨");
         Vector3 checkPosition = toGrid.transform.position;
 
-        Vector3Int gridPosition = floorTilemap[0].WorldToCell(checkPosition);
 
         foreach (Tilemap tilemap in floorTilemap)
         {
+            Vector3Int gridPosition = tilemap.WorldToCell(checkPosition);
+            
             if (tilemap.HasTile(gridPosition))
             {
-                mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap) + 2);
+                Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap)+3}으로 MapGridChecker 실행됨");
+                mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap) + 3);
             }
         }
     }
