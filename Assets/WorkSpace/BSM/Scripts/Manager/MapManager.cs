@@ -31,5 +31,4 @@ public class MapManager : MonoBehaviour
         FollowCamera?.OnMapChanged?.Invoke(); 
     }
 
-
 }

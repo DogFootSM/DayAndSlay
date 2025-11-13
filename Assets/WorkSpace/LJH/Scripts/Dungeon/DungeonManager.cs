@@ -34,9 +34,7 @@ public class DungeonManager : MonoBehaviour
 
         pool.InitPool(12);
         
-        Debug.Log($"도어캠의 위치 {doorCamera.transform.position}");
         Debug.Log(Camera.main.name);
-        Debug.Log($"메인캠의 위치{Camera.main.transform.position}");
         
         
         doorCamera.transform.position = Camera.main.transform.position;

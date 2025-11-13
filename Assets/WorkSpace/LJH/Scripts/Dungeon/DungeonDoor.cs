@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Zenject;
 
 public class DungeonDoor : MonoBehaviour
@@ -17,6 +18,33 @@ public class DungeonDoor : MonoBehaviour
     /// 목적지
     /// </summary>
     private Grid toGrid;
+    
+    
+    //테스트용
+
+    private void Start()
+    {
+        
+    }
+
+    private IEnumerator CoCoCo()
+    {
+        yield return new WaitForSeconds(0.05f);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 /// <summary>
 /// 해당 문이 가져올 루트 설정
@@ -52,15 +80,36 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            MapGridChecker();
             minimap.CamPosSet(toGrid.transform.position);
             Rigidbody2D rb = player.attachedRigidbody;
             rb.position = toGrid.gameObject.transform.position;
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0f;
-            mapManager.MapChange(MapType.DUNGEON_0);
         }
     }
 
+    private List<Tilemap> floorTilemap =  new List<Tilemap>();
+    
+    /// <summary>
+    /// 목적지를 대조하여 맞는 방위치로 카메라 맵을 변경해주는 메서드
+    /// </summary>
+    private void MapGridChecker()
+    {
+        Vector3 checkPosition = toGrid.transform.position;
+
+        Vector3Int gridPosition = floorTilemap[0].WorldToCell(checkPosition);
+
+        foreach (Tilemap tilemap in floorTilemap)
+        {
+            if (tilemap.HasTile(gridPosition))
+            {
+                mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap) + 2);
+            }
+        }
+    }
+
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
