@@ -10,6 +10,8 @@ public class DungeonDoor : MonoBehaviour
     
     [Inject]
     MinimapController minimap;
+    [Inject]
+    MapManager mapManager;
     
     /// <summary>
     /// ¸ñÀûÁö
@@ -55,6 +57,7 @@ public class DungeonDoor : MonoBehaviour
             rb.position = toGrid.gameObject.transform.position;
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0f;
+            mapManager.MapChange(MapType.DUNGEON_0);
         }
     }
 

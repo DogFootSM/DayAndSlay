@@ -15,7 +15,7 @@ public class MapManager : MonoBehaviour
     public FollowCamera FollowCamera;
     
     private MapType curMapType;
-
+    
     public List<Vector2> GetMapBoundary()
     { 
         return mapLimitSizeDict.GetValueOrDefault(curMapType); 

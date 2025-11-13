@@ -45,6 +45,11 @@ public class MonsterAnimator : MonoBehaviour
         DictionaryInit();
     }
 
+    public void SetIsAction(bool value)
+    {
+        isAction = value;
+    }
+
     protected void Update()
     {
         if (isAction)
@@ -55,6 +60,7 @@ public class MonsterAnimator : MonoBehaviour
             currentAnimationHash = SetAnimationHash(attackAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
+                PlayIdle();
                 isAction = false;
             }
 
