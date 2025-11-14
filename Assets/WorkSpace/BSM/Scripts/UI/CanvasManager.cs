@@ -12,17 +12,17 @@ public class CanvasManager : MonoBehaviour
 {
     [SerializedDictionary("Canvas Type", "Canvas Object")] [SerializeField]
     private AYellowpaper.SerializedCollections.SerializedDictionary<CanvasType, GameObject> canvasDict;
-    
-    [Header("Background Blur Canvas")]
-    [SerializeField] private Volume _blurVolume;
 
-    [Header("Dimmed Image")] 
-    [SerializeField] private Image _dimmedImage;
-    
+    [Header("Background Blur Canvas")] [SerializeField]
+    private Volume _blurVolume;
+
+    [Header("Dimmed Image")] [SerializeField]
+    private Image _dimmedImage;
+
     private GameObject curCanvas;
-    
+
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
-  
+
     /// <summary>
     /// 캔버스 변경
     /// </summary>
@@ -33,21 +33,21 @@ public class CanvasManager : MonoBehaviour
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-            
+
 #else
             Application.Quit();
 
 #endif
             return;
         }
-          
+
         canvasStack.Push(canvasDict[canvasType]);
-        
+
         canvasDict[canvasType].SetActive(true);
         _blurVolume.weight = 1;
         _dimmedImage.raycastTarget = true;
     }
-    
+
     /// <summary>
     /// 로딩 캔버스 활성화
     /// </summary>
@@ -55,21 +55,24 @@ public class CanvasManager : MonoBehaviour
     public void OnActiveLoadingCanvas(SceneReference scene)
     {
         canvasDict[CanvasType.LOADING].SetActive(true);
-        Loading.LoadScene(scene); 
+        Loading.LoadScene(scene);
     }
-    
+
     /// <summary>
     /// 캔버스 닫기
     /// </summary>
     public void CloseCanvas()
-    { 
+    {
         if (canvasStack.Count > 0)
-        { 
+        {
             curCanvas = canvasStack.Pop();
             curCanvas.SetActive(false);
+        }
+
+        if (canvasStack.Count == 0)
+        {
             _blurVolume.weight = 0;
             _dimmedImage.raycastTarget = false;
-        } 
+        }
     }
-    
 }
