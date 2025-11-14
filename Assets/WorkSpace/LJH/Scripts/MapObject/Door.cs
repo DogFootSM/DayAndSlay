@@ -53,7 +53,6 @@ public class Door : InteractableObj
     /// </summary>
     private void MapGridChecker()
     {
-        Debug.Log("MapGridChecker 호출됨");
         Vector3 checkPosition = movePos;
 
 
@@ -63,7 +62,6 @@ public class Door : InteractableObj
             
             if (tilemap.HasTile(gridPosition))
             {
-                Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap)}으로 MapGridChecker 실행됨");
                 mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap));
             }
         }
