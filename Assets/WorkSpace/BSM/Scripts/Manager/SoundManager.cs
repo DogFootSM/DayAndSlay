@@ -120,7 +120,5 @@ public class SoundManager : MonoBehaviour
     {
         bgmAudioSource.clip = bgmSounds[bgmSound];
         bgmAudioSource.Play();
-    }
-    
-    
+    } 
 }
