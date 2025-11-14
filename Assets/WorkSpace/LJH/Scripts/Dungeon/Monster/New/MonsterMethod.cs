@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
 {
@@ -31,6 +33,46 @@ public class MonsterMethod : MonoBehaviour
     public virtual void Skill_Third() { }
     public virtual void Skill_Fourth() { }
 
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Player")
+        {
+            Debug.Log("발동");
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            StartCoroutine(FreezeDelay(collision));
+        }
+    }
+
+    private IEnumerator FreezeDelay(Collision2D collision)
+    {   
+        Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
+        
+        playerRb.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(0.05f);
+        playerRb.constraints = RigidbodyConstraints2D.None;
+        playerRb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        playerRb.velocity = Vector2.zero;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Player")
+        {
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
+            Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
+            
+            playerRb.constraints = RigidbodyConstraints2D.None;
+            playerRb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            playerRb.velocity = Vector2.zero;
+
+        }
+    }
+    
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -54,7 +96,7 @@ public class MonsterMethod : MonoBehaviour
     // ==============================
 
     /// <summary>
-    /// Idle : 근처를 랜덤하게 1~2칸 이동
+    /// Todo : Idle : 근처를 랜덤하게 1~2칸 이동
     /// </summary>
     public void IdleMethod()
     {
@@ -118,6 +160,9 @@ public class MonsterMethod : MonoBehaviour
 
         Vector3 targetGridPos = path[currentPathIndex];
         Vector3 targetWorldPos = new Vector3(targetGridPos.x, targetGridPos.y, 0);
+        
+        //IsAction을 강제로 false로 초기화
+        animator.SetIsAction(false);
 
         rb.MovePosition(Vector3.MoveTowards(transform.position, targetWorldPos, monsterData.MoveSpeed * Time.deltaTime));
 

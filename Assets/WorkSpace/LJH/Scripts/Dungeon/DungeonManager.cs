@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class DungeonManager : MonoBehaviour
     
     //카메라
     [SerializeField] private Camera doorCamera;
+    [Inject] MapManager mapManager;
 
     public void SetStoneInBossDoor(GameObject stone)
     {
@@ -26,6 +28,7 @@ public class DungeonManager : MonoBehaviour
     private void Start()
     {
         Init();
+        mapManager.MapChange(MapType.DUNGEON_0);
     }
 
     void Init()
@@ -34,9 +37,7 @@ public class DungeonManager : MonoBehaviour
 
         pool.InitPool(12);
         
-        Debug.Log($"도어캠의 위치 {doorCamera.transform.position}");
         Debug.Log(Camera.main.name);
-        Debug.Log($"메인캠의 위치{Camera.main.transform.position}");
         
         
         doorCamera.transform.position = Camera.main.transform.position;

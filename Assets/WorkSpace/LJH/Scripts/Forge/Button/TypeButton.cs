@@ -1,118 +1,92 @@
-using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TypeButton : MonoBehaviour
 {
-    //추후 인젝트로 변경
-    [SerializeField] private ForgeCanvas forge;
-    [SerializeField] private List<TypeButton> typeButtons;
-    
-    private TextMeshProUGUI buttonName;
-    private List<ItemData> itemDataList =  new List<ItemData>();
-    [SerializeField] private List<ItemButton> itemButtonList;
-    
-    [Header("ArmorForge")]
-    [SerializeField] private MaterialType_kr material;
+    [SerializeField] private TapButton parentsTapButton;
+  
+    [SerializeField][SerializedDictionary] private SerializedDictionary<WeaponType_kr, List<ItemData>> dict;
+    [SerializeField][SerializedDictionary] private SerializedDictionary<SubWeaponType_kr, List<ItemData>> _dict;
 
-    private void Awake()
-    {
-        buttonName = GetComponentInChildren<TextMeshProUGUI>();
+    
+    [SerializeField] private List<TypeButton> typeButtons;    
+    [SerializeField] private List<ItemButton> itemButtons;
 
-        GetComponent<Button>().onClick.AddListener(() => SetItemButtons(typeButtons.IndexOf(this)));
-    }
 
     private void Start()
     {
-        SetItemButtons(typeButtons.IndexOf(this));
-    }
-    
-    /// <summary>
-    /// 버튼 설정(다른 클래스에서 사용)
-    /// </summary>
-    public void SetThisButton(string typeName)
-    {
-        buttonName.text = typeName;
-        SetItemButtons(typeButtons.IndexOf(this));
-    }
+        DictInit();
 
-    public void SetItemButtons(int _typeButton)
-    {
+        SetMyName();
         
-        itemDataList.Clear(); 
-    
-        List<ItemData> items = ItemDatabaseManager.instance.GetAllEquipItem();
+        Button btn = GetComponent<Button>();
+        SetItemButtonData(0);
+        btn.onClick.AddListener(() => SetItemButtonData(typeButtons.IndexOf(this)));
 
-        foreach (ItemData item in items)
+    }
+
+    private void DictInit()
+    {
+        ItemDatabaseManager IDM = ItemDatabaseManager.instance;
+
+        if (parentsTapButton.WhoAmI() == 0)
         {
-            if (IsItemMatch(item, _typeButton, forge.GetCurParts()))
+            dict[WeaponType_kr.활] = IDM.GetWantTypeItem(WeaponType.BOW);
+            dict[WeaponType_kr.한손검] = IDM.GetWantTypeItem(WeaponType.SHORT_SWORD);
+            dict[WeaponType_kr.창] = IDM.GetWantTypeItem(WeaponType.SPEAR);
+            dict[WeaponType_kr.완드] = IDM.GetWantTypeItem(WeaponType.WAND);
+        }
+
+        else
+        {
+            _dict[SubWeaponType_kr.화살통] = IDM.GetWantTypeItem(SubWeaponType.ARROW);
+            _dict[SubWeaponType_kr.칼집] = IDM.GetWantTypeItem(SubWeaponType.SHEATH);
+            _dict[SubWeaponType_kr.엠블렘] = IDM.GetWantTypeItem(SubWeaponType.EMBLEM);
+            _dict[SubWeaponType_kr.마도서] = IDM.GetWantTypeItem(SubWeaponType.BOOK);
+        }
+
+    }
+
+    private void SetMyName()
+    {
+        TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
+
+
+        if (parentsTapButton.WhoAmI() == 0)
+        {
+            text.text = ((WeaponType_kr)typeButtons.IndexOf(this)).ToString();
+        }
+
+        else
+        {
+            text.text = ((SubWeaponType_kr)typeButtons.IndexOf(this)).ToString();
+        }
+
+        ;
+    }
+
+    private void SetItemButtonData(int index)
+    {
+        if (parentsTapButton.WhoAmI() == 0)
+        {
+            for (int i = 0; i < itemButtons.Count; i++)
             {
-                itemDataList.Add(item);
+
+                itemButtons[i].SetButtonItem(dict[(WeaponType_kr)index][i]);
             }
         }
-
-        // 아이템 버튼을 설정
-        for (int i = 0; i < itemButtonList.Count; i++)
+        else
         {
-            if (i < itemDataList.Count)
+            for (int i = 0; i < itemButtons.Count; i++)
             {
-                itemButtonList[i].SetButtonItem(itemDataList[i]);
-                itemButtonList[i].gameObject.SetActive(true);
-            }
-            else
-            {
-                itemButtonList[i].gameObject.SetActive(false);
+            
+                itemButtons[i].SetButtonItem(_dict[(SubWeaponType_kr)index][i]);
             }
         }
     }
-    
-    private bool IsItemMatch(ItemData item, int typeButtonIndex, Parts_kr currentParts)
-    {
-        bool isMaterialMatch = MaterialCheck(item.ItemId, typeButtonIndex);
-    
-        switch (currentParts)
-        {
-            case Parts_kr.무기:
-                return item.WeaponType == (WeaponType)typeButtonIndex && item.ItemId % 2 == 0;
-    
-            case Parts_kr.보조무기:
-                return item.SubWeaponType == (SubWeaponType)typeButtonIndex;
 
-        
-            case Parts_kr.투구:
-                return item.Parts == Parts.HELMET && isMaterialMatch;
-            case Parts_kr.갑옷:
-                return item.Parts == Parts.ARMOR && isMaterialMatch;
-            case Parts_kr.바지:
-                return item.Parts == Parts.PANTS && isMaterialMatch;
-            case Parts_kr.장갑:
-                return item.Parts == Parts.ARM && isMaterialMatch;
-            case Parts_kr.신발:
-                return item.Parts == Parts.SHOES && isMaterialMatch;
-        
-            default:
-                return false;
-        }
-    }
 
-    private bool MaterialCheck(int itemId, int typeIndex)
-    {
-        int matType = GetMaterialType(itemId);
-    
-        switch (typeIndex)
-        {
-            case (int)MaterialType_kr.중갑: 
-                return matType == 13;
-            case (int)MaterialType_kr.가죽: 
-                return matType == 12;
-            case (int)MaterialType_kr.천:   
-                return matType == 11;
-            default:
-                return false;
-        }
-    }
-
-    public int GetMaterialType(int itemID) => itemID / 10000;
 }

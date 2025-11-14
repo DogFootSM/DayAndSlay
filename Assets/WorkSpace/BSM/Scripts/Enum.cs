@@ -192,16 +192,18 @@ public enum SubWeaponType_kr
 [Serializable]
 public enum MaterialType
 {
-    PLATE,
-    LEATHER,
+    NOT,
     CLOTH,
+    LEATHER,
+    PLATE,
 }
 [Serializable]
 public enum MaterialType_kr
 {
-    중갑,
-    가죽,
+    방어구아님,
     천,
+    가죽,
+    중갑,
 }
 
 /// <summary>

@@ -16,6 +16,7 @@ public class MapManager : MonoBehaviour
     
     private MapType curMapType;
 
+    
     public List<Vector2> GetMapBoundary()
     { 
         return mapLimitSizeDict.GetValueOrDefault(curMapType); 
@@ -30,6 +31,5 @@ public class MapManager : MonoBehaviour
         curMapType = mapType;
         FollowCamera?.OnMapChanged?.Invoke(); 
     }
-
 
 }

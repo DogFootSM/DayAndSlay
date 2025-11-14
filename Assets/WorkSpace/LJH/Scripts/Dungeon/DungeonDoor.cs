@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Zenject;
 
 public class DungeonDoor : MonoBehaviour
@@ -10,11 +12,48 @@ public class DungeonDoor : MonoBehaviour
     
     [Inject]
     MinimapController minimap;
+    [Inject]
+    MapManager mapManager;
     
     /// <summary>
     /// 목적지
     /// </summary>
     private Grid toGrid;
+    
+    [SerializeField] private List<Tilemap> floorTilemap =  new List<Tilemap>();
+    
+    
+    //테스트용
+
+    private void Start()
+    {
+        StartCoroutine(CoCoCo());
+    }
+
+    private IEnumerator CoCoCo()
+    {
+        yield return new WaitForSeconds(0.05f);
+        floorTilemap.Add(GameObject.Find("Room_0").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_1").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_2").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_3").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_4").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("BossRoom").transform.GetChild(1).GetComponent<Tilemap>());
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 /// <summary>
 /// 해당 문이 가져올 루트 설정
@@ -50,6 +89,7 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            MapGridChecker();
             minimap.CamPosSet(toGrid.transform.position);
             Rigidbody2D rb = player.attachedRigidbody;
             rb.position = toGrid.gameObject.transform.position;
@@ -57,7 +97,29 @@ public class DungeonDoor : MonoBehaviour
             rb.angularVelocity = 0f;
         }
     }
+    
+    /// <summary>
+    /// 목적지를 대조하여 맞는 방위치로 카메라 맵을 변경해주는 메서드
+    /// </summary>
+    private void MapGridChecker()
+    {
+        Debug.Log("MapGridChecker 호출됨");
+        Vector3 checkPosition = toGrid.transform.position;
 
+
+        foreach (Tilemap tilemap in floorTilemap)
+        {
+            Vector3Int gridPosition = tilemap.WorldToCell(checkPosition);
+            
+            if (tilemap.HasTile(gridPosition))
+            {
+                Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap)+3}으로 MapGridChecker 실행됨");
+                mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap) + 3);
+            }
+        }
+    }
+
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

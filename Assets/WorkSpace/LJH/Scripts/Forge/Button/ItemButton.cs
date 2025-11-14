@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class ItemButton : MonoBehaviour
 {
     [SerializeField] private ForgeUI forgeUi;
     public ItemData itemData;
+    
 
     private void Start()
     {

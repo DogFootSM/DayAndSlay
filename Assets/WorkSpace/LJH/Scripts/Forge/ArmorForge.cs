@@ -11,10 +11,13 @@ public class ArmorForge : InteractableObj
     [Inject(Id = "PopUp")]
     GameObject popUp;
 
+    [SerializeField] private SystemWindowController controller;
+    
     public override void Interaction()
     {
         popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
+        controller.OpenSystemWindow(SystemType.HELMET);
     }
 
     public override void UiOnOffMethod(Collision2D collision)

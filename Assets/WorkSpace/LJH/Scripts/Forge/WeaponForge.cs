@@ -11,12 +11,15 @@ public class WeaponForge : InteractableObj
 
     [Inject(Id = "PopUp")]
     GameObject popUp;
+    
+    [SerializeField] private SystemWindowController controller;
 
     public override void Interaction()
     {
         Debug.Log("웨펀포지 열기 실행");
         popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
+        controller.OpenSystemWindow(SystemType.WEAPON);
     }
 
     public override void UiOnOffMethod(Collision2D collision)
