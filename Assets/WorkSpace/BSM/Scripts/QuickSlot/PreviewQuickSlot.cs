@@ -12,19 +12,21 @@ public class PreviewQuickSlot : MonoBehaviour,
     [SerializeField] private QuickSlotType curSlotType;
     [SerializeField] private TextMeshProUGUI slotTypeText;
     [SerializeField] private Image skillIconImage;
+    [SerializeField] private Sprite baseSkillIconSprite;
 
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
-
+    
+    
     private void Awake()
     {
-        slotTypeText.text = $"{curSlotType}";
+        slotTypeText.text = $"{curSlotType}"; 
     }
 
     public void SetPreviewSlot(SkillNode skillNode = null)
-    {
+    { 
         if (skillNode == null)
         {
-            skillIconImage.sprite = null;
+            skillIconImage.sprite = baseSkillIconSprite;
         }
         else
         {

@@ -304,8 +304,8 @@ public class InventoryInteraction :
     private void UpdateEquipDetailTab()
     {
         detailItemImage.sprite = selectedSlot.CurSlotItem.ItemImage;
-        detailItemDescA.text = selectedSlot.CurSlotItem.ItemDescA;
-        detailItemDescB.text = selectedSlot.CurSlotItem.ItemDescB;
+        detailItemDescA.text = selectedSlot.CurSlotItem.Name;
+        detailItemDescB.text = selectedSlot.CurSlotItem.ItemDescA;
     }
     
     /// <summary>
