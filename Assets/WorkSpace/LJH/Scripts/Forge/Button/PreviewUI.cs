@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ForgeUI : BaseUI
+public class PreviewUI : BaseUI
 {
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private Image itemImage;

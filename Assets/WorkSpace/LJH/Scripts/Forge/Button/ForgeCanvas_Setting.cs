@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SubweaponForge_Temp : MonoBehaviour
+public class ForgeCanvas_Setting : MonoBehaviour
 {
     [SerializeField] protected ForgeCanvas forge;
     
     [SerializeField] protected ItemButton defaultItemButton;
+    [SerializeField] private Parts_kr parts;
 
     private void OnEnable()
     {
-        forge.SetCurParts(Parts_kr.보조무기);
+        forge.SetCurParts(parts);
         StartCoroutine(PreviewCoroutine());
     }
 

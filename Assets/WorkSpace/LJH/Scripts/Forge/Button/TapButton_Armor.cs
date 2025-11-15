@@ -17,7 +17,7 @@ public class TapButton_Armor : MonoBehaviour
     
 
     /// <summary>
-    /// 해당 버튼이 웨펀인지 서브웨펀인지 알려주는 메서드
+    /// 해당 버튼이 무슨부위인지 알려주는 메서드
     /// </summary>
     /// <returns></returns>
     public int WhoAmI()
