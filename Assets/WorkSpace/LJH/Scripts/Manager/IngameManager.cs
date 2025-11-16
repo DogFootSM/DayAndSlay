@@ -1,50 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class IngameManager : MonoBehaviour
 {
+    public static IngameManager instance;
+
+    public int currentDay;
+    
     [SerializeField] private Button upkeepButton;
     [SerializeField] private GameObject upkeepUI;
+    [SerializeField] private GameObject taxUI;
 
-    [SerializeField] private TextMeshProUGUI debtText;
-    [SerializeField] private TextMeshProUGUI interestText;
-    [SerializeField] private TextMeshProUGUI upKeepCostText;
-    [SerializeField] private TextMeshProUGUI facilityCostText;
-    [SerializeField] private TextMeshProUGUI manCostText;
+
+    [SerializeField] private TextMeshProUGUI dayText;
     
-    public static IngameManager instance;
+    //현재 며칠차인지
+    public int GetCurrentDay() => currentDay;
+
+    public void AddDay()
+    {
+        currentDay++;
+        dayText.text = currentDay.ToString();
+    }
+
+    public bool IsTaxDay() => currentDay % 5 == 0;
+    public void OnTaxUI() => taxUI.SetActive(true);
+    
     
     public StageNum curStage;
 
-    private float money;
+    private int money;
 
     /// <summary>
     /// 빚
     /// </summary>
-    public float debt;
+    public int debt;
     
     /// <summary>
     /// 이자
     /// </summary>
-    public float interest;
+    public int interest;
+    
+    /*
+    /// <summary>
+    /// 시설물 이용료(DLC)
+    /// </summary>
+    //public int facilityCost;
     
     /// <summary>
-    /// 시설물 이용료
+    /// 인건비 (DLC)
     /// </summary>
-    public float facilityCost;
-    
-    /// <summary>
-    /// 인건비
-    /// </summary>
-    public float manCost;
-
+    //public int manCost;
+*/
     /// <summary>
     /// 총 유지비
     /// </summary>
-    public float upkeepCost;
+    public int upkeepCost;
+
+    public void PayTax(int value)
+    {
+        Debug.Log("Paytax");
+        Debug.Log($"이전 빚 {debt}");
+        int change = value - interest;
+
+        if (change > 0)
+        {
+            debt -= change;
+        }
+        Debug.Log($"이후 빚 {debt}");
+        
+    }
     
     private void Awake()
     {
@@ -54,6 +83,8 @@ public class IngameManager : MonoBehaviour
     private void Start()
     {
         upkeepButton.onClick.AddListener(UpKeepUIOnOff);
+        dayText.text = currentDay.ToString();
+        SetUpKeep();
     }
 
     private void UpKeepUIOnOff()
@@ -66,7 +97,6 @@ public class IngameManager : MonoBehaviour
         }
         else
         { 
-            SetUpKeepText();
             upkeepUI.SetActive(true);
             popup.PlayOpen();
         }
@@ -98,9 +128,9 @@ public class IngameManager : MonoBehaviour
     /// 이자 계산
     /// </summary>
     /// <returns></returns>
-    private float GetInterest() => interest = debt * 0.01f;
+    private int GetInterest() => interest = (int)(debt * 0.001f);
 
-    private float UpKeepCostCalc() => upkeepCost = GetInterest() + facilityCost + manCost;
+    private int UpKeepCostCalc() => upkeepCost = GetInterest() /*+ facilityCost + manCost*/;
 
     /// <summary>
     /// 유지비 차감 함수(시스템에서 호출)
@@ -108,13 +138,35 @@ public class IngameManager : MonoBehaviour
     public void PayWeeklyUpKeepCost() => money -= UpKeepCostCalc();
 
 
-    public void SetUpKeepText()
+    public void SetUpKeep()
+    { 
+        interest = GetInterest();    
+        upkeepCost = UpKeepCostCalc();
+    }
+    public void SetUpKeepText(SerializedDictionary<string, GameObject> textDict)
     {
-        debtText.text = debt + "Gold";        
-        interestText.text = GetInterest().ToString() + "Gold";    
-        upKeepCostText.text = UpKeepCostCalc().ToString() + "Gold";  
-        facilityCostText.text = facilityCost.ToString() + "Gold";
-        manCostText.text = manCost.ToString() + "Gold";
+        textDict["DebtValue"].GetComponent<TextMeshProUGUI>().text = debt.ToString("N0") + "Gold";        
+        textDict["InterestValue"].GetComponent<TextMeshProUGUI>().text = GetInterest().ToString("N0") + "Gold";    
+        textDict["TotalValue"].GetComponent<TextMeshProUGUI>().text = UpKeepCostCalc().ToString("N0") + "Gold";  
+        //facilityCostText.text = facilityCost + "Gold";
+        //manCostText.text = manCost + "Gold";
+    }
+
+
+    public void PayTaxResult(bool isPass)
+    {
+        /*
+         * if(!isPass)
+         * {
+         *  경고 문구 or 팝업 띄움
+         *  메인 화면으로 돌아감
+         * }
+         *
+         * else
+         *{
+         *  창 닫히고 아침 시작
+         *}
+         */
     }
 
 

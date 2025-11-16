@@ -14,15 +14,14 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private Image afternoon;
     [SerializeField] private Image evening;
 
+    [SerializeField] private GameObject taxUI;
+    
     public static DayManager instance;
 
     public DayAndNight dayOrNight;
 
     // 9Minute
     private const int DefaultDayCount = 54;
-    private const int DayEndTime = 0;
-    private int dayCount;
-    private WaitForSeconds seconds = new WaitForSeconds(1f);
 
     Coroutine timeCoroutine;
 
@@ -32,7 +31,6 @@ public class DayManager : MonoBehaviour, ISavable
 
     private bool isAfternoonStarted = false;
     private bool isEveningStarted = false;
-
 
     /// <summary>
     ///  시계 영역
@@ -69,7 +67,7 @@ public class DayManager : MonoBehaviour, ISavable
 
 
     /// <summary>
-    /// This method changes day & night
+    /// 낮 ↔ 밤 상태를 전환
     /// </summary>
     public void ToggleDayNight()
     {
@@ -77,21 +75,34 @@ public class DayManager : MonoBehaviour, ISavable
         {
             StartNight();
         }
-        else if (dayOrNight == DayAndNight.NIGHT)
+        else
         {
-            StartDay();
+            PreDayEvents(); // 아침 시작 전 이벤트 처리
         }
     }
-
-    private void CheckDayProgress(int value)
+    
+    private void PreDayEvents()
     {
-        dayCount = value;
+        IngameManager.instance.AddDay();
 
-        if (dayCount <= DayEndTime && dayOrNight == DayAndNight.DAY)
+        if (IngameManager.instance.IsTaxDay())
         {
-            ToggleDayNight();
+            StartCoroutine(TaxRoutine());
+            return;
         }
+
+        StartDay();
     }
+    
+    private IEnumerator TaxRoutine()
+    {
+        // TODO: 세금 UI 노출
+        taxUI.SetActive(true);
+        yield return new WaitUntil(() => !taxUI.activeSelf);
+
+        StartDay();
+    }
+
 
     /// <summary>
     /// Method for StartDay
@@ -99,7 +110,6 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
-        CheckDayProgress(DefaultDayCount);
         dayOrNight = DayAndNight.DAY;
 
         if (timeCoroutine == null)
@@ -159,7 +169,7 @@ public class DayManager : MonoBehaviour, ISavable
 
             if (elapsedGameTime >= DefaultDayCount)
             {
-                CheckDayProgress(DayEndTime);
+                ToggleDayNight();
                 break;
             }
 
@@ -167,6 +177,12 @@ public class DayManager : MonoBehaviour, ISavable
         }
     }
 
+    /// <summary>
+    /// 시간대 이미지 페이드 아웃, 인 코루틴
+    /// </summary>
+    /// <param name="pre"></param>
+    /// <param name="next"></param>
+    /// <returns></returns>
     private IEnumerator FadeOutCoroutine(Image pre, Image next)
     {
         yield return null;
@@ -213,6 +229,10 @@ public class DayManager : MonoBehaviour, ISavable
         //Todo : 어두워지고 상점 문이 닫혀야함
     }
 
+    /// <summary>
+    /// 낮밤 저장
+    /// </summary>
+    /// <param name="sqlManager"></param>
     public void Save(SqlManager sqlManager)
     {
         sqlManager.UpdateCharacterDataColumn
@@ -223,6 +243,12 @@ public class DayManager : MonoBehaviour, ISavable
         );
     }
 
+    
+    /// <summary>
+    /// 시계 UI에 표시
+    /// </summary>
+    /// <param name="hour"></param>
+    /// <param name="minute"></param>
     private void UpdateClockDisplay(int hour, int minute)
     {
         string hourString = hour.ToString("D2");
