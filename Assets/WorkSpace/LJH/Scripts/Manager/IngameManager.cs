@@ -33,6 +33,14 @@ public class IngameManager : MonoBehaviour
     
     public StageNum curStage;
 
+    /// <summary>
+    /// 테스트용 1억 골드인 상태로 시작
+    /// </summary>
+    [SerializeField] private int gold;
+    public int GetCurrentGold() => gold;
+    public void SetGold(int gold) => this.gold += gold;
+    
+
     private int money;
 
     /// <summary>
@@ -148,6 +156,7 @@ public class IngameManager : MonoBehaviour
         textDict["DebtValue"].GetComponent<TextMeshProUGUI>().text = debt.ToString("N0") + "Gold";        
         textDict["InterestValue"].GetComponent<TextMeshProUGUI>().text = GetInterest().ToString("N0") + "Gold";    
         textDict["TotalValue"].GetComponent<TextMeshProUGUI>().text = UpKeepCostCalc().ToString("N0") + "Gold";  
+        textDict["GoldValue"].GetComponent<TextMeshProUGUI>().text = GetCurrentGold().ToString("N0") + "Gold";
         //facilityCostText.text = facilityCost + "Gold";
         //manCostText.text = manCost + "Gold";
     }

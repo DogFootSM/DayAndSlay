@@ -10,12 +10,16 @@ public class UpkeepPayPopUp : MonoBehaviour
     private Animator animator;
     private AudioSource audio;
     private AudioClip clip;
+    
+    private IngameManager ingameManager;
 
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, GameObject> upkeepTextDict;
     [SerializeField] private TMP_InputField inputField;
     private int currentValue = 0;
 
     [SerializeField] private Button taxPayButton;
+    [SerializeField] private GameObject alertText;
+    private bool isAlert = false;
     
     [SerializeField] private float animationDuration = 0.75f;
 
@@ -24,11 +28,13 @@ public class UpkeepPayPopUp : MonoBehaviour
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         clip = audio.clip;
+
+        ingameManager = IngameManager.instance;
     }
 
     private void OnEnable()
     {
-        IngameManager.instance.SetUpKeepText(upkeepTextDict);
+        ingameManager.SetUpKeepText(upkeepTextDict);
     }
 
 
@@ -40,12 +46,32 @@ public class UpkeepPayPopUp : MonoBehaviour
         if (!int.TryParse(inputField.text, out int temp)) return;
         //Todo : 300을 유저의 잔고로 바꿔야함
 
-        if (int.Parse(inputField.text) > 300000)
+        if (int.Parse(inputField.text) > ingameManager.GetCurrentGold())
         {
-            inputField.text = 300000.ToString();
+            inputField.text = ingameManager.GetCurrentGold().ToString();
+
+            if (!isAlert)
+            {
+                isAlert = true;
+                StartCoroutine(AlertMessageCoroutine());
+            }
         }
         
         currentValue = int.Parse(inputField.text);
+    }
+
+    /// <summary>
+    /// 경고 문구 활성화/비활성화
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator AlertMessageCoroutine()
+    {
+        alertText.SetActive(true);
+        
+        yield return new WaitForSeconds(2f);
+        
+        alertText.SetActive(false);
+        isAlert = false;
     }
 
     /// <summary>
@@ -53,10 +79,10 @@ public class UpkeepPayPopUp : MonoBehaviour
     /// </summary>
     public void PayTax()
     {
-        Debug.Log(currentValue);
-        IngameManager.instance.PayTax(currentValue);
-        IngameManager.instance.SetUpKeepText(upkeepTextDict);
-        IngameManager.instance.PayTaxResult(true);
+        ingameManager.SetGold(-currentValue);
+        ingameManager.PayTax(currentValue);
+        ingameManager.SetUpKeepText(upkeepTextDict);
+        //ingameManager.PayTaxResult(true);
     }
 
     public void PlayOpen()
