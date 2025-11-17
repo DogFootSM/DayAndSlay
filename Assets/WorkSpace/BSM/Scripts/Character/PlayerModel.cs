@@ -317,6 +317,9 @@ public class PlayerModel : MonoBehaviour, ISavable
     {
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
+        
+        //경험치 바 초기화
+        GainExperience(0);
     }
 
     private void Update()
@@ -324,7 +327,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         //TODO: 테스트용 코드
         if (Input.GetKeyDown(KeyCode.V))
         { 
-            GainExperience(50);
+            GainExperience(500);
         } 
     }
 
@@ -482,6 +485,8 @@ public class PlayerModel : MonoBehaviour, ISavable
         { 
             LevelUp();
         }
+
+        playerView.OnChangeExp?.Invoke(playerStats.exp, playerStats.MaxExp);
     }
      
     /// <summary>
@@ -506,10 +511,9 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// </summary>
     private void LevelUp()
     {
-        playerStats.level += playerStats.exp / playerStats.MaxExp;              //TODO: 경험치 몫에 대한 재귀처리로 레벨업 필요할 것으로 보임, Max 경험치에 대한 갱신
-        playerStats.exp %= playerStats.MaxExp;
-        playerStats.statsPoints += IncreaseStatsPoint;
-        playerStats.skillPoints += IncreaseSkillPoints;
+        //TODO: 레벨업 사운드 및 이팩트 재생
+        
+        playerStats.level += GetExpToNextLevel();
         gameManager.HasUnsavedChanges = true;
         skillTree.NotifySkillPointChanged();
         statusWindow.OnActiveIncreaseButton?.Invoke(playerStats.statsPoints);
@@ -517,6 +521,31 @@ public class PlayerModel : MonoBehaviour, ISavable
         UpdateFinalStats();
     }
 
+    /// <summary>
+    /// 현재 획득한 경험치에 최대 경험치 계산 후 레벨 계산 및 스탯 포인트 획득
+    /// </summary>
+    /// <returns></returns>
+    private int GetExpToNextLevel()
+    {
+        int addLevel = 0;
+         
+        //현재 경험치가 최대 경험치보다 클 경우
+        while (playerStats.exp >= playerStats.MaxExp)
+        {
+            //현재 경험치에서 최대 경험치만큼 감소
+            playerStats.exp -= playerStats.MaxExp;
+            
+            //레벨 1 증가
+            addLevel++;
+            
+            //스탯 포인트 획득
+            playerStats.statsPoints += IncreaseStatsPoint;
+            playerStats.skillPoints += IncreaseSkillPoints;
+        } 
+        
+        return addLevel;
+    }
+    
     /// <summary>
     /// 아이템 장착 시 스탯 효과 보정
     /// </summary> 
