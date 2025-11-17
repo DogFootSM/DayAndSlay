@@ -431,3 +431,9 @@ public enum DelayType
     DELAY,
     INSTANT,
 }
+
+
+public enum DamageTextType
+{
+    PLAYER, MONSTER, SIZE
+}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ public class DamageText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _damageText;
     [SerializeField] private Animator _damageAnimator;
+    
+    [Header("몬스터, 플레이어 텍스트 메테리얼")]
+    [SerializedDictionary("Type", "Material")]
+    [SerializeField] private SerializedDictionary<DamageTextType, Material> _damageTextMaterials; 
     
     private int damageAnimHash= Animator.StringToHash("TakeDamage");
     private DamageTextPool _damageTextPool => DamageTextPool.Instance;
@@ -21,8 +26,9 @@ public class DamageText : MonoBehaviour
     /// 피해 입은 데미지를 설정
     /// </summary>
     /// <param name="text"></param>
-    public void SetDamageText(string text)
+    public void SetDamageText(string text, DamageTextType type)
     {
+        _damageText.fontMaterial = _damageTextMaterials[type];
         _damageText.text = text;
     }
 

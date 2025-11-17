@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class DamageEffect : MonoBehaviour
         
         //피해 입은 데미지 설정
         DamageText damageText = instance.GetComponent<DamageText>();
-        damageText.SetDamageText(damage.ToString());
+        damageText.SetDamageText(damage.ToString(), DamageTextType.MONSTER);
         
         instance.SetActive(true);
     }
