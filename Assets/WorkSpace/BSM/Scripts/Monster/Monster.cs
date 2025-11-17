@@ -86,7 +86,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         if (isStunned) return;
         if (Input.GetKeyDown(KeyCode.G))
         {
-            player.TakeDamage(this, 3);
+            player.TakeDamage(this, 0.1f);
         }
 
         if (IsMove)

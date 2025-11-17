@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private SkillSlotInvoker skillSlotInvoker; 
     private Table tableObject;
     private StoreManager informationDeskObject;
+    private DamageEffect _damageEffect;
     
     private LayerMask tableLayerMask;
     private LayerMask informationDeskLayerMask;
@@ -109,6 +110,7 @@ public class PlayerController : MonoBehaviour
         bodyAnimator = GetComponent<Animator>();
         curWeapon = GetComponentInChildren<Weapon>(); 
         skillSlotInvoker = GetComponent<SkillSlotInvoker>();
+        _damageEffect = GetComponentInChildren<DamageEffect>();
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
@@ -281,15 +283,14 @@ public class PlayerController : MonoBehaviour
         float takeDamage = damage - (damage * playerModel.DamageReductionRatio);
         playerModel.CurHp -= takeDamage;
         
-        
-        
+        _damageEffect.DamageTextEvent(takeDamage);
+        _damageEffect.DamageSkinEffect();
 
+        if (playerModel.CurHp > 1) return;
         //체력이 1 미만으로 떨어졌을 경우 데쓰 상태로 변경
-        if (playerModel.CurHp < 1)
-        {
-            isDead = true;
-            ChangeState(CharacterStateType.DEATH);
-        }
+        isDead = true;
+        ChangeState(CharacterStateType.DEATH);
+        
     }
   
     /// <summary>
