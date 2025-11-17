@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
     [SerializeField] private CharacterAnimatorController characterAnimatorController;
     
+    [Header("플레이어 사망 오브젝트 On/Off")]
+    [SerializeField] private GameObject _cemeteryObject;
+    [SerializeField] private GameObject _bodyObject;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -64,7 +67,9 @@ public class PlayerController : MonoBehaviour
 
     private float posX;
     private float posY;
-
+    
+    private bool isDead = false;
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -109,7 +114,7 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
         characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
-        characterStates[(int)CharacterStateType.HIT] = new PlayerHit(this);
+        characterStates[(int)CharacterStateType.DEATH] = new PlayerDeath(this);
     }
     
     /// <summary>
@@ -275,8 +280,38 @@ public class PlayerController : MonoBehaviour
         //방어력 감소 비율에 데미지 계산한 값
         float takeDamage = damage - (damage * playerModel.DamageReductionRatio);
         playerModel.CurHp -= takeDamage;
-        Debug.Log($"현재 체력:{playerModel.CurHp}");
         
+        
+        
+
+        //체력이 1 미만으로 떨어졌을 경우 데쓰 상태로 변경
+        if (playerModel.CurHp < 1)
+        {
+            isDead = true;
+            ChangeState(CharacterStateType.DEATH);
+        }
+    }
+  
+    /// <summary>
+    /// 캐릭터 사망
+    /// </summary>
+    public void PlayerDeath()
+    {
+        _bodyObject.SetActive(false);
+        _cemeteryObject.SetActive(true);
+        
+        //TODO: Death 로직
+    }
+
+    /// <summary>
+    /// 캐릭터 부활
+    /// </summary>
+    public void PlayerResurrection()
+    {
+        _bodyObject.SetActive(true);
+        _cemeteryObject.SetActive(false);
+        
+        ChangeState(CharacterStateType.IDLE);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)
