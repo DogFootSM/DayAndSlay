@@ -19,7 +19,10 @@ public class UpkeepPayPopUp : MonoBehaviour
 
     [SerializeField] private Button taxPayButton;
     [SerializeField] private GameObject alertText;
+    [SerializeField] private GameObject alertPopup;
     private bool isAlert = false;
+
+    private bool isPass;
     
     [SerializeField] private float animationDuration = 0.75f;
 
@@ -58,6 +61,9 @@ public class UpkeepPayPopUp : MonoBehaviour
         }
         
         currentValue = int.Parse(inputField.text);
+
+        //입력한 금액이 최소 지불 금액보다 같거나 크면 isPass는 true
+        isPass = currentValue >= ingameManager.UpKeepCostCalc();
     }
 
     /// <summary>
@@ -79,10 +85,17 @@ public class UpkeepPayPopUp : MonoBehaviour
     /// </summary>
     public void PayTax()
     {
+        ingameManager.PayTaxResult(isPass, this.gameObject, alertPopup);
+        StartCoroutine(AlertPopUpCoroutine());
+    }
+
+    private IEnumerator AlertPopUpCoroutine()
+    {
+        yield return new WaitUntil (() => alertPopup.activeSelf == false);
+
         ingameManager.SetGold(-currentValue);
         ingameManager.PayTax(currentValue);
         ingameManager.SetUpKeepText(upkeepTextDict);
-        //ingameManager.PayTaxResult(true);
     }
 
     public void PlayOpen()
@@ -122,5 +135,10 @@ public class UpkeepPayPopUp : MonoBehaviour
         {
             text.Value.SetActive(isActive);
         }
+    }
+    
+    public void AlertPopUpClose(GameObject popUp)
+    {
+        popUp.SetActive(false);
     }
 }

@@ -75,10 +75,8 @@ public class IngameManager : MonoBehaviour
         Debug.Log($"이전 빚 {debt}");
         int change = value - interest;
 
-        if (change > 0)
-        {
-            debt -= change;
-        }
+        debt -= change;
+        
         Debug.Log($"이후 빚 {debt}");
         
     }
@@ -136,9 +134,9 @@ public class IngameManager : MonoBehaviour
     /// 이자 계산
     /// </summary>
     /// <returns></returns>
-    private int GetInterest() => interest = (int)(debt * 0.001f);
+    public int GetInterest() => interest = (int)(debt * 0.005f);
 
-    private int UpKeepCostCalc() => upkeepCost = GetInterest() /*+ facilityCost + manCost*/;
+    public int UpKeepCostCalc() => upkeepCost = GetInterest() /*+ facilityCost + manCost*/;
 
     /// <summary>
     /// 유지비 차감 함수(시스템에서 호출)
@@ -162,20 +160,17 @@ public class IngameManager : MonoBehaviour
     }
 
 
-    public void PayTaxResult(bool isPass)
+    public void PayTaxResult(bool isPass, GameObject upkeepPopUp, GameObject alertPopUp)
     {
-        /*
-         * if(!isPass)
-         * {
-         *  경고 문구 or 팝업 띄움
-         *  메인 화면으로 돌아감
-         * }
-         *
-         * else
-         *{
-         *  창 닫히고 아침 시작
-         *}
-         */
+        if (!isPass)
+        {
+            alertPopUp.SetActive(true);
+        }
+
+        else
+        {
+            upkeepPopUp.SetActive(false);
+        }
     }
 
 
