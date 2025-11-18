@@ -126,26 +126,15 @@ public class PlayerState : PlayerStateMachine
         }
     }
     
+    /// <summary>
+    /// 캐릭터 회피 상태 전환
+    /// </summary>
     protected void Dodge()
     {
         //캐릭터 회피기
-        if (playerController.MoveDir != Vector2.zero && Input.GetKeyDown(KeyCode.LeftShift))
+        if (playerController.CanDodge && Input.GetKeyDown(KeyCode.LeftShift))
         {
-            switch (playerController.CurrentWeaponType)
-            {
-                case CharacterWeaponType.BOW:
-                    Debug.Log("보우 빽샷");
-                    break;
-                
-                case CharacterWeaponType.SPEAR:
-                case CharacterWeaponType.SHORT_SWORD:
-                    Debug.Log("구르기");
-                    break;
-                
-                case CharacterWeaponType.WAND:
-                    Debug.Log("텔포");
-                    break;
-            } 
+            playerController.ChangeState(CharacterStateType.DODGE);
         }
     }
     

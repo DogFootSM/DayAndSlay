@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
 using UnityEngine.U2D.Animation;
 using Zenject;
 
@@ -30,6 +31,9 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 사망 오브젝트 On/Off")]
     [SerializeField] private GameObject _cemeteryObject;
     [SerializeField] private GameObject _bodyObject;
+
+    [Header("텔레포트 이펙트")]
+    public ParticleSystem teleportParticle;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -38,13 +42,16 @@ public class PlayerController : MonoBehaviour
     public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
     public CharacterWeaponType CurrentWeaponType => curWeaponType;
     
-    
     [Header("무기 오브젝트")]
     public GameObject WeaponObject;
 
     [Header("대시 이펙트 오브젝트")] 
     public GameObject DashObject;
     
+    /// <summary>
+    /// 회피기 사용 가능 상태 여부
+    /// </summary>
+    [NonSerialized] public bool CanDodge = true;
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private ArrowPool arrowPool => ArrowPool.Instance;
@@ -58,6 +65,7 @@ public class PlayerController : MonoBehaviour
     private Table tableObject;
     private StoreManager informationDeskObject;
     private DamageEffect _damageEffect;
+    private Coroutine dodgeCoolDownCo;
     
     private LayerMask tableLayerMask;
     private LayerMask informationDeskLayerMask;
@@ -70,6 +78,11 @@ public class PlayerController : MonoBehaviour
     private float posY;
     
     private bool isDead = false;
+
+    /// <summary>
+    /// 회피기 재사용 대기 시간
+    /// </summary>
+    private float dodgeCoolDown = 10f;
     
     private void Awake()
     {
@@ -339,5 +352,32 @@ public class PlayerController : MonoBehaviour
             tableManager.OnPlayerExitRangeClosePanel();
             informationDeskObject = null;
         }
-    } 
+    }
+
+    /// <summary>
+    /// 회피기 쿨타임 초기화
+    /// </summary>
+    public void ResetDodgeCoolDown()
+    {
+        if (dodgeCoolDownCo != null)
+        {
+            StopCoroutine(dodgeCoolDownCo);
+            dodgeCoolDownCo = null;
+        }
+
+        dodgeCoolDownCo = StartCoroutine(DodgeCoolDownCoroutine());
+    }
+
+    private IEnumerator DodgeCoolDownCoroutine()
+    {
+        float elapsedTime = 0;
+
+        while (elapsedTime < dodgeCoolDown)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        CanDodge = true;
+    }
 }

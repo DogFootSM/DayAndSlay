@@ -6,7 +6,7 @@ using UnityEngine;
 public class SkillParticlePooling : MonoBehaviour
 {
     public static SkillParticlePooling Instance;
-
+    
     private Dictionary<string, Queue<GameObject>> skillParticlePool = new Dictionary<string, Queue<GameObject>>();
     private GameObject particleObject;
     
