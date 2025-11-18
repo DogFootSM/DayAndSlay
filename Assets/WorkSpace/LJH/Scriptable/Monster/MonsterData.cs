@@ -21,6 +21,7 @@ public class MonsterData : ScriptableObject
     public float ChaseRange;
     public float MoveSpeed;
     public float AttackCooldown;
+    public int Experience;
 
     public List<DropItemEntry> DropTable = new();
 }
