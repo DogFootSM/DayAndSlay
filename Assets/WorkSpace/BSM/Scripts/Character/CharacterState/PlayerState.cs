@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class PlayerState : PlayerStateMachine
 {
@@ -92,8 +93,7 @@ public class PlayerState : PlayerStateMachine
             animationHashes[key].Add(Animator.StringToHash($"{toHash}{i + 1}"));
         } 
     }
-    
-    
+     
     /// <summary>
     /// 스킬 키 입력 감지
     /// </summary>
@@ -112,4 +112,42 @@ public class PlayerState : PlayerStateMachine
             } 
         } 
     }
+
+    /// <summary>
+    /// 캐릭터 기본 공격
+    /// </summary>
+    protected void NormalAttackKeyDown()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //TODO: 장착 무기 없을 때 처리 변경하기
+            if (playerController.CurrentWeaponType == CharacterWeaponType.LONG_SWORD) return;
+            playerController.ChangeState(CharacterStateType.ATTACK);
+        }
+    }
+    
+    protected void Dodge()
+    {
+        //캐릭터 회피기
+        if (playerController.MoveDir != Vector2.zero && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            switch (playerController.CurrentWeaponType)
+            {
+                case CharacterWeaponType.BOW:
+                    Debug.Log("보우 빽샷");
+                    break;
+                
+                case CharacterWeaponType.SPEAR:
+                case CharacterWeaponType.SHORT_SWORD:
+                    Debug.Log("구르기");
+                    break;
+                
+                case CharacterWeaponType.WAND:
+                    Debug.Log("텔포");
+                    break;
+            } 
+        }
+    }
+    
+    
 }

@@ -117,6 +117,7 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
         characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
         characterStates[(int)CharacterStateType.DEATH] = new PlayerDeath(this);
+        characterStates[(int)CharacterStateType.DODGE] = new PlayerDodge(this);
     }
     
     /// <summary>
@@ -196,14 +197,7 @@ public class PlayerController : MonoBehaviour
             curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
-        }
-        
-        //캐릭터 회피기
-        if (MoveDir != Vector2.zero && Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Debug.Log($"회피기 사용 {posX}, {posY}");
-        }
-        
+        } 
     }
  
     /// <summary>
