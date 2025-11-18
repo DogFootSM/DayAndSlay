@@ -6,8 +6,16 @@ using UnityEngine.Tilemaps;
 public class PlayerDodge : PlayerState
 {
     private const float MAX_TELEPORT_DISTANCE = 2.5f;
-
+    
     private LayerMask obstacleLayer;
+
+    private Dictionary<Direction, int> backDashHashMap = new Dictionary<Direction, int>()
+    {
+        {Direction.Down, Animator.StringToHash("DownBackDash")},
+        {Direction.Up, Animator.StringToHash("UpBackDash")},
+        {Direction.Left, Animator.StringToHash("RightBackDash")},
+        {Direction.Right, Animator.StringToHash("LeftBackDash")},
+    };
     
     public PlayerDodge(PlayerController playerController) : base(playerController)
     {   
@@ -47,7 +55,9 @@ public class PlayerDodge : PlayerState
     private IEnumerator DodgeCoroutine(Vector2 direction, float power)
     {
         playerController.CharacterRb.velocity = direction * power;
-
+        playerController.BodyAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
+        playerController.BodyAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
+        
         float elapsedTime = 0;
 
         while (elapsedTime < 1f)

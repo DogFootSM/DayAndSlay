@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 회피기 재사용 대기 시간
     /// </summary>
-    private float dodgeCoolDown = 10f;
+    private const float DODGE_COOLDOWN = 1f;
     
     private void Awake()
     {
@@ -372,7 +372,7 @@ public class PlayerController : MonoBehaviour
     {
         float elapsedTime = 0;
 
-        while (elapsedTime < dodgeCoolDown)
+        while (elapsedTime < DODGE_COOLDOWN)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
