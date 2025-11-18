@@ -11,6 +11,22 @@ public class DamageEffect : MonoBehaviour
     private Coroutine _skinEffectCo;
     private DamageTextPool _damageTextPool => DamageTextPool.Instance;
 
+    private int currentLayer;
+    private DamageTextType unitType;
+    
+    private void Awake()
+    {
+        currentLayer = gameObject.layer;
+
+        if (currentLayer == LayerMask.NameToLayer("Player"))
+        {
+            unitType = DamageTextType.PLAYER;
+        }
+        else if (currentLayer == LayerMask.NameToLayer("Monster"))
+        {
+            unitType = DamageTextType.MONSTER;
+        } 
+    }
 
     /// <summary>
     /// 데미지 텍스트 애니메이션 실행
@@ -27,7 +43,7 @@ public class DamageEffect : MonoBehaviour
         
         //피해 입은 데미지 설정
         DamageText damageText = instance.GetComponent<DamageText>();
-        damageText.SetDamageText(damage.ToString(), DamageTextType.MONSTER);
+        damageText.SetDamageText(damage.ToString(), unitType);
         
         instance.SetActive(true);
     }

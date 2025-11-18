@@ -197,6 +197,11 @@ public class PlayerController : MonoBehaviour
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && MoveDir != Vector2.zero)
+        {
+            Debug.Log("회피기 사용");
+        }
         
     }
  
