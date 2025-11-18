@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void KeyInput()
     {
-        //TODO: 캐스팅중인 상태이면 이동 x?
+        //캐릭터 이동
         posX = Input.GetAxisRaw("Horizontal");
         posY = Input.GetAxisRaw("Vertical");
 
@@ -197,10 +197,11 @@ public class PlayerController : MonoBehaviour
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) && MoveDir != Vector2.zero)
+        
+        //캐릭터 회피기
+        if (MoveDir != Vector2.zero && Input.GetKeyDown(KeyCode.LeftShift))
         {
-            Debug.Log("회피기 사용");
+            Debug.Log($"회피기 사용 {posX}, {posY}");
         }
         
     }
