@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDeath : MonoBehaviour
+public class PlayerDeath : PlayerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerDeath(PlayerController playerController) : base(playerController) {}
+
+    public override void Enter()
     {
-        
+        playerController.PlayerDeath();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Update()
     {
-        
+        // !IsDead -> StateChange(Idle); 
     }
+    
 }

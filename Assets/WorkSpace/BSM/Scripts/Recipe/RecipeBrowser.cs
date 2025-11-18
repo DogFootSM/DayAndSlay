@@ -67,6 +67,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
         mainCategoryDropdown.onValueChanged.AddListener(x => ChangedMainCategoryOption(x));
         subCategoryDropdown.onValueChanged.AddListener(x => ChangedSubCategoryRecipeList(x));
         deleteButton.onClick.AddListener(() => recipeSearchInputField.text = string.Empty);
+        recipeSearchInputField.onEndEdit.AddListener(InputFieldEnd);
         searchButton.onClick.AddListener(RecipeSearch);
         refreshButton.onClick.AddListener(RefreshRecipeList);
         recipeInputToastHash = Animator.StringToHash("ShowToast");
@@ -117,6 +118,21 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
         recipeObserver.SearchItemName(recipeSearchInputField.text);
         recipeSearchInputField.text = string.Empty;
     }
+
+    /// <summary>
+    /// 검색어 엔터 키 입력
+    /// </summary>
+    /// <param name="text"></param>
+    private void InputFieldEnd(string text)
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+        {
+            MisMatchCount = 0;
+            recipeObserver.SearchItemName(text);
+            recipeSearchInputField.text = string.Empty;
+        } 
+    }
+    
     
     /// <summary>
     /// 대분류 변경에 따른 중분류 카테고리 변경

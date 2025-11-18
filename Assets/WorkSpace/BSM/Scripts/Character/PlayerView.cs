@@ -11,17 +11,23 @@ public class PlayerView : MonoBehaviour
 {
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private TextMeshProUGUI healthText;
+
+    [SerializeField] private Slider expBarSlider;
+    [SerializeField] private TextMeshProUGUI expText;
     
     public UnityEvent<float, float, float> OnChangeHealth;
-
+    public UnityEvent<float, float> OnChangeExp;
+    
     private void OnEnable()
     {
         OnChangeHealth.AddListener(UpdateHealth);
+        OnChangeExp.AddListener(UpdateExp);
     }
 
     private void OnDisable()
     {
         OnChangeHealth.RemoveListener(UpdateHealth);
+        OnChangeExp.RemoveListener(UpdateExp);
     }
     
     /// <summary>
@@ -34,4 +40,16 @@ public class PlayerView : MonoBehaviour
         healthText.text = $"{(int)curHealth} / {(int)maxHealth}";
     }
 
+    /// <summary>
+    /// 현재 경험치에 따른 UI 업데이트
+    /// </summary>
+    /// <param name="curExp">현재 경험치</param>
+    /// <param name="maxExp">레발당 최대 경험치</param>
+    private void UpdateExp(float curExp, float maxExp)
+    {
+        Debug.Log($"업뎃:{curExp}, Max:{maxExp}");
+        expBarSlider.value = curExp / maxExp;
+        expText.text = $"{(int)curExp} / {(int)maxExp}";
+    }
+    
 }

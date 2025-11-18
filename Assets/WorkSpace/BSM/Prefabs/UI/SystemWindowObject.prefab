@@ -14492,6 +14492,7 @@ GameObject:
   - component: {fileID: 2268510385283542240}
   - component: {fileID: 2776597300012103747}
   - component: {fileID: 4776090116747057965}
+  - component: {fileID: 7261145315549428720}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -14602,6 +14603,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7261145315549428720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3809162407955154335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b351e5679077b094f994488dab9d630d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _windowController: {fileID: 6659375125723680439}
 --- !u!1 &3818131006330140899
 GameObject:
   m_ObjectHideFlags: 0
@@ -28236,9 +28250,9 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 231726362301186615}
   bgmVolumeSlider: {fileID: 3964291718123340295}
   sfxVolumeSlider: {fileID: 4595068807161086035}
-  _masterVolumeValueText: {fileID: 0}
-  _bgmVolumeValueText: {fileID: 0}
-  _sfxVolumeValueText: {fileID: 0}
+  _masterVolumeValueText: {fileID: 7265150051689337605}
+  _bgmVolumeValueText: {fileID: 4938669064550727576}
+  _sfxVolumeValueText: {fileID: 7203352862110010541}
 --- !u!1 &6934243600090761847
 GameObject:
   m_ObjectHideFlags: 0
@@ -35138,6 +35152,7 @@ GameObject:
   - component: {fileID: 3953395832809410869}
   - component: {fileID: 4796214586459324387}
   - component: {fileID: 1743216540600260863}
+  - component: {fileID: 1896002051533081912}
   m_Layer: 5
   m_Name: Notice_Character_Image
   m_TagString: Untagged
@@ -35187,7 +35202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -35203,6 +35218,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1896002051533081912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358063333789026666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b351e5679077b094f994488dab9d630d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _windowController: {fileID: 6659375125723680439}
 --- !u!1 &8389057739234350345
 GameObject:
   m_ObjectHideFlags: 0

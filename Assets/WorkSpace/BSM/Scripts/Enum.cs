@@ -11,7 +11,7 @@ public enum CanvasType
 [Serializable]
 public enum CharacterStateType
 {
-    IDLE, WALK, ATTACK, SKILL, HIT, SIZE
+    IDLE, WALK, ATTACK, SKILL, DEATH, SIZE
 }
 
 //이어하기 캐릭터 스프라이트 데이터 저장할 타입
@@ -430,4 +430,10 @@ public enum DelayType
 {
     DELAY,
     INSTANT,
+}
+
+
+public enum DamageTextType
+{
+    PLAYER, MONSTER, SIZE
 }

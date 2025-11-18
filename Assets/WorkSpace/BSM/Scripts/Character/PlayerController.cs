@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
     [SerializeField] private CharacterAnimatorController characterAnimatorController;
     
+    [Header("플레이어 사망 오브젝트 On/Off")]
+    [SerializeField] private GameObject _cemeteryObject;
+    [SerializeField] private GameObject _bodyObject;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -54,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private SkillSlotInvoker skillSlotInvoker; 
     private Table tableObject;
     private StoreManager informationDeskObject;
+    private DamageEffect _damageEffect;
     
     private LayerMask tableLayerMask;
     private LayerMask informationDeskLayerMask;
@@ -64,7 +68,9 @@ public class PlayerController : MonoBehaviour
 
     private float posX;
     private float posY;
-
+    
+    private bool isDead = false;
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -104,12 +110,13 @@ public class PlayerController : MonoBehaviour
         bodyAnimator = GetComponent<Animator>();
         curWeapon = GetComponentInChildren<Weapon>(); 
         skillSlotInvoker = GetComponent<SkillSlotInvoker>();
+        _damageEffect = GetComponentInChildren<DamageEffect>();
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
         characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
-        characterStates[(int)CharacterStateType.HIT] = new PlayerHit(this);
+        characterStates[(int)CharacterStateType.DEATH] = new PlayerDeath(this);
     }
     
     /// <summary>
@@ -168,7 +175,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void KeyInput()
     {
-        //TODO: 캐스팅중인 상태이면 이동 x?
+        //캐릭터 이동
         posX = Input.GetAxisRaw("Horizontal");
         posY = Input.GetAxisRaw("Vertical");
 
@@ -189,6 +196,12 @@ public class PlayerController : MonoBehaviour
             curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
+        }
+        
+        //캐릭터 회피기
+        if (MoveDir != Vector2.zero && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Debug.Log($"회피기 사용 {posX}, {posY}");
         }
         
     }
@@ -275,8 +288,37 @@ public class PlayerController : MonoBehaviour
         //방어력 감소 비율에 데미지 계산한 값
         float takeDamage = damage - (damage * playerModel.DamageReductionRatio);
         playerModel.CurHp -= takeDamage;
-        Debug.Log($"현재 체력:{playerModel.CurHp}");
         
+        _damageEffect.DamageTextEvent(takeDamage);
+        _damageEffect.DamageSkinEffect();
+
+        if (playerModel.CurHp > 1) return;
+        //체력이 1 미만으로 떨어졌을 경우 데쓰 상태로 변경
+        isDead = true;
+        ChangeState(CharacterStateType.DEATH);
+        
+    }
+  
+    /// <summary>
+    /// 캐릭터 사망
+    /// </summary>
+    public void PlayerDeath()
+    {
+        _bodyObject.SetActive(false);
+        _cemeteryObject.SetActive(true);
+        
+        //TODO: Death 로직
+    }
+
+    /// <summary>
+    /// 캐릭터 부활
+    /// </summary>
+    public void PlayerResurrection()
+    {
+        _bodyObject.SetActive(true);
+        _cemeteryObject.SetActive(false);
+        
+        ChangeState(CharacterStateType.IDLE);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)
