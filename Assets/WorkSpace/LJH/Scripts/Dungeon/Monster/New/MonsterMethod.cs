@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Zenject.SpaceFighter;
 using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
@@ -82,6 +83,14 @@ public class MonsterMethod : MonoBehaviour
         sensor = GetComponentInChildren<TargetSensor>();
         coll = GetComponent<Collider2D>();
         MonsterDataInit(ai.GetMonsterData());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            DieMethod();
+        }
     }
 
     public void MonsterDataInit(MonsterData monsterData)
@@ -187,9 +196,6 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public void AttackMethod()
     {
-        // Todo: 실제 Player HP 처리
-        //Debug.Log($"몬스터가 플레이어에게 {monsterData.Attack} 피해를 입힘");
-
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
         float distance = Vector2.Distance(player.transform.position, transform.position);
@@ -201,9 +207,20 @@ public class MonsterMethod : MonoBehaviour
             if (distance <= ai.GetMonsterModel().AttackRange)
             {
                 Debug.Log("몬스터 공격");
+                PlayerHpDamaged(monsterData.Attack);
+                
             }
         }
 
+    }
+
+    /// <summary>
+    /// 실제 공격 함수
+    /// </summary>
+    /// <param name="damage"></param>
+    private void PlayerHpDamaged(int damage)
+    {
+        player.GetComponent<PlayerController>().TakeDamage(ai, damage);
     }
 
     /// <summary>
@@ -211,11 +228,21 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public virtual void DieMethod()
     {
-        Debug.Log("사망");
-        
-        //사망 이펙트 재생
+        animator.PlayDie();
+        StartCoroutine(MonsterDestroyRoutine());
+    }
+
+    private IEnumerator MonsterDestroyRoutine()
+    {
+        yield return new WaitForSeconds(0.5f);
         DropItem();
+        GainExp(monsterData.Experience);
         Destroy(gameObject);
+    }
+
+    private void GainExp(int monsterExp)
+    {
+        player.GetComponent<PlayerModel>().GainExperience(monsterExp);
     }
 
 
@@ -226,6 +253,10 @@ public class MonsterMethod : MonoBehaviour
     public void HitMethod(int damage)
     {
         Debug.Log("피격");
+        model.Hp -= damage;
+        
+        //몬스터 최대 체력의 4분의 1 이상 데미지 줬을 경우에만 넉백 처리
+        if(damage <= model.MaxHp /4)
         ai.ReceiveKnockBack(player.transform.position, Vector2.left);
     }
 

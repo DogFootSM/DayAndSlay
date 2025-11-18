@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class ItemButton : MonoBehaviour
 {
-    [SerializeField] private ForgeUI forgeUi;
+    [SerializeField] private PreviewUI previewUi;
     public ItemData itemData;
     
 
@@ -26,7 +26,7 @@ public class ItemButton : MonoBehaviour
 
     public void Tap_ItemButton()
     {
-        forgeUi.SetPreview(itemData);
+        previewUi.SetPreview(itemData);
     }
 
 }

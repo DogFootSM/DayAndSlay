@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpkeepPopUp : MonoBehaviour
 {
     private Animator animator;
     private AudioSource audio;
     private AudioClip clip;
+
+    [SerializeField][SerializedDictionary] private SerializedDictionary<string, GameObject> upkeepTextDict;
+    private int currentValue = 0;
+
+    [SerializeField] private Button taxPayButton;
     
-    [SerializeField]private List<GameObject> Upkeeptexts;
-    
-    [SerializeField] private float animationDuration = 0.75f; 
+    [SerializeField] private float animationDuration = 0.75f;
 
     private void Awake()
     {
@@ -19,6 +24,12 @@ public class UpkeepPopUp : MonoBehaviour
         audio = GetComponent<AudioSource>();
         clip = audio.clip;
     }
+
+    private void Start()
+    {
+        IngameManager.instance.SetUpKeepText(upkeepTextDict);
+    }
+
 
     public void PlayOpen()
     {
@@ -33,37 +44,29 @@ public class UpkeepPopUp : MonoBehaviour
         animator.Play("UpkeepClose");
         StartCoroutine(CloseAnimationCompleteCoroutine());
     }
-    
-    
+
+
     private IEnumerator OpenAnimationCompleteCoroutine()
     {
         yield return new WaitForSeconds(animationDuration);
 
-        AllTextOn();
+        AllTextActive(true);
     }
 
     private IEnumerator CloseAnimationCompleteCoroutine()
     {
-        AllTextOff();
-        
+        AllTextActive(false);
+
         yield return new WaitForSeconds(animationDuration);
 
-        gameObject.SetActive(false); 
+        gameObject.SetActive(false);
     }
 
-    private void AllTextOn()
+    private void AllTextActive(bool isActive)
     {
-        foreach (GameObject text in Upkeeptexts)
+        foreach (var text in upkeepTextDict)
         {
-            text.SetActive(true);
-        }
-    }
-
-    private void AllTextOff()
-    {
-        foreach (GameObject text in Upkeeptexts)
-        {
-            text.SetActive(false);
+            text.Value.SetActive(isActive);
         }
     }
 }
