@@ -55,6 +55,8 @@ public class TargetSensor : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!transform.parent.gameObject.activeSelf) return;
+        
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, GetComponentInParent<MonsterAI>().GetChaseRange());
     }
