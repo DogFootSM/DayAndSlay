@@ -21,16 +21,24 @@ public class DungeonDoor : MonoBehaviour
     private Grid toGrid;
     
     [SerializeField] private List<Tilemap> floorTilemap =  new List<Tilemap>();
+
+    [SerializeField] private bool isReverse;
+    public void SetIsReverse(bool isReverse) => this.isReverse = isReverse;
+    
     
     
     //테스트용
 
     private void Start()
     {
-        StartCoroutine(CoCoCo());
+        StartCoroutine(RoomFindCoroutine());
     }
 
-    private IEnumerator CoCoCo()
+    /// <summary>
+    /// 최악의 방식이지만.. 나중에 시간이 나면 개선할 것
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RoomFindCoroutine()
     {
         yield return new WaitForSeconds(0.05f);
         floorTilemap.Add(GameObject.Find("Room_0").transform.GetChild(1).GetComponent<Tilemap>());
@@ -40,19 +48,7 @@ public class DungeonDoor : MonoBehaviour
         floorTilemap.Add(GameObject.Find("Room_4").transform.GetChild(1).GetComponent<Tilemap>());
         floorTilemap.Add(GameObject.Find("BossRoom").transform.GetChild(1).GetComponent<Tilemap>());
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     
 /// <summary>
@@ -73,9 +69,33 @@ public class DungeonDoor : MonoBehaviour
         //마지막 방의 경우 목적지 필요없음
         if (curGridIndex == route.Count - 1) return;
         
-        toGrid = route[curGridIndex + 1];
+        if (!isReverse)
+        {
+            // 순방향: 다음 방 (인덱스 + 1)
+            if (curGridIndex < route.Count - 1)
+            {
+                toGrid = route[curGridIndex + 1];
+            }
+            else
+            {
+                toGrid = null;
+            }
+        }
+        else
+        {
+            // 역방향: 이전 방 (인덱스 - 1)
+            if (curGridIndex > 0)
+            {
+                toGrid = route[curGridIndex - 1];
+            }
+            else
+            {
+                toGrid = null; 
+            }
+        }
         
     }
+    
 
     private void Update()
     {
@@ -87,7 +107,7 @@ public class DungeonDoor : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             MapGridChecker();
             minimap.CamPosSet(toGrid.transform.position);
@@ -104,6 +124,9 @@ public class DungeonDoor : MonoBehaviour
     private void MapGridChecker()
     {
         Debug.Log("MapGridChecker 호출됨");
+        
+        Debug.Log($"isReverse가 {isReverse}인 {transform.parent.gameObject.name} 의 Togrid{toGrid.transform.position}");
+        
         Vector3 checkPosition = toGrid.transform.position;
 
 
