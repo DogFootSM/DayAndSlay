@@ -41,7 +41,6 @@ public class MonsterMethod : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
-            Debug.Log("발동");
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             StartCoroutine(FreezeDelay(collision));
         }
@@ -261,8 +260,10 @@ public class MonsterMethod : MonoBehaviour
         
         ai.TakeDamage(damage);
         //몬스터 최대 체력의 4분의 1 이상 데미지 줬을 경우에만 넉백 처리
-        if(damage <= model.MaxHp /4)
-        ai.ReceiveKnockBack(player.transform.position, Vector2.left);
+        if (damage >= model.MaxHp / 4)
+        {
+            ai.ReceiveKnockBack(player.transform.position, Vector2.left);
+        }
     }
 
     public void DropItem()

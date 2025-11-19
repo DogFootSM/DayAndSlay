@@ -4,11 +4,24 @@ using UnityEngine;
 public class MonsterModel : MonoBehaviour
 {
     MonsterData monsterData;
+    MonsterView monsterView;
 
     public int Id;
     public string Name;
     public float MaxHp;
-    public float Hp;
+    
+    public float curHp;
+    public float CurHp
+    {
+        get => curHp;
+        set
+        {
+            curHp = value; 
+            monsterView.OnChangeHealth?.Invoke(curHp / MaxHp);
+        }
+    }
+    
+    
     public float def;
     public float Attack;
     public float AttackRange;
@@ -34,7 +47,7 @@ public class MonsterModel : MonoBehaviour
         Id = monsterData.Id;
         Name = monsterData.Name;
         MaxHp = monsterData.Hp;
-        Hp = monsterData.Hp;
+        curHp = monsterData.Hp;
         Attack = monsterData.Attack;
         AttackRange = monsterData.AttackRange;
         ChaseRange = monsterData.ChaseRange;
@@ -46,6 +59,8 @@ public class MonsterModel : MonoBehaviour
         {
             dropItems.Add(ItemDatabaseManager.instance.GetItemByID(entry.ItemId));
         }
+        
+        monsterView = GetComponent<MonsterView>();
     }
 
     public ItemData DropItemPick(float randomNum)
@@ -79,10 +94,10 @@ public class MonsterModel : MonoBehaviour
     }
     public float GetMonsterMaxHp() => MaxHp;
 
-    public float GetMonsterHp() => Hp;
+    public float GetMonsterHp() => curHp;
 
     public void SetMonsterHp(float hp)
     {
-        Hp += hp;
+        CurHp += hp;
     }
 }

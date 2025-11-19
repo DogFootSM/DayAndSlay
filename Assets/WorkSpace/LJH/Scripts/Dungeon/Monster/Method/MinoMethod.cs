@@ -33,7 +33,7 @@ public class MinoMethod : BossMonsterMethod
     public override void Skill_Fourth()
     {
         Debug.Log("½ºÅ³ 4 ½ÇÇà");
-        Labirinth();
+        Labyrinth();
     }
 
     private void Gigantism()
@@ -44,7 +44,7 @@ public class MinoMethod : BossMonsterMethod
         monsterData.MoveSpeed += 3;
     }
 
-    private void Labirinth()
+    private void Labyrinth()
     {
         Debug.Log("¹Ì±ÃÀ» »ý¼ºÇÕ´Ï´Ù.");
         player.transform.position = transform.position;
@@ -52,6 +52,22 @@ public class MinoMethod : BossMonsterMethod
 
         labyrinth.gameObject.SetActive(true);
         //Todo ¹Ì±Ã »ý¼º
+    }
+
+    public override void DieMethod()
+    {
+        Debug.Log("»ç¸Á");
+        
+        //»ç¸Á ÀÌÆåÆ® Àç»ý
+        //DropItem();
+        LabyrinthOff();
+        DungeonManager.Instance.BossDoorOpen();
+        Destroy(gameObject);
+    }
+
+    public void LabyrinthOff()
+    {
+        labyrinth.gameObject.SetActive(false);
     }
 
     public void SetLabyrinth(Labyrinth labyrinth) => this.labyrinth = labyrinth;

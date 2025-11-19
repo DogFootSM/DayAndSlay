@@ -18,7 +18,7 @@ public class IsHPThresholdCheckNode : BTNode
 
     public override NodeState Tick()
     {
-        float hpPer = ((float)model.Hp / model.MaxHp) * 100;
+        float hpPer = ((float)model.CurHp / model.MaxHp) * 100;
         Debug.Log($"현재 보스몬스터의 체력 비율{hpPer}");
         if (threshold >= hpPer)
         {

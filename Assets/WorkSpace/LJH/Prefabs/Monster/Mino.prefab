@@ -10110,8 +10110,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -4.999939, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.000030517578, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4842710499064245620
 GameObject:
@@ -15158,7 +15158,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 343}
-  m_SizeDelta: {x: 1028.0981, y: 109.4184}
+  m_SizeDelta: {x: 1000, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5163635145041986557
 MonoBehaviour:
@@ -15435,6 +15435,7 @@ GameObject:
   - component: {fileID: 2450185539440437247}
   - component: {fileID: 5923960667601013373}
   - component: {fileID: 3147133901585233096}
+  - component: {fileID: 1787741597909652184}
   m_Layer: 17
   m_Name: Mino
   m_TagString: Boss
@@ -15451,7 +15452,7 @@ Transform:
   m_GameObject: {fileID: 8227391919022582039}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2033455512311318017}
@@ -15640,7 +15641,7 @@ MonoBehaviour:
   Id: 0
   Name: 
   MaxHp: 0
-  Hp: 0
+  curHp: 0
   def: 0
   Attack: 0
   AttackRange: 0
@@ -15709,3 +15710,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bodyRenderer: {fileID: 8227391919022582505}
   _damageTextCanvas: {fileID: 1951440382456741289}
+--- !u!114 &1787741597909652184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8227391919022582039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2775f8b0a8af542adfcdf55568f1d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarSlider: {fileID: 5163635145041986557}
+  OnChangeHealth:
+    m_PersistentCalls:
+      m_Calls: []

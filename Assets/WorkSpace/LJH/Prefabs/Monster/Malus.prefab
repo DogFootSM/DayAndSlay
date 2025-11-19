@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -4.999939, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1097223078949976039
 GameObject:
@@ -5036,6 +5036,7 @@ GameObject:
   - component: {fileID: -5421944829332588048}
   - component: {fileID: 5339214499333117911}
   - component: {fileID: 6421000494089532074}
+  - component: {fileID: 8696564959434579205}
   m_Layer: 17
   m_Name: Malus
   m_TagString: Boss
@@ -5238,7 +5239,6 @@ MonoBehaviour:
   Id: 0
   Name: 
   MaxHp: 0
-  Hp: 0
   def: 0
   Attack: 0
   AttackRange: 0
@@ -5307,6 +5307,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bodyRenderer: {fileID: 4014306058948159739}
   _damageTextCanvas: {fileID: 5253477553257973004}
+--- !u!114 &8696564959434579205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014306058948159716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2775f8b0a8af542adfcdf55568f1d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarSlider: {fileID: 3947292327716270306}
+  OnChangeHealth:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4241184031532193736
 GameObject:
   m_ObjectHideFlags: 0
