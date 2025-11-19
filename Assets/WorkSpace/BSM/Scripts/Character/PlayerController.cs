@@ -133,6 +133,7 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
         characterStates[(int)CharacterStateType.DEATH] = new PlayerDeath(this);
         characterStates[(int)CharacterStateType.DODGE] = new PlayerDodge(this);
+        characterStates[(int)CharacterStateType.PARRYING] = new PlayerParrying(this);
     }
     
     /// <summary>
@@ -160,19 +161,18 @@ public class PlayerController : MonoBehaviour
     public void ChangedWeaponType(CharacterWeaponType weaponType, ItemData itemData = null)
     { 
         curWeaponType = weaponType;
-
+ 
         if (weaponType == CharacterWeaponType.BOW)
         {
             arrowPool.SetupArrowPoolOnEquip();
         }
-        
+
         //웨폰 핸들러 변경
         if (itemData != null)
         {
             curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
         }
-        //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경
-        //TODO: NotWeapon 처리 필요
+
         characterAnimatorController.AnimatorChange((int)weaponType, true);
         playerModel.UpdateWeaponType(weaponType);
         

@@ -27,6 +27,7 @@ public class ShortSword : IAttackHandler
     /// <param name="playerModel"></param>
     public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
+        Debug.Log("칼 기본 공격");   
         //기즈모 테스트용 pos,dir 코드
         pos = position;
         dir = direction;

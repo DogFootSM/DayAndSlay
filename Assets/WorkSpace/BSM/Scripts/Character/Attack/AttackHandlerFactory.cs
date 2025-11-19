@@ -22,7 +22,6 @@ public static class AttackHandlerFactory
                 CharacterWeaponType.BOW => new Bow(),
                 CharacterWeaponType.WAND => new Wand(),
                 CharacterWeaponType.SHORT_SWORD => new ShortSword(),
-                CharacterWeaponType.LONG_SWORD => new ShortSword(),
                 CharacterWeaponType.SPEAR => new Spear(),
                 _ => null
             };

@@ -41,6 +41,9 @@ public class PlayerDodge : PlayerState
     /// </summary>
     private void BackDash()
     { 
+        //회피기 사용 불가 변경
+        playerController.CanDodge = false;        
+        
         Vector2 direction = playerController.LastMoveKey switch
         {
             Direction.Down => Vector2.up,
@@ -68,9 +71,6 @@ public class PlayerDodge : PlayerState
             elapsedTime += Time.deltaTime * 5f;
         }
         
-        //회피기 사용 불가 변경
-        playerController.CanDodge = false;
-        
         //회피기 쿨다운 리셋 진행
         playerController.ResetDodgeCoolDown(BuffType.BACKDASH);
         playerController.CharacterRb.velocity = Vector2.zero;
@@ -84,6 +84,9 @@ public class PlayerDodge : PlayerState
     /// </summary>
     private void Teleport()
     {
+        //회피기 사용 불가 상태 변경
+        playerController.CanDodge = false;
+        
         Vector2 teleportPos = Vector2.zero;
         Vector2 direction = Vector2.zero;
         
@@ -123,10 +126,7 @@ public class PlayerDodge : PlayerState
         }
          
         playerController.teleportParticle.Play();
-        
-        //회피기 사용 불가 상태 변경
-        playerController.CanDodge = false;
-        
+    
         //회피기 쿨다운 진행
         playerController.ResetDodgeCoolDown(BuffType.TELEPORT);
         playerController.transform.position = teleportPos;
