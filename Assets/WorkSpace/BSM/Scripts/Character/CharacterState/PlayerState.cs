@@ -147,9 +147,9 @@ public class PlayerState : PlayerStateMachine
             playerController.CurrentWeaponType == CharacterWeaponType.WAND ||
             playerController.CurrentWeaponType == CharacterWeaponType.EMPTY) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (playerController.CanParrying && Input.GetKeyDown(KeyCode.LeftShift))
         {
-            Debug.Log("패링 사용");
+            playerController.ChangeState(CharacterStateType.PARRYING);
         }
     }
 }

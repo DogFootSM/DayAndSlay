@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class PlayerDodge : PlayerState
 {
     private const float MAX_TELEPORT_DISTANCE = 2.5f;
+    private const float BACKDASH_JUMP_POWER = 8f;
     
     private LayerMask obstacleLayer;
 
@@ -53,7 +54,7 @@ public class PlayerDodge : PlayerState
             _ => Vector2.zero
         };
 
-        playerController.StartCoroutine(DodgeCoroutine(direction, 8f));
+        playerController.DodgeCo = playerController.StartCoroutine(DodgeCoroutine(direction, BACKDASH_JUMP_POWER));
         playerController.CurWeapon.NormalAttack();
     }
 
@@ -74,9 +75,6 @@ public class PlayerDodge : PlayerState
         //회피기 쿨다운 리셋 진행
         playerController.ResetDodgeCoolDown(BuffType.BACKDASH);
         playerController.CharacterRb.velocity = Vector2.zero;
-        
-        //아이들 상태 전환
-        playerController.ChangeState(CharacterStateType.IDLE);
     }
  
     /// <summary>
@@ -130,8 +128,5 @@ public class PlayerDodge : PlayerState
         //회피기 쿨다운 진행
         playerController.ResetDodgeCoolDown(BuffType.TELEPORT);
         playerController.transform.position = teleportPos;
-        
-        //아이들 상태 전환
-        playerController.ChangeState(CharacterStateType.IDLE);
     }
 }

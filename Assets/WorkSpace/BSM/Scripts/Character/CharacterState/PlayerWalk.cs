@@ -31,6 +31,7 @@ public class PlayerWalk : PlayerState
         NormalAttackKeyDown();
         CheckSkillKeyInput();
         Dodge();
+        Parrying();
     }
     
     public override void FixedUpdate()

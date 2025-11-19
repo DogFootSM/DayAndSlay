@@ -440,5 +440,5 @@ public enum DamageTextType
 
 public enum BuffType
 {
-    BACKDASH, TELEPORT, NONE
+    BACKDASH, TELEPORT, PARRYING, NONE
 }
