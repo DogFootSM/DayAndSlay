@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     [NonSerialized] public bool CanDodge = true;
     
+    [SerializeField] private BuffIconController buffIconController;
+    
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private ArrowPool arrowPool => ArrowPool.Instance;
     private PlayerState[] characterStates = new PlayerState[(int)CharacterStateType.SIZE];
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 회피기 재사용 대기 시간
     /// </summary>
-    private const float DODGE_COOLDOWN = 1f;
+    private const float DODGE_COOLDOWN = 10f;
     
     private void Awake()
     {
@@ -357,7 +359,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 회피기 쿨타임 초기화
     /// </summary>
-    public void ResetDodgeCoolDown()
+    public void ResetDodgeCoolDown(BuffType buffType)
     {
         if (dodgeCoolDownCo != null)
         {
@@ -365,13 +367,26 @@ public class PlayerController : MonoBehaviour
             dodgeCoolDownCo = null;
         }
 
-        dodgeCoolDownCo = StartCoroutine(DodgeCoolDownCoroutine());
+        dodgeCoolDownCo = StartCoroutine(DodgeCoolDownCoroutine(buffType));
     }
 
-    private IEnumerator DodgeCoolDownCoroutine()
+    /// <summary>
+    /// 버프 스킬 아이콘 쿨타임 초기화
+    /// </summary>
+    /// <param name="buffType"></param>
+    /// <param name="cooldownDuration"></param>
+    public void ResetBuffSkillCoolDown(BuffType buffType, float cooldownDuration)
+    {
+        //TODO: 추후 버프 스킬 사용 시 아이콘 필요하다면 여길 호출
+        buffIconController.UseBuff(buffType, DODGE_COOLDOWN);
+    }
+    
+    
+    private IEnumerator DodgeCoolDownCoroutine(BuffType buffType)
     {
         float elapsedTime = 0;
-
+        
+        buffIconController.UseBuff(buffType, DODGE_COOLDOWN);
         while (elapsedTime < DODGE_COOLDOWN)
         {
             elapsedTime += Time.deltaTime;

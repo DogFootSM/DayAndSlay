@@ -36,7 +36,9 @@ public class PlayerDodge : PlayerState
         }
     }
 
-
+    /// <summary>
+    /// 현재 바라보고 있는 반대 방향으로 백대쉬
+    /// </summary>
     private void BackDash()
     { 
         Vector2 direction = playerController.LastMoveKey switch
@@ -66,12 +68,20 @@ public class PlayerDodge : PlayerState
             elapsedTime += Time.deltaTime * 5f;
         }
         
+        //회피기 사용 불가 변경
         playerController.CanDodge = false;
-        playerController.ResetDodgeCoolDown();
+        
+        //회피기 쿨다운 리셋 진행
+        playerController.ResetDodgeCoolDown(BuffType.BACKDASH);
         playerController.CharacterRb.velocity = Vector2.zero;
+        
+        //아이들 상태 전환
         playerController.ChangeState(CharacterStateType.IDLE);
     }
  
+    /// <summary>
+    /// 바라보고 있는 방향으로 텔레포트
+    /// </summary>
     private void Teleport()
     {
         Vector2 teleportPos = Vector2.zero;
@@ -98,21 +108,30 @@ public class PlayerDodge : PlayerState
            
         RaycastHit2D hit = Physics2D.Raycast(playerController.transform.position, direction, MAX_TELEPORT_DISTANCE, obstacleLayer);
         
+        //전방 장애물 여부 확인
         if (hit.collider != null)
         {
             float offset = 0.25f;
- 
+            
+            //장애물 충돌 위치 + 충돌 바깥 위치 + offset 위치로 보정
             teleportPos = hit.point + hit.normal * offset; 
         }
         else
         {
+            //이동 가능한 최대 위치로 이동
             teleportPos = playerController.transform.position + (Vector3)direction * MAX_TELEPORT_DISTANCE;
         }
          
         playerController.teleportParticle.Play();
+        
+        //회피기 사용 불가 상태 변경
         playerController.CanDodge = false;
-        playerController.ResetDodgeCoolDown();
+        
+        //회피기 쿨다운 진행
+        playerController.ResetDodgeCoolDown(BuffType.TELEPORT);
         playerController.transform.position = teleportPos;
+        
+        //아이들 상태 전환
         playerController.ChangeState(CharacterStateType.IDLE);
     }
 }

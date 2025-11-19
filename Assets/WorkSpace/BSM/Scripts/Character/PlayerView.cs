@@ -13,7 +13,6 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
 
     [SerializeField] private Slider expBarSlider;
-    [SerializeField] private TextMeshProUGUI expText;
     
     public UnityEvent<float, float, float> OnChangeHealth;
     public UnityEvent<float, float> OnChangeExp;
@@ -49,7 +48,6 @@ public class PlayerView : MonoBehaviour
     {
         Debug.Log($"¾÷µ«:{curExp}, Max:{maxExp}");
         expBarSlider.value = curExp / maxExp;
-        expText.text = $"{(int)curExp} / {(int)maxExp}";
     }
     
 }

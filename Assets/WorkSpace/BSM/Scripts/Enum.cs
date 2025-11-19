@@ -437,3 +437,8 @@ public enum DamageTextType
 {
     PLAYER, MONSTER, SIZE
 }
+
+public enum BuffType
+{
+    BACKDASH, TELEPORT, NONE
+}
