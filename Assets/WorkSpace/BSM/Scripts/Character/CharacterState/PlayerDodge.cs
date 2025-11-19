@@ -56,7 +56,7 @@ public class PlayerDodge : PlayerState
     {
         playerController.CharacterRb.velocity = direction * power;
         playerController.BodyAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
-        playerController.BodyAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
+        playerController.WeaponAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
         
         float elapsedTime = 0;
 

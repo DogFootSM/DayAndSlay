@@ -20,7 +20,7 @@ public class SkillCoolDown : MonoBehaviour
     /// 쿨타임 UI 코루틴 호출
     /// </summary>
     /// <param name="skillNode"></param>
-    public void UpdateCoolDown(SkillNode skillNode)
+    public void SkillSlotUpdateCoolDown(SkillNode skillNode)
     {
         if (coolDownResetCo == null)
         {

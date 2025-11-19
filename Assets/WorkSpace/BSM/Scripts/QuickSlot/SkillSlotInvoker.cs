@@ -123,7 +123,7 @@ public class SkillSlotInvoker : MonoBehaviour
                     //퀵슬롯이 변경되었을 경우를 대비해 퀵슬롯 타입을 찾음
                     QuickSlotType searchType = CoolDownUIHub.SearchSkillCoolDown(beforeChangedSkillCooldown);
                     
-                    CoolDownUIHub.CoolDownImageMap[searchType].UpdateCoolDown(skillNode);
+                    CoolDownUIHub.CoolDownImageMap[searchType].SkillSlotUpdateCoolDown(skillNode);
                     QuickSlotWaitUseUI.QuickSlotWaitUses[searchType].StopAnimation();
                     return skillNode.skillData.UseSkillDelay;
                 }
@@ -137,7 +137,7 @@ public class SkillSlotInvoker : MonoBehaviour
                  
                 slotSkill.UseSkill(curDirection, transform.position);
                 skillNode.IsCoolDownReset = false;
-                CoolDownUIHub.CoolDownImageMap[quickSlotType].UpdateCoolDown(skillNode);
+                CoolDownUIHub.CoolDownImageMap[quickSlotType].SkillSlotUpdateCoolDown(skillNode);
                 return skillNode.skillData.UseSkillDelay;
             }
         }
@@ -172,7 +172,7 @@ public class SkillSlotInvoker : MonoBehaviour
         QuickSlotType searchType = CoolDownUIHub.SearchSkillCoolDown(beforeChangedSkillCooldown);
         QuickSlotWaitUseUI.QuickSlotWaitUses[searchType].StopAnimation();
         skillNode.IsCoolDownReset = false;
-        CoolDownUIHub.CoolDownImageMap[searchType].UpdateCoolDown(skillNode);
+        CoolDownUIHub.CoolDownImageMap[searchType].SkillSlotUpdateCoolDown(skillNode);
     }
 
     private void OnDrawGizmos()
