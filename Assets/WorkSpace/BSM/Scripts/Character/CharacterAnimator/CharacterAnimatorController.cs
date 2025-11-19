@@ -19,7 +19,7 @@ public class CharacterAnimatorController : MonoBehaviour
     [Header("무기 애니메이션 컨트롤러 컴포넌트")] [SerializeField]
     private Animator WeaponAnimator;
 
-    [Header("무기 애니메이터 리스트")] //TODO: BOW, SPEAR 애니메이터 추가 필요
+    [Header("무기 애니메이터 리스트")]
     [SerializeField]
     private List<Animator> WeaponAnimators;
 

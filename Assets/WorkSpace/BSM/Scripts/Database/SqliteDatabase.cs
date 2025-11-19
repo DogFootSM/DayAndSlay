@@ -37,7 +37,6 @@ public class SqliteDatabase
     public void DropTable()
     {
         Debug.Log("테이블 삭제");
-        //TODO: 테이블 생성 완료되면 삭제할 것
         using (dbCommand = dbConnection.CreateCommand())
         {
             dbCommand.CommandText = @"DROP TABLE IF EXISTS Character";
