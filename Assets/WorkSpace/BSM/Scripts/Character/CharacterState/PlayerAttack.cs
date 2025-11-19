@@ -41,28 +41,13 @@ public class PlayerAttack : PlayerState
         float elapsedTime = 0f;
         
         //애니메이션 가져올 랜덤 인덱스
-        int randomIndex = UnityEngine.Random.Range(0, 3);
+        int randomIndex = playerController.CurrentWeaponType == CharacterWeaponType.BOW ? 0 : UnityEngine.Random.Range(0, 3);
         
         //방향에 따른 애니메이션 키값
-        int keyIndex = 0;
+        int directionKey = 0;
         
-        attackHash = animationHashes[playerController.LastMoveKey][randomIndex];
-        
-        keyIndex = playerController.LastMoveKey switch
-        {
-            Direction.Down => 0,
-            Direction.Up => 1,
-            Direction.Right => 2,
-            Direction.Left => 3,
-            _ => 0
-        };
-        
-        //1타 공격 애니메이션 사용 여부 True로 변경
-        randHashIndexCheck[keyIndex][randomIndex] = true;
-        
-        playerController.CurWeapon.NormalAttack();
-        playerController.BodyAnimator.Play(attackHash);
-        playerController.WeaponAnimator.Play(attackHash);
+        SetAttackHash(randomIndex);
+        PlayAnimation();
 
         //콤보 횟수 감소
         hitCombo--;
@@ -70,6 +55,18 @@ public class PlayerAttack : PlayerState
         //장착 무기가 활이 아닌 상태에서만 연속 공격
         if (playerController.CurrentWeaponType != CharacterWeaponType.BOW)
         {
+            directionKey = playerController.LastMoveKey switch
+            {
+                Direction.Down => 0,
+                Direction.Up => 1,
+                Direction.Right => 2,
+                Direction.Left => 3,
+                _ => 0
+            };
+        
+            //1타 공격 애니메이션 사용 여부 True로 변경
+            UpdateAnimationByDirection((directionKey, randomIndex), true);
+            
             // 1Frame 이후 재입력 확인
             yield return null;
             
@@ -84,27 +81,23 @@ public class PlayerAttack : PlayerState
                     elapsedTime = 0;
                     
                     //현재 가져온 애니메이션이 사용한 애니메이션인지 체크
-                    while (randHashIndexCheck[keyIndex][randomIndex] && hitCombo > 0)
+                    while (randHashIndexCheck[directionKey][randomIndex] && hitCombo > 0)
                     {
                         randomIndex = UnityEngine.Random.Range(0, 3);
                         yield return null;
-                    }
+                    } 
                     
                     //콤보 횟수 감소
                     hitCombo--;
                     
                     //미사용 애니메이션 공격 해시로 변경
-                    attackHash = animationHashes[playerController.LastMoveKey][randomIndex];
+                    SetAttackHash(randomIndex);
                     
                     //애니메이션 사용 여부 업데이트
-                    randHashIndexCheck[keyIndex][randomIndex] = true;
+                    UpdateAnimationByDirection((directionKey, randomIndex), true);
                     
                     // //공격 애니메이션 재생
-                    playerController.CurWeapon.NormalAttack();
-                    playerController.BodyAnimator.Rebind();
-                    playerController.BodyAnimator.Play(attackHash);
-                    playerController.WeaponAnimator.Rebind();
-                    playerController.WeaponAnimator.Play(attackHash);
+                    PlayAnimation(); 
                 }
   
                 yield return null;
@@ -112,9 +105,9 @@ public class PlayerAttack : PlayerState
         }
         
         //애니메이션 사용 여부 초기화
-        for (int i = 0; i < randHashIndexCheck[keyIndex].Length; i++)
+        for (int i = 0; i < randHashIndexCheck[directionKey].Length; i++)
         {
-            randHashIndexCheck[keyIndex][i] = false;
+            UpdateAnimationByDirection((directionKey, i), false);
         }
         
         //공격 콤보 초기화
@@ -124,4 +117,35 @@ public class PlayerAttack : PlayerState
 
         playerController.ChangeState(CharacterStateType.IDLE);
     }
+
+    /// <summary>
+    /// 공격 애니메이션 실행
+    /// </summary>
+    private void PlayAnimation()
+    {
+        playerController.BodyAnimator.Rebind();
+        playerController.BodyAnimator.Play(attackHash);
+        playerController.WeaponAnimator.Rebind();
+        playerController.WeaponAnimator.Play(attackHash);
+    }
+
+    /// <summary>
+    /// 공격 애니메이션 해시 설정
+    /// </summary>
+    /// <param name="randomIndex"></param>
+    private void SetAttackHash(int randomIndex)
+    {
+        attackHash = animationHashes[playerController.LastMoveKey][randomIndex];
+    }
+    
+    /// <summary>
+    /// 방향에 따른 애니메이션 사용 여부 갱신
+    /// </summary>
+    /// <param name="key">현재 바라보고 있는 방향, 애니메이션 순서</param>
+    /// <param name="value">사용 여부</param>
+    private void UpdateAnimationByDirection((int,int) key, bool value)
+    {
+        randHashIndexCheck[key.Item1][key.Item2] = value;
+    }
+    
 }
