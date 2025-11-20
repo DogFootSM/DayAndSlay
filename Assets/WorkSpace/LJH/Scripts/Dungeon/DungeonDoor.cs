@@ -14,10 +14,12 @@ public class DungeonDoor : MonoBehaviour
     MinimapController minimap;
     [Inject]
     MapManager mapManager;
-    
+
     /// <summary>
     /// 목적지
     /// </summary>
+
+    [SerializeField] private Room room;
     private Grid toGrid;
     
     [SerializeField] private List<Tilemap> floorTilemap =  new List<Tilemap>();
@@ -29,6 +31,7 @@ public class DungeonDoor : MonoBehaviour
     
     //테스트용
 
+    [SerializeField] private Grid testToGrid;
     private void Start()
     {
         StartCoroutine(RoomFindCoroutine());
@@ -109,10 +112,17 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
+            //MapGridChecker();
+            //minimap.CamPosSet(toGrid.transform.position);
+            //Rigidbody2D rb = player.attachedRigidbody;
+            //rb.position = toGrid.gameObject.transform.position;
+            //rb.velocity = Vector2.zero;
+            //rb.angularVelocity = 0f;
+            
             MapGridChecker();
-            minimap.CamPosSet(toGrid.transform.position);
+            minimap.CamPosSet(room.transform.position);
             Rigidbody2D rb = player.attachedRigidbody;
-            rb.position = toGrid.gameObject.transform.position;
+            rb.position = room.gameObject.transform.position;
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
