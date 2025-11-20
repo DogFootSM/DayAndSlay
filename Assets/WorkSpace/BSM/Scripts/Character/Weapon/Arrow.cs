@@ -7,6 +7,8 @@ public class Arrow : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D arrowRb;
 
+    private const float ARROW_SPEED = 12f;
+    
     private ArrowPool arrowPool => ArrowPool.Instance;
     private Coroutine returnCo;
     
@@ -15,8 +17,7 @@ public class Arrow : MonoBehaviour
     
     private float damage;
     private float range;
-    private float arrowSpeed = 15f;
-    
+     
     //슬로우 스킬 적용값
     private float slowRatio;
     private float slowDuration;
@@ -74,7 +75,7 @@ public class Arrow : MonoBehaviour
         range = weaponRange;
         
         //TODO: 화살은 모두 속도 동일로, 적정 속도 찾아서 상수값으로 박기
-        arrowRb.AddForce(dir * arrowSpeed, ForceMode2D.Impulse);
+        arrowRb.AddForce(dir * ARROW_SPEED, ForceMode2D.Impulse);
 
         returnCo = StartCoroutine(ArrowReturnRoutine());
     }
