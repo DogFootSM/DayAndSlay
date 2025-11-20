@@ -316,6 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapTileMap: {fileID: 0}
   obstacleTileMap: {fileID: 0}
+  roadTileMap: {fileID: 0}
   mapGrid: {fileID: 0}
   path: []
 --- !u!1 &418132243174538382
@@ -548,6 +549,107 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1598530674199913976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1460986223329249858}
+  - component: {fileID: 5908508237964373138}
+  - component: {fileID: 3714825952952008492}
+  - component: {fileID: 1741641137847915400}
+  m_Layer: 17
+  m_Name: DamageCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1460986223329249858
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598530674199913976}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1022200547956221348}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!223 &5908508237964373138
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598530674199913976}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &3714825952952008492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598530674199913976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!114 &1741641137847915400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598530674199913976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &6566479308208419710
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +669,8 @@ GameObject:
   - component: {fileID: 295333524080243007}
   - component: {fileID: 3226788430190893274}
   - component: {fileID: -2829234086739164384}
+  - component: {fileID: 355922587788062147}
+  - component: {fileID: 7450627841022039036}
   m_Layer: 17
   m_Name: Banshee
   m_TagString: Untagged
@@ -591,6 +695,7 @@ Transform:
   - {fileID: 3042493299578515140}
   - {fileID: 1309194397448500334}
   - {fileID: 5030220539969059605}
+  - {fileID: 1460986223329249858}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -708,8 +813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70b98268e66be34488011b1dcd012c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markObject: {fileID: 0}
-  monsterData: {fileID: 0}
+  markObject: {fileID: 8396125278250677532, guid: a89c42c1da352f141a6daf5fab8f61f4, type: 3}
+  monsterData: {fileID: 11400000, guid: 75aac21a50c2154438f63386fc722978, type: 2}
   player: {fileID: 0}
   isAttacking: 0
   attackCooldown: 2
@@ -729,7 +834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa76dbfe7c539f4db2c035204d91412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
+  itemPrefab: {fileID: 0}
   effect: {fileID: 4041487671169658802}
   spirit: {fileID: 6877293584303777097}
   buffDuration: 0
@@ -770,7 +875,7 @@ MonoBehaviour:
   Id: 0
   Name: 
   MaxHp: 0
-  Hp: 0
+  curHp: 0
   def: 0
   Attack: 0
   AttackRange: 0
@@ -823,8 +928,38 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5, y: 5}
+  m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &355922587788062147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566479308208419710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2775f8b0a8af542adfcdf55568f1d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarSlider: {fileID: 4638532379542658071}
+  OnChangeHealth:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7450627841022039036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566479308208419710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775c7298d8b72634ab2a7b1394d4a52e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyRenderer: {fileID: 6615663099855010381}
+  _damageTextCanvas: {fileID: 5908508237964373138}
 --- !u!1 &6902284469824743467
 GameObject:
   m_ObjectHideFlags: 0

@@ -99,7 +99,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {
         return new List<BTNode>
         {
-            new IsDieNode(() => model.Hp),
+            new IsDieNode(() => model.CurHp),
             new ActionNode(Die)
         };
     }
@@ -259,6 +259,11 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     }
     
     #region 넉백 효과
+    /// <summary>
+    /// PlayerDir 사용하지 않아서 아무값이나 넣어줌 _ 백선명한테 말해서 아예 빼버려야함
+    /// </summary>
+    /// <param name="playerPos"></param>
+    /// <param name="playerDir"></param>
     public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
     {
         animator.PlayHit();

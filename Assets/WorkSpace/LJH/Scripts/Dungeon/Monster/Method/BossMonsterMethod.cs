@@ -22,6 +22,7 @@ public abstract class BossMonsterMethod : MonsterMethod
         if (effect == null)
         {
             Debug.Log("effect가 Null입니다.");
+            return;
         }
         effect.Play(true);
     }

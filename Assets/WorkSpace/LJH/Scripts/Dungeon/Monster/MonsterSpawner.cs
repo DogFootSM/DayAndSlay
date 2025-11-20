@@ -15,6 +15,9 @@ public class MonsterSpawner : MonoBehaviour
     [Inject(Id = "BOSS_2")] protected List<GameObject> bossMonsters_Stage2;
     [Inject(Id = "BOSS_3")] protected List<GameObject> bossMonsters_Stage3;
 
+    [Header("몇 스테이지 몬스터 스폰")] [SerializeField]
+    private StageNum stageNum;
+    
     [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
     [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
 
@@ -25,6 +28,7 @@ public class MonsterSpawner : MonoBehaviour
     //플레이어 위치 체크 테스트용 변수
     [SerializeField] private GameObject player;
 
+    
     private Grid grid;
 
 
@@ -106,8 +110,6 @@ public class MonsterSpawner : MonoBehaviour
         //인게임 매니저에서 스테이지 따옴
         //Todo : 실제 연결시에는 해당 코드 이용
         //StageNum stageNum = IngameManager.instance.GetStage();
-        //TestCode
-        StageNum stageNum = StageNum.STAGE1;
         
         List<GameObject> monsters = new List<GameObject>();
         List<GameObject> bossMonsters =  new List<GameObject>();

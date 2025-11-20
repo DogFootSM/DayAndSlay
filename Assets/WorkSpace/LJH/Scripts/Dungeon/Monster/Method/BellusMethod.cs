@@ -36,8 +36,8 @@ public class BellusMethod : BossMonsterMethod
         bellusHealEffect.Play();
         malusHealEffect.Play();
 
-        if (bellus.GetMonsterModel().Hp >= bellus.GetMonsterModel().MaxHp &&
-            bellus.GetMonsterModel().Hp >= bellus.GetMonsterModel().MaxHp)
+        if (bellus.GetMonsterModel().CurHp >= bellus.GetMonsterModel().MaxHp &&
+            bellus.GetMonsterModel().CurHp >= bellus.GetMonsterModel().MaxHp)
         {
             //bellus.GetMonsterModel().SetMonsterHp(25);
             //malus.GetMonsterModel().SetMonsterHp(25);

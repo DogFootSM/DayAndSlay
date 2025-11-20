@@ -7,7 +7,9 @@ using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
 {
-    [SerializeField] GameObject itemPrefab;
+    [SerializeField] private GameObject itemPrefab;
+    
+    private DamageEffect damageEffect;
     
     protected MonsterData monsterData;
     protected MonsterModel model;
@@ -39,7 +41,6 @@ public class MonsterMethod : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
-            Debug.Log("발동");
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             StartCoroutine(FreezeDelay(collision));
         }
@@ -82,15 +83,18 @@ public class MonsterMethod : MonoBehaviour
         sensor = GetComponentInChildren<TargetSensor>();
         coll = GetComponent<Collider2D>();
         MonsterDataInit(ai.GetMonsterData());
+        damageEffect = GetComponent<DamageEffect>();
+        model = ai.GetMonsterModel();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            DieMethod();
+            HitMethod(10);
         }
     }
+
 
     public void MonsterDataInit(MonsterData monsterData)
     {
@@ -252,23 +256,22 @@ public class MonsterMethod : MonoBehaviour
     public void HitMethod(int damage)
     {
         Debug.Log("피격");
-        model.Hp -= damage;
+        damageEffect.DamageTextEvent(damage);
         
+        ai.TakeDamage(damage);
         //몬스터 최대 체력의 4분의 1 이상 데미지 줬을 경우에만 넉백 처리
-        if(damage <= model.MaxHp /4)
-        ai.ReceiveKnockBack(player.transform.position, Vector2.left);
+        if (damage >= model.MaxHp / 4)
+        {
+            ai.ReceiveKnockBack(player.transform.position, Vector2.left);
+        }
     }
 
     public void DropItem()
     {
-        Debug.Log("아이템 떨어뜨림");
-        model = ai.GetMonsterModel();
-        
         float randomNum = Random.Range(0, 100);
-
-        Debug.Log(
-            model.DropItemPick(randomNum).Name
-            );
+        
+        //노드랍인경우 여기서 리턴
+        if (model.DropItemPick(randomNum) == null) return;
         
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
         Instantiate(itemPrefab, transform.position, Quaternion.identity);

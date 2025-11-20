@@ -112,9 +112,12 @@ public class DungeonRoomSpawner : MonoBehaviour
                 {
                     container.InstantiatePrefab(doorMarker, doorPos, Quaternion.identity, room.transform);
                 }
+                
+                door.GetComponent<DungeonDoor>().SetIsReverse(isReverse);
             }
         }
     }
+    
 
     private void Init()
     {

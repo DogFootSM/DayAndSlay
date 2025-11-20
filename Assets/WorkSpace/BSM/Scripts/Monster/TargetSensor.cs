@@ -28,6 +28,13 @@ public class TargetSensor : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        if (transform.parent.name == "Banshee(Clone)")
+        {
+            Debug.Log(findCollider);
+            Debug.Log(GetComponentInParent<MonsterAI>());
+            Debug.Log(GetComponentInParent<MonsterAI>().GetChaseRange());
+        }
+
         findCollider.radius = GetComponentInParent<MonsterAI>().GetChaseRange() / 6;
         targetLayer = LayerMask.GetMask("Player");
     }
@@ -55,6 +62,8 @@ public class TargetSensor : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!transform.parent.gameObject.activeSelf) return;
+        
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, GetComponentInParent<MonsterAI>().GetChaseRange());
     }
