@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,10 +71,12 @@ public class SkillNode
     /// 선행 스킬 확인 후 잠금 해제
     /// </summary>
     public void TryUnlockByPrerequisites()
-    { 
+    {
         foreach (SkillNode preNode in prerequisiteSkillNode)
         {
             unLocked = preNode.curSkillLevel > 0;
+
+            if (!unLocked) break; 
         }  
     }
 

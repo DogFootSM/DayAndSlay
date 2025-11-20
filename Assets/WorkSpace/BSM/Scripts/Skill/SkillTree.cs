@@ -108,7 +108,7 @@ public class SkillTree : MonoBehaviour, ISavable
             {
                 //딕셔너리에 해당 이름의 노드를 찾아서 선행 스킬 노드 연결
                 if (prerequisiteNodeMap.TryGetValue(prerequisite, out SkillNode skillNode))
-                {
+                { 
                     node.AddPrerequisiteSkillNode(skillNode);
                 }
             }
