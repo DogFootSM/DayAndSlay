@@ -152,7 +152,15 @@ public class MonsterSpawner : MonoBehaviour
             GameObject monster = container.InstantiatePrefab(
                 prefabToSpawn, spawnerList[i].transform.position, Quaternion.identity, null);
             
-            monster.GetComponentInChildren<TargetSensor>().SetGrid(grid);
+            //monster.GetComponentInChildren<TargetSensor>().SetGrid(grid);
+            
+            TargetSensor[] sensors = monster.GetComponentsInChildren<TargetSensor>();
+    
+            // 몬스터 프리팹 내부에 있는 모든 TargetSensor에 Grid 설정
+            foreach (TargetSensor sensor in sensors)
+            {
+                sensor.SetGrid(grid);
+            }
 
             monsterList.Add(monster);
         }

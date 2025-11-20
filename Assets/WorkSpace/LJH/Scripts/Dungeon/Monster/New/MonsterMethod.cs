@@ -14,7 +14,7 @@ public class MonsterMethod : MonoBehaviour
     protected MonsterData monsterData;
     protected MonsterModel model;
     protected AstarPath astarPath;
-    protected MonsterAI ai;
+    [SerializeField] protected MonsterAI ai;
     protected MonsterAnimator animator;
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
@@ -76,11 +76,11 @@ public class MonsterMethod : MonoBehaviour
     }
     
     
-    private void Start()
+    protected void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         astarPath = GetComponentInChildren<AstarPath>();
-        ai = GetComponentInChildren<MonsterAI>();
+        ai = GetComponent<MonsterAI>();
         animator = ai.GetMonsterAnimator();
         sensor = GetComponentInChildren<TargetSensor>();
         coll = GetComponent<Collider2D>();
@@ -210,7 +210,6 @@ public class MonsterMethod : MonoBehaviour
             //사거리 비교
             if (distance <= ai.GetMonsterModel().AttackRange)
             {
-                Debug.Log("몬스터 공격");
                 //PlayerHpDamaged(monsterData.Attack);
                 PlayerHpDamaged(0);
             }
@@ -256,7 +255,6 @@ public class MonsterMethod : MonoBehaviour
 
     public void HitMethod(int damage)
     {
-        Debug.Log("피격");
         damageEffect.DamageTextEvent(damage);
         
         ai.TakeDamage(damage);

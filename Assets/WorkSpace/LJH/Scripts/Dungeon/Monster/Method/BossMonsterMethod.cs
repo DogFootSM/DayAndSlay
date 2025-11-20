@@ -16,14 +16,14 @@ public abstract class BossMonsterMethod : MonsterMethod
     {
         effect.transform.position = target.transform.position;
     }
-    
+
     public override void AttackMethod()
     {
         PlayerController playerController = player.GetComponent<PlayerController>();
-        
+
         if (playerController.IsParrying)
         {
-            
+
             ai.TakeDamage(100);
             parryingCount++;
             animator.StartCoroutine(animator.PlayCounterCoroutine(parryingCount));
@@ -35,6 +35,10 @@ public abstract class BossMonsterMethod : MonsterMethod
 
             return;
         }
+
+
+        Debug.Log(ai);
+        Debug.Log(ai.GetDirectionByAngle(player.transform.position, transform.position));
         
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
