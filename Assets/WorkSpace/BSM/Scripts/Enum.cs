@@ -11,7 +11,7 @@ public enum CanvasType
 [Serializable]
 public enum CharacterStateType
 {
-    IDLE, WALK, ATTACK, SKILL, DEATH, SIZE
+    IDLE, WALK, ATTACK, SKILL, DEATH, DODGE, PARRYING, SIZE
 }
 
 //이어하기 캐릭터 스프라이트 데이터 저장할 타입
@@ -40,7 +40,7 @@ public enum CharacterAnimationType
 [Serializable]
 public enum CharacterWeaponType
 {
-    BOW, SHORT_SWORD, SPEAR, WAND, LONG_SWORD, SIZE
+    BOW, SHORT_SWORD, SPEAR, WAND, EMPTY, SIZE
 }
 
 //캐릭터 생성 시 스프라이트 데이터 경로에 사용 타입, 
@@ -436,4 +436,9 @@ public enum DelayType
 public enum DamageTextType
 {
     PLAYER, MONSTER, SIZE
+}
+
+public enum BuffType
+{
+    BACKDASH, TELEPORT, PARRYING, NONE
 }

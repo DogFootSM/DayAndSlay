@@ -8,6 +8,8 @@ public class Bow : IAttackHandler
     
     public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
+        Debug.Log("활 기본 공격");
+        
         GameObject arrowInstance = arrowPool.GetPoolArrow();
         arrowInstance.SetActive(true);
         arrowInstance.transform.parent = null;

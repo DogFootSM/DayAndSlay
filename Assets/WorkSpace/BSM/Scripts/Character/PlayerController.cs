@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
 using UnityEngine.U2D.Animation;
 using Zenject;
 
@@ -30,6 +31,9 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 사망 오브젝트 On/Off")]
     [SerializeField] private GameObject _cemeteryObject;
     [SerializeField] private GameObject _bodyObject;
+
+    [Header("텔레포트 이펙트")]
+    public ParticleSystem teleportParticle;
     
     public Rigidbody2D CharacterRb => characterRb;
     public PlayerModel PlayerModel => playerModel;
@@ -37,7 +41,9 @@ public class PlayerController : MonoBehaviour
     public Weapon CurWeapon => curWeapon;
     public SkillSlotInvoker SkillSlotInvoker => skillSlotInvoker;
     public CharacterWeaponType CurrentWeaponType => curWeaponType;
-    
+
+    public Coroutine DodgeCo;
+    public Coroutine ParryingCo;
     
     [Header("무기 오브젝트")]
     public GameObject WeaponObject;
@@ -45,6 +51,22 @@ public class PlayerController : MonoBehaviour
     [Header("대시 이펙트 오브젝트")] 
     public GameObject DashObject;
     
+    /// <summary>
+    /// 회피기 사용 가능 상태 여부
+    /// </summary>
+    [NonSerialized] public bool CanDodge = true;
+
+    /// <summary>
+    /// 패링 상태
+    /// </summary>
+    [NonSerialized] public bool IsParrying;
+    
+    /// <summary>
+    /// 패링 사용 가능 상태 여부
+    /// </summary>
+    [NonSerialized] public bool CanParrying = true;
+    
+    [SerializeField] private BuffIconController buffIconController;
     
     private QuickSlotManager quickSlotManager => QuickSlotManager.Instance;
     private ArrowPool arrowPool => ArrowPool.Instance;
@@ -58,6 +80,8 @@ public class PlayerController : MonoBehaviour
     private Table tableObject;
     private StoreManager informationDeskObject;
     private DamageEffect _damageEffect;
+    private Coroutine dodgeCoolDownCo;
+    private Coroutine parryingCoolDownCo;
     
     private LayerMask tableLayerMask;
     private LayerMask informationDeskLayerMask;
@@ -70,6 +94,16 @@ public class PlayerController : MonoBehaviour
     private float posY;
     
     private bool isDead = false;
+
+    /// <summary>
+    /// 회피기 재사용 대기 시간
+    /// </summary>
+    private const float DODGE_COOLDOWN = 10f;
+    
+    /// <summary>
+    /// 패링 재사용 대기 시간
+    /// </summary>
+    private const float PARRYING_COOLDOWN = 1f;
     
     private void Awake()
     {
@@ -117,6 +151,8 @@ public class PlayerController : MonoBehaviour
         characterStates[(int)CharacterStateType.ATTACK] = new PlayerAttack(this);
         characterStates[(int)CharacterStateType.SKILL] = new PlayerSkill(this);
         characterStates[(int)CharacterStateType.DEATH] = new PlayerDeath(this);
+        characterStates[(int)CharacterStateType.DODGE] = new PlayerDodge(this);
+        characterStates[(int)CharacterStateType.PARRYING] = new PlayerParrying(this);
     }
     
     /// <summary>
@@ -144,19 +180,18 @@ public class PlayerController : MonoBehaviour
     public void ChangedWeaponType(CharacterWeaponType weaponType, ItemData itemData = null)
     { 
         curWeaponType = weaponType;
-
+ 
         if (weaponType == CharacterWeaponType.BOW)
         {
             arrowPool.SetupArrowPoolOnEquip();
         }
-        
+
         //웨폰 핸들러 변경
         if (itemData != null)
         {
             curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
         }
-        //TODO: 웨폰에 따른 애니메이터 컨트롤러 변경
-        //TODO: NotWeapon 처리 필요
+
         characterAnimatorController.AnimatorChange((int)weaponType, true);
         playerModel.UpdateWeaponType(weaponType);
         
@@ -196,14 +231,7 @@ public class PlayerController : MonoBehaviour
             curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
-        }
-        
-        //캐릭터 회피기
-        if (MoveDir != Vector2.zero && Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Debug.Log($"회피기 사용 {posX}, {posY}");
-        }
-        
+        } 
     }
  
     /// <summary>
@@ -345,5 +373,86 @@ public class PlayerController : MonoBehaviour
             tableManager.OnPlayerExitRangeClosePanel();
             informationDeskObject = null;
         }
-    } 
+    }
+
+    /// <summary>
+    /// 회피기 쿨타임 초기화
+    /// </summary>
+    public void ResetDodgeCoolDown(BuffType buffType)
+    {
+        if (dodgeCoolDownCo != null)
+        {
+            StopCoroutine(dodgeCoolDownCo);
+            dodgeCoolDownCo = null;
+        }
+    
+        ChangeState(CharacterStateType.IDLE);
+        dodgeCoolDownCo = StartCoroutine(DodgeCoolDownCoroutine(buffType));
+    }
+
+    /// <summary>
+    /// 버프 스킬 아이콘 쿨타임 초기화
+    /// </summary>
+    /// <param name="buffType"></param>
+    /// <param name="cooldownDuration"></param>
+    public void ResetBuffSkillCoolDown(BuffType buffType, float cooldownDuration)
+    {
+        //TODO: 추후 버프 스킬 사용 시 아이콘 필요하다면 여길 호출
+        buffIconController.UseBuff(buffType, DODGE_COOLDOWN);
+    }
+     
+    private IEnumerator DodgeCoolDownCoroutine(BuffType buffType)
+    {
+        float elapsedTime = 0;
+        
+        buffIconController.UseBuff(buffType, DODGE_COOLDOWN);
+        while (elapsedTime < DODGE_COOLDOWN)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        CanDodge = true;
+
+        if (DodgeCo != null)
+        {
+            StopCoroutine(DodgeCo);
+            DodgeCo = null;
+        } 
+    }
+
+    public void ResetParryingCoolDown(BuffType buffType)
+    {
+        if (parryingCoolDownCo != null)
+        {
+            StopCoroutine(parryingCoolDownCo);
+            parryingCoolDownCo = null;
+        }
+        Debug.Log("패링 쿨타임 진행");
+        ChangeState(CharacterStateType.IDLE);
+        parryingCoolDownCo = StartCoroutine(ParryingCoolDownCoroutine(buffType));
+    }
+
+    private IEnumerator ParryingCoolDownCoroutine(BuffType buffType)
+    {
+        float elapsedTime = 0;
+        
+        buffIconController.UseBuff(buffType, PARRYING_COOLDOWN);
+        while (elapsedTime < PARRYING_COOLDOWN)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        CanParrying = true;
+
+        if (ParryingCo != null)
+        {
+            StopCoroutine(ParryingCo);
+            ParryingCo = null;
+        } 
+        
+        Debug.Log("쿨타임 종료");
+    }
+    
 }

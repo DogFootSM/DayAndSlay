@@ -59,6 +59,7 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void NormalAttack()
     {
+        Debug.Log($"현재 장착 무기 :{curEquippedItem.Name}");
         attackHandler.NormalAttack(curDirection, playerObject.transform.position, curEquippedItem, playerModel);
     }
 

@@ -19,27 +19,19 @@ public class PlayerWalk : PlayerState
     }
 
     public override void Update()
-    { 
-        playerController.BodyAnimator.SetFloat(walkPosXHash, playerController.MoveDir.x);
-        playerController.BodyAnimator.SetFloat(walkPosYHash, playerController.MoveDir.y); 
-        
-        playerController.WeaponAnimator.SetFloat(walkPosXHash, playerController.MoveDir.x);
-        playerController.WeaponAnimator.SetFloat(walkPosYHash, playerController.MoveDir.y); 
-        
+    {
+
+        SetAnimator();
         
         if (playerController.MoveDir == Vector2.zero)
         { 
             playerController.ChangeState(CharacterStateType.IDLE);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //TODO: 장착 무기 없을 때 처리 변경하기
-            if (playerController.CurrentWeaponType == CharacterWeaponType.LONG_SWORD) return;
-            playerController.ChangeState(CharacterStateType.ATTACK);
-        }
-        
+        NormalAttackKeyDown();
         CheckSkillKeyInput();
+        Dodge();
+        Parrying();
     }
     
     public override void FixedUpdate()
@@ -51,6 +43,18 @@ public class PlayerWalk : PlayerState
                                                      Time.fixedDeltaTime);
     }
 
+    /// <summary>
+    /// 방향에 따른 이동 애니메이션 Float 설정
+    /// </summary>
+    private void SetAnimator()
+    {
+        playerController.BodyAnimator.SetFloat(walkPosXHash, playerController.MoveDir.x);
+        playerController.BodyAnimator.SetFloat(walkPosYHash, playerController.MoveDir.y); 
+        
+        playerController.WeaponAnimator.SetFloat(walkPosXHash, playerController.MoveDir.x);
+        playerController.WeaponAnimator.SetFloat(walkPosYHash, playerController.MoveDir.y); 
+    }
+    
     public override void Exit()
     {
 

@@ -64,7 +64,6 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void UpdateSkillLevelUI()
     {
-        //TODO: 스킬 레벨 관련 UI 설정
         if (CurSkillNode.CurSkillLevel < CurSkillNode.skillData.SkillMaxLevel)
         {
             skillCurLevelText.text = $"{CurSkillNode.CurSkillLevel}";
