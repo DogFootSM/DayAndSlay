@@ -13,7 +13,7 @@ public class Arrow : MonoBehaviour
     private Coroutine arrowPoolReturnCo;
     
     private Vector2 startPos = new Vector2();
-    private LayerMask monsterLayer = LayerMask.GetMask("Monster"); 
+    private LayerMask monsterLayer; 
     
     private float damage;
     private float range;
@@ -22,6 +22,11 @@ public class Arrow : MonoBehaviour
     private float slowRatio;
     private float slowDuration;
     private bool isSlowSkill;
+
+    private void Awake()
+    {
+        monsterLayer = LayerMask.GetMask("Monster");
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
