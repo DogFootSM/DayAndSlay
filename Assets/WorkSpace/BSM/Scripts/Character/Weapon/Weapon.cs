@@ -7,16 +7,16 @@ using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject playerObject;
-    
+
     public UnityAction<CharacterWeaponType, ItemData, PlayerModel> OnWeaponTypeChanged;
-    public UnityAction<Vector2> OnDirectionChanged; 
-    
+    public UnityAction<Vector2> OnDirectionChanged;
+
     private IAttackHandler attackHandler;
     private CharacterWeaponType curWeaponType;
     private PlayerModel playerModel;
     private Vector2 curDirection;
     private ItemData curEquippedItem;
-    
+
     private void Awake()
     {
         curDirection = Vector2.down;
@@ -51,20 +51,21 @@ public class Weapon : MonoBehaviour
     /// <param name="direction">스킬 사용 시 데미지를 줄 몬스터를 감지할 방향</param>
     private void ChangedMoveDirection(Vector2 direction)
     {
-        curDirection = direction; 
+        curDirection = direction;
     }
-    
+
     /// <summary>
     /// 무기 핸들러의 기본 공격 호출
     /// </summary>
     public void NormalAttack()
     {
-        Debug.Log($"현재 장착 무기 :{curEquippedItem.Name}");
         attackHandler.NormalAttack(curDirection, playerObject.transform.position, curEquippedItem, playerModel);
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
-    {  
-        //attackHandler.DrawGizmos(); 
+    {
+        attackHandler.DrawGizmos();
     }
+#endif
 }

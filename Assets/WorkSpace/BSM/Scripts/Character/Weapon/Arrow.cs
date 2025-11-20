@@ -10,10 +10,10 @@ public class Arrow : MonoBehaviour
     private const float ARROW_SPEED = 12f;
     
     private ArrowPool arrowPool => ArrowPool.Instance;
-    private Coroutine returnCo;
+    private Coroutine arrowPoolReturnCo;
     
     private Vector2 startPos = new Vector2();
-    private LayerMask monsterLayer; 
+    private LayerMask monsterLayer = LayerMask.GetMask("Monster"); 
     
     private float damage;
     private float range;
@@ -22,11 +22,6 @@ public class Arrow : MonoBehaviour
     private float slowRatio;
     private float slowDuration;
     private bool isSlowSkill;
-    
-    private void Awake()
-    {
-        monsterLayer = LayerMask.GetMask("Monster");
-    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -56,10 +51,10 @@ public class Arrow : MonoBehaviour
         slowDuration = 0f;
         slowRatio = 0f;
         
-        if (returnCo != null)
+        if (arrowPoolReturnCo != null)
         {
-            StopCoroutine(returnCo);
-            returnCo = null;
+            StopCoroutine(arrowPoolReturnCo);
+            arrowPoolReturnCo = null;
         }
     }
 
@@ -68,16 +63,16 @@ public class Arrow : MonoBehaviour
     /// </summary>
     /// <param name="pos">화살이 생성될 위치</param>
     /// <param name="dir">발사 방향에 따른 화살 회전</param>
+    /// <param name="weaponRange">화살이 날라갈 최대 사거리</param>
     public void SetLaunchTransform(Vector2 pos, Vector2 dir, float weaponRange)
     {
         transform.position = pos;
         startPos = pos;
         range = weaponRange;
         
-        //TODO: 화살은 모두 속도 동일로, 적정 속도 찾아서 상수값으로 박기
         arrowRb.AddForce(dir * ARROW_SPEED, ForceMode2D.Impulse);
 
-        returnCo = StartCoroutine(ArrowReturnRoutine());
+        arrowPoolReturnCo = StartCoroutine(ArrowReturnRoutine());
     }
  
     /// <summary>

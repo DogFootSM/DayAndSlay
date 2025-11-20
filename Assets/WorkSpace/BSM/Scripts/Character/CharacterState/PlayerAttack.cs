@@ -7,8 +7,10 @@ using Zenject;
 
 public class PlayerAttack : PlayerState
 {
+    private const int MAX_HIT_COMBO = 3;
+    
     private int attackHash;
-    private int hitCombo = 3;
+    private int hitCombo;
     private float hitDuration = 0.5f;
     
     private Coroutine attackCo;
@@ -19,6 +21,9 @@ public class PlayerAttack : PlayerState
 
     public override void Enter()
     {
+        //공격 콤보 초기화
+        hitCombo = MAX_HIT_COMBO;
+            
         attackCo = playerController.StartCoroutine(AttackExitRoutine());
     }
 
@@ -109,9 +114,6 @@ public class PlayerAttack : PlayerState
         {
             UpdateAnimationByDirection((directionKey, i), false);
         }
-        
-        //공격 콤보 초기화
-        hitCombo = 3;
         
         yield return WaitCache.GetWait(attackSpeed);
 

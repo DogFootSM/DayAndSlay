@@ -428,7 +428,7 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(parryingCoolDownCo);
             parryingCoolDownCo = null;
         }
-        Debug.Log("패링 쿨타임 진행");
+
         ChangeState(CharacterStateType.IDLE);
         parryingCoolDownCo = StartCoroutine(ParryingCoolDownCoroutine(buffType));
     }
@@ -451,8 +451,5 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(ParryingCo);
             ParryingCo = null;
         } 
-        
-        Debug.Log("쿨타임 종료");
-    }
-    
+    } 
 }
