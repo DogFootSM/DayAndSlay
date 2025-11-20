@@ -228,9 +228,9 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 게임 종료
+    /// 메인 화면 게임 종료
     /// </summary>
-    public void ConfirmQuit()
+    public void MainSceneConfirmQuit()
     {
         //현재 디스플레이 설정 정보 저장
         dataManager.SaveDisplayData(ResolutionIndex, windowMode, (int)Cursor.lockState);
@@ -247,6 +247,28 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// 타이틀 화면 게임 종료
+    /// </summary>
+    public void TitleSceneConfirmQuit()
+    {
+        //현재 디스플레이 설정 정보 저장
+        dataManager.SaveDisplayData(ResolutionIndex, windowMode, (int)Cursor.lockState);
+
+        //현재 오디오 설정 정보 저장
+        dataManager.SaveAudioData(
+            soundManager.GetMasterVolume(), soundManager.GetBgmVolume(), soundManager.GetSfxVolume(),
+            soundManager.GetMasterMute(), soundManager.GetBgmMute(), soundManager.GetSfxMute()
+        );
+        
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+
+#else
+        Application.Quit();
+#endif
+    }
+    
     /// <summary>
     /// 게임 종료 전 데이터 변동 사항 체크 후 안내 팝업 노출
     /// </summary>

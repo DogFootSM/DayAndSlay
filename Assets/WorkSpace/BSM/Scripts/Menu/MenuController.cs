@@ -43,7 +43,7 @@ public class MenuController : MonoBehaviour
     /// </summary>
     private void OnClickQuit()
     {
-        gameManager.ConfirmQuit();
+        gameManager.MainSceneConfirmQuit();
     }
     
 }

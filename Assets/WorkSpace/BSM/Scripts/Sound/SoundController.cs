@@ -38,7 +38,6 @@ public class SoundController : MonoBehaviour
         bgmVolumeSlider.value = soundManager.GetBgmVolume();
         sfxVolumeSlider.value = soundManager.GetSfxVolume();
         
-        Debug.Log("컨트롤러 GetMute");
         masterMuteToggle.isOn = soundManager.GetMasterMute();
         bgmMuteToggle.isOn = soundManager.GetBgmMute();
         sfxMuteToggle.isOn = soundManager.GetSfxMute();
