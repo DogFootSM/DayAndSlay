@@ -99,6 +99,7 @@ public class DataManager : MonoBehaviour
     /// <returns>퀵슬롯 매니저에서 스킬 노드 초기화에 사용할 데이터 객체</returns>
     public QuickSlotSetting LoadQuickSlotSetting()
     {
+        //TODO: 테스트 끝나면 수정
         //SetPath($"QuickSlotSaveData{SlotId}.json");
         SetPath($"QuickSlotSaveData0.json");
 
@@ -168,7 +169,7 @@ public class DataManager : MonoBehaviour
         //해당 경로에 파일이 없을 경우 데이터 생성
         if (!File.Exists(path))
         {
-            SaveAudioData(0.5f, 0.5f, 0.5f); 
+            SaveAudioData(0.5f, 0.5f, 0.5f, false, false, false); 
         }
         
         string loadAudioData = File.ReadAllText(path);
@@ -177,6 +178,7 @@ public class DataManager : MonoBehaviour
         soundManager.SetMasterVolume(audioSettings.MasterVolume);
         soundManager.SetSFxVolume(audioSettings.SfxVolume);
         soundManager.SetBgmVolume(audioSettings.BgmVolume);
+        soundManager.SetMuteState(audioSettings.MasterMute, audioSettings.BgmMute, audioSettings.SfxMute);
     }
 
     /// <summary>
@@ -185,13 +187,16 @@ public class DataManager : MonoBehaviour
     /// <param name="MasterVolume">전체 음량</param>
     /// <param name="BgmVolume">배경음</param>
     /// <param name="SfxVolume">효과음</param>
-    public void SaveAudioData(float MasterVolume, float BgmVolume, float SfxVolume)
+    public void SaveAudioData(float MasterVolume, float BgmVolume, float SfxVolume, bool masterMute, bool bgmMute, bool sfxMute)
     {
         SetPath(audioDataPath);
          
         audioSettings.MasterVolume = MasterVolume;
         audioSettings.BgmVolume = BgmVolume;
         audioSettings.SfxVolume = SfxVolume;
+        audioSettings.MasterMute = masterMute;
+        audioSettings.BgmMute = bgmMute;
+        audioSettings.SfxMute = sfxMute;
         
         string json = JsonUtility.ToJson(audioSettings);
         File.WriteAllText(path, json);
