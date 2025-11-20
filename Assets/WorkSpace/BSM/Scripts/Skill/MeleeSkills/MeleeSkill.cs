@@ -142,11 +142,10 @@ public abstract class MeleeSkill : SkillFactory
     /// 넉백 효과
     /// </summary>
     /// <param name="playerPos">현재 캐릭터의 위치</param>
-    /// <param name="playerDir">캐릭터가 공격한 방향</param>
     /// <param name="monster">감지한 몬스터</param>
-    protected void ExecuteKnockBack(Vector2 playerPos, Vector2 playerDir, IEffectReceiver monster)
+    protected void ExecuteKnockBack(Vector2 playerPos, IEffectReceiver monster)
     {
-        monster.ReceiveKnockBack(playerPos, playerDir);
+        monster.ReceiveKnockBack(playerPos);
     }
 
 

@@ -58,7 +58,7 @@ public class BOAS001 : MeleeSkill
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             
                 skillActions[0].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                skillActions[0].Add(() => ExecuteKnockBack(playerPosition, direction, receiver));
+                skillActions[0].Add(() => ExecuteKnockBack(playerPosition, receiver));
                 triggerModules[0].AddCollider(cols[i]);
             }
         

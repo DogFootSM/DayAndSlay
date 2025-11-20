@@ -54,7 +54,7 @@ public class SSAS001 : MeleeSkill
             for (int i = 0; i < detectedCount; i++)
             {
                 IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
-                skillActions[0].Add(() => ExecuteKnockBack(playerPosition, direction, monsterReceiver));
+                skillActions[0].Add(() => ExecuteKnockBack(playerPosition, monsterReceiver));
                 skillActions[0].Add(() => Hit(monsterReceiver ,skillDamage, skillNode.skillData.SkillHitCount));
                 
                 triggerModules[0].AddCollider(detectedMonster[i]);

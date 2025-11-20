@@ -5,36 +5,9 @@ using UnityEngine;
 
 public class TempGoblin : Monster
 {
-    protected override void KnockBack(Vector2 playerPos, Vector2 playerDir)
+    protected override void KnockBack(Vector2 playerPos)
     {
         Vector2 distance = playerPos - new Vector2(transform.position.x, transform.position.y);
-        
-        if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
-        {
-            if (playerDir.x > 0)
-            {
-                //오른쪽 방향으로
-                knockBackDir = Vector2.right;
-            }
-            else
-            {
-                //왼쪽 방향으로
-                knockBackDir = Vector2.left;
-            }
-        }
-        else
-        {
-            if (playerDir.y > 0)
-            {
-                //윗 방향으로
-                knockBackDir = Vector2.up;
-            }
-            else
-            {
-                //아랫 방향으로
-                knockBackDir = Vector2.down;
-            }
-        }
 
         if (knockBackCo != null)
         {

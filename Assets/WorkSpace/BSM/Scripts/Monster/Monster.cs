@@ -133,12 +133,12 @@ public class Monster : MonoBehaviour, IEffectReceiver
         return defense * defenseDeBuffRatio;
     }
     
-    public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
+    public void ReceiveKnockBack(Vector2 playerPos)
     {
-        KnockBack(playerPos, playerDir);
+        KnockBack(playerPos);
     }
 
-    protected virtual void KnockBack(Vector2 playerPos, Vector2 playerDir)
+    protected virtual void KnockBack(Vector2 playerPos)
     {
         //몬스터에 따른 특성 구현
     }

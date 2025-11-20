@@ -29,8 +29,7 @@ public interface IEffectReceiver
     /// 플레이어의 위치의 공격 방향으로 넉백
     /// </summary>
     /// <param name="playerPos"></param>
-    /// <param name="playerDir"></param>
-    public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir);
+    public void ReceiveKnockBack(Vector2 playerPos);
     
     /// <summary>
     /// 도트 데미지 리시버

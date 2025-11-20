@@ -264,7 +264,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     /// </summary>
     /// <param name="playerPos"></param>
     /// <param name="playerDir"></param>
-    public void ReceiveKnockBack(Vector2 playerPos, Vector2 playerDir)
+    public void ReceiveKnockBack(Vector2 playerPos)
     {
         animator.PlayHit();
         

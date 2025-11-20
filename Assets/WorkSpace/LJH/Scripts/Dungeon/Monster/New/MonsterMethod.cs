@@ -199,6 +199,20 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public void AttackMethod()
     {
+        PlayerController playerController = player.GetComponent<PlayerController>();
+
+        if (playerController.IsParrying)
+        {
+            //공격을 막아내고
+            //역으로 크리데미지를 먹이고
+            //몬스터의 공격 애니메이션은 거기서 끊기고
+            //챙 하는 이펙트도 나옴
+            //몇번 이상 패링 성공시 몬스터 스턴 먹음
+            return;
+        }
+        
+        
+        
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
         float distance = Vector2.Distance(player.transform.position, transform.position);
@@ -259,10 +273,10 @@ public class MonsterMethod : MonoBehaviour
         damageEffect.DamageTextEvent(damage);
         
         ai.TakeDamage(damage);
-        //몬스터 최대 체력의 4분의 1 이상 데미지 줬을 경우에만 넉백 처리
+        //Todo : 크리 떴을때로 변경
         if (damage >= model.MaxHp / 4)
         {
-            ai.ReceiveKnockBack(player.transform.position, Vector2.left);
+            ai.ReceiveKnockBack(player.transform.position);
         }
     }
 
