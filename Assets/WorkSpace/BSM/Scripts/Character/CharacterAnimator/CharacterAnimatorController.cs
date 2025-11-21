@@ -55,7 +55,7 @@ public class CharacterAnimatorController : MonoBehaviour
             {
                 //Body, Shirt, Hair 공격 스프라이트 라이브러리 변경
                 dataManager.ChangeAttackSpriteLibraryAsset(BodyLibraryAsset, curWeaponIndex);
-                dataManager.ChangeWeaponSpriteLibraryAsset();
+                dataManager.ChangeWeaponSpriteLibraryAsset(EquipmentLibraryAsset[curWeaponIndex], curWeaponIndex, weaponTier);
                 //TODO: 현재 무기 티어가 장착한 무기 티어랑 같이 않을 경우 변경
                 
             }
@@ -81,7 +81,8 @@ public class CharacterAnimatorController : MonoBehaviour
     {
         if ((CharacterWeaponType)curWeaponIndex != CharacterWeaponType.EMPTY)
         {
-            dataManager.ChangeWeaponSpriteLibraryAsset();
+            Debug.Log($"무기 라이브러리 변경 :{curWeaponIndex}");
+            dataManager.ChangeWeaponSpriteLibraryAsset(EquipmentLibraryAsset[curWeaponIndex], curWeaponIndex, weaponTier);
         }
         else
         {
