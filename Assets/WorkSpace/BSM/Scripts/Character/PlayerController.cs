@@ -87,7 +87,8 @@ public class PlayerController : MonoBehaviour
     private LayerMask informationDeskLayerMask;
     private CharacterWeaponType curWeaponType;
     private CharacterStateType curState = CharacterStateType.IDLE;
-     
+    private WeaponTierType curWeaponTier = WeaponTierType.NONE; 
+    
     private int curSlotId => dataManager.SlotId;
 
     private float posX;
@@ -161,7 +162,11 @@ public class PlayerController : MonoBehaviour
     private void InitSlotData()
     {
         dataReader = sqlManager.ReadDataColumn(
-            new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
+            new[]
+            {
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TIER),
+            },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new[] { curSlotId.ToString() },
             null);
@@ -169,6 +174,7 @@ public class PlayerController : MonoBehaviour
         while (dataReader.Read())
         {
             curWeaponType = (CharacterWeaponType)dataReader.GetInt32(0);
+            curWeaponTier = (WeaponTierType)dataReader.GetInt32(1);
         }
         playerContext.Setup(this);
     }
@@ -179,21 +185,40 @@ public class PlayerController : MonoBehaviour
     /// <param name ="weaponType">변경할 무기 타입</param>
     public void ChangedWeaponType(CharacterWeaponType weaponType, ItemData itemData = null)
     { 
-        curWeaponType = weaponType;
- 
         if (weaponType == CharacterWeaponType.BOW)
         {
             arrowPool.SetupArrowPoolOnEquip();
         }
-
+        
+        //현재 무기 타입과 새로 장착한 무기가 같지 않은 상태
+        if (curWeaponType != weaponType)
+        {
+            curWeaponType = weaponType;
+            curWeaponTier = itemData.weaponTier;
+            
+            //무기 및 바디 애니메이션 교체
+            characterAnimatorController.AnimatorChange((int)curWeaponType, (int)curWeaponTier, true);
+        }
+        else
+        {
+            //같은 무기 타입이나 무기의 티어가 다를 때 무기 애니메이션 변경
+            if (itemData != null)
+            {
+                if (itemData.weaponTier != curWeaponTier)
+                {
+                    curWeaponTier = itemData.weaponTier;
+                    characterAnimatorController.ChangeWeaponAnimator((int)curWeaponType, (int)curWeaponTier);
+                }  
+            } 
+        }
+         
         //웨폰 핸들러 변경
         if (itemData != null)
         {
             curWeapon.OnWeaponTypeChanged?.Invoke(curWeaponType, itemData, playerModel); 
         }
-
-        characterAnimatorController.AnimatorChange((int)weaponType, true);
-        playerModel.UpdateWeaponType(weaponType);
+  
+        playerModel.UpdateWeaponType(curWeaponType, curWeaponTier);
         
         //웨폰에 따른 스킬 트리 변경
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);

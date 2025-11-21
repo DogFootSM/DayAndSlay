@@ -50,7 +50,7 @@ public class CharacterCreate : BaseUI
     private void PlayerCreate()
     {
         //현재 프리셋, 무기 타입 저장
-        dataManager.SavePresetData(presets, (int)curWeaponType); 
+        dataManager.SavePresetData(presets, (int)curWeaponType, (int)WeaponTierType.TIER_1_1); 
         dataManager.CreateDataUpdate();
         canvasManager.OnActiveLoadingCanvas(inGameScene); 
     }
