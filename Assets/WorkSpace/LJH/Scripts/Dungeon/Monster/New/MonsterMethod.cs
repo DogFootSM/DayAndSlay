@@ -14,7 +14,7 @@ public class MonsterMethod : MonoBehaviour
     protected MonsterData monsterData;
     protected MonsterModel model;
     protected AstarPath astarPath;
-    protected MonsterAI ai;
+    [SerializeField] protected MonsterAI ai;
     protected MonsterAnimator animator;
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
@@ -37,8 +37,6 @@ public class MonsterMethod : MonoBehaviour
 
     protected int parryingCount;
 
-
-    public bool isDamaged = true;
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -93,7 +91,7 @@ public class MonsterMethod : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) && isDamaged)
+        if (Input.GetKeyDown(KeyCode.J))
         {
             HitMethod(10);
             animator.PlayHit();
@@ -249,11 +247,11 @@ public class MonsterMethod : MonoBehaviour
     {
         player.GetComponent<PlayerModel>().GainExperience(monsterExp);
     }
-    
-    public void StunMethod(int duration)
-    {
-        ai.ReceiveStun(duration);
-    }
+
+
+    // ==============================
+    // 기타 유틸
+    // ==============================
 
     public void HitMethod(int damage)
     {

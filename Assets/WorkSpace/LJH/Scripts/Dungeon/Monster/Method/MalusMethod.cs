@@ -44,15 +44,4 @@ public class MalusMethod : BossMonsterMethod
     /// </summary>
     public override void Skill_Fourth()
     {}
-    
-    public override void DieMethod()
-    {
-        Debug.Log("»ç¸Á");
-        
-        if(!bellus.gameObject.activeSelf)
-            DungeonManager.Instance.BossDoorOpen();
-        
-        DropItem();
-        Destroy(gameObject);
-    }
 }

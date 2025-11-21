@@ -40,8 +40,8 @@ public class BellusMethod : BossMonsterMethod
         if (bellus.GetMonsterModel().CurHp >= bellus.GetMonsterModel().MaxHp &&
             bellus.GetMonsterModel().CurHp >= bellus.GetMonsterModel().MaxHp)
         {
-            bellus.TakeDamage(-25);
-            malus.TakeDamage(-25);
+            //bellus.GetMonsterModel().SetMonsterHp(25);
+            //malus.GetMonsterModel().SetMonsterHp(25);
         }
     }
 
@@ -70,17 +70,6 @@ public class BellusMethod : BossMonsterMethod
     /// </summary>
     public override void Skill_Fourth()
     {}
-    
-    public override void DieMethod()
-    {
-        Debug.Log("»ç¸Á");
-        
-        if(!malus.gameObject.activeSelf)
-            DungeonManager.Instance.BossDoorOpen();
-        
-        DropItem();
-        Destroy(gameObject);
-    }
 
 }
 

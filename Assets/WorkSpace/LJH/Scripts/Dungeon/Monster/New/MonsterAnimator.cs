@@ -158,7 +158,7 @@ public class MonsterAnimator : MonoBehaviour
 
         if (parryingCount > 2)
         {
-            PlayStun(1f);
+            //PlayStun();
             animator.speed = 1f;
         }
         else
@@ -166,22 +166,6 @@ public class MonsterAnimator : MonoBehaviour
             PlayHit();
             animator.speed = 1f;
         }
-    }
-
-    public void PlayStun(float duration)
-    {
-        StartCoroutine(StunAnimCoroutine(duration));
-    }
-
-    private IEnumerator StunAnimCoroutine(float duration)
-    {
-        PlayHit();
-        
-        animator.speed = 0f;
-        
-        yield return new WaitForSeconds(duration);
-        
-        animator.speed = 1f;
     }
 
     public void PlayHit()
