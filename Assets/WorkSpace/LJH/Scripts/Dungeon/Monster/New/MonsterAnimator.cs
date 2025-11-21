@@ -67,8 +67,8 @@ public class MonsterAnimator : MonoBehaviour
             currentAnimationHash = SetAnimationHash(hitAction[dir]);
             if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
             {
-                isAction = false;
                 PlayIdle();
+                isAction = false;
             }
             
             if (gameObject.CompareTag("Boss"))
@@ -145,6 +145,27 @@ public class MonsterAnimator : MonoBehaviour
         attackDir = dir; // 외부에서 세팅된 dir 사용
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.ATTACK)];
         animator.Play(attackAction[attackDir]);
+    }
+
+    public IEnumerator PlayCounterCoroutine(int parryingCount)
+    {
+        animator.speed = 0f;
+        
+        yield return new WaitForSeconds(0.75f);
+
+
+        isAction = false;
+
+        if (parryingCount > 2)
+        {
+            //PlayStun();
+            animator.speed = 1f;
+        }
+        else
+        {
+            PlayHit();
+            animator.speed = 1f;
+        }
     }
 
     public void PlayHit()

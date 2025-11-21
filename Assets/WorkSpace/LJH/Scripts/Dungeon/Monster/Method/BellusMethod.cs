@@ -5,7 +5,7 @@ using UnityEngine;
 public class BellusMethod : BossMonsterMethod
 {
     private BossMonsterAI bellus;
-    private BossMonsterAI malus;
+    [SerializeField] private BossMonsterAI malus;
     
     [SerializeField] private ParticleSystem bellusHealEffect;
     [SerializeField] private ParticleSystem malusHealEffect;
@@ -16,8 +16,9 @@ public class BellusMethod : BossMonsterMethod
     [SerializeField] private List<ParticleSystem> seedEffects;
     private void Start()
     {
+        base.Start();
         bellus = GetComponent<BellusAI>();
-        malus = ((BellusAI)bellus).GetPartner();
+        //malus = ((BellusAI)bellus).GetPartner();
         
         bellusHealEffect.transform.position = bellus.transform.position + new Vector3(0, 1, 0);
         malusHealEffect.transform.position = malus.transform.position + new Vector3(0, 1, 0);

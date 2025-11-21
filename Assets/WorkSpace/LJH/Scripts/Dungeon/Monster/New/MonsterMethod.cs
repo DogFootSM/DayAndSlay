@@ -14,7 +14,7 @@ public class MonsterMethod : MonoBehaviour
     protected MonsterData monsterData;
     protected MonsterModel model;
     protected AstarPath astarPath;
-    protected MonsterAI ai;
+    [SerializeField] protected MonsterAI ai;
     protected MonsterAnimator animator;
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
@@ -34,6 +34,8 @@ public class MonsterMethod : MonoBehaviour
     public virtual void Skill_Second() { }
     public virtual void Skill_Third() { }
     public virtual void Skill_Fourth() { }
+
+    protected int parryingCount;
 
 
 
@@ -74,11 +76,11 @@ public class MonsterMethod : MonoBehaviour
     }
     
     
-    private void Start()
+    protected void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         astarPath = GetComponentInChildren<AstarPath>();
-        ai = GetComponentInChildren<MonsterAI>();
+        ai = GetComponent<MonsterAI>();
         animator = ai.GetMonsterAnimator();
         sensor = GetComponentInChildren<TargetSensor>();
         coll = GetComponent<Collider2D>();
@@ -92,6 +94,7 @@ public class MonsterMethod : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             HitMethod(10);
+            animator.PlayHit();
         }
     }
 
@@ -144,8 +147,6 @@ public class MonsterMethod : MonoBehaviour
     
     public virtual void Move()
     {
-        // 경로가 비어있으면 A*에서 경로를 가져와서 시작합니다.
-        // 이렇게 하면 몬스터가 경로를 받기 전까지 멈춰있게 됩니다.
         if (path == null || path.Count == 0)
         {
             if (astarPath.path != null && astarPath.path.Count > 0)
@@ -156,7 +157,7 @@ public class MonsterMethod : MonoBehaviour
             }
             else
             {
-                // A*가 아직 경로를 계산 중이면 그냥 리턴합니다.
+                // A*가 아직 경로를 계산 중이면 리턴
                 return;
             }
         }
@@ -197,22 +198,8 @@ public class MonsterMethod : MonoBehaviour
     /// Attack : 사거리 안에 플레이어가 있으면 공격
     /// 해당 메서드는 애니메이션 이벤트로 호출 >> 공격 타이밍 떄문에
     /// </summary>
-    public void AttackMethod()
+    public virtual void AttackMethod()
     {
-        PlayerController playerController = player.GetComponent<PlayerController>();
-
-        if (playerController.IsParrying)
-        {
-            //공격을 막아내고
-            //역으로 크리데미지를 먹이고
-            //몬스터의 공격 애니메이션은 거기서 끊기고
-            //챙 하는 이펙트도 나옴
-            //몇번 이상 패링 성공시 몬스터 스턴 먹음
-            return;
-        }
-        
-        
-        
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
         float distance = Vector2.Distance(player.transform.position, transform.position);
@@ -223,9 +210,8 @@ public class MonsterMethod : MonoBehaviour
             //사거리 비교
             if (distance <= ai.GetMonsterModel().AttackRange)
             {
-                Debug.Log("몬스터 공격");
-                PlayerHpDamaged(monsterData.Attack);
-                
+                //PlayerHpDamaged(monsterData.Attack);
+                PlayerHpDamaged(0);
             }
         }
 
@@ -235,7 +221,7 @@ public class MonsterMethod : MonoBehaviour
     /// 실제 공격 함수
     /// </summary>
     /// <param name="damage"></param>
-    private void PlayerHpDamaged(int damage)
+    protected void PlayerHpDamaged(int damage)
     {
         player.GetComponent<PlayerController>().TakeDamage(ai, damage);
     }
@@ -269,7 +255,6 @@ public class MonsterMethod : MonoBehaviour
 
     public void HitMethod(int damage)
     {
-        Debug.Log("피격");
         damageEffect.DamageTextEvent(damage);
         
         ai.TakeDamage(damage);

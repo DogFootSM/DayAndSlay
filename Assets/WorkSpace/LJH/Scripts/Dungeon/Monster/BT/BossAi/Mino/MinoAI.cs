@@ -48,8 +48,8 @@ public class MinoAI : BossMonsterAI
         // 세 번째 스킬 (Buff)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsSkillRangeNode(transform, player.transform, model.ChaseRange, model.AttackRange + 2),
-            new IsHPThresholdCheckNode(80f, GetMonsterModel()),
+            new IsSkillRangeNode(transform, player.transform, model.ChaseRange, 0),
+            new IsHPThresholdCheckNode(30f, GetMonsterModel()),
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),

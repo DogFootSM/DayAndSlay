@@ -45,6 +45,8 @@ public class Effect : MonoBehaviour
     /// </summary>
     private void WarningEffect()
     {
+        if (warningEffect == null) return;
+        
         ParticleSystem.MainModule main = warningEffect.main;
         main.startLifetime =  new ParticleSystem.MinMaxCurve(0.5f);
         
