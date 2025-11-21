@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
         if (curWeaponType != weaponType)
         {
             curWeaponType = weaponType;
-            curWeaponTier = itemData.weaponTier;
+            curWeaponTier = (WeaponTierType)itemData.Tier;
             
             //무기 및 바디 애니메이션 교체
             characterAnimatorController.AnimatorChange((int)curWeaponType, (int)curWeaponTier, true);
@@ -204,9 +204,9 @@ public class PlayerController : MonoBehaviour
             //같은 무기 타입이나 무기의 티어가 다를 때 무기 애니메이션 변경
             if (itemData != null)
             {
-                if (itemData.weaponTier != curWeaponTier)
+                if ((WeaponTierType)itemData.Tier != curWeaponTier)
                 {
-                    curWeaponTier = itemData.weaponTier;
+                    curWeaponTier = (WeaponTierType)itemData.Tier;
                     characterAnimatorController.ChangeWeaponAnimator((int)curWeaponType, (int)curWeaponTier);
                 }  
             } 
