@@ -26,7 +26,11 @@ public abstract class BossMonsterMethod : MonsterMethod
 
             ai.TakeDamage(100);
             parryingCount++;
-            animator.StartCoroutine(animator.PlayCounterCoroutine(parryingCount));
+            if (parryingCount < 3)
+            {
+                ai.ReceiveStun(1);
+            }
+            animator.StartCoroutine(animator.PlayCounterCoroutine());
 
             if (parryingCount == 3)
             {
@@ -51,8 +55,7 @@ public abstract class BossMonsterMethod : MonsterMethod
             if (distance <= ai.GetMonsterModel().AttackRange)
             {
                 Debug.Log("몬스터 공격");
-                //PlayerHpDamaged(monsterData.Attack);
-                PlayerHpDamaged(0);
+                PlayerHpDamaged(monsterData.Attack);
                 
             }
         }

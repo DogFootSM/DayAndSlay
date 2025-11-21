@@ -36,7 +36,9 @@ public class MonsterMethod : MonoBehaviour
     public virtual void Skill_Fourth() { }
 
     protected int parryingCount;
-
+    
+    //테스트용
+    [SerializeField] private GameObject stunImage;
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -95,6 +97,15 @@ public class MonsterMethod : MonoBehaviour
         {
             HitMethod(10);
             animator.PlayHit();
+        }
+
+        if (!stunImage.activeSelf && ai.GetIsStun())
+        {
+            stunImage.SetActive(true);
+        }
+        else if (stunImage.activeSelf && !ai.GetIsStun())
+        {
+            stunImage.SetActive(false);
         }
     }
 
@@ -200,6 +211,8 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public virtual void AttackMethod()
     {
+        Debug.Log("플레이어 공격함");
+        
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
         float distance = Vector2.Distance(player.transform.position, transform.position);
@@ -210,8 +223,7 @@ public class MonsterMethod : MonoBehaviour
             //사거리 비교
             if (distance <= ai.GetMonsterModel().AttackRange)
             {
-                //PlayerHpDamaged(monsterData.Attack);
-                PlayerHpDamaged(0);
+                PlayerHpDamaged(monsterData.Attack);
             }
         }
 
@@ -263,6 +275,11 @@ public class MonsterMethod : MonoBehaviour
         {
             ai.ReceiveKnockBack(player.transform.position);
         }
+    }
+
+    public void StunMethod()
+    {
+        
     }
 
     public void DropItem()

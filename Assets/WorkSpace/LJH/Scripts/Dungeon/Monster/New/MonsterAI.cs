@@ -32,7 +32,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
 
     protected float knockBackPower = 5f;
     private float defenseDeBuffRatio;
-    protected bool GetIsStun() => isStun;
+    public bool GetIsStun() => isStun;
     public bool IsSlow => isSlow;
     
     public bool isAttacking = false;
@@ -71,9 +71,14 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     }
 
     protected virtual void Update()
-    {
+    {   
         if (tree == null) return;
         tree.Tick();
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            ReceiveStun(2);
+        }
 
         //테스트 시에만 주석 해제
         //if (Input.GetKeyDown(KeyCode.Space))
@@ -374,7 +379,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     #region 기절 효과
     public void ReceiveStun(float duration)
     {
-        animator.PlayHit();
+        animator.PlayStun(duration);
         StartCoroutine(StunCoroutine(duration));
     }
 

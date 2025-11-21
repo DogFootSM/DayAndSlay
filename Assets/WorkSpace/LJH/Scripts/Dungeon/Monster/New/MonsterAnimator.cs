@@ -147,7 +147,7 @@ public class MonsterAnimator : MonoBehaviour
         animator.Play(attackAction[attackDir]);
     }
 
-    public IEnumerator PlayCounterCoroutine(int parryingCount)
+    public IEnumerator PlayCounterCoroutine()
     {
         animator.speed = 0f;
         
@@ -156,17 +156,10 @@ public class MonsterAnimator : MonoBehaviour
 
         isAction = false;
 
-        if (parryingCount > 2)
-        {
-            //PlayStun();
-            animator.speed = 1f;
-        }
-        else
-        {
-            PlayHit();
-            animator.speed = 1f;
-        }
+        PlayHit();
+        animator.speed = 1f;
     }
+
 
     public void PlayHit()
     {
@@ -177,6 +170,32 @@ public class MonsterAnimator : MonoBehaviour
         spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.HIT)];
         // animator.Play(hitAction[SetDirection()]);
         animator.Play(hitAction[dir]); // 외부에서 세팅된 dir 사용
+    }
+
+    /// <summary>
+    /// 애니메이션을 duration 동안 멈춰줌
+    /// </summary>
+    /// <param name="duration"></param>
+    public void PlayStun(float duration)
+    {
+        isAction = true;
+
+        spriteLibrary.spriteLibraryAsset = spriteDict[nameof(AnimType.HIT)];
+        // animator.Play(hitAction[SetDirection()]);
+        animator.Play(hitAction[dir]); 
+        
+        StartCoroutine(StunCoroutine(duration));
+    }
+
+    
+    private IEnumerator StunCoroutine(float duration)
+    {
+        animator.speed = 0f;
+        
+        yield return new WaitForSeconds(duration);
+        isAction = false;
+        PlayIdle();
+        animator.speed = 1f;
     }
 
     public void PlayDie()
