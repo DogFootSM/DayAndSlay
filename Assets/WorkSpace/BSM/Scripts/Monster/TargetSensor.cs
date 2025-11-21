@@ -28,19 +28,13 @@ public class TargetSensor : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if (transform.parent.name == "Banshee(Clone)")
-        {
-            Debug.Log(findCollider);
-            Debug.Log(GetComponentInParent<MonsterAI>());
-            Debug.Log(GetComponentInParent<MonsterAI>().GetChaseRange());
-        }
-
         findCollider.radius = GetComponentInParent<MonsterAI>().GetChaseRange() / 6;
         targetLayer = LayerMask.GetMask("Player");
     }
 
     private void Start()
     {
+        
         astar.SetGridAndTilemap(grid);
     }
 

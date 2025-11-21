@@ -207,7 +207,6 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
             calcDefense -= CalculateDefenseDeBuff();
         }
 
-        Debug.Log($"{gameObject.name}가 {damage} 만큼 피해를 입었습니다.");
         model.SetMonsterHp(-damage);
     }
     /// <summary>

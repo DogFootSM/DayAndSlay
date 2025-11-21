@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,13 +14,12 @@ public class BellusAI : NepenthesAI
     protected override void Start()
     {
         base.Start();
-        // 파트너 찾기 로직
-        partner = FindObjectOfType<MalusAI>();
         
         skillFirstCooldown = poisonCooldown;
         skillSecondCooldown = healCooldown;
         skillThirdCooldown = seedCooldown;
     }
+
 
     // 스킬 첫 번째 (힐) 사용 조건
 
@@ -32,8 +32,8 @@ public class BellusAI : NepenthesAI
         MonsterModel partnerModel = partner.GetComponent<MonsterModel>();
         if (myModel == null || partnerModel == null) return false;
 
-        float myHpPercent = (float)myModel.GetMonsterHp() / (float)myModel.GetMonsterMaxHp() * 100f;
-        float partnerHpPercent = (float)partnerModel.GetMonsterHp() / (float)partnerModel.GetMonsterMaxHp() * 100f;
+        float myHpPercent = myModel.GetMonsterHp() / myModel.GetMonsterMaxHp() * 100f;
+        float partnerHpPercent = partnerModel.GetMonsterHp() / partnerModel.GetMonsterMaxHp() * 100f;
         float diff = Mathf.Abs(myHpPercent - partnerHpPercent);
         Debug.Log($"체력 차 퍼센트 {diff}");
         return diff >= healThresholdPercent;

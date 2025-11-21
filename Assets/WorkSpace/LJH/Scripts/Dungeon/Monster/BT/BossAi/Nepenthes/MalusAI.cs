@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +13,7 @@ public class MalusAI : NepenthesAI
     
     protected override void Start()
     {
-        partner = FindObjectOfType<BellusAI>();
-
+        
         skillFirstCooldown = rootAttackCooldown;
         skillSecondCooldown = summonCooldown;
         skillThirdCooldown = frenzyCooldown;

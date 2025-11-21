@@ -3,15 +3,17 @@ using UnityEngine;
 public class MalusMethod : BossMonsterMethod
 {
     private BossMonsterAI malus;
-    private BossMonsterAI bellus;
+    [SerializeField] private BossMonsterAI bellus;
 
     [SerializeField] private ParticleSystem root;
     [SerializeField] private GameObject monster;
 
     private void Start()
     {
+        base.Start();
+        
         malus = GetComponent<MalusAI>();
-        bellus = ((MalusAI)malus).GetPartner();
+        //bellus = ((MalusAI)malus).GetPartner();
     }
     public override void Skill_First()
     {
