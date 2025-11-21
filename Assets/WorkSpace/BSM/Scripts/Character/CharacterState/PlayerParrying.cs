@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerParrying : PlayerState
 {
-    private const float PARRYING_TIME = 0.5f;
+    private const float PARRYING_TIME = 2f;
 
     private int parryingHash;
     

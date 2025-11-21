@@ -300,6 +300,9 @@ public class PlayerController : MonoBehaviour
         //TODO: 보호막 쉴드에 따른 데미지 계산
         //TODO: 방어력과 몬스터 데미지 공식 정립한 후 체력 감소 진행 + 받는 피해량 감소 버프 상태 체크
 
+        return;
+        
+        
         //보호막 쉴드 존재 시 데미지 피해를 받지 않음
         if (playerModel.ShieldCount > 0)
         {
