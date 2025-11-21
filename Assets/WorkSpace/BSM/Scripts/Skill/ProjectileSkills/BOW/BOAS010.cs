@@ -33,6 +33,8 @@ public class BOAS010 : MeleeSkill
 
     private IEnumerator SkillEffectRoutine(Vector2 playerPosition, Vector2 direction, Collider2D[] cols)
     {
+        yield return WaitCache.GetWait(0.5f);
+        
         float elapsedTime = 0;
         
         float minX = -overlapSize.x / 2;

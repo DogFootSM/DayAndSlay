@@ -70,6 +70,7 @@ public class SqliteDatabase
                                 body_sprite         TEXT NOT NULL DEFAULT 'none',
                                 shirt_sprite        TEXT NOT NULL DEFAULT 'none', 
                                 weapon_sprite       TEXT NOT NULL DEFAULT 'none',
+                                weapon_tier         INTEGER NOT NULL DEFAULT 0,
                                 last_played_time    TEXT NOT NULL DEFAULT 'none',
                                 weapon_type         INTEGER NOT NULL DEFAULT 0,
                                 remaining_days      INTEGER NOT NULL DEFAULT 150,

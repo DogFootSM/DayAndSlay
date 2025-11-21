@@ -39,7 +39,7 @@ public class CharacterAnimatorController : MonoBehaviour
     /// <summary>
     /// 무기 별 애니메이터 교체
     /// </summary>
-    public void AnimatorChange(int curWeaponIndex, bool isChange = false)
+    public void AnimatorChange(int curWeaponIndex, int weaponTier, bool inventoryChange = false)
     {
         if (!WeaponAnimator.gameObject.activeSelf)
         {
@@ -50,11 +50,14 @@ public class CharacterAnimatorController : MonoBehaviour
         //무기 착용 상태
         if ((CharacterWeaponType)curWeaponIndex != CharacterWeaponType.EMPTY)
         {
-            //인벤토리 내에서 무기 변경 시에 공격 애니메이션 라이브러리 변경
-            if (isChange)
+            //인벤토리에서 무기 변경 상태
+            if (inventoryChange)
             {
                 //Body, Shirt, Hair 공격 스프라이트 라이브러리 변경
                 dataManager.ChangeAttackSpriteLibraryAsset(BodyLibraryAsset, curWeaponIndex);
+                dataManager.ChangeWeaponSpriteLibraryAsset();
+                //TODO: 현재 무기 티어가 장착한 무기 티어랑 같이 않을 경우 변경
+                
             }
             
             //캐릭터 Body, Hair, Shirt 애니메이션 컨트롤러 변경
@@ -74,4 +77,18 @@ public class CharacterAnimatorController : MonoBehaviour
         }
     }
 
+    public void ChangeWeaponAnimator(int curWeaponIndex, int weaponTier)
+    {
+        if ((CharacterWeaponType)curWeaponIndex != CharacterWeaponType.EMPTY)
+        {
+            dataManager.ChangeWeaponSpriteLibraryAsset();
+        }
+        else
+        {
+            characterAnimator.runtimeAnimatorController = CharacterAnimators[curWeaponIndex].runtimeAnimatorController;
+            WeaponAnimator.runtimeAnimatorController = WeaponAnimators[curWeaponIndex].runtimeAnimatorController;
+            WeaponLibrary.spriteLibraryAsset = EquipmentLibraryAsset[0];
+        }
+    }
+    
 }

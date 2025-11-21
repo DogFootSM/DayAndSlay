@@ -5,6 +5,7 @@ using AYellowpaper.SerializedCollections;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 using Zenject;
 
 public class SoundManager : MonoBehaviour
@@ -18,11 +19,15 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource sfxAudioSource;
     [SerializeField] private AudioSource bgmAudioSource;
-    
+
     [Inject] private DataManager dataManager;
     
     public static SoundManager Instance;
 
+    private bool isMasterMute;
+    private bool isBgmMute;
+    private bool isSfxMute;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -101,6 +106,99 @@ public class SoundManager : MonoBehaviour
         audioMixer.GetFloat("SFX", out float volume);
 
         return Mathf.Pow(10f, volume / 20f);
+    }
+
+    /// <summary>
+    /// 데이터 로드 시 뮤트 상태 초기화
+    /// </summary>
+    /// <param name="masterMute"></param>
+    /// <param name="bgmMute"></param>
+    /// <param name="sfxMute"></param>
+    public void SetMuteState(bool masterMute, bool bgmMute, bool sfxMute)
+    {
+        
+        isMasterMute = masterMute;
+        isBgmMute = bgmMute;
+        isSfxMute = sfxMute;
+
+        SetMasterMute(isMasterMute);
+        SetBgmMute(isBgmMute);
+        SetSfxMute(isSfxMute);
+    }
+    
+    /// <summary>
+    /// 마스터 볼륨 뮤트 설정
+    /// </summary> 
+    public void SetMasterMute(bool mute)
+    {
+        isMasterMute = mute;
+        
+        if (isMasterMute)
+        {
+            bgmAudioSource.mute = true;
+            sfxAudioSource.mute = true;
+        }
+        else
+        {
+            bgmAudioSource.mute = isBgmMute;
+            sfxAudioSource.mute = isSfxMute;
+        } 
+    }
+     
+    /// <summary>
+    /// BGM 볼륨 뮤트 설정
+    /// </summary>
+    public void SetBgmMute(bool mute)
+    {
+        //bgm뮤트 상태 업데이트
+        isBgmMute = mute;
+        
+        if (isMasterMute) return;
+        
+        //마스터 볼륨 뮤트가 체크되어 있지 않을 경우 BGM 뮤트 업데이트
+        bgmAudioSource.mute = mute;
+    }
+
+    /// <summary>
+    /// SFX 볼륨 뮤트 설정
+    /// </summary>
+    /// <param name="mute"></param>
+    public void SetSfxMute(bool mute)
+    {
+        //SFX 볼륨 상태 업데이트
+        isSfxMute = mute;
+        
+        if (isMasterMute) return;
+        
+        //마스터 볼륨 뮤트가 체크되어 있지 않을 경우 SFX 뮤트 업데이트
+        sfxAudioSource.mute = isSfxMute;
+    }
+
+    /// <summary>
+    /// 현재 마스터 볼륨 뮤트 상태를 반환
+    /// </summary>
+    /// <returns></returns>
+    public bool GetMasterMute()
+    {
+        return isMasterMute;
+    }
+
+    /// <summary>
+    /// 현재 BGM 볼륨 뮤트 상태 반환
+    /// </summary>
+    /// <returns></returns>
+    public bool GetBgmMute()
+    {
+        return isBgmMute;
+    }
+
+    /// <summary>
+    /// 현재 SFX 볼륨 뮤트 상태 반환
+    /// </summary>
+    /// <returns></returns>
+    public bool GetSfxMute()
+    {
+        return isSfxMute;
     }
     
     /// <summary>

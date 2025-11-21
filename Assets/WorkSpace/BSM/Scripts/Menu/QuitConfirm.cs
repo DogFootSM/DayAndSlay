@@ -31,7 +31,7 @@ public class QuitConfirm : MonoBehaviour
     private void ConfirmQuit()
     {
         gameManager.HasUnsavedChanges = false;
-        gameManager.ConfirmQuit();
+        gameManager.MainSceneConfirmQuit();
     }
     
 }

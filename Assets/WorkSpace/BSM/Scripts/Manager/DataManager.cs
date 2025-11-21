@@ -13,12 +13,13 @@ public class DataManager : MonoBehaviour
 {
     [Inject] private SqlManager sqlManager;
     public int SlotId;
-
+    
     private Sprite[][] changeSprites = new Sprite[(int)BodyPartsType.SIZE][];
 
     private int curWeapon;
-    private int weaponIndex;
-
+    private int weaponTier;
+    public int WeaponTier => weaponTier;
+    
     private List<string> spriteColumns = new List<string>();
     private List<string> spriteNames = new List<string>();
 
@@ -99,6 +100,7 @@ public class DataManager : MonoBehaviour
     /// <returns>퀵슬롯 매니저에서 스킬 노드 초기화에 사용할 데이터 객체</returns>
     public QuickSlotSetting LoadQuickSlotSetting()
     {
+        //TODO: 테스트 끝나면 수정
         //SetPath($"QuickSlotSaveData{SlotId}.json");
         SetPath($"QuickSlotSaveData0.json");
 
@@ -168,7 +170,7 @@ public class DataManager : MonoBehaviour
         //해당 경로에 파일이 없을 경우 데이터 생성
         if (!File.Exists(path))
         {
-            SaveAudioData(0.5f, 0.5f, 0.5f); 
+            SaveAudioData(0.5f, 0.5f, 0.5f, false, false, false); 
         }
         
         string loadAudioData = File.ReadAllText(path);
@@ -177,6 +179,7 @@ public class DataManager : MonoBehaviour
         soundManager.SetMasterVolume(audioSettings.MasterVolume);
         soundManager.SetSFxVolume(audioSettings.SfxVolume);
         soundManager.SetBgmVolume(audioSettings.BgmVolume);
+        soundManager.SetMuteState(audioSettings.MasterMute, audioSettings.BgmMute, audioSettings.SfxMute);
     }
 
     /// <summary>
@@ -185,13 +188,16 @@ public class DataManager : MonoBehaviour
     /// <param name="MasterVolume">전체 음량</param>
     /// <param name="BgmVolume">배경음</param>
     /// <param name="SfxVolume">효과음</param>
-    public void SaveAudioData(float MasterVolume, float BgmVolume, float SfxVolume)
+    public void SaveAudioData(float MasterVolume, float BgmVolume, float SfxVolume, bool masterMute, bool bgmMute, bool sfxMute)
     {
         SetPath(audioDataPath);
          
         audioSettings.MasterVolume = MasterVolume;
         audioSettings.BgmVolume = BgmVolume;
         audioSettings.SfxVolume = SfxVolume;
+        audioSettings.MasterMute = masterMute;
+        audioSettings.BgmMute = bgmMute;
+        audioSettings.SfxMute = sfxMute;
         
         string json = JsonUtility.ToJson(audioSettings);
         File.WriteAllText(path, json);
@@ -201,7 +207,7 @@ public class DataManager : MonoBehaviour
     /// 캐릭터 생성 -> 선택한 프리셋 json 저장
     /// </summary>
     /// <param name="presets"></param>
-    public void SavePresetData(List<Image> presets, int WeaponType)
+    public void SavePresetData(List<Image> presets, int WeaponType, int weaponTier)
     {
         for (int i = 0; i < presets.Count; i++)
         {
@@ -222,8 +228,12 @@ public class DataManager : MonoBehaviour
                 
             }, spriteColumns.ToArray(), sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID), $"{SlotId}");
 
-        sqlManager.UpdateCharacterDataColumn(new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE) },
-            new[] { $"{WeaponType}" },
+        sqlManager.UpdateCharacterDataColumn(new[]
+            {
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TIER)
+            },
+            new[] { $"{WeaponType}", $"{weaponTier}"},
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{SlotId}");
 
@@ -297,7 +307,11 @@ public class DataManager : MonoBehaviour
         }
 
         dataReader = sqlManager.ReadDataColumn(
-            new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE), },
+            new[]
+            {
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TIER),
+            },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new[] { $"{SlotId}" },
             null);
@@ -306,6 +320,7 @@ public class DataManager : MonoBehaviour
         while (dataReader.Read())
         {
             curWeapon = dataReader.GetInt32(0);
+            weaponTier = dataReader.GetInt32(1);
         }
 
         //캐릭터 애니메이션 스프라이트 이미지 교체
@@ -341,33 +356,29 @@ public class DataManager : MonoBehaviour
             }
         }
 
-
-        //현재 무기가 Wand일 경우 Short Sword 인덱스로, 그 외 자기 무기 인덱스 할당
-        weaponIndex = (CharacterWeaponType)curWeapon switch
-        {
-            CharacterWeaponType.WAND => (int)CharacterWeaponType.SHORT_SWORD,
-            _ => curWeapon
-        };
-
         //무기 스프라이트 변경
         for (int i = 0; i < (int)CharacterAnimationType.SIZE; i++)
         {
             changeSprites[0] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/WEAPON/" +
                                                          $"{(CharacterWeaponType)curWeapon}/" +
-                                                         $"{spriteNames[spriteNames.Count - 1]}/" +
+                                                         $"{(WeaponTierType)weaponTier}/" +
                                                          $"{(CharacterAnimationType)i}");
 
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
-                characterAnimatorController.EquipmentLibraryAsset[weaponIndex].AddCategoryLabel(changeSprites[0][j],
+                characterAnimatorController.EquipmentLibraryAsset[curWeapon].AddCategoryLabel(changeSprites[0][j],
                     ((CharacterAnimationType)i).ToString(),
                     $"{(CharacterAnimationType)i + "_" + j}");
             }
         }
-
-        characterAnimatorController.AnimatorChange(weaponIndex);
+        
+        characterAnimatorController.AnimatorChange(curWeapon, weaponTier);
     }
 
+    public void ChangeWeaponSpriteLibraryAsset()
+    {
+        Debug.Log("무기 티어 변경");
+    }
     
     /// <summary>
     /// 무기 변경 시 공격 애니메이션에 대한 라이브러리 에셋 변경

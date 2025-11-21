@@ -16,6 +16,10 @@ public class SoundController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _bgmVolumeValueText;
     [SerializeField] private TextMeshProUGUI _sfxVolumeValueText;
     
+    [SerializeField] private Toggle masterMuteToggle;
+    [SerializeField] private Toggle bgmMuteToggle;
+    [SerializeField] private Toggle sfxMuteToggle;
+    
     
     private SoundManager soundManager => SoundManager.Instance;
 
@@ -34,6 +38,10 @@ public class SoundController : MonoBehaviour
         bgmVolumeSlider.value = soundManager.GetBgmVolume();
         sfxVolumeSlider.value = soundManager.GetSfxVolume();
         
+        masterMuteToggle.isOn = soundManager.GetMasterMute();
+        bgmMuteToggle.isOn = soundManager.GetBgmMute();
+        sfxMuteToggle.isOn = soundManager.GetSfxMute();
+        
         _masterVolumeValueText.text = $"{(int)(masterVolumeSlider.value * 100)}%";
         _bgmVolumeValueText.text = $"{(int)(bgmVolumeSlider.value * 100)}%";
         _sfxVolumeValueText.text = $"{(int)(sfxVolumeSlider.value * 100)}%";
@@ -44,6 +52,21 @@ public class SoundController : MonoBehaviour
     /// </summary>
     private void OnValueChanged()
     {
+        masterMuteToggle.onValueChanged.AddListener(x =>
+        {
+            soundManager.SetMasterMute(x);
+        });
+        
+        bgmMuteToggle.onValueChanged.AddListener(x =>
+        {
+            soundManager.SetBgmMute(x);
+        });
+        
+        sfxMuteToggle.onValueChanged.AddListener(x =>
+        {
+            soundManager.SetSfxMute(x);
+        });
+        
         masterVolumeSlider.onValueChanged.AddListener(x =>
         {
             soundManager.SetMasterVolume(x);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -10,7 +11,7 @@ public class PlayerSkillReceiver : MonoBehaviour
 {
     [SerializeField] private PlayerModel playerModel;
     [SerializeField] private PlayerController playerController;
-    [SerializeField] private Image tempCastingEffect;
+    [SerializeField] private Slider castingBar;
 
     public UnityAction<IEffectReceiver> MonsterCounterEvent;
 
@@ -233,13 +234,13 @@ public class PlayerSkillReceiver : MonoBehaviour
         while (elapsedTime < castingTime)
         {
             elapsedTime += Time.deltaTime;
-            tempCastingEffect.fillAmount = elapsedTime / castingTime;
+            castingBar.value = elapsedTime / castingTime;
             yield return null;
         }
         
         //캐스팅 상태 초기화
         playerModel.IsCasting = false;
-        tempCastingEffect.fillAmount = 0; 
+        castingBar.value = 0; 
         
         if (castingCo != null)
         {

@@ -18,7 +18,8 @@ public class ItemData : ScriptableObject
     public SubWeaponType SubWeaponType;
     public MaterialType MaterialType;
     public ItemSet ItemSet;
-
+    public WeaponTierType weaponTier;
+    
     public string Name;
     public int Tier;
 

@@ -247,6 +247,8 @@ public class PlayerModel : MonoBehaviour, ISavable
     
     private CharacterWeaponType curWeaponType;
     public CharacterWeaponType ModelCurWeaponType => curWeaponType;
+
+    private WeaponTierType curWeaponTier;
     
     private void Awake()
     {
@@ -335,9 +337,10 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// 현재 무기타입 업데이트
     /// </summary>
     /// <param name="weaponType">장착한 무기의 타입</param>
-    public void UpdateWeaponType(CharacterWeaponType weaponType)
+    public void UpdateWeaponType(CharacterWeaponType weaponType, WeaponTierType weaponTierType)
     {
         curWeaponType = weaponType;
+        curWeaponTier = weaponTierType;
     }
     
     /// <summary>
@@ -612,7 +615,9 @@ public class PlayerModel : MonoBehaviour, ISavable
                 sqlManager.GetCharacterColumn(CharacterDataColumns.STRENGTH),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.AGILITY),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.INTELLIGENCE),
-                sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT)
+                sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TIER),
             },
             new[]
             {
@@ -622,7 +627,9 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{playerStats.baseStrength}",
                 $"{playerStats.baseAgility}",
                 $"{playerStats.baseIntelligence}",
-                $"{playerStats.skillPoints}"
+                $"{playerStats.skillPoints}",
+                $"{(int)curWeaponType}",
+                $"{(int)curWeaponTier}"
             },
             "slot_id",
             $"{dataManager.SlotId}"
