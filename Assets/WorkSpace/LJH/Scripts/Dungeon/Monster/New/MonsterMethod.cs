@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Zenject.SpaceFighter;
 using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
@@ -19,6 +20,7 @@ public class MonsterMethod : MonoBehaviour
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
     protected GameObject player;
+    protected PlayerController _player;
     protected Collider2D coll;
     
     private int currentPathIndex;
@@ -235,7 +237,9 @@ public class MonsterMethod : MonoBehaviour
     /// <param name="damage"></param>
     protected void PlayerHpDamaged(int damage)
     {
-        player.GetComponent<PlayerController>().TakeDamage(ai, damage);
+        if(_player == null) _player = player.GetComponent<PlayerController>();
+        
+        _player.TakeDamage(ai, damage);
     }
 
     /// <summary>

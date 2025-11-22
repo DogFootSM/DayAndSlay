@@ -110,7 +110,7 @@ public abstract class BossAIRe : MonsterAI
         stateMachine.ChangeState(new NewMonsterSkillFirstState(transform, player.transform));
         isAttacking = true;
         method.Skill_First();
-        StartCoroutine(AttackEndDelay());
+        //StartCoroutine(AttackEndDelay());
         ResetSkillFirstCooldown();
     }
     
@@ -119,7 +119,7 @@ public abstract class BossAIRe : MonsterAI
         stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
         isAttacking = true;
         method.Skill_Second();
-        StartCoroutine(AttackEndDelay());
+        //StartCoroutine(AttackEndDelay());
         ResetSkillSecondCooldown();
     }
     
@@ -128,7 +128,7 @@ public abstract class BossAIRe : MonsterAI
         stateMachine.ChangeState(new NewMonsterSkillThirdState(transform, player.transform));
         isAttacking = true;
         method.Skill_Third();
-        StartCoroutine(AttackEndDelay());
+        //StartCoroutine(AttackEndDelay());
         ResetSkillThirdCooldown();
     }
     
@@ -137,7 +137,7 @@ public abstract class BossAIRe : MonsterAI
         stateMachine.ChangeState(new NewMonsterSkillFourthState(transform, player.transform));
         isAttacking = true;
         method.Skill_Fourth();
-        StartCoroutine(AttackEndDelay());
+        //StartCoroutine(AttackEndDelay());
         ResetSkillFourthCooldown();
     }
 

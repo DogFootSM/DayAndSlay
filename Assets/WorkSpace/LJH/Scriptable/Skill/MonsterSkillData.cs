@@ -24,6 +24,13 @@ public class MonsterSkillData : ScriptableObject
     public Collider2D AttackCollider;
 
 
+    public void SetVfx(List<GameObject> packages)
+    {
+        SkillEffect = packages[0].GetComponent<ParticleSystem>();
+        WarningEffect = packages[1].GetComponent<SpriteRenderer>();
+        AttackCollider =  packages[2].GetComponent<Collider2D>();
+    }
+
     /// <summary>
     /// 스킬의 범위
     /// </summary>

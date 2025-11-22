@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
@@ -12,7 +11,7 @@ public class SkillStorage : MonoBehaviour
     private SerializedDictionary<string, MonsterSkillData> skillDataDict;
     
     [SerializeField] [SerializedDictionary]
-    private SerializedDictionary<MonsterSkillData, GameObject> skillVFXDict;
+    private SerializedDictionary<MonsterSkillData, List<GameObject>> skillVFXDict;
 
     
     private void Awake()
@@ -27,5 +26,20 @@ public class SkillStorage : MonoBehaviour
         }
     }
 
-    public Effect GetSkillVFX(MonsterSkillData skillData) => skillVFXDict[skillData].transform.GetChild(0).GetComponent<Effect>();
+    private void Start()
+    {
+        SetSkillDataVFX();
+    }
+
+    public void SetSkillDataVFX()
+    {
+        foreach (var skillData in skillVFXDict.Keys)
+        {
+            skillData.SetVfx(skillVFXDict[skillData]);
+        }
+    }
+
+    public Effect GetSkillVFX(MonsterSkillData skillData) => skillData.SkillEffect.GetComponent<Effect>();
+    public SpriteRenderer GetSkillWarning(MonsterSkillData skillData) => skillData.WarningEffect;
+    public Collider2D GetSkillRadius(MonsterSkillData skillData) => skillData.AttackCollider;
 }
