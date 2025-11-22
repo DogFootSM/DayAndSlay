@@ -37,7 +37,8 @@ public class MonsterModel : MonoBehaviour
     {
         if (CompareTag("Boss"))
         {
-            monsterData = GetComponent<BossMonsterAI>().GetMonsterData();
+            //monsterData = GetComponent<BossMonsterAI>().GetMonsterData();
+            monsterData = GetComponent<BossAIRe>().GetMonsterData();
         }
         else
         {

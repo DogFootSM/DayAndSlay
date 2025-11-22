@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-public class MinoMethod : BossMonsterMethod
+public class MinoMethodRE : BossMethodRE
 {
     private BossMonsterAI mino;
 
@@ -16,11 +16,13 @@ public class MinoMethod : BossMonsterMethod
     public override void Skill_First()
     {
         //Todo : 부딪힌 적에게 피해
+        HeadButt();
     }
 
     public override void Skill_Second()
     {
         //Todo : 범위 내 적에게 피해
+        Stomp();
     }
 
     public override void Skill_Third()
@@ -34,12 +36,59 @@ public class MinoMethod : BossMonsterMethod
         Labyrinth();
     }
 
+    private void HeadButt()
+    {
+        Vector3 skillPos;
+
+        Direction direction = GetDirectionToTarget(transform.position, player.transform.position);
+
+        switch (direction)
+        {
+            case Direction.Up:
+                skillPos = transform.position + new Vector3(0, 1, 0);
+                break;
+            
+            case Direction.Down:
+                skillPos = transform.position + new Vector3(0, -1, 0);
+                break;
+            
+            case Direction.Right:
+                skillPos = transform.position + new Vector3(1, 0, 0);
+                break;
+            
+            case Direction.Left:
+                skillPos = transform.position + new Vector3(-1, 0, 0);
+                break;
+            
+            default:
+                skillPos = transform.position + new Vector3(0, -1, 0);
+                break;
+        }
+        
+        
+        firstSkillData.SetSkillRadius(skillPos);
+    }
+
+    private void Stomp()
+    {
+        secondSkillData.SetSkillRadius(transform.position);
+    }
+    
+
     private void Gigantism()
     {
         transform.localScale = new Vector3(6, 6, 6);
-        monsterData.Attack += monsterData.Attack;
+        monsterData.Attack *= 2;
         monsterData.AttackRange += 3;
         monsterData.MoveSpeed += 3;
+    }
+
+    private void DisGigantism()
+    {
+        transform.localScale = new Vector3(3, 3, 3);
+        monsterData.Attack /= 2;
+        monsterData.AttackRange -= 3;
+        monsterData.MoveSpeed -= 3;
     }
 
     private void Labyrinth()
@@ -58,6 +107,7 @@ public class MinoMethod : BossMonsterMethod
         
         //사망 이펙트 재생
         //DropItem();
+        DisGigantism();
         LabyrinthOff();
         DungeonManager.Instance.BossDoorOpen();
         Destroy(gameObject);
@@ -71,4 +121,3 @@ public class MinoMethod : BossMonsterMethod
     public void SetLabyrinth(Labyrinth labyrinth) => this.labyrinth = labyrinth;
 
 }
-    

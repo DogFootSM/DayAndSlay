@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class BansheeAI : BossMonsterAI
 {
     [Header("스킬 쿨타임 조정")]
@@ -86,4 +86,4 @@ public class BansheeAI : BossMonsterAI
 
         return list;
     }
-}
+}*/

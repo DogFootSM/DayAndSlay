@@ -292,4 +292,41 @@ public class MonsterMethod : MonoBehaviour
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
         Instantiate(itemPrefab, transform.position, Quaternion.identity);
     }
+    
+    
+    /// <summary>
+    /// 모든 몬스터에서 사용할 수 있도록 최상위 클래스에 배치해둔 헬퍼 함수
+    /// </summary>
+    /// <param name="monsterPos"></param>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
+    public Direction GetDirectionToTarget(Vector3 monsterPos, Vector3 targetPos)
+    {
+        Vector3 directionVector = targetPos - monsterPos;
+
+        if (Mathf.Abs(directionVector.y) > Mathf.Abs(directionVector.x))
+        {
+            // 상/하 결정
+            if (directionVector.y > 0)
+            {
+                return Direction.Up; // Y 값이 양수: 위쪽
+            }
+            else
+            {
+                return Direction.Down; // Y 값이 음수: 아래쪽
+            }
+        }
+        else
+        {
+            // 좌/우 결정
+            if (directionVector.x > 0)
+            {
+                return Direction.Right; // X 값이 양수: 오른쪽
+            }
+            else
+            {
+                return Direction.Left; // X 값이 음수: 왼쪽
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class SpiritRush : MonoBehaviour
 {
     private BansheeAI banshee;
@@ -72,4 +72,4 @@ public class SpiritRush : MonoBehaviour
             // 기절, 데미지 처리...
         }
     }
-}
+}*/

@@ -3,6 +3,27 @@ using UnityEngine;
 
 public class BansheeMethod : BossMonsterMethod
 {
+    public override void Skill_First()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Skill_Second()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Skill_Third()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Skill_Fourth()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+/*{
     [SerializeField] SpiritRush spirit;
     
     [SerializeField] private float buffDuration;
@@ -68,4 +89,4 @@ public class BansheeMethod : BossMonsterMethod
         transform.position = randomPos;
     }
 
-}
+}*/

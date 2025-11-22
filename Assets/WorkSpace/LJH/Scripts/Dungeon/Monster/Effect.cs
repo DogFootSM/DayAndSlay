@@ -17,14 +17,25 @@ public class Effect : MonoBehaviour
     [Header("값 (총 데미지를 입력)")]
     [SerializeField] private float damage;
 
-    [SerializeField] ParticleSystem warningEffect;
+    [SerializeField] private SpriteRenderer warningEffect;
     
     private Coroutine dotCoroutine;
 
-    private void Start()
+    public void PlaySkill()
+    {
+
+        StartCoroutine(PlayCoroutine());
+    }
+
+    private IEnumerator PlayCoroutine()
     {
         SetWarning();
-        
+        yield return new WaitForSeconds(delay);
+        GetComponent<ParticleSystem>().Play();
+    }
+
+    private void Start()
+    {   
         if (skillType == DamageType.INSTANTDAMAGE)
         {
             tick = 999999999999999999999999f;
@@ -45,13 +56,34 @@ public class Effect : MonoBehaviour
     /// </summary>
     private void WarningEffect()
     {
-        if (warningEffect == null) return;
+        /*if (_warningEffect == null) return;
         
-        ParticleSystem.MainModule main = warningEffect.main;
+        ParticleSystem.MainModule main = _warningEffect.main;
         main.startLifetime =  new ParticleSystem.MinMaxCurve(0.5f);
         
-        warningEffect.transform.position = transform.position;
-        warningEffect.Play();
+        _warningEffect.transform.position = transform.position;
+        _warningEffect.Play();*/
+        
+        if (warningEffect == null) return;
+        
+        StartCoroutine(WarningCoroutine(delay));
+        
+        
+    }
+
+    private IEnumerator WarningCoroutine(float delay)
+    {
+        if (warningEffect != null)
+        {
+            warningEffect.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(delay);
+
+            warningEffect.gameObject.SetActive(false);
+        }
+
+        yield return null;
+
     }
 
     void OnParticleCollision(GameObject other)

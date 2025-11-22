@@ -1,37 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinoAI : BossMonsterAI
+public class MinoAIRE : BossAIRe
 {
-    protected override List<BTNode> BuildSkillSelector()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override List<BTNode> BuildAttackSelector()
-    {
-        throw new System.NotImplementedException();
-    }
-}
-/*{
-    [Header("스킬 쿨타임 조정")]
-    [SerializeField] private float buttCooldown = 10f;
-    [SerializeField] private float stompCooldown = 10f;
-    [SerializeField] private float buffCooldown = 10f;
-    [SerializeField] private float ultCooldown = 10f;
-    
-    
-    // Start() 메서드에서 부모 클래스의 쿨타임 변수에 값을 할당
-    protected override void Start()
-    {
-        base.Start();
-        
-        skillFirstCooldown = buttCooldown;
-        skillSecondCooldown = stompCooldown;
-        skillThirdCooldown = buffCooldown;
-        skillFourthCooldown = ultCooldown;
-    }
-
     // ---------------- BT patterns ----------------
 
     protected override List<BTNode> BuildSkillSelector()
@@ -41,7 +12,7 @@ public class MinoAI : BossMonsterAI
        // 첫 번째 스킬 (Butt)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsSkillRangeNode(transform, player.transform, model.AttackRange +3, 0),
+            new IsSkillRangeNode(transform, player.transform, firstSkillData),
             new IsPreparedCooldownNode(() => CanSkill(skillFirstTimer)),
             new ActionNode(PerformSkillFirst),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -50,7 +21,7 @@ public class MinoAI : BossMonsterAI
         // 두 번째 스킬 (stomp)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsSkillRangeNode(transform, player.transform, model.AttackRange +3, 0),
+            new IsSkillRangeNode(transform, player.transform, secondSkillData),
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -59,7 +30,7 @@ public class MinoAI : BossMonsterAI
         // 세 번째 스킬 (Buff)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsSkillRangeNode(transform, player.transform, model.ChaseRange, 0),
+            new IsSkillRangeNode(transform, player.transform, thirdSkillData),
             new IsHPThresholdCheckNode(30f, GetMonsterModel()),
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),
@@ -94,4 +65,4 @@ public class MinoAI : BossMonsterAI
         return list;
     }
 
-}*/
+}

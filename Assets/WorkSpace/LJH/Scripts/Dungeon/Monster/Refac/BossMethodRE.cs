@@ -2,10 +2,12 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-public abstract class BossMonsterMethod : MonsterMethod
+public abstract class BossMethodRE : MonsterMethod
 {
-    public Effect effect;
-    
+    [SerializeField] protected MonsterSkillData firstSkillData;
+    [SerializeField] protected MonsterSkillData secondSkillData;
+    [SerializeField] protected MonsterSkillData thirdSkillData;
+    [SerializeField] protected MonsterSkillData fourthSkillData;
     
     public abstract override void Skill_First();
     public abstract override void Skill_Second();
@@ -40,6 +42,9 @@ public abstract class BossMonsterMethod : MonsterMethod
             return;
         }
 
+
+        Debug.Log(ai);
+        Debug.Log(ai.GetDirectionByAngle(player.transform.position, transform.position));
         
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
@@ -58,8 +63,11 @@ public abstract class BossMonsterMethod : MonsterMethod
         }
 
     }
-    /*/public void EffectPlay()
+
+    public void EffectPlay(MonsterSkillData skill)
     {
+        Effect effect = SkillStorage.instance.GetSkillVFX(skill);
+        
         if (effect == null)
         {
             Debug.Log("effect가 Null입니다.");
@@ -68,7 +76,7 @@ public abstract class BossMonsterMethod : MonsterMethod
 
         effect.PlaySkill();
     }
-    */
+    
     public override void DieMethod()
     {
         Debug.Log("사망");
