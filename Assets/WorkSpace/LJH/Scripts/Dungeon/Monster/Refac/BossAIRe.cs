@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -108,36 +109,36 @@ public abstract class BossAIRe : MonsterAI
     protected void PerformSkillFirst()
     {
         stateMachine.ChangeState(new NewMonsterSkillFirstState(transform, player.transform));
-        isAttacking = true;
+        isSkillUsing = true;
         method.Skill_First();
-        //StartCoroutine(AttackEndDelay());
+        StartCoroutine(SkillEndCoroutine());
         ResetSkillFirstCooldown();
     }
     
     protected void PerformSkillSecond()
     {
         stateMachine.ChangeState(new NewMonsterSkillSecondState(transform, player.transform));
-        isAttacking = true;
+        isSkillUsing = true;
         method.Skill_Second();
-        //StartCoroutine(AttackEndDelay());
+        StartCoroutine(SkillEndCoroutine());
         ResetSkillSecondCooldown();
     }
     
     protected void PerformSkillThird()
     {
         stateMachine.ChangeState(new NewMonsterSkillThirdState(transform, player.transform));
-        isAttacking = true;
+        isSkillUsing = true;
         method.Skill_Third();
-        //StartCoroutine(AttackEndDelay());
+        StartCoroutine(SkillEndCoroutine());
         ResetSkillThirdCooldown();
     }
     
     protected void PerformSkillFourth()
     {
         stateMachine.ChangeState(new NewMonsterSkillFourthState(transform, player.transform));
-        isAttacking = true;
+        isSkillUsing = true;
         method.Skill_Fourth();
-        //StartCoroutine(AttackEndDelay());
+        StartCoroutine(SkillEndCoroutine());
         ResetSkillFourthCooldown();
     }
 
@@ -147,6 +148,12 @@ public abstract class BossAIRe : MonsterAI
         isAttacking = true;
         StartCoroutine(AttackEndDelay());
         ResetAttackCooldown();
+    }
+
+    protected IEnumerator SkillEndCoroutine()
+    {
+        yield return new WaitUntil(() =>!animator.IsPlayingAction);
+        isSkillUsing = false;
     }
 
 

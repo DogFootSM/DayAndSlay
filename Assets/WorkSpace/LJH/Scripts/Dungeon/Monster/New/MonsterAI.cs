@@ -36,6 +36,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     public bool IsSlow => isSlow;
     
     public bool isAttacking = false;
+    public bool isSkillUsing = false;
 
     private Rigidbody2D rigid;
 
@@ -72,6 +73,8 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
 
     protected virtual void Update()
     {   
+        if (isSkillUsing) return;
+        
         if (tree == null) return;
         tree.Tick();
 
