@@ -27,7 +27,6 @@ public class MonsterMethod : MonoBehaviour
 
     private List<Vector3> path = new List<Vector3>();
 
-    protected Vector2 dir;
     
     public void SetPlayer(GameObject player) => this.player = player;
 
@@ -80,7 +79,7 @@ public class MonsterMethod : MonoBehaviour
     }
     
     
-    protected void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         astarPath = GetComponentInChildren<AstarPath>();
@@ -97,8 +96,8 @@ public class MonsterMethod : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            HitMethod(10);
-            animator.PlayHit();
+            HitMethod(100);
+            //animator.PlayHit();
         }
 
         if (!stunImage.activeSelf && ai.GetIsStun())

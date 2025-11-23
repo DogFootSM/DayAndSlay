@@ -14,7 +14,7 @@ public class BellusMethod : BossMonsterMethod
     [SerializeField] private ParticleSystem seedEffect;
 
     [SerializeField] private List<ParticleSystem> seedEffects;
-    private void Start()
+    protected override void Start()
     {
         base.Start();
         bellus = GetComponent<BellusAI>();

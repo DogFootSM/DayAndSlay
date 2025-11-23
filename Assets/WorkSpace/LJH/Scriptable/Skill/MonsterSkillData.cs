@@ -52,4 +52,18 @@ public class MonsterSkillData : ScriptableObject
             AttackCollider.transform.position = targetPos;
         }
     }
+
+    public void SetSkillRadius_Projectile(Vector3 targetPos)
+    {
+        if (SkillEffect != null)
+        {
+            SkillEffect.transform.position = targetPos;
+        }
+
+
+        if (AttackCollider != null)
+        {
+            AttackCollider.transform.position = targetPos;
+        }
+    }
 }

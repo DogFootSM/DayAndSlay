@@ -8,7 +8,7 @@ public class MalusMethod : BossMonsterMethod
     [SerializeField] private ParticleSystem root;
     [SerializeField] private GameObject monster;
 
-    private void Start()
+    protected override void Start()
     {
         base.Start();
         

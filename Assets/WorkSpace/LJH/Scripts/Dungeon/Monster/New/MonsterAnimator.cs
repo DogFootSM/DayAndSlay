@@ -17,7 +17,7 @@ public class MonsterAnimator : MonoBehaviour
 
     protected int currentAnimationHash;
 
-    protected bool isAction = false;
+    public bool isAction;
     public bool IsPlayingAction => isAction;              
 
     protected Dictionary<Direction, string> moveAction = new Dictionary<Direction, string>();
@@ -52,6 +52,7 @@ public class MonsterAnimator : MonoBehaviour
 
     protected void Update()
     {
+        
         if (isAction)
         {
             // 애니메이션 진행도 확인
@@ -78,7 +79,6 @@ public class MonsterAnimator : MonoBehaviour
                 {
                     isAction = false;
                 }
-
 
                 currentAnimationHash = SetAnimationHash(skillSecondAction[dir]);
                 if (stateInfo.fullPathHash == currentAnimationHash && stateInfo.normalizedTime >= 1f)
