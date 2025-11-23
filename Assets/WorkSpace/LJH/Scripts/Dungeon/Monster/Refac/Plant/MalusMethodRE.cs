@@ -4,20 +4,13 @@ using UnityEngine;
 
 public class MalusMethodRE : BossMethodRE
 {
-    private BossAIRe malus;
-
-
-    protected override void Start()
-    {
-        base.Start();
-        
-        malus = GetComponent<MalusAIRE>();
-    }
     public override void Skill_First()
     {
+        Debug.Log("뿌리 공격");
         //Todo : 뿌리 공격
         //root.transform.position = player.transform.position;
         //root.Play();
+        RootAttack();
     }
 
     public override void Skill_Second()
@@ -34,8 +27,21 @@ public class MalusMethodRE : BossMethodRE
 
     public override void Skill_Third()
     {
-        // ((MalusAI)malus).Frenzy();
-    } 
+        Frenzy();
+    }
+
+    private void RootAttack()
+    {
+        skills.SetAllEffectPos(firstSkillData, player.transform.position);
+    }
+
+    private void Frenzy()
+    {
+        if(bossAi == null)
+            bossAi = GetComponent<BossAIRe>();
+        
+        bossAi.skillFirstTimer /= 2;
+    }
     
     /// <summary>
     /// Bellus에선 사용하지 않음

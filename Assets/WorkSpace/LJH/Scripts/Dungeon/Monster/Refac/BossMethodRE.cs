@@ -7,10 +7,13 @@ using Zenject;
 
 public abstract class BossMethodRE : MonsterMethod
 {
+    [SerializeField] protected SkillStorage skills;
     [SerializeField] protected MonsterSkillData firstSkillData;
     [SerializeField] protected MonsterSkillData secondSkillData;
     [SerializeField] protected MonsterSkillData thirdSkillData;
     [SerializeField] protected MonsterSkillData fourthSkillData;
+
+    public BossAIRe bossAi;
     
     public abstract override void Skill_First();
     public abstract override void Skill_Second();
@@ -70,21 +73,15 @@ public abstract class BossMethodRE : MonsterMethod
 
     public void WarningPlay(MonsterSkillData skill)
     {
-        Transform warningRoot = SkillStorage.instance.GetSkillWarning(skill).transform;
-    
-        if (warningRoot == null)
-        {
-            Debug.Log("Warning root가 Null");
-            return;
-        }
+
 
         // SpriteRenderer 리스트
         List<SpriteRenderer> warningImages = new List<SpriteRenderer>();
 
         // 자식들 순회
-        for (int i = 0; i < warningRoot.childCount; i++)
+        for (int i = 0; i < skills.GetSkillWarning(skill).Count; i++)
         {
-            SpriteRenderer sr = warningRoot.GetChild(i).GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = skills.GetSkillWarning(skill)[i];
             if (sr != null)
                 warningImages.Add(sr);
         }
@@ -97,31 +94,66 @@ public abstract class BossMethodRE : MonsterMethod
         }
 
         // 전부 활성화
-        foreach (var sprite in warningImages)
+        StartCoroutine(WarningColorCoroutine(warningImages, 0.4f));
+    }
+
+    private IEnumerator WarningColorCoroutine(List<SpriteRenderer> list, float delay)
+    {
+        foreach (var sprite in list)
         {
-            sprite.gameObject.SetActive(true);
+            Color tempCol = sprite.color;
+            tempCol.a = 0.3411f;
+            sprite.color = tempCol;
+            
+            yield return new WaitForSeconds(delay);
         }
     }
 
     public void EffectPlay(MonsterSkillData skill)
     {
-        Effect effect = SkillStorage.instance.GetSkillVFX(skill);
+        // VFX 객체 가져오기
 
-        if (SkillStorage.instance.GetSkillWarning(skill) != null)
+            List<SpriteRenderer> warnings = new List<SpriteRenderer>();
+
+            // warningRoot 자식들 중 SpriteRenderer만 OFF
+            for (int i = 0; i < skills.GetSkillWarning(skill).Count; i++)
+            {
+                SpriteRenderer sr = skills.GetSkillWarning(skill)[i].GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    warnings.Add(sr);
+            }
+
+            // 비활성화
+            StartCoroutine(WarningDeColorCoroutine(warnings, 0.4f));
+
+        // 스킬 VFX 실행
+        StartCoroutine(EffectPlayCoroutine(skills.GetSkillVFX(skill), 0.4f));
+    }
+    
+    private IEnumerator WarningDeColorCoroutine(List<SpriteRenderer> list, float delay)
+    {
+        foreach (var sprite in list)
         {
-            SpriteRenderer warningImage = SkillStorage.instance.GetSkillWarning(skill);
+            Color tempCol = sprite.color;
+            tempCol.a = 0;
+            sprite.color = tempCol;
             
-            warningImage.gameObject.SetActive(false);
+            yield return new WaitForSeconds(delay);
         }
+    }
+    
+    private IEnumerator EffectPlayCoroutine(List<Effect> list, float delay)
+    {
 
-
-        if (effect == null)
+        if (list.Count == 0)
         {
-            Debug.Log("effect가 Null입니다.");
-            return;
+            Debug.LogWarning("list의 갯수가 0입니다!");
         }
-
-        effect.PlaySkill();
+        foreach (var effect in list)
+        {
+            effect.PlaySkill();
+            yield return new WaitForSeconds(delay);
+        }
     }
     
     public void Animation_DoHitCheck(int skillIndex) 
@@ -136,34 +168,46 @@ public abstract class BossMethodRE : MonsterMethod
         {
             data = secondSkillData;
         }
-
-        data.AttackCollider = SkillStorage.instance.GetSkillRadius(data);
-        
-        if (data == null || data.AttackCollider == null) return;
-    
-        Collider2D attackCollider = data.AttackCollider;
-    
-        float radius = attackCollider.bounds.extents.x;
-        Vector2 center = attackCollider.transform.position;
-    
-        LayerMask playerLayer = LayerMask.GetMask("Player"); 
-    
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, radius, playerLayer);
-        
-        _hitPlayers.Clear(); 
-    
-        // 4. 피해 처리
-        foreach (Collider2D hit in hitColliders)
+        else if (skillIndex == 3)
         {
-            if (_hitPlayers.Contains(hit.gameObject)) continue;
-
-            if (hit.GetComponent<PlayerController>())
-            {
-                PlayerHpDamaged((int)data.Damage);
-                Debug.Log($"Overlap Hit: {data.Damage}");
-            }
+            data = thirdSkillData;
+        }
         
-            _hitPlayers.Add(hit.gameObject);
+        else if (skillIndex == 4)
+        {
+            data = fourthSkillData;
+        }
+
+        foreach (var tempCollider in skills.GetSkillRadius(data))
+        {
+            data.AttackCollider =  tempCollider;
+
+            if (data == null || data.AttackCollider == null) return;
+
+            Collider2D attackCollider = data.AttackCollider;
+
+            float radius = attackCollider.bounds.extents.x;
+            Vector2 center = attackCollider.transform.position;
+
+            LayerMask playerLayer = LayerMask.GetMask("Player");
+
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, radius, playerLayer);
+
+            _hitPlayers.Clear();
+
+            // 4. 피해 처리
+            foreach (Collider2D hit in hitColliders)
+            {
+                if (_hitPlayers.Contains(hit.gameObject)) continue;
+
+                if (hit.GetComponent<PlayerController>())
+                {
+                    PlayerHpDamaged((int)data.Damage);
+                    Debug.Log($"Overlap Hit: {data.Damage}");
+                }
+
+                _hitPlayers.Add(hit.gameObject);
+            }
         }
     }
     

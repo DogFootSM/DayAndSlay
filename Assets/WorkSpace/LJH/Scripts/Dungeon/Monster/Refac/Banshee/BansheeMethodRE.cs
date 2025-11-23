@@ -38,7 +38,7 @@ public class BansheeMethodRE : BossMethodRE
     private void SpiritRushWarningZoneChange()
     {
         if (spiritRushWarningzone == null)
-            spiritRushWarningzone = SkillStorage.instance.GetSkillWarning(fourthSkillData).gameObject;
+            spiritRushWarningzone = skills.GetSkillWarning(fourthSkillData)[0].gameObject;
         
         dir = GetDirectionToTarget(transform.position, player.transform.position);
         
@@ -115,7 +115,7 @@ public class BansheeMethodRE : BossMethodRE
     public void SpiritRush()
     {
         if (spirit == null)
-            spirit = SkillStorage.instance.GetSkillVFX(fourthSkillData).GetComponent<SpiritRush>();
+            spirit = skills.GetSkillVFX(fourthSkillData)[0].GetComponent<SpiritRush>();
         
         if(dir == null)
             dir = GetDirectionToTarget(transform.position, player.transform.position);

@@ -24,7 +24,6 @@ public class BellusMethodRE : BossMethodRE
 
     public override void Skill_Second()
     {
-
         Debug.Log("Èú ½ÇÇà");
 
         Heal();
@@ -38,30 +37,35 @@ public class BellusMethodRE : BossMethodRE
 
     private void Poison()
     {
-        firstSkillData.SetSkillRadius(player.transform.position);
+        skills.SetAllEffectPos(firstSkillData, player.transform.position);
     }
 
     private void Heal()
     {
-        if (bellus.GetMonsterModel().CurHp >= bellus.GetMonsterModel().MaxHp &&
-            bellus.GetMonsterModel().CurHp >= bellus.GetMonsterModel().MaxHp)
+        float b_curHp = bellus.GetMonsterModel().CurHp;
+        float b_maxHp = bellus.GetMonsterModel().MaxHp;
+        
+        
+        if (b_curHp < b_maxHp)
         {
             bellus.GetMonsterModel().SetMonsterHp(25);
             malus.GetMonsterModel().SetMonsterHp(25);
+            
         }
     }
 
     private IEnumerator SeedActiveCoroutine()
     {
-        foreach (ParticleSystem seed in seedEffects)
+        List<Effect> seedEffects = skills.GetSkillVFX(thirdSkillData);
+        foreach (var seed in seedEffects)
         {
             Vector3 seedPos = seed.transform.position;
             
             seed.gameObject.transform.position = new Vector3(Random.Range(seedPos.x - 6, seedPos.x + 6), 
                 Random.Range(seedPos.y - 6, seedPos.y + 6),0);
             
-            seed.Play();
-            yield return new WaitForSeconds(0.1f);
+            seed.PlaySkill();
+            yield return new WaitForSeconds(0.4f);
         }
     }
     

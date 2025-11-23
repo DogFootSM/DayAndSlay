@@ -10,12 +10,12 @@ public abstract class BossAIRe : MonsterAI
     [SerializeField] protected MonsterSkillData thirdSkillData;
     [SerializeField] protected MonsterSkillData fourthSkillData;
 
-    protected float skillFirstTimer;
-    protected float skillSecondTimer;
-    protected float skillThirdTimer;
-    protected float skillFourthTimer;
+    public float skillFirstTimer;
+    public float skillSecondTimer;
+    public float skillThirdTimer;
+    public float skillFourthTimer;
     
-    protected float attackTimer;
+    public float attackTimer;
 
     protected override void Start()
     {

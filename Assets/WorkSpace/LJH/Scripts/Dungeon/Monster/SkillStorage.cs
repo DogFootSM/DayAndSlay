@@ -4,42 +4,52 @@ using UnityEngine;
 
 public class SkillStorage : MonoBehaviour
 {
-    public static SkillStorage instance;
-    
+    [SerializeField] [SerializedDictionary]
+    public SerializedDictionary<string, MonsterSkillData> skillDataDict;
     
     [SerializeField] [SerializedDictionary]
-    private SerializedDictionary<string, MonsterSkillData> skillDataDict;
-    
-    [SerializeField] [SerializedDictionary]
-    private SerializedDictionary<MonsterSkillData, List<GameObject>> skillVFXDict;
+    public SerializedDictionary<MonsterSkillData, List<GameObject>> skillVFXDict;
 
-    
-    private void Awake()
+    public List<Effect> GetSkillVFX(MonsterSkillData skillData)
     {
-        if (instance == null)
+        List<Effect> result = new List<Effect>();
+
+        for (int i = 0; i < skillVFXDict[skillData][0].transform.childCount; i++)
         {
-            instance = this;
+            result.Add(skillVFXDict[skillData][0].transform.GetChild(i).GetComponent<Effect>());
         }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+        
+        return result;
     }
 
-    private void Start()
+    public List<SpriteRenderer> GetSkillWarning(MonsterSkillData skillData)
     {
-        SetSkillDataVFX();
-    }
+        List<SpriteRenderer> result = new List<SpriteRenderer>();
 
-    public void SetSkillDataVFX()
-    {
-        foreach (var skillData in skillVFXDict.Keys)
+        for (int i = 0; i < skillVFXDict[skillData][1].transform.childCount; i++)
         {
-            skillData.SetVfx(skillVFXDict[skillData]);
+            result.Add(skillVFXDict[skillData][1].transform.GetChild(i).GetComponent<SpriteRenderer>());
         }
+        
+        return result;
     }
 
-    public Effect GetSkillVFX(MonsterSkillData skillData) => skillData.SkillEffect.GetComponent<Effect>();
-    public SpriteRenderer GetSkillWarning(MonsterSkillData skillData) => skillData.WarningEffect;
-    public Collider2D GetSkillRadius(MonsterSkillData skillData) => skillData.AttackCollider;
+    public List<Collider2D> GetSkillRadius(MonsterSkillData skillData)
+    {
+        List<Collider2D> result = new List<Collider2D>();
+
+        for (int i = 0; i < skillVFXDict[skillData][2].transform.childCount; i++)
+        {
+            result.Add(skillVFXDict[skillData][2].transform.GetChild(i).GetComponent<Collider2D>());
+        }
+        
+        return result;
+    }
+
+    public void SetAllEffectPos(MonsterSkillData skill, Vector3 targetPos)
+    {
+        skillVFXDict[skill][2].transform.position = targetPos;
+        skillVFXDict[skill][1].transform.position = targetPos;
+        skillVFXDict[skill][0].transform.position = targetPos;
+    }
 }
