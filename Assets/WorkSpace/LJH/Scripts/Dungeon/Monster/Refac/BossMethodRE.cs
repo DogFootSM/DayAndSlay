@@ -70,15 +70,37 @@ public abstract class BossMethodRE : MonsterMethod
 
     public void WarningPlay(MonsterSkillData skill)
     {
-        SpriteRenderer warningImage = SkillStorage.instance.GetSkillWarning(skill);
-        
-        if (warningImage == null)
+        Transform warningRoot = SkillStorage.instance.GetSkillWarning(skill).transform;
+    
+        if (warningRoot == null)
         {
-            Debug.Log("effect가 Null입니다.");
+            Debug.Log("Warning root가 Null");
             return;
         }
 
-        warningImage.gameObject.SetActive(true);
+        // SpriteRenderer 리스트
+        List<SpriteRenderer> warningImages = new List<SpriteRenderer>();
+
+        // 자식들 순회
+        for (int i = 0; i < warningRoot.childCount; i++)
+        {
+            SpriteRenderer sr = warningRoot.GetChild(i).GetComponent<SpriteRenderer>();
+            if (sr != null)
+                warningImages.Add(sr);
+        }
+
+        // 실제로 스프라이트가 없는 경우 체크
+        if (warningImages.Count == 0)
+        {
+            Debug.Log("Warning SpriteRenderer가 없음");
+            return;
+        }
+
+        // 전부 활성화
+        foreach (var sprite in warningImages)
+        {
+            sprite.gameObject.SetActive(true);
+        }
     }
 
     public void EffectPlay(MonsterSkillData skill)

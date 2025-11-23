@@ -12,7 +12,7 @@ public class MalusMethod : BossMonsterMethod
     {
         base.Start();
         
-        malus = GetComponent<MalusAI>();
+        //malus = GetComponent<MalusAI>();
         //bellus = ((MalusAI)malus).GetPartner();
     }
     public override void Skill_First()
@@ -36,7 +36,7 @@ public class MalusMethod : BossMonsterMethod
 
     public override void Skill_Third()
     {
-        ((MalusAI)malus).Frenzy();
+       // ((MalusAI)malus).Frenzy();
     } 
     
     /// <summary>

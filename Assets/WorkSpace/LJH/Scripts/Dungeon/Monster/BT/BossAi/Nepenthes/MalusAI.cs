@@ -14,9 +14,9 @@ public class MalusAI : NepenthesAI
     protected override void Start()
     {
         
-        skillFirstCooldown = rootAttackCooldown;
-        skillSecondCooldown = summonCooldown;
-        skillThirdCooldown = frenzyCooldown;
+        //skillFirstCooldown = rootAttackCooldown;
+        //skillSecondCooldown = summonCooldown;
+        //skillThirdCooldown = frenzyCooldown;
         base.Start();
     }
 
@@ -96,7 +96,7 @@ public class MalusAI : NepenthesAI
     public void Frenzy()
     {
         GetMonsterModel().AttackCooldown /= 2;
-        skillFirstCooldown = rootAttackCooldown / 2;
-        skillSecondCooldown = summonCooldown / 2;
+        //skillFirstCooldown = rootAttackCooldown / 2;
+        //skillSecondCooldown = summonCooldown / 2;
     }
 }

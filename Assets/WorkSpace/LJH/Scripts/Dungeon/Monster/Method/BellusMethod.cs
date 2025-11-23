@@ -17,7 +17,7 @@ public class BellusMethod : BossMonsterMethod
     protected override void Start()
     {
         base.Start();
-        bellus = GetComponent<BellusAI>();
+        //bellus = GetComponent<BellusAI>();
         //malus = ((BellusAI)bellus).GetPartner();
         
         bellusHealEffect.transform.position = bellus.transform.position + new Vector3(0, 1, 0);

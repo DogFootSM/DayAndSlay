@@ -10,7 +10,6 @@ public abstract class BossAIRe : MonsterAI
     [SerializeField] protected MonsterSkillData thirdSkillData;
     [SerializeField] protected MonsterSkillData fourthSkillData;
 
-    // 네펜데스AI에서 가져온 공통 타이머 변수들
     protected float skillFirstTimer;
     protected float skillSecondTimer;
     protected float skillThirdTimer;

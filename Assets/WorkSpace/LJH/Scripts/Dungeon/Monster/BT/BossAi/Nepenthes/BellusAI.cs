@@ -15,9 +15,9 @@ public class BellusAI : NepenthesAI
     {
         base.Start();
         
-        skillFirstCooldown = poisonCooldown;
-        skillSecondCooldown = healCooldown;
-        skillThirdCooldown = seedCooldown;
+        //skillFirstCooldown = poisonCooldown;
+        //skillSecondCooldown = healCooldown;
+        //skillThirdCooldown = seedCooldown;
     }
 
 
