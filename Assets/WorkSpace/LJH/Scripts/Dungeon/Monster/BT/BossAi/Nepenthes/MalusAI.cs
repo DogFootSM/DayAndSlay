@@ -5,20 +5,8 @@ using UnityEngine;
 public class MalusAI : NepenthesAI
 {
     [Header("소환 조건 조정")]
-    //[SerializeField] private float summonThresholdPercent = 0;
+    [SerializeField] private float summonThresholdPercent = 0;
 
-    [SerializeField] private float rootAttackCooldown = 10f;
-    [SerializeField] private float summonCooldown = 10f;
-    [SerializeField] private float frenzyCooldown = 10f;
-    
-    protected override void Start()
-    {
-        
-        //skillFirstCooldown = rootAttackCooldown;
-        //skillSecondCooldown = summonCooldown;
-        //skillThirdCooldown = frenzyCooldown;
-        base.Start();
-    }
 
     // 스킬 첫 번째 (소환) 사용 조건
     protected bool CanSkillCondition()
@@ -37,7 +25,6 @@ public class MalusAI : NepenthesAI
         //벨루스의 체력이 나보다 낮을 경우 스킬 사용 조건 충족
         bool hpDiff = myHpPercent - partnerHpPercent >  0;
         
-        Debug.Log($"말루스가 체력 많으면 트루 {hpDiff}");
         return hpDiff;
     }
 
@@ -56,7 +43,7 @@ public class MalusAI : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsPreparedCooldownNode(CanSkillCondition),
+            //new IsPreparedCooldownNode(CanSkillCondition),
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -96,7 +83,6 @@ public class MalusAI : NepenthesAI
     public void Frenzy()
     {
         GetMonsterModel().AttackCooldown /= 2;
-        //skillFirstCooldown = rootAttackCooldown / 2;
-        //skillSecondCooldown = summonCooldown / 2;
+        //공속 쿨감 스킬임 메서드에서 해주자
     }
 }

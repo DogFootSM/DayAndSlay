@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MalusMethodRE : BossMethodRE
+public class MalusMethod : BossMethod
 {
+    [SerializeField] private GameObject monsterPrefab;
+    [SerializeField] private BellusMethod bellus;
+    
+    private List<GameObject> summonMonsterList = new List<GameObject>();
     public override void Skill_First()
     {
         Debug.Log("뿌리 공격");
-        //Todo : 뿌리 공격
-        //root.transform.position = player.transform.position;
-        //root.Play();
+        
         RootAttack();
     }
 
@@ -18,11 +20,7 @@ public class MalusMethodRE : BossMethodRE
         //Todo : 잡몹 소환
         Debug.Log("몬스터 소환함");
         
-        //소환후 정상적인 움직임 시키려면 젠젝트 이용하여 돌려야할 것으로 보임
-        //테스트씬에서는 테스트하기 껄끄러운 상황
-        //DiContainer 이용해서 해야함
-        
-        //Instantiate(monster, transform.position + new Vector3(-1,0,0), Quaternion.identity);
+        SummonMonster();
     }
 
     public override void Skill_Third()
@@ -35,10 +33,18 @@ public class MalusMethodRE : BossMethodRE
         skills.SetAllEffectPos(firstSkillData, player.transform.position);
     }
 
+    private void SummonMonster()
+    {
+        if (summonMonsterList.Count > 1) return;
+        
+        monsterPrefab.GetComponentInChildren<TargetSensor>().SetGrid(GameObject.Find("BossRoom").GetComponent<Grid>());
+        summonMonsterList.Add(Instantiate(monsterPrefab, transform.position + new Vector3(-1, 0, 0), Quaternion.identity));
+    }
+
     private void Frenzy()
     {
         if(bossAi == null)
-            bossAi = GetComponent<BossAIRe>();
+            bossAi = GetComponent<BossAI>();
         
         bossAi.skillFirstTimer /= 2;
     }
@@ -48,4 +54,5 @@ public class MalusMethodRE : BossMethodRE
     /// </summary>
     public override void Skill_Fourth()
     {}
+    
 }

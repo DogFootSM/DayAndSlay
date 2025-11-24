@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public abstract class BossMethodRE : MonsterMethod
+public abstract class BossMethod : MonsterMethod
 {
     [SerializeField] protected SkillStorage skills;
     [SerializeField] protected MonsterSkillData firstSkillData;
@@ -13,7 +14,7 @@ public abstract class BossMethodRE : MonsterMethod
     [SerializeField] protected MonsterSkillData thirdSkillData;
     [SerializeField] protected MonsterSkillData fourthSkillData;
 
-    public BossAIRe bossAi;
+    public BossAI bossAi;
     
     public abstract override void Skill_First();
     public abstract override void Skill_Second();
@@ -22,8 +23,17 @@ public abstract class BossMethodRE : MonsterMethod
 
     
     private readonly HashSet<GameObject> _hitPlayers = new HashSet<GameObject>();
+
+    protected override void Start()
+    {
+        base.Start();
+        BossCounting();
+    }
     
-    
+    protected void BossCounting()
+    {
+        DungeonManager.Instance.RemainingBossCount++;
+    }
     
     public void SetPosEffect(ParticleSystem effect, GameObject target)
     {
@@ -172,7 +182,6 @@ public abstract class BossMethodRE : MonsterMethod
         {
             data = thirdSkillData;
         }
-        
         else if (skillIndex == 4)
         {
             data = fourthSkillData;
@@ -218,8 +227,8 @@ public abstract class BossMethodRE : MonsterMethod
         Debug.Log("»ç¸Á");
         
         //»ç¸Á ÀÌÆåÆ® Àç»ý
-        //DropItem();
-        DungeonManager.Instance.BossDoorOpen();
+        DropItem();
+        DungeonManager.Instance.RemainingBossCount--;
         Destroy(gameObject);
     }
 }

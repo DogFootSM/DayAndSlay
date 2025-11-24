@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BansheeMethodRE : BossMethodRE
+public class BansheeMethod : BossMethod
 {
     private Direction dir;
     private Vector3 moveDirection;
@@ -76,7 +76,7 @@ public class BansheeMethodRE : BossMethodRE
     }
     private void Scream()
     {
-        secondSkillData.SetSkillRadius(transform.position);   
+        skills.SetAllEffectPos(secondSkillData, transform.position);
     }
 
 
@@ -114,13 +114,23 @@ public class BansheeMethodRE : BossMethodRE
     /// </summary>
     public void SpiritRush()
     {
+        StartCoroutine(SpiritRushingCoroutine());
         if (spirit == null)
             spirit = skills.GetSkillVFX(fourthSkillData)[0].GetComponent<SpiritRush>();
         
         if(dir == null)
             dir = GetDirectionToTarget(transform.position, player.transform.position);
-        
+
         spirit.SetDirection(dir);
+    }
+
+    private IEnumerator SpiritRushingCoroutine()
+    {
+        skills.GetSkillRadius(fourthSkillData)[0].GetComponent<Projectile_Monster>().isRushing = true;
+        
+        yield return new WaitForSeconds(1f);
+        
+        skills.GetSkillRadius(fourthSkillData)[0].GetComponent<Projectile_Monster>().isRushing = false;
     }
 
 }

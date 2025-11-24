@@ -5286,7 +5286,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -4448536720913584586, guid: 0346c40b372ce45499fcf11377a0eaed, type: 3}
+  m_Sprite: {fileID: 324904572647940543, guid: d4f1753f96be5f44ea13918a8dbca9f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5310,7 +5310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 75da0bdf470dd5b4098130f9a5062906, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: fbb36e302d5158042ad950d096ff8359, type: 3}
 --- !u!114 &2403956552646867983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5325,7 +5325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0.005482587
   m_labelHash: 0.00000040954276
-  m_SpriteKey: 0.00000033299656
+  m_SpriteKey: 0
 --- !u!95 &530794960002052850
 Animator:
   serializedVersion: 5
@@ -5406,18 +5406,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.004999995, y: 0.315}
+  m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.51724136, y: -0.35135135}
-    oldSize: {x: 0.29, y: 0.37}
+    pivot: {x: 0.51724136, y: -0.37142858}
+    oldSize: {x: 0.29, y: 0.35}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.29, y: 0.37}
+  m_Size: {x: 0.33, y: 0.33}
   m_EdgeRadius: 0
 --- !u!50 &7652787187645132962
 Rigidbody2D:
@@ -5518,9 +5518,8 @@ MonoBehaviour:
   secondSkillData: {fileID: 11400000, guid: cca0b924dd567854ba1d67f46c96cf95, type: 2}
   thirdSkillData: {fileID: 11400000, guid: bfbbcb8394e71dd489ad38d5d8ecb788, type: 2}
   fourthSkillData: {fileID: 11400000, guid: 3ad24e41f7ac19543af34caad7f34a84, type: 2}
-  bossAi: {fileID: 0}
-  malus: {fileID: 0}
-  seedEffects: []
+  bossAi: {fileID: 5142987003246210715}
+  malus: {fileID: 3199516245215925098}
 --- !u!1 &587493576367794929
 GameObject:
   m_ObjectHideFlags: 0
@@ -25451,7 +25450,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714115774010841942}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.46, y: -0.194, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42276,7 +42275,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.004999995, y: 0.31}
+  m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.4848485, y: -0.3611111}
@@ -42287,7 +42286,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.33, y: 0.36}
+  m_Size: {x: 0.33, y: 0.33}
   m_EdgeRadius: 0
 --- !u!50 &2976269134766493035
 Rigidbody2D:
@@ -42381,14 +42380,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
-  ai: {fileID: 0}
+  ai: {fileID: 3199516245215925098}
   stunImage: {fileID: 4597742324176291371}
   skills: {fileID: 1592233547757770663}
   firstSkillData: {fileID: 11400000, guid: 0128f2dc74a06a54fa1ce6bec27118a5, type: 2}
   secondSkillData: {fileID: 11400000, guid: 3ad24e41f7ac19543af34caad7f34a84, type: 2}
   thirdSkillData: {fileID: 11400000, guid: 1f3705b2bffba1341b1391354046d28f, type: 2}
   fourthSkillData: {fileID: 11400000, guid: 3ad24e41f7ac19543af34caad7f34a84, type: 2}
-  bossAi: {fileID: 0}
+  bossAi: {fileID: 3199516245215925098}
+  monsterPrefab: {fileID: 6718412542748530395, guid: b0fc7e29e81d37347a4bd340b2647711, type: 3}
+  bellus: {fileID: 2149745880851214822}
 --- !u!1 &6218928485017186803
 GameObject:
   m_ObjectHideFlags: 0

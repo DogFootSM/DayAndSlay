@@ -96,7 +96,7 @@ public class MonsterMethod : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            HitMethod(100);
+            HitMethod(50);
             //animator.PlayHit();
         }
 

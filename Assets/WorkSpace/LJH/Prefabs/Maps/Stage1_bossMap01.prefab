@@ -146,7 +146,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2537285958033642368}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &5999558815936135094
 Tilemap:
@@ -12266,8 +12266,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4548654764333516404}
   - {fileID: 3953468308470962380}
+  - {fileID: 4548654764333516404}
   - {fileID: 2033289719372551231}
   - {fileID: 2679525077939219506}
   - {fileID: 1368977760244393057}
@@ -12317,6 +12317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88920d2699727be4facce52007f9b485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageNum: 0
   spawnerList:
   - {fileID: 696898736731085224}
   monsterList: []
@@ -12476,7 +12477,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2537285958033642368}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &2120113949619088283
 Tilemap:

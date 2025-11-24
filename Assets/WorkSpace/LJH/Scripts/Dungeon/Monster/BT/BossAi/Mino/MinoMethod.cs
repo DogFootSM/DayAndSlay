@@ -3,9 +3,9 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-public class MinoMethodRE : BossMethodRE
+public class MinoMethod : BossMethod
 {
-    private BossMonsterAI mino;
+    private MinoAI mino;
 
     
     [SerializeField] private Labyrinth labyrinth;
@@ -27,6 +27,7 @@ public class MinoMethodRE : BossMethodRE
 
     public override void Skill_Third()
     {
+        Debug.Log("기간티즘 실행");
         Gigantism();
     }
 
@@ -66,17 +67,22 @@ public class MinoMethodRE : BossMethodRE
         }
         
         
-        firstSkillData.SetSkillRadius(skillPos);
+        skills.SetAllEffectPos(firstSkillData, skillPos);
     }
 
     private void Stomp()
     {
-        secondSkillData.SetSkillRadius(transform.position);
+        skills.SetAllEffectPos(secondSkillData, transform.position);
     }
     
 
     private void Gigantism()
     {
+        if(mino == null) 
+            mino = GetComponent<MinoAI>();
+
+        mino.SetIsMinoGiga(true);
+        
         transform.localScale = new Vector3(6, 6, 6);
         monsterData.Attack *= 2;
         monsterData.AttackRange += 3;
@@ -85,6 +91,11 @@ public class MinoMethodRE : BossMethodRE
 
     private void DisGigantism()
     {
+        if(mino == null) 
+            mino = GetComponent<MinoAI>();
+
+        mino.SetIsMinoGiga(false);
+        
         transform.localScale = new Vector3(3, 3, 3);
         monsterData.Attack /= 2;
         monsterData.AttackRange -= 3;
@@ -109,7 +120,7 @@ public class MinoMethodRE : BossMethodRE
         //DropItem();
         DisGigantism();
         LabyrinthOff();
-        DungeonManager.Instance.BossDoorOpen();
+        DungeonManager.Instance.RemainingBossCount--;
         Destroy(gameObject);
     }
 

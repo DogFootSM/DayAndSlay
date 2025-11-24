@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BellusMethodRE : BossMethodRE
+public class BellusMethod : BossMethod
 {
-    private BossAIRe bellus;
-    [SerializeField] private BossMonsterAI malus;
-
-
-    [SerializeField] private List<ParticleSystem> seedEffects;
+    private BossAI bellus;
+    [SerializeField] private BossAI malus;
+    
     protected override void Start()
     {
         base.Start();
-        bellus = GetComponent<BellusAIRE>();
+        bellus = GetComponent<BellusAI>();
         
     }
     public override void Skill_First()
@@ -32,7 +30,7 @@ public class BellusMethodRE : BossMethodRE
     public override void Skill_Third()
     {
         Debug.Log("¾¾¾Ñ»Ñ¸®±â");
-        StartCoroutine(SeedActiveCoroutine());
+        SeedBomb();
     }
 
     private void Poison()
@@ -54,6 +52,11 @@ public class BellusMethodRE : BossMethodRE
         }
     }
 
+    private void SeedBomb()
+    {
+        skills.SetSkillEffectRandomSpread(thirdSkillData, 4.5f);
+    }
+
     private IEnumerator SeedActiveCoroutine()
     {
         List<Effect> seedEffects = skills.GetSkillVFX(thirdSkillData);
@@ -61,8 +64,8 @@ public class BellusMethodRE : BossMethodRE
         {
             Vector3 seedPos = seed.transform.position;
             
-            seed.gameObject.transform.position = new Vector3(Random.Range(seedPos.x - 6, seedPos.x + 6), 
-                Random.Range(seedPos.y - 6, seedPos.y + 6),0);
+            seed.gameObject.transform.position = new Vector3(Random.Range(seedPos.x - 3, seedPos.x + 3), 
+                Random.Range(seedPos.y - 3, seedPos.y + 3),0);
             
             seed.PlaySkill();
             yield return new WaitForSeconds(0.4f);

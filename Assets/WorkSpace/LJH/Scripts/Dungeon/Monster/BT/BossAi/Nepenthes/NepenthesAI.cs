@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // BossMonsterAI를 상속받고, 네펜데스 보스만의 고유한 로직을 구현합니다.
-public abstract class NepenthesAI : BossAIRe
+public abstract class NepenthesAI : BossAI
 {
     [Header("파트너")]
-    [SerializeField] protected BossAIRe partner;
+    [SerializeField] protected BossAI partner;
 
     protected override void Start()
     {

@@ -48,8 +48,45 @@ public class SkillStorage : MonoBehaviour
 
     public void SetAllEffectPos(MonsterSkillData skill, Vector3 targetPos)
     {
-        skillVFXDict[skill][2].transform.position = targetPos;
-        skillVFXDict[skill][1].transform.position = targetPos;
-        skillVFXDict[skill][0].transform.position = targetPos;
+            // 각 그룹별 transform 부모
+            Transform effectGroup = skillVFXDict[skill][0].transform;
+            Transform warningGroup = skillVFXDict[skill][1].transform;
+            Transform radiusGroup = skillVFXDict[skill][2].transform;
+
+            int count = effectGroup.childCount;
+
+            for (int i = 0; i < count; i++)
+            {
+                effectGroup.GetChild(i).position = targetPos;
+                warningGroup.GetChild(i).position = targetPos;
+                radiusGroup.GetChild(i).position = targetPos;
+            }
     }
+    
+    public void SetSkillEffectRandomSpread(MonsterSkillData skill, float range)
+    {
+        Transform effectGroup  = skillVFXDict[skill][0].transform;
+        Transform warningGroup = skillVFXDict[skill][1].transform;
+        Transform radiusGroup  = skillVFXDict[skill][2].transform;
+
+        int count = effectGroup.childCount;
+
+        for (int i = 0; i < count; i++)
+        {
+            // 자식별 랜덤 위치 생성
+            Vector3 randomPos = new Vector3(
+                Random.Range(transform.position.x - range, transform.position.x + range),
+                Random.Range(transform.position.y - range, transform.position.y + range),
+                0f
+            );
+
+            // 같은 인덱스끼리는 같은 위치로 이동
+            effectGroup.GetChild(i).position = randomPos;
+            warningGroup.GetChild(i).position = randomPos;
+            radiusGroup.GetChild(i).position = randomPos;
+        }
+    }
+    
+    
+    
 }

@@ -7,30 +7,36 @@ using Zenject;
 public class DungeonRoomSpawner : MonoBehaviour
 {
     [Inject] protected DiContainer container;
-    
+
     [SerializeField] private DungeonPathfinder dungeonPathfinder;
+
     //Todo : 스테이지에 따라 rooms 목록 변경
-    [SerializeField][SerializedDictionary] private SerializedDictionary<string, List<GameObject>> roomsDict;
-    [SerializeField][SerializedDictionary] private SerializedDictionary<string, List<GameObject>> bossRoomsDict;
-    
+    [SerializeField] [SerializedDictionary]
+    private SerializedDictionary<string, List<GameObject>> roomsDict;
+
+    [SerializeField] [SerializedDictionary]
+    private SerializedDictionary<string, List<GameObject>> bossRoomsDict;
+
     [SerializeField] private List<GameObject> rooms_Stage1;
     [SerializeField] private List<GameObject> rooms_Stage2;
     [SerializeField] private List<GameObject> rooms_Stage3;
-    
+
     [SerializeField] private List<GameObject> bossRooms_Stage1;
     [SerializeField] private List<GameObject> bossRooms_Stage2;
     [SerializeField] private List<GameObject> bossRooms_Stage3;
-    
+
     [SerializeField] private List<GameObject> roomPos;
-    
+
     [SerializeField] private GameObject doorPrefab;
     [SerializeField] private GameObject doorMarker;
-    
+
     [SerializeField] private StageNum stageNum;
 
     public List<GameObject> RoomList = new List<GameObject>();
 
-    private void Awake()
+    [SerializeField] private List<Grid> viewRoute = new List<Grid>();
+
+private void Awake()
     {
         //룸생성 및 던전패스파인더 룸리스트에 주입
         Init();
@@ -71,49 +77,66 @@ public class DungeonRoomSpawner : MonoBehaviour
     /// </summary>
     public void BuildDoor(List<Grid> route, bool isReverse)
     {
+        viewRoute = route;
         foreach (Grid r in route)
         {
             GameObject room = r.gameObject;
-            
-            //맨끝방의 도어와 시작방의 이전 문은 생성하지 않음
-            if (room == RoomList[^1]) continue;
-            if (room == route[^1].gameObject && isReverse) continue;
-            
-            Tilemap floorTilemap = room.transform.GetChild(1).GetComponent<Tilemap>();
-            Tilemap wallTilemap = room.transform.GetChild(0).GetComponent<Tilemap>();
-            
-            if (floorTilemap == null) continue;
 
-            List<Vector3> floorPositions = new List<Vector3>();
+            // 메인 루트: 마지막 방 제외
+            if (!isReverse && room == RoomList[^1])
+                continue;
             
-            BoundsInt bounds = floorTilemap.cellBounds;
+            // 메인루트에서 사이드 루트의 마지막 방도 제외해야함
+            if (!isReverse && room == route[^1].gameObject)
+                continue;
+
+            // 사이드 루트: route의 마지막 방 제외
             
+            if (isReverse && room == route[^1].gameObject)
+                continue;
+
+            Tilemap floor = room.transform.GetChild(0).GetComponent<Tilemap>();
+            Tilemap wall  = room.transform.GetChild(1).GetComponent<Tilemap>();
+
+            if (floor == null) continue;
+
+            List<Vector3> possibleDoorPositions = new List<Vector3>();
+            BoundsInt bounds = floor.cellBounds;
+
             foreach (Vector3Int pos in bounds.allPositionsWithin)
             {
-                if (floorTilemap.HasTile(pos) && !wallTilemap.HasTile(pos))
-                {
-                    // Cell -> World 좌표 변환
-                    Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
-                    floorPositions.Add(new Vector3(worldPos.x, worldPos.y, 0));
-                }
+                // (1) 바닥 타일이어야 함
+                if (!floor.HasTile(pos)) continue;
+
+                // (2) 벽 타일이어서는 안 됨
+                if (wall.HasTile(pos)) continue;
+
+                // (3) 바로 옆이 하나라도 벽이어야 함 (문은 방 외곽에 위치해야 하므로)
+                bool isEdge =
+                    wall.HasTile(pos + Vector3Int.up) ||
+                    wall.HasTile(pos + Vector3Int.down) ||
+                    wall.HasTile(pos + Vector3Int.left) ||
+                    wall.HasTile(pos + Vector3Int.right);
+
+                if (!isEdge) continue; // 외곽이 아니면 문 만들기 부적합
+
+                // Cell → 월드 좌표 변환
+                Vector3 worldPos = floor.CellToWorld(pos) + floor.cellSize / 2f;
+                possibleDoorPositions.Add(new Vector3(worldPos.x, worldPos.y, 0));
             }
 
-            if (floorPositions.Count > 0)
+            if (possibleDoorPositions.Count > 0)
             {
-                Vector3 doorPos = floorPositions[Random.Range(0, floorPositions.Count)];
+                Vector3 doorPos = possibleDoorPositions[Random.Range(0, possibleDoorPositions.Count)];
 
                 GameObject door = container.InstantiatePrefab(doorPrefab, doorPos, Quaternion.identity, room.transform);
-                
-                DungeonDoor ddoor = door.GetComponent<DungeonDoor>();
-                
-                ddoor.SetRoute(route);
+
+                DungeonDoor d = door.GetComponent<DungeonDoor>();
+                d.SetRoute(route);
+                d.SetIsReverse(isReverse);
 
                 if (isReverse)
-                {
                     container.InstantiatePrefab(doorMarker, doorPos, Quaternion.identity, room.transform);
-                }
-                
-                door.GetComponent<DungeonDoor>().SetIsReverse(isReverse);
             }
         }
     }

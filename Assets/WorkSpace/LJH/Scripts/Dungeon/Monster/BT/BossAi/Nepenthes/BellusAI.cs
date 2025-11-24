@@ -7,23 +7,6 @@ public class BellusAI : NepenthesAI
     [Header("힐 조건 조정")]
     [SerializeField] private float healThresholdPercent = 20f;
     
-    [SerializeField] private float poisonCooldown = 10f;
-    [SerializeField] private float healCooldown = 10f;
-    [SerializeField] private float seedCooldown = 10f;
-    
-    protected override void Start()
-    {
-        base.Start();
-        
-        //skillFirstCooldown = poisonCooldown;
-        //skillSecondCooldown = healCooldown;
-        //skillThirdCooldown = seedCooldown;
-    }
-
-
-    // 스킬 첫 번째 (힐) 사용 조건
-
-
     private bool CanSkillCondition()
     {
         if (partner == null) return false;

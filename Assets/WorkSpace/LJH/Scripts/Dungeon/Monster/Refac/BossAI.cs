@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 모든 보스 몬스터의 공통 로직을 담는 추상 클래스
-public abstract class BossAIRe : MonsterAI
+public abstract class BossAI : MonsterAI
 {
     [SerializeField] protected MonsterSkillData firstSkillData;
     [SerializeField] protected MonsterSkillData secondSkillData;
