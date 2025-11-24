@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
         if (curWeaponType != weaponType)
         {
             curWeaponType = weaponType;
-            curWeaponTier = (WeaponTierType)itemData.Tier;
+            curWeaponTier = itemData == null ? WeaponTierType.NONE : (WeaponTierType)itemData.Tier;
             
             //무기 및 바디 애니메이션 교체
             characterAnimatorController.AnimatorChange((int)curWeaponType, (int)curWeaponTier, true);

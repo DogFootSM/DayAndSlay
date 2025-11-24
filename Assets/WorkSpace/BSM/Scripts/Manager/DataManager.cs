@@ -366,7 +366,7 @@ public class DataManager : MonoBehaviour
 
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
-                characterAnimatorController.EquipmentLibraryAsset[curWeapon].AddCategoryLabel(changeSprites[0][j],
+                characterAnimatorController.EquipmentLibraryAsset.AddCategoryLabel(changeSprites[0][j],
                     ((CharacterAnimationType)i).ToString(),
                     $"{(CharacterAnimationType)i + "_" + j}");
             }
@@ -384,11 +384,7 @@ public class DataManager : MonoBehaviour
                                                          $"{(CharacterWeaponType)curWeapon}/" +
                                                          $"{(WeaponTierType)weaponTier}/" +
                                                          $"{(CharacterAnimationType)i}");
-            Debug.Log($"경로 :" + $"Preset/Animations/Character/WEAPON/" +
-                      $"{(CharacterWeaponType)curWeapon}/" +
-                      $"{(WeaponTierType)weaponTier}/" +
-                      $"{(CharacterAnimationType)i}");
-            
+
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
                 libraryAssets.AddCategoryLabel(changeSprites[0][j],
