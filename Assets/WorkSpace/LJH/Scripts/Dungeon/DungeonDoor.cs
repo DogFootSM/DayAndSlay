@@ -8,7 +8,7 @@ public class DungeonDoor : MonoBehaviour
 {
     private DungeonPathfinder pathfinder;
     private Collider2D player;
-    private bool triggered = false;
+    [SerializeField] private bool triggered = false;
     
     [Inject]
     MinimapController minimap;
@@ -97,6 +97,24 @@ public class DungeonDoor : MonoBehaviour
             }
         }
         
+        room = FindRoomByGridPosition(toGrid.transform.position);
+        
+    }
+    
+    private Room FindRoomByGridPosition(Vector3 gridPos)
+    {
+        Room[] rooms = FindObjectsOfType<Room>();
+
+        foreach (Room r in rooms)
+        {
+            // 위치가 정확히 같으면 같은 방이다
+            if (Vector3.Distance(r.transform.position, gridPos) < 0.1f)
+            {
+                return r;
+            }
+        }
+
+        return null; // 못 찾았을 경우
     }
     
 
@@ -112,21 +130,54 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            //MapGridChecker();
-            //minimap.CamPosSet(toGrid.transform.position);
-            //Rigidbody2D rb = player.attachedRigidbody;
-            //rb.position = toGrid.gameObject.transform.position;
-            //rb.velocity = Vector2.zero;
-            //rb.angularVelocity = 0f;
-            
             MapGridChecker();
             minimap.CamPosSet(room.transform.position);
+            
+            Vector3 randomPos = GetRandomFloorPosition(room);
+            
             Rigidbody2D rb = player.attachedRigidbody;
-            rb.position = room.gameObject.transform.position;
+            rb.position = randomPos;
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
     }
+    
+    private Vector3 GetRandomFloorPosition(Room targetRoom)
+    {
+        Tilemap floorTilemap = targetRoom.transform.GetChild(0).GetComponent<Tilemap>(); // 방의 바닥 타일맵
+        Tilemap wallTilemap  = targetRoom.transform.GetChild(1).GetComponent<Tilemap>(); // 벽 타일맵
+
+        List<Vector3> floorPositions = new List<Vector3>();
+
+        BoundsInt bounds = floorTilemap.cellBounds;
+
+        foreach (Vector3Int pos in bounds.allPositionsWithin)
+        {
+            // 바닥 타일이어야 하고
+            if (!floorTilemap.HasTile(pos)) continue;
+        
+            // 벽이 아니어야 함
+            if (wallTilemap.HasTile(pos)) continue;
+
+            // Cell → World 변환
+            Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
+            floorPositions.Add(worldPos);
+        }
+
+        // 예외 처리
+        if (floorPositions.Count == 0)
+            return targetRoom.transform.position;
+
+        // 랜덤 선택
+        return floorPositions[Random.Range(0, floorPositions.Count)];
+    }
+    
+    
+    
+    
+    
+    
+    
     
     /// <summary>
     /// 목적지를 대조하여 맞는 방위치로 카메라 맵을 변경해주는 메서드
