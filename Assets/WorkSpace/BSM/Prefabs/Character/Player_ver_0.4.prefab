@@ -175,7 +175,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &1399271387935736554
@@ -3800,7 +3800,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -37720027, guid: 82340e92652c7264a8e3ec48ab8bb6b7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 704b224c8b7420a4c87fd8c8d3eb9f42, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4032,7 +4032,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1915208073, guid: a7180231546eb6f4393a00402a990fa6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9add160b44dc1394482ae0451a714b71, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4040,7 +4040,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &4136004224587210400
@@ -4599,12 +4599,11 @@ MonoBehaviour:
   - {fileID: 7108339969198208228, guid: aefae5b7adf849d4082c1e5efbae22c1, type: 3}
   - {fileID: 7108339969198208228, guid: 380ae53c16823d94e962e03ef532d1be, type: 3}
   - {fileID: 7108339969198208228, guid: 178ba733b5422304cb0696afb839de2c, type: 3}
-  EquipmentLibraryAsset:
-  - {fileID: 7108339969198208228, guid: 64a97c98d68b77a41b527944b2884769, type: 3}
-  - {fileID: 7108339969198208228, guid: 92a8003171e2f3048a5eae7ac73689f0, type: 3}
-  - {fileID: 7108339969198208228, guid: 4d788d670431e8346956e9ea2253a29f, type: 3}
-  - {fileID: 7108339969198208228, guid: de154df45eeadf24fa67051e56451fed, type: 3}
-  WeaponLibrary: {fileID: 4136004224587210400}
+  EquipmentLibraryAsset: {fileID: 7108339969198208228, guid: 92a8003171e2f3048a5eae7ac73689f0, type: 3}
+  weaponLibrary: {fileID: 4136004224587210400}
+  bodyLibrary: {fileID: 4136004225380929717}
+  hairLibrary: {fileID: 4136004224935633745}
+  shirtsLibrary: {fileID: 1982461522890136792}
   WeaponAnimator: {fileID: 4136004224587210403}
   WeaponAnimators:
   - {fileID: 1139255102132600484, guid: 96d512e1ff6e9c3419dde67743cf8c0c, type: 3}
@@ -4617,7 +4616,7 @@ MonoBehaviour:
   - {fileID: 8091086715440010288, guid: bfb7ecbeed7ae5d41b87817b510e3d36, type: 3}
   - {fileID: 8467717278199145083, guid: 525bc5c7c5ea0ce4e86c954d46e733ce, type: 3}
   - {fileID: 8091086715440010288, guid: 4d3d7841d85d92448b28bf43a004ffee, type: 3}
-  - {fileID: 8121615422596335498, guid: 4ef80a69a5e1984458fe52e7df282844, type: 3}
+  - {fileID: 8091086715440010288, guid: 82c17ee72d176764b84aa85109c46714, type: 3}
   characterAnimator: {fileID: 4136004225380929716}
 --- !u!114 &4136004225380929717
 MonoBehaviour:

@@ -161,15 +161,14 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <param name="shieldCount">충전할 보호막 횟수</param>
     /// <param name="defenseBoostMultiplier">증가할 방어력 값</param>
     /// <param name="duration">스킬의 지속 시간</param>
-    public void ReceiveShield(int shieldCount, float defenseBoostMultiplier, float duration)
+    /// <param name="effectPrefab">스킬 이펙트 프리팹</param>
+    /// <param name="effectName">풀에 반납할 이펙트 이름</param>
+    public void ReceiveShield(int shieldCount, float defenseBoostMultiplier, float duration, GameObject effectPrefab, string effectName)
     { 
-        if (shieldSkillCo != null)
+        if (shieldSkillCo == null)
         {
-            StopCoroutine(shieldSkillCo);
-            shieldSkillCo = null;
+            shieldSkillCo = StartCoroutine(ShieldRoutine(shieldCount, defenseBoostMultiplier, duration, effectPrefab, effectName));
         }
-        
-        shieldSkillCo = StartCoroutine(ShieldRoutine(shieldCount, defenseBoostMultiplier, duration));
     }
 
     /// <summary>
@@ -178,28 +177,32 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <param name="shieldCount"></param>
     /// <param name="defenseBoostMultiplier"></param>
     /// <param name="duration"></param>
+    /// <param name="effectPrefab"></param>
+    /// <param name="effectName"></param>
     /// <returns></returns>
-    private IEnumerator ShieldRoutine(int shieldCount, float defenseBoostMultiplier, float duration)
+    private IEnumerator ShieldRoutine(int shieldCount, float defenseBoostMultiplier, float duration, GameObject effectPrefab, string effectName)
     {
         float elapsedTime = 0f;
 
+        if (effectPrefab != null)
+        {
+            ReceiveFollowCharacterWithParticle(effectPrefab, duration, effectName);
+        }
+        
         //쉴드 개수 및 추가 쉴드량 변경
         playerModel.ShieldCount = shieldCount;
         playerModel.DefenseBoostMultiplier = defenseBoostMultiplier;
-        //TODO: 모델의 CastingSpeed는 뭐어떻게?
 
         while (playerModel.ShieldCount > 0 && elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
-        //캐릭터를 따라 이동할 이펙트 코루틴 종료 및 파티클 중지
-        if (skillEffectFollowCharacterCo != null)
+
+        if (shieldSkillCo != null)
         {
-            followParticle.Stop();
-            StopCoroutine(skillEffectFollowCharacterCo);
-            skillEffectFollowCharacterCo = null;
+            StopCoroutine(shieldSkillCo);
+            shieldSkillCo = null;
         }
         
         //쉴드 개수 및 추가 쉴드량 초기화
@@ -341,7 +344,6 @@ public class PlayerSkillReceiver : MonoBehaviour
     private IEnumerator DashRoutine()
     {
         Physics2D.IgnoreLayerCollision(playerLayer, monsterLayer, true);
-        //TODO: 돌진 애니메이션 On
         isDashDone = false;
         yield return WaitCache.GetWait(0.25f);
 
@@ -763,7 +765,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     private IEnumerator FollowCharacterWithParticleRoutine(ParticleSystem particle, float duration)
     {
         float elapsedTime = 0;
-        
+
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
@@ -774,7 +776,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         {
             particle.Stop();
         }
-         
+        
         //코루틴 종료 처리
         if (skillEffectFollowCharacterCo != null)
         {

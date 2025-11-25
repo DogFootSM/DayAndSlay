@@ -13,7 +13,7 @@ public class PlayerSpawner : MonoBehaviour
     [Inject] private DataManager dataManager;  
     private GameObject playerInstance;
     private CharacterAnimatorController characterAnimatorController;
-
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -31,7 +31,7 @@ public class PlayerSpawner : MonoBehaviour
     private void PlayerSpawn()
     {
         playerInstance = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);  
-        characterAnimatorController = playerInstance.GetComponent<CharacterAnimatorController>();
+        characterAnimatorController = playerInstance.GetComponentInChildren<CharacterAnimatorController>();
         mapManager.MapChange(MapType.TOWN_OUTSIDE);
     }
 

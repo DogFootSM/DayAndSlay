@@ -216,9 +216,9 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="shieldCount">스킬 사용 시 충전할 쉴드 개수</param>
     /// <param name="defenseBoostMultiplier">쉴드 사용 시 증가할 방어력</param>
     /// <param name="duration">스킬 지속 시간</param>
-    protected void ExecuteShield(int shieldCount, float defenseBoostMultiplier, float duration)
+    protected void ExecuteShield(int shieldCount, float defenseBoostMultiplier, float duration, GameObject effectPrefab = null, string effectName = "")
     {
-        skillNode.PlayerSkillReceiver.ReceiveShield(shieldCount, defenseBoostMultiplier, duration);
+        skillNode.PlayerSkillReceiver.ReceiveShield(shieldCount, defenseBoostMultiplier, duration, effectPrefab, effectName);
     }
 
     /// <summary>

@@ -95,16 +95,7 @@ public class PlayerController : MonoBehaviour
     private float posY;
     
     private bool isDead = false;
-
-    /// <summary>
-    /// 회피기 재사용 대기 시간
-    /// </summary>
-    private const float DODGE_COOLDOWN = 10f;
-    
-    /// <summary>
-    /// 패링 재사용 대기 시간
-    /// </summary>
-    private const float PARRYING_COOLDOWN = 1f;
+ 
     
     private void Awake()
     {
@@ -194,7 +185,7 @@ public class PlayerController : MonoBehaviour
         if (curWeaponType != weaponType)
         {
             curWeaponType = weaponType;
-            curWeaponTier = itemData.weaponTier;
+            curWeaponTier = itemData == null ? WeaponTierType.NONE : (WeaponTierType)itemData.Tier;
             
             //무기 및 바디 애니메이션 교체
             characterAnimatorController.AnimatorChange((int)curWeaponType, (int)curWeaponTier, true);
@@ -204,9 +195,9 @@ public class PlayerController : MonoBehaviour
             //같은 무기 타입이나 무기의 티어가 다를 때 무기 애니메이션 변경
             if (itemData != null)
             {
-                if (itemData.weaponTier != curWeaponTier)
+                if ((WeaponTierType)itemData.Tier != curWeaponTier)
                 {
-                    curWeaponTier = itemData.weaponTier;
+                    curWeaponTier = (WeaponTierType)itemData.Tier;
                     characterAnimatorController.ChangeWeaponAnimator((int)curWeaponType, (int)curWeaponTier);
                 }  
             } 
@@ -426,15 +417,23 @@ public class PlayerController : MonoBehaviour
     public void ResetBuffSkillCoolDown(BuffType buffType, float cooldownDuration)
     {
         //TODO: 추후 버프 스킬 사용 시 아이콘 필요하다면 여길 호출
-        buffIconController.UseBuff(buffType, DODGE_COOLDOWN);
+        buffIconController.UseBuff(buffType, playerModel.DodgeCooldown);
     }
      
     private IEnumerator DodgeCoolDownCoroutine(BuffType buffType)
     {
         float elapsedTime = 0;
         
-        buffIconController.UseBuff(buffType, DODGE_COOLDOWN);
-        while (elapsedTime < DODGE_COOLDOWN)
+        float coolDown = buffType switch
+        {
+            BuffType.BACKDASH => playerModel.DodgeCooldown,
+            BuffType.TELEPORT => playerModel.TeleportCoolDown,
+            _ => playerModel.DodgeCooldown
+        };
+
+        buffIconController.UseBuff(buffType, coolDown);
+ 
+        while (elapsedTime < coolDown)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -465,8 +464,8 @@ public class PlayerController : MonoBehaviour
     {
         float elapsedTime = 0;
         
-        buffIconController.UseBuff(buffType, PARRYING_COOLDOWN);
-        while (elapsedTime < PARRYING_COOLDOWN)
+        buffIconController.UseBuff(buffType, playerModel.ParryingCooldown);
+        while (elapsedTime < playerModel.ParryingCooldown)
         {
             elapsedTime += Time.deltaTime;
             yield return null;

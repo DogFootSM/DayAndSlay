@@ -366,7 +366,7 @@ public class DataManager : MonoBehaviour
 
             for (int j = 0; j < changeSprites[0].Length; j++)
             {
-                characterAnimatorController.EquipmentLibraryAsset[curWeapon].AddCategoryLabel(changeSprites[0][j],
+                characterAnimatorController.EquipmentLibraryAsset.AddCategoryLabel(changeSprites[0][j],
                     ((CharacterAnimationType)i).ToString(),
                     $"{(CharacterAnimationType)i + "_" + j}");
             }
@@ -375,9 +375,23 @@ public class DataManager : MonoBehaviour
         characterAnimatorController.AnimatorChange(curWeapon, weaponTier);
     }
 
-    public void ChangeWeaponSpriteLibraryAsset()
+    public void ChangeWeaponSpriteLibraryAsset(SpriteLibraryAsset libraryAssets, int curWeapon, int weaponTier)
     {
         Debug.Log("무기 티어 변경");
+        for (int i = 0; i < (int)CharacterAnimationType.SIZE; i++)
+        {
+            changeSprites[0] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/WEAPON/" +
+                                                         $"{(CharacterWeaponType)curWeapon}/" +
+                                                         $"{(WeaponTierType)weaponTier}/" +
+                                                         $"{(CharacterAnimationType)i}");
+
+            for (int j = 0; j < changeSprites[0].Length; j++)
+            {
+                libraryAssets.AddCategoryLabel(changeSprites[0][j],
+                    ((CharacterAnimationType)i).ToString(),
+                    $"{(CharacterAnimationType)i + "_" + j}");
+            }
+        }
     }
     
     /// <summary>

@@ -35,6 +35,8 @@ public class InventoryController : MonoBehaviour
 
     private ItemDatabaseManager itemManager => ItemDatabaseManager.instance;
     
+    public static event Action OnClosedInventory;
+    
     protected void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
@@ -42,8 +44,12 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < slotParent.transform.childCount; i++)
         {
             inventorySlots.Add(slotParent.transform.GetChild(i).GetComponentInChildren<InventorySlot>());
-        }
-          
+        } 
+    }
+
+    private void OnDisable()
+    { 
+        OnClosedInventory?.Invoke();
     }
 
     /// <summary>
