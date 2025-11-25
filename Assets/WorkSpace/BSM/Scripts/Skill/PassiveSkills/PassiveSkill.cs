@@ -161,7 +161,7 @@ public abstract class PassiveSkill : SkillFactory
     {
         float skillLevelPerStats = baseFactor + (skillNode.CurSkillLevel - 1) * levelFactor;
         //플레이어 모델에 추가해야함
-        //skillNode.PlayerModel.UpdateDodgeCooldown(skillLevelPerStats);
+        skillNode.PlayerModel.UpdateTeleportCoolDown(skillLevelPerStats);
     }
     
     public abstract void RevertPassiveEffects();

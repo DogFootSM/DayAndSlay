@@ -115,6 +115,28 @@ public class PlayerModel : MonoBehaviour, ISavable
     private PlayerStats playerStats;
     public PlayerStats PlayerStats => playerStats;
     
+    
+    /// <summary>
+    /// 회피기 재사용 대기 시간
+    /// </summary>
+    private const float DODGE_COOLDOWN = 10f;
+    public float DodgeCooldown => DODGE_COOLDOWN;
+    
+    /// <summary>
+    /// 패링 재사용 대기 시간
+    /// </summary>
+    private const float PARRYING_COOLDOWN = 1f;
+    public float ParryingCooldown => PARRYING_COOLDOWN;
+
+    /// <summary>
+    /// 텔레포트 재사용 대기 시간
+    /// </summary>
+
+    private const float BASE_TELEPORT_COOLDOWN = 10f;
+    private float teleportCoolDown = BASE_TELEPORT_COOLDOWN;
+    public float TeleportCoolDown => teleportCoolDown;
+    
+    
     public int CurSkillPoint
     {
         get => playerStats.skillPoints;
@@ -234,10 +256,11 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float FinalPhysicalDefense;
     public float MoveSpeed;
     public float AttackSpeed;
-    
+
     //TODO: 사용 방법 생각
     public float CriticalPer;
     public float CriticalDamage;
+    
     
     private float moveSpeedFactor;
     private float attackSpeedFactor;
@@ -598,8 +621,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         statusWindow.OnChangedAllStats?.Invoke(playerStats);
         UpdateFinalStats();
     }
-    
-    
+
+    public void UpdateTeleportCoolDown(float factor)
+    {
+        teleportCoolDown = BASE_TELEPORT_COOLDOWN - (BASE_TELEPORT_COOLDOWN * factor);
+    }
     
     /// <summary>
     /// PlayerStat 데이터 저장
