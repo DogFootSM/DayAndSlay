@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
-using Zenject.SpaceFighter;
 using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
