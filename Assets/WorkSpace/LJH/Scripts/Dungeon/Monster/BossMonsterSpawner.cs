@@ -21,4 +21,10 @@ public class BossMonsterSpawner : MonsterSpawner
         return monsterList[index];
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        DungeonManager.Instance.SetStoneInBossDoor(stone);
+    }
+
 }

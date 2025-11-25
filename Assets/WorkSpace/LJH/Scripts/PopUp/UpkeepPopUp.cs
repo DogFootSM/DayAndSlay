@@ -12,7 +12,7 @@ public class UpkeepPopUp : MonoBehaviour
     private AudioClip clip;
 
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, GameObject> upkeepTextDict;
-    private int currentValue = 0;
+    //private int currentValue = 0;
 
     [SerializeField] private Button taxPayButton;
     

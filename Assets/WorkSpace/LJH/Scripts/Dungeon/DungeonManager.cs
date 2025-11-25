@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +16,26 @@ public class DungeonManager : MonoBehaviour
     //카메라
     [SerializeField] private Camera doorCamera;
     [Inject] MapManager mapManager;
+    
+    private int _remainingBossCount;
+    public int RemainingBossCount
+    {
+        get => _remainingBossCount;
+        set
+        {
+            // 1. 실제 변수 값을 변경합니다.
+            _remainingBossCount = value;
+
+            // 2. 값이 변경된 후, 조건 체크를 수행합니다.
+            if (_remainingBossCount <= 0) // 0 이하가 될 경우
+            {
+                // 3. 특정 함수를 실행합니다.
+                BossDoorOpen();
+            }
+
+            Debug.Log($"[Boss Count] 남은 보스 수: {_remainingBossCount}");
+        }
+    }
 
     public void SetStoneInBossDoor(GameObject stone)
     {
@@ -50,6 +72,8 @@ public class DungeonManager : MonoBehaviour
 
     private IEnumerator BossDoorOpenCoroutine()
     {
+        Debug.Log(stone);
+        Debug.Log(stone.GetComponent<SpriteRenderer>());
         SpriteRenderer stoneRenderer = stone.GetComponent<SpriteRenderer>();
         Color stoneColor = stoneRenderer.color;
 

@@ -44,7 +44,7 @@ public class MonsterSpawner : MonoBehaviour
         return grid.GetComponent<Room>().GetBossCheck();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         StartCoroutine(DelayCoroutine());
     }

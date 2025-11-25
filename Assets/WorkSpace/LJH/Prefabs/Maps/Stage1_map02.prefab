@@ -292,8 +292,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2047911675330443380}
   - {fileID: 7823630230435536589}
+  - {fileID: 2047911675330443380}
   - {fileID: 5719643303796254074}
   - {fileID: 5093115696854599410}
   - {fileID: 5114821692618230293}
@@ -349,6 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8624ecab01bd54b448bf797aaabd6b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageNum: 0
   spawnerList:
   - {fileID: 5681001851054944435}
   - {fileID: 2602973854880137270}
@@ -395,7 +396,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3922888482581250903}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &5427693267692267902
 Tilemap:
@@ -16676,7 +16677,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3922888482581250903}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &3626141776180911998
 Tilemap:

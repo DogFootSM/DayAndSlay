@@ -1,75 +1,69 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 public class SpiritRush : MonoBehaviour
 {
-    private BansheeAI banshee;
-    private bool isRushing;
+    [SerializedDictionary][SerializeField] private SerializedDictionary<Direction, List<Sprite>> dirSpriteDict;
     
-    public float moveSpeed = 5f;
-    public Direction dir;
+    [SerializeField] private GameObject colliderPrefab;
 
-    private void Start()
+    public float moveSpeed = 5f;
+    private Vector3 moveDirection;
+    private bool isRushing = false;
+    private ParticleSystem particleSystem;
+    private Vector3 startPos;
+    private void RushStart()
     {
-        banshee = GetComponentInParent<BansheeAI>();
-    }
-    private void Update()
-    {
-        if (isRushing)
-        {
-            DirectionSetting();
-        }
-    }
-    public void Rush()
-    {
+        // Rush 시작할 때 현재 위치를 기준으로
+        transform.position = transform.parent.position;
+
+        // 시작 위치 기록
+        startPos = transform.position;
+
         isRushing = true;
     }
-
-    public void SetRushDir(Direction dir)
+    public void RushEnd()
     {
-        this.dir = dir;
+        isRushing = false;
     }
 
-    private void DirectionSetting()
+    private void Update()
     {
-        Vector3 moveDirection = Vector3.zero;
+        if (!isRushing) return;
+
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        
+        colliderPrefab.transform.position = transform.position;
+
+        float distance = Vector3.Distance(startPos, transform.position);
+        if (distance >= 7f)
+        {
+            RushEnd();
+        }
+        
+    }
+
+    public void SetDirection(Direction dir)
+    {
+        if(particleSystem == null) 
+            particleSystem = GetComponent<ParticleSystem>();
+        
+
+        for (int i = 0; i < dirSpriteDict[dir].Count; i++)
+        {
+            particleSystem.textureSheetAnimation.SetSprite(i, dirSpriteDict[dir][i]);
+        }
+
         switch (dir)
         {
-            case Direction.Up:
-                moveDirection = Vector3.up;
-                break;
-            case Direction.Down:
-                moveDirection = Vector3.down;
-                break;
-            case Direction.Right:
-                moveDirection = Vector3.right;
-                break;
-            case Direction.Left:
-                moveDirection = Vector3.left;
-                break;
-            default:
-                break;
+            case Direction.Up:    moveDirection = Vector3.up; break;
+            case Direction.Down:  moveDirection = Vector3.down; break;
+            case Direction.Left:  moveDirection = Vector3.left; break;
+            case Direction.Right: moveDirection = Vector3.right; break;
         }
-    
-        // Time.deltaTime을 곱해서 프레임과 상관없이 일정한 속도로 이동
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        
+        RushStart();
     }
 
-    public void EndRush()
-    {
-        Debug.Log("영혼이 그만 질주해야함");
-        isRushing = false;
-        transform.position = banshee.transform.position;
-    }
-
-    private void OnParticleCollision(GameObject other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("플레이어가 영혼에 맞음 (온콜리전엔터)!");
-            // 기절, 데미지 처리...
-        }
-    }
 }

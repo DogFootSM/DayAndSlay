@@ -7,12 +7,20 @@ public class IsSkillRangeNode : BTNode
     private float maxRange;           // 최대 사거리
     private float minRange;           // 최소 사거리
 
-    public IsSkillRangeNode(Transform self, Transform target, float maxRange, float minRange)
+    //public IsSkillRangeNode(Transform self, Transform target, float maxRange, float minRange)
+    //{
+    //    this.self = self;
+    //    this.target = target;
+    //    this.maxRange = maxRange;
+    //    this.minRange = minRange;
+    //}
+    
+    public IsSkillRangeNode(Transform self, Transform target, MonsterSkillData skillData)
     {
         this.self = self;
         this.target = target;
-        this.maxRange = maxRange;
-        this.minRange = minRange;
+        maxRange = skillData.SkillMaxRange;
+        minRange = skillData.SkillMinRange;
     }
 
     public override NodeState Tick()

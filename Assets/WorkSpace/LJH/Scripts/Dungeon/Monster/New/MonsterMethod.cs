@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Zenject.SpaceFighter;
 using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
@@ -19,13 +20,13 @@ public class MonsterMethod : MonoBehaviour
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
     protected GameObject player;
+    protected PlayerController _player;
     protected Collider2D coll;
     
     private int currentPathIndex;
 
     private List<Vector3> path = new List<Vector3>();
 
-    protected Vector2 dir;
     
     public void SetPlayer(GameObject player) => this.player = player;
 
@@ -36,7 +37,9 @@ public class MonsterMethod : MonoBehaviour
     public virtual void Skill_Fourth() { }
 
     protected int parryingCount;
-
+    
+    //테스트용
+    [SerializeField] private GameObject stunImage;
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -76,7 +79,7 @@ public class MonsterMethod : MonoBehaviour
     }
     
     
-    protected void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         astarPath = GetComponentInChildren<AstarPath>();
@@ -93,8 +96,17 @@ public class MonsterMethod : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            HitMethod(10);
-            animator.PlayHit();
+            HitMethod(50);
+            //animator.PlayHit();
+        }
+
+        if (!stunImage.activeSelf && ai.GetIsStun())
+        {
+            stunImage.SetActive(true);
+        }
+        else if (stunImage.activeSelf && !ai.GetIsStun())
+        {
+            stunImage.SetActive(false);
         }
     }
 
@@ -200,6 +212,8 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public virtual void AttackMethod()
     {
+        Debug.Log("플레이어 공격함");
+        
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
         float distance = Vector2.Distance(player.transform.position, transform.position);
@@ -210,8 +224,7 @@ public class MonsterMethod : MonoBehaviour
             //사거리 비교
             if (distance <= ai.GetMonsterModel().AttackRange)
             {
-                //PlayerHpDamaged(monsterData.Attack);
-                PlayerHpDamaged(0);
+                PlayerHpDamaged(monsterData.Attack);
             }
         }
 
@@ -223,7 +236,9 @@ public class MonsterMethod : MonoBehaviour
     /// <param name="damage"></param>
     protected void PlayerHpDamaged(int damage)
     {
-        player.GetComponent<PlayerController>().TakeDamage(ai, damage);
+        if(_player == null) _player = player.GetComponent<PlayerController>();
+        
+        _player.TakeDamage(ai, damage);
     }
 
     /// <summary>
@@ -265,6 +280,11 @@ public class MonsterMethod : MonoBehaviour
         }
     }
 
+    public void StunMethod()
+    {
+        
+    }
+
     public void DropItem()
     {
         float randomNum = Random.Range(0, 100);
@@ -274,5 +294,42 @@ public class MonsterMethod : MonoBehaviour
         
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
         Instantiate(itemPrefab, transform.position, Quaternion.identity);
+    }
+    
+    
+    /// <summary>
+    /// 모든 몬스터에서 사용할 수 있도록 최상위 클래스에 배치해둔 헬퍼 함수
+    /// </summary>
+    /// <param name="monsterPos"></param>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
+    public Direction GetDirectionToTarget(Vector3 monsterPos, Vector3 targetPos)
+    {
+        Vector3 directionVector = targetPos - monsterPos;
+
+        if (Mathf.Abs(directionVector.y) > Mathf.Abs(directionVector.x))
+        {
+            // 상/하 결정
+            if (directionVector.y > 0)
+            {
+                return Direction.Up; // Y 값이 양수: 위쪽
+            }
+            else
+            {
+                return Direction.Down; // Y 값이 음수: 아래쪽
+            }
+        }
+        else
+        {
+            // 좌/우 결정
+            if (directionVector.x > 0)
+            {
+                return Direction.Right; // X 값이 양수: 오른쪽
+            }
+            else
+            {
+                return Direction.Left; // X 값이 음수: 왼쪽
+            }
+        }
     }
 }
