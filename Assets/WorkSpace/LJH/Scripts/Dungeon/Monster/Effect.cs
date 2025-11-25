@@ -9,9 +9,4 @@ public class Effect : MonoBehaviour
         GetComponent<ParticleSystem>().Play();
     }
 
-
-
-
-
-
 }

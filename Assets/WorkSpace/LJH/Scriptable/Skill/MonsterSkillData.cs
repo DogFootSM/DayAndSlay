@@ -9,12 +9,14 @@ public class MonsterSkillData : ScriptableObject
     [Header("분류")]
     public DamageType DamageType;
     public DelayType DelayType;
+    public DebuffType DebuffType;
 
     [Header("스킬 정보")] 
     public float Damage;
     public float CoolDown;
     public float Delay;
     public float Duration;
+    public float debuffTypeValue;
     public float SkillMaxRange;
     public float SkillMinRange;
 

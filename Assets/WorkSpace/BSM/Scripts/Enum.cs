@@ -448,3 +448,8 @@ public enum WeaponTierType
 {
     TIER_1_1, TIER_2_1, TIER_3_1, TIER_4_1, TIER_5_1, NONE
 }
+
+public enum DebuffType
+{
+    STUN, SLOW, KNUCKBACK, NONE, SIZE
+}

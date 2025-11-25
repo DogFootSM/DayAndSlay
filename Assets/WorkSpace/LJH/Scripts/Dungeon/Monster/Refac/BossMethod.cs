@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -219,6 +220,7 @@ public abstract class BossMethod : MonsterMethod
             }
         }
     }
+
     
 
     
