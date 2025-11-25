@@ -14,15 +14,16 @@ public static class CoolDownUIHub
     /// <param name="quickSlotType"></param>
     /// <param name="coolDownImage"></param>
     public static void CoolDownUIRegistry(QuickSlotType quickSlotType, SkillCoolDown coolDownImage)
-    {
+    { 
         if (!CoolDownImageMap.ContainsKey(quickSlotType))
         {
             CoolDownImageMap.Add(quickSlotType, coolDownImage);
         }
-        else
-        {
-            CoolDownImageMap[quickSlotType] = coolDownImage;
-        }
+        // else
+        // {
+        //     Debug.Log($"{quickSlotType} is already registered");
+        //     CoolDownImageMap[quickSlotType] = coolDownImage;
+        // }
     }
 
     /// <summary>
