@@ -34,13 +34,12 @@ public class DungeonRoomSpawner : MonoBehaviour
 
     public List<GameObject> RoomList = new List<GameObject>();
 
-    [SerializeField] private List<Grid> viewRoute = new List<Grid>();
-
 private void Awake()
     {
         //룸생성 및 던전패스파인더 룸리스트에 주입
         Init();
         BuildMap();
+        FindPlayerSpawnPos();
     }
 
     /// <summary>
@@ -71,13 +70,63 @@ private void Awake()
             dungeonPathfinder.SetRoomList(RoomList[i].GetComponent<Grid>());
         }
 	}
+    
+    private void FindPlayerSpawnPos()
+    {
+        if (RoomList.Count == 0)
+        {
+            Debug.LogWarning("RoomList 비어있음. 스폰 위치 찾기 실패");
+            return;
+        }
+
+        GameObject firstRoom = RoomList[0];
+
+        Tilemap floor = firstRoom.transform.GetChild(0).GetComponent<Tilemap>();
+        Tilemap wall  = firstRoom.transform.GetChild(1).GetComponent<Tilemap>();
+
+        if (floor == null)
+        {
+            Debug.LogWarning("첫 번째 방에 floor 타일맵 없음.");
+            return;
+        }
+
+        List<Vector3Int> validCells = new List<Vector3Int>();
+        BoundsInt bounds = floor.cellBounds;
+
+        foreach (Vector3Int pos in bounds.allPositionsWithin)
+        {
+            if (!floor.HasTile(pos)) continue;           // floor 있어야 하고
+            if (wall != null && wall.HasTile(pos)) continue; // wall 없어야 함
+
+            validCells.Add(pos);
+        }
+
+        if (validCells.Count == 0)
+        {
+            Debug.LogWarning("0번 방에서 스폰 가능한 타일 없음.");
+            return;
+        }
+
+        // 랜덤 셀 선택
+        Vector3Int cell = validCells[Random.Range(0, validCells.Count)];
+
+        Vector3 worldPos = floor.CellToWorld(cell) + floor.cellSize / 2f;
+        worldPos.z = 0;
+
+        ApplyPlayerSpawnPos(worldPos);
+    }
+    
+    private void ApplyPlayerSpawnPos(Vector3 pos)
+    {
+        //PlayerRoot.PlayerRootInstance.TranslateScenePosition(pos);
+        Debug.Log($"플레이어 스폰 위치 적용됨: {pos}");
+    }
 
     /// <summary>
     /// 문 생성
     /// </summary>
     public void BuildDoor(List<Grid> route, bool isReverse)
     {
-        viewRoute = route;
         foreach (Grid r in route)
         {
             GameObject room = r.gameObject;
@@ -110,15 +159,7 @@ private void Awake()
 
                 // (2) 벽 타일이어서는 안 됨
                 if (wall.HasTile(pos)) continue;
-
-                // (3) 바로 옆이 하나라도 벽이어야 함 (문은 방 외곽에 위치해야 하므로)
-                bool isEdge =
-                    wall.HasTile(pos + Vector3Int.up) ||
-                    wall.HasTile(pos + Vector3Int.down) ||
-                    wall.HasTile(pos + Vector3Int.left) ||
-                    wall.HasTile(pos + Vector3Int.right);
-
-                if (!isEdge) continue; // 외곽이 아니면 문 만들기 부적합
+                
 
                 // Cell → 월드 좌표 변환
                 Vector3 worldPos = floor.CellToWorld(pos) + floor.cellSize / 2f;
@@ -139,6 +180,13 @@ private void Awake()
                     container.InstantiatePrefab(doorMarker, doorPos, Quaternion.identity, room.transform);
             }
         }
+    }
+    
+    
+
+    private void SetPlayerSpawnPos(Vector3 pos)
+    {
+        PlayerRoot.PlayerRootInstance.TranslateScenePosition(pos);
     }
     
 

@@ -19,4 +19,9 @@ public class PlayerRoot : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
+    public void TranslateScenePosition(Vector2 position)
+    {
+        transform.position = position;
+    }
 }
