@@ -61,13 +61,16 @@ public class InventoryInteraction :
         InventorySlotEvent.OnSlotBeginDrag += HandleBeginDrag;
         InventorySlotEvent.OnSlotDrag += HandleDrag;
         InventorySlotEvent.OnSlotEndDrag += HandleEndDrag;
+        OnClosedInventory += ClosedInventory;
     }
 
     private void OnDisable()
     {
         InventorySlotEvent.OnSlotBeginDrag -= HandleBeginDrag;
         InventorySlotEvent.OnSlotDrag -= HandleDrag;
-        InventorySlotEvent.OnSlotEndDrag -= HandleEndDrag;    }
+        InventorySlotEvent.OnSlotEndDrag -= HandleEndDrag;    
+        OnClosedInventory -= ClosedInventory;
+    }
 
     /// <summary>
     /// 인벤토리 슬롯의 장비 아이템 장착, 장착 해제
@@ -175,7 +178,19 @@ public class InventoryInteraction :
             UpdateEquipButton();
         } 
     }
-
+    
+    /// <summary>
+    /// 인벤토리 종료 시 아이템 선택 영역 초기화
+    /// </summary>
+    private void ClosedInventory()
+    { 
+        selectedSlot = null; 
+        detailItemImage.gameObject.SetActive(false);
+        detailItemDescA.gameObject.SetActive(false);
+        detailItemDescB.gameObject.SetActive(false);
+        equipButton.gameObject.SetActive(false);
+    }
+     
     /// <summary>
     /// 아이템 드래그 시작 동작을 Inventory Slot에게 전달 받음
     /// </summary>
