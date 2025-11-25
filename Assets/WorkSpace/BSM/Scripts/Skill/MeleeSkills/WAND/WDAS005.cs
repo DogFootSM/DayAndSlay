@@ -28,8 +28,7 @@ public class WDAS005 : MeleeSkill
         float buffFactor = skillNode.skillData.SkillAbilityValue +
                            ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
-        ExecuteFollowCharacterWithParticle(skillNode.skillData.SkillEffectPrefab[0], skillNode.skillData.BuffDuration,$"{skillNode.skillData.SkillId}_1_Particle");
-        ExecuteShield(shieldCount, buffFactor, skillNode.skillData.BuffDuration);
+        ExecuteShield(shieldCount, buffFactor, skillNode.skillData.BuffDuration, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle");
     }
     
     
