@@ -315,9 +315,6 @@ public class PlayerController : MonoBehaviour
     {
         //TODO: 보호막 쉴드에 따른 데미지 계산
         //TODO: 방어력과 몬스터 데미지 공식 정립한 후 체력 감소 진행 + 받는 피해량 감소 버프 상태 체크
-
-        return;
-        
         
         //보호막 쉴드 존재 시 데미지 피해를 받지 않음
         if (playerModel.ShieldCount > 0)
@@ -339,7 +336,7 @@ public class PlayerController : MonoBehaviour
         _damageEffect.DamageTextEvent(takeDamage);
         _damageEffect.DamageSkinEffect();
 
-        if (playerModel.CurHp > 1) return;
+        if (playerModel.CurHp > 0) return;
         //체력이 1 미만으로 떨어졌을 경우 데쓰 상태로 변경
         isDead = true;
         ChangeState(CharacterStateType.DEATH);
