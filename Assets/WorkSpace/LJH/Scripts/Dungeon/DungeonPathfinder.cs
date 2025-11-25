@@ -107,7 +107,6 @@ public class DungeonPathfinder : MonoBehaviour
         //보스방에 도착한 경우 DFS알고리즘 끝냄
         if (curRoomIndex == bossRoomIndex)
         {
-            Debug.Log("보스방 도착");
             return true;
         }
 

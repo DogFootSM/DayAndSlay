@@ -8913,7 +8913,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3419221475933509299}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &2465169418041214204
 Tilemap:
@@ -14052,8 +14052,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7100206641493906287}
   - {fileID: 5321519161549456745}
+  - {fileID: 7100206641493906287}
   - {fileID: 2273476406467591906}
   - {fileID: 3860153882577255704}
   - {fileID: 5598479302472918690}
@@ -14110,7 +14110,7 @@ MonoBehaviour:
   floorTilemap: {fileID: 6414678849199605319}
   wallTilemap: {fileID: 2465169418041214204}
   player: {fileID: 0}
-  stone: {fileID: 0}
+  stone: {fileID: 572114219198364915}
 --- !u!1 &7770240934971047508
 GameObject:
   m_ObjectHideFlags: 0
@@ -14142,7 +14142,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3419221475933509299}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &6414678849199605319
 Tilemap:
@@ -26965,6 +26965,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b16106922d7dc1e4287bcf4eb2af78d0, type: 3}
+--- !u!1 &572114219198364915 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6237619238630379192, guid: b16106922d7dc1e4287bcf4eb2af78d0, type: 3}
+  m_PrefabInstance: {fileID: 5863958843241820747}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8601902439073657363 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2738452243052052568, guid: b16106922d7dc1e4287bcf4eb2af78d0, type: 3}
