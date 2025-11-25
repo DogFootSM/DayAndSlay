@@ -45,6 +45,11 @@ public class FollowCamera : MonoBehaviour
     private void Update()
     {
         characterPosition = transform.position;
+
+        if (!mainCam.Equals(Camera.main))
+        {
+            mainCam = Camera.main;
+        }
     }
 
     private void LateUpdate()
