@@ -7,9 +7,6 @@ public class MinoMethod : BossMethod
 {
     private MinoAI mino;
 
-    
-    [SerializeField] private Labyrinth labyrinth;
-    [SerializeField] private ParticleSystem labyrinthEffect;
 
     [SerializeField] private float buffDuration;
 
@@ -27,14 +24,14 @@ public class MinoMethod : BossMethod
 
     public override void Skill_Third()
     {
-        Debug.Log("기간티즘 실행");
-        Gigantism();
+        Debug.Log("방어력 버프 실행");
+        StoneSkin();
     }
 
     public override void Skill_Fourth()
     {
-        Debug.Log("스킬 4 실행");
-        Labyrinth();
+        Debug.Log("궁극기 실행");
+        Gigantism();
     }
 
     private void HeadButt()
@@ -78,15 +75,39 @@ public class MinoMethod : BossMethod
 
     private void Gigantism()
     {
-        if(mino == null) 
+        if (mino == null)
             mino = GetComponent<MinoAI>();
 
         mino.SetIsMinoGiga(true);
-        
-        transform.localScale = new Vector3(6, 6, 6);
+
         monsterData.Attack *= 2;
         monsterData.AttackRange += 3;
         monsterData.MoveSpeed += 3;
+
+        StartCoroutine(GigantismScaleCoroutine());
+    }
+    
+    private IEnumerator GigantismScaleCoroutine()
+    {
+        Vector3 startScale = transform.localScale;
+        Vector3 targetScale = new Vector3(4.5f, 4.5f, 4.5f);
+
+        float duration = 0.25f;  // 커지는 시간
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            float t = timer / duration;
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
+
+            yield return null;
+        }
+
+        transform.localScale = targetScale; // 보정
     }
 
     private void DisGigantism()
@@ -102,14 +123,9 @@ public class MinoMethod : BossMethod
         monsterData.MoveSpeed -= 3;
     }
 
-    private void Labyrinth()
+    private void StoneSkin()
     {
-        Debug.Log("미궁을 생성합니다.");
-        player.transform.position = transform.position;
-        labyrinthEffect.Play();
-
-        labyrinth.gameObject.SetActive(true);
-        //Todo 미궁 생성
+        model.def += 10f;
     }
 
     public override void DieMethod()
@@ -117,18 +133,11 @@ public class MinoMethod : BossMethod
         Debug.Log("사망");
         
         //사망 이펙트 재생
-        //DropItem();
+        DropItem();
         DisGigantism();
-        LabyrinthOff();
         DungeonManager.Instance.RemainingBossCount--;
         Destroy(gameObject);
     }
 
-    public void LabyrinthOff()
-    {
-        labyrinth.gameObject.SetActive(false);
-    }
-
-    public void SetLabyrinth(Labyrinth labyrinth) => this.labyrinth = labyrinth;
 
 }

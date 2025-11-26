@@ -4,6 +4,7 @@ using UnityEngine;
 public class MinoAI : BossAI
 {
     private bool isMinoGiga = false;
+    private List<float> thresholds = new List<float>(){80, 60, 40, 20};
 
     public bool SetIsMinoGiga(bool isMinoGiga) => this.isMinoGiga = isMinoGiga;
     // ---------------- BT patterns ----------------
@@ -30,11 +31,10 @@ public class MinoAI : BossAI
             new WaitWhileActionNode(() => animator.IsPlayingAction),
         }));
         
-        // 세 번째 스킬 (Gigantism)
+        // 세 번째 스킬 (StoneSkin)
         list.Add(new Sequence(new List<BTNode>
         {
-            new WaitWhileActionNode(() => isMinoGiga),
-            new IsHPThresholdCheckNode(50f, GetMonsterModel()),
+            new HpMultiThresholdNode(model, thresholds),
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -43,7 +43,8 @@ public class MinoAI : BossAI
         // 네 번째 스킬 (ultimate)
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsHPThresholdCheckNode(30f, GetMonsterModel()),
+            new WaitWhileActionNode(() => isMinoGiga),
+            new IsHPThresholdCheckNode(50f, GetMonsterModel()),
             new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
             new ActionNode(PerformSkillFourth),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
