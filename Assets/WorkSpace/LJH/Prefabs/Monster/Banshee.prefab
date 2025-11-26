@@ -11398,6 +11398,7 @@ GameObject:
   - component: {fileID: 7450627841022039036}
   - component: {fileID: 7789656391302387495}
   - component: {fileID: 4301698687622899166}
+  - component: {fileID: 1361356704999810669}
   m_Layer: 17
   m_Name: Banshee
   m_TagString: Boss
@@ -11698,6 +11699,19 @@ MonoBehaviour:
   thirdSkillData: {fileID: 11400000, guid: 85e448c9870bf784fa2f619d58068295, type: 2}
   fourthSkillData: {fileID: 11400000, guid: 3891d986ec2c59a45af213b767a22588, type: 2}
   bossAi: {fileID: 7789656391302387495}
+--- !u!114 &1361356704999810669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566479308208419710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29eedd2196f10ab4598da75475ea1d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitEffectCanvas: {fileID: 2448852744653428036}
 --- !u!1 &6567804079473596922
 GameObject:
   m_ObjectHideFlags: 0
@@ -22058,7 +22072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6595355090946976407, guid: caae08fc53967a041b9206ae23a47452, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caae08fc53967a041b9206ae23a47452, type: 3}

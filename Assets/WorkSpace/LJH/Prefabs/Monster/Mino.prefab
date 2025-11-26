@@ -21585,6 +21585,7 @@ GameObject:
   - component: {fileID: 1787741597909652184}
   - component: {fileID: 1989660627292761527}
   - component: {fileID: 1114373127033591873}
+  - component: {fileID: 7051224999185032238}
   m_Layer: 17
   m_Name: Mino
   m_TagString: Boss
@@ -21879,6 +21880,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
   ai: {fileID: 1989660627292761527}
   stunImage: {fileID: 8047805162225614863}
+  HitImage: {fileID: 0}
   skills: {fileID: 2045045671511107145}
   firstSkillData: {fileID: 11400000, guid: fb4493b8386135e4cae241ecc3ae41e3, type: 2}
   secondSkillData: {fileID: 11400000, guid: 99cb193d5f27e2b4d9836d237eeb62f4, type: 2}
@@ -21886,6 +21888,19 @@ MonoBehaviour:
   fourthSkillData: {fileID: 11400000, guid: 66c4083fded7c5f4c9b7691fe937dd7d, type: 2}
   bossAi: {fileID: 1989660627292761527}
   buffDuration: 0
+--- !u!114 &7051224999185032238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8227391919022582039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29eedd2196f10ab4598da75475ea1d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitEffectCanvas: {fileID: 2602380023693816563}
 --- !u!1 &8294937085958921512
 GameObject:
   m_ObjectHideFlags: 0

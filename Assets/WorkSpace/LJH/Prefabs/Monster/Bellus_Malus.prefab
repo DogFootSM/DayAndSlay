@@ -5224,6 +5224,7 @@ GameObject:
   - component: {fileID: 2003197845995006434}
   - component: {fileID: 5142987003246210715}
   - component: {fileID: 2149745880851214822}
+  - component: {fileID: 8083687887189442101}
   m_Layer: 17
   m_Name: Bellus
   m_TagString: Boss
@@ -5520,6 +5521,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
   ai: {fileID: 0}
   stunImage: {fileID: 7120281318084897191}
+  HitImage: {fileID: 0}
   skills: {fileID: 4051386471878711007}
   firstSkillData: {fileID: 11400000, guid: 34d4622be84ee004c99aaa951922bfe4, type: 2}
   secondSkillData: {fileID: 11400000, guid: cca0b924dd567854ba1d67f46c96cf95, type: 2}
@@ -5527,6 +5529,19 @@ MonoBehaviour:
   fourthSkillData: {fileID: 11400000, guid: 3ad24e41f7ac19543af34caad7f34a84, type: 2}
   bossAi: {fileID: 5142987003246210715}
   malus: {fileID: 3199516245215925098}
+--- !u!114 &8083687887189442101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530794960002052852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29eedd2196f10ab4598da75475ea1d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitEffectCanvas: {fileID: 778559363135378046}
 --- !u!1 &587493576367794929
 GameObject:
   m_ObjectHideFlags: 0
@@ -42316,6 +42331,7 @@ GameObject:
   - component: {fileID: 2010014523404044217}
   - component: {fileID: 3199516245215925098}
   - component: {fileID: 6309039246738070937}
+  - component: {fileID: 5542757432407977910}
   m_Layer: 17
   m_Name: Malus
   m_TagString: Boss
@@ -42612,6 +42628,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
   ai: {fileID: 3199516245215925098}
   stunImage: {fileID: 1262109614176035166}
+  HitImage: {fileID: 0}
   skills: {fileID: 1592233547757770663}
   firstSkillData: {fileID: 11400000, guid: 0128f2dc74a06a54fa1ce6bec27118a5, type: 2}
   secondSkillData: {fileID: 11400000, guid: 3ad24e41f7ac19543af34caad7f34a84, type: 2}
@@ -42620,6 +42637,19 @@ MonoBehaviour:
   bossAi: {fileID: 3199516245215925098}
   monsterPrefab: {fileID: 6718412542748530395, guid: b0fc7e29e81d37347a4bd340b2647711, type: 3}
   bellus: {fileID: 2149745880851214822}
+--- !u!114 &5542757432407977910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6116108581476987480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29eedd2196f10ab4598da75475ea1d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitEffectCanvas: {fileID: 6218928485017186803}
 --- !u!1 &6218928485017186803
 GameObject:
   m_ObjectHideFlags: 0

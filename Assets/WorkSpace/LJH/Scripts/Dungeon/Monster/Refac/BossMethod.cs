@@ -53,7 +53,7 @@ public abstract class BossMethod : MonsterMethod
             parryingCount++;
             if (parryingCount < 3)
             {
-                ai.ReceiveStun(1);
+                StunMethod(1);
             }
             animator.StartCoroutine(animator.PlayCounterCoroutine());
 
@@ -221,6 +221,16 @@ public abstract class BossMethod : MonsterMethod
         }
     }
 
+    
+    public override void StunMethod(float duration)
+    {
+        ai.ReceiveStun(duration);
+        
+        StartCoroutine(WarningDeColorCoroutine(skills.GetSkillWarning(firstSkillData), 0));
+        StartCoroutine(WarningDeColorCoroutine(skills.GetSkillWarning(secondSkillData), 0));
+        StartCoroutine(WarningDeColorCoroutine(skills.GetSkillWarning(thirdSkillData), 0));
+        StartCoroutine(WarningDeColorCoroutine(skills.GetSkillWarning(fourthSkillData), 0));
+    }
     
 
     

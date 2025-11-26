@@ -73,6 +73,8 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
 
     protected virtual void Update()
     {   
+        if (GetIsStun()) return;
+        
         if (isSkillUsing) return;
         
         if (tree == null) return;
