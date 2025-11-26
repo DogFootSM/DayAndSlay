@@ -15,7 +15,6 @@ public class ArmorForge : InteractableObj
     
     public override void Interaction()
     {
-        popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
         controller.OpenSystemWindow(SystemType.HELMET);
     }

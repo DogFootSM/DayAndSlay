@@ -395,20 +395,7 @@ public class Npc : MonoBehaviour
         return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 1f;
     }
 
-    public void TestCoroutine()
-    {
-        StartCoroutine(TestCo());
-    }
 
-    private IEnumerator TestCo()
-    {
-        PauseMovement();
-        yield return new WaitForSeconds(3f);
-        TalkToPlayer();
-        StateMachine.ChangeState(new NpcWaitItemState(this));
-        yield return new WaitForSeconds(2f);
-        TalkExit();
-    }
 
     /// <summary>
     /// NPC ¶°³²

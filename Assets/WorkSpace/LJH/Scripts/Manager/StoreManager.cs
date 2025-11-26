@@ -48,7 +48,7 @@ public class StoreManager : InteractableObj
 
     public override void Interaction()
     {
-        Debug.Log("얘 쓰이고 있나?");
+        Debug.Log("인터렉션");
         npc = PeekInNpcQue();
         npc.TalkToPlayer();
         npc.StateMachine.ChangeState(new NpcWaitItemState(npc));
