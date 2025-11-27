@@ -10,7 +10,7 @@ public class Table : InteractableObj
     [Inject(Id = "PopUp")] private GameObject popUp;
     //private PopUp tableAskPopup;
     private TextMeshProUGUI tableAskText;
-    private ItemData curItemData;
+    [SerializeField] private ItemData curItemData;
     public ItemData CurItemData
     {
         get => curItemData;
@@ -27,14 +27,6 @@ public class Table : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("NPC"))
-        {
-            Npc npc= collision.gameObject.GetComponent<Npc>();
-            npc.BuyItemFromTable();
-
-            return;
-        }
-
         string _objName;
           
         _objName = popUp.GetComponent<PopUp>().objName = "가판대";

@@ -30,7 +30,7 @@ public class WantItemPool : MonoBehaviour
     }
     
     /// <summary>
-    /// 히트이미지 풀 초기화
+    /// 아이템 풀 초기화
     /// </summary>
     private void InitPool()
     {
@@ -43,7 +43,7 @@ public class WantItemPool : MonoBehaviour
     }
 
     /// <summary>
-    /// 히트이펙트 꺼냄
+    /// 아이템 프리팹 꺼냄
     /// </summary>
     /// <returns></returns>
     public GameObject GetWantItemInPool()
@@ -63,7 +63,7 @@ public class WantItemPool : MonoBehaviour
     }
 
     /// <summary>
-    /// 히트이펙트풀 반납
+    /// 아이템 프리팹 반납
     /// </summary>
     /// <param name="instance"></param>
     public void ReturnWantItemInPool(GameObject instance)

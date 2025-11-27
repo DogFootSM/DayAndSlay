@@ -41,6 +41,8 @@ public class Npc : MonoBehaviour
     private Collider2D npcCol;
     private Collider2D playerCol;
     private bool isIgnoringCollision = false;
+    
+    public bool isSearchTableEnteredFirst = false;
 
     /// <summary>
     /// TargetSeneorInNpc 따오기
@@ -173,11 +175,14 @@ public class Npc : MonoBehaviour
     private void Update()
     {
         StateMachine.Tick();
+        
+        Debug.Log(StateMachine.CurrentState);
 
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             isNight = true;
-            StateMachine.ChangeState(new NpcMoveState(this, GetSensor().GetCastleDoorPosition(), new NpcGoneState(this)));
+            Debug.Log("업데이트에서 곤스테이트 호출");
+            StateMachine.ChangeState(new NpcLeaveState(this));
         }
     }
 
@@ -200,10 +205,13 @@ public class Npc : MonoBehaviour
         Table[] tables = FindObjectsOfType<Table>();
         foreach (var table in tables)
         {
+            Debug.Log(table.name);
             if (table.CurItemData == wantItem)
             {
+                Debug.Log("테이블 뒤져봤더니 원하던거 나옴");
                 return table;
             }
+            Debug.Log("테이블 뒤져봐도 원하는거 안뜸");
         }
         return null;
     }
@@ -294,7 +302,6 @@ public class Npc : MonoBehaviour
         {
             //player.GrantExperience(wantItem.SellPrice);
             tableWithItem.CurItemData = null;
-            WantItemClear();
             GetStoreManager().PlusRepu(10);
             StateMachine.ChangeState(new NpcLeaveState(this));
             // 골드 플레이어에게 지급 로직 필요
@@ -312,6 +319,7 @@ public class Npc : MonoBehaviour
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();
+        wantItemManager.InActiveWantItem(this);
         StateMachine.ChangeState(new NpcMoveState(this, door + new Vector3(0, -2, 0), new NpcGoneState(this)));
     }
     
@@ -352,15 +360,7 @@ public class Npc : MonoBehaviour
         GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
     }
-
-
-    public bool ArrivedDesk()
-    {
-        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 1f;
-    }
-
-
-
+    
     /// <summary>
     /// NPC 떠남
     /// </summary>
