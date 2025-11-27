@@ -38,6 +38,11 @@ public class SystemWindowController : MonoBehaviour
         InputSystemKey();
     }
 
+    public void CanInputKeyUpdate(bool isDead)
+    {
+        canInputKey = !isDead;
+    }
+    
     /// <summary>
     /// 시스템 창 오픈
     /// </summary>

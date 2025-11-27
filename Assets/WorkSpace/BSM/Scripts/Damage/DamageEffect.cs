@@ -28,6 +28,14 @@ public class DamageEffect : MonoBehaviour
         } 
     }
 
+    private void OnDisable()
+    {
+        if (_bodyRenderer != null)
+        {
+            _bodyRenderer.color = Color.white;
+        }
+    }
+
     /// <summary>
     /// 데미지 텍스트 애니메이션 실행
     /// </summary>

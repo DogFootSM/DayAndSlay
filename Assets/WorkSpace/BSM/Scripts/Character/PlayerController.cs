@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InventoryInteraction inventoryInteraction;
     [SerializeField] private PlayerSkillReceiver PlayerSkillReceiver;
     [SerializeField] private CharacterAnimatorController characterAnimatorController;
+    [SerializeField] private SystemWindowController systemWindowController;
+    [SerializeField] private GameObject gameOverCanvas;
     
     [Header("플레이어 사망 오브젝트 On/Off")]
     [SerializeField] private GameObject _cemeteryObject;
@@ -95,7 +97,7 @@ public class PlayerController : MonoBehaviour
     private float posY;
     
     private bool isDead = false;
- 
+    public bool IsDead => isDead;
     
     private void Awake()
     {
@@ -113,6 +115,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
+  
         KeyInput();
         characterStates[(int)curState].Update();   
         InventoryToTableItem();
@@ -313,6 +317,8 @@ public class PlayerController : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(IEffectReceiver monsterReceiver, float damage)
     {
+        if (isDead) return;
+        
         //TODO: 보호막 쉴드에 따른 데미지 계산
         //TODO: 방어력과 몬스터 데미지 공식 정립한 후 체력 감소 진행 + 받는 피해량 감소 버프 상태 체크
         
@@ -336,11 +342,9 @@ public class PlayerController : MonoBehaviour
         _damageEffect.DamageTextEvent(takeDamage);
         _damageEffect.DamageSkinEffect();
 
-        if (playerModel.CurHp > 0) return;
         //체력이 1 미만으로 떨어졌을 경우 데쓰 상태로 변경
-        isDead = true;
+        if (playerModel.CurHp > 0) return;
         ChangeState(CharacterStateType.DEATH);
-        
     }
   
     /// <summary>
@@ -348,10 +352,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void PlayerDeath()
     {
+        isDead = true;
         _bodyObject.SetActive(false);
         _cemeteryObject.SetActive(true);
-        
-        //TODO: Death 로직
+        systemWindowController.CanInputKeyUpdate(isDead);
+        gameOverCanvas.SetActive(true);
     }
 
     /// <summary>
@@ -359,10 +364,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void PlayerResurrection()
     {
+        isDead = false;
         _bodyObject.SetActive(true);
         _cemeteryObject.SetActive(false);
-        
-        ChangeState(CharacterStateType.IDLE);
+        playerModel.CurHp = playerModel.MaxHp;
+        systemWindowController.CanInputKeyUpdate(true);
+        gameOverCanvas.SetActive(false);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)

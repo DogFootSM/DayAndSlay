@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
     [SerializeField] private GameObject QuitAskPanel;
-
+    
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
@@ -34,13 +34,14 @@ public class GameManager : MonoBehaviour
     public bool HasUnsavedChanges; //캐릭터의 변경 사항 유무
     public int ResolutionIndex; //현재 사용중인 해상도 드롭다운의 인덱스
     public int CurDayState = 1; //현재 진행중인 날짜의 낮, 밤 상태 (게임 시간 흐름에 따라 변화)
-
+    
+    
     private const int GWL_STYLE = -16;
     private const uint WS_POPUP = 0x80000000;
     private const uint WS_VISIBLE = 0x10000000;
     private const uint SWP_SHOWWINDOW = 0x0040;
     private const uint WS_OVERLAPPEDWINDOW = 0x00CF0000;
-
+    
     private SoundManager soundManager => SoundManager.Instance;
     private Coroutine borderlessCo;
 
