@@ -6,6 +6,8 @@ public class PopUp : MonoBehaviour
     public string objName;
     [SerializeField] private TextMeshProUGUI text;
 
+
+    public void SetText(string text) => this.text.text = text;
     private void OnEnable()
     {
         text.text = $"E키를 눌러서 \n {objName} 사용하기";
