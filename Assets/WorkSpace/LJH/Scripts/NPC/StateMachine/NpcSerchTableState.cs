@@ -26,7 +26,8 @@ public class NpcSearchTableState : INpcState
         if (table != null)
         {
             npc.SetTargetTable(table);
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position + new Vector3(0, -1, 0), new NpcItemBuyState(npc, table)));
+            
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position + new Vector3(0, -2f, 0), new NpcItemBuyState(npc, table)));
         }
         else
         {

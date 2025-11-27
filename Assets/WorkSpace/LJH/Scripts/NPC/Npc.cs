@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Zenject;
 
 public class Npc : MonoBehaviour
@@ -175,13 +176,10 @@ public class Npc : MonoBehaviour
     private void Update()
     {
         StateMachine.Tick();
-        
-        Debug.Log(StateMachine.CurrentState);
 
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             isNight = true;
-            Debug.Log("업데이트에서 곤스테이트 호출");
             StateMachine.ChangeState(new NpcLeaveState(this));
         }
     }
@@ -209,6 +207,7 @@ public class Npc : MonoBehaviour
             if (table.CurItemData == wantItem)
             {
                 Debug.Log("테이블 뒤져봤더니 원하던거 나옴");
+                Debug.Log($"물건 있는 테이블의 위치 {table.transform.position}");
                 return table;
             }
             Debug.Log("테이블 뒤져봐도 원하는거 안뜸");
@@ -295,17 +294,28 @@ public class Npc : MonoBehaviour
         HeIsAngry();
     }
 
+    [SerializeField] private GameObject buyEffect;
+
 
     public void BuyItemFromTable()
     {
         if (tableWithItem != null)
         {
             //player.GrantExperience(wantItem.SellPrice);
-            tableWithItem.CurItemData = null;
-            GetStoreManager().PlusRepu(10);
-            StateMachine.ChangeState(new NpcLeaveState(this));
+            StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요
         }
+    }
+
+    private IEnumerator LeaveCoroutine()
+    {
+        buyEffect.SetActive(true);
+        tableWithItem.CurItemData = null;
+        GetStoreManager().PlusRepu(10);
+        
+        yield return new WaitUntil(() => !buyEffect.activeSelf);
+        
+        StateMachine.ChangeState(new NpcLeaveState(this));
     }
 
     private void WantItemClear()

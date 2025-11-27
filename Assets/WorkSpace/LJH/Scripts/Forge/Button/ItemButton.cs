@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class ItemButton : MonoBehaviour
 {
+    [SerializeField] EquipCreateButton createButton;
     [SerializeField] private PreviewUI previewUi;
     public ItemData itemData;
     
@@ -27,6 +28,7 @@ public class ItemButton : MonoBehaviour
     public void Tap_ItemButton()
     {
         previewUi.SetPreview(itemData);
+        createButton.SetCurSelectedItem(itemData);
     }
 
 }
