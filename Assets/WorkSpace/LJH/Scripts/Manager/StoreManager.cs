@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class StoreManager : InteractableObj
 {
-    [SerializeField] private Queue<Npc> npcQue = new Queue<Npc>();
-    [SerializeField] private Npc npc;
-
     [SerializeField] private GameObject popUp;
     [SerializeField] private TextMeshProUGUI reputationTextObj;
 
@@ -19,38 +16,11 @@ public class StoreManager : InteractableObj
     {
         reputationTextObj.text = $"평판 점수 : {reputation}";
     }
-    public void EnqueueInNpcQue(Npc npc)
-    {
-        if (!npcQue.Contains(npc))
-        {
-            npcQue.Enqueue(npc);
-        }
-    }
-    public Npc PeekInNpcQue()
-    {
-        if (npcQue.Count > 0)
-        { 
-            return npcQue.Peek();
-        }
-
-        return null;
-    }
-    public Npc DequeueInNpcQue()
-    {
-        if (npcQue.Count > 0)
-        {
-            return npcQue.Dequeue();
-        }
-
-        return null;
-    }
 
 
     public override void Interaction()
     {
-        npc = PeekInNpcQue();
-        npc.TalkToPlayer();
-        npc.StateMachine.ChangeState(new NpcWaitItemState(npc));
+        //판매 현황을 넣던가 지우던가
     }
     public override void UiOnOffMethod(Collision2D collision)
     {

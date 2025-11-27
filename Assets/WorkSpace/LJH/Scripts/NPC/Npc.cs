@@ -8,7 +8,8 @@ public class Npc : MonoBehaviour
 {
     
     private Rigidbody2D rb;
-    [Inject] PlayerContext playerContext;
+    [Inject] public WantItemManager wantItemManager;
+    [Inject] private PlayerContext playerContext;
     [Inject] private StoreManager storeManager;
     private PlayerController player;
 
@@ -279,32 +280,6 @@ public class Npc : MonoBehaviour
         onArrive?.Invoke();
     }
 
-    /// <summary>
-    /// 느낌표 뜬 엔피씨가 있을때 플레이어가 호출할 함수
-    /// </summary>
-    public void TalkToPlayer()
-    {
-        talkPopUp.gameObject.SetActive(true);
-        if (wantItem != null)
-        {
-            talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
-        }
-    }
-
-    /// <summary>
-    /// 대화 이후 호출할 함수
-    /// </summary>
-    public void AcceptTransaction()
-    {
-        StateMachine.ChangeState(new NpcWaitItemState(this));
-    }
-    /// <summary>
-    /// 거래 수락시에 호출할 함수
-    /// </summary>
-    public void TalkExit()
-    {
-        talkPopUp.gameObject?.SetActive(false);
-    }
 
     public void FailBuyItem()
     {
@@ -312,17 +287,6 @@ public class Npc : MonoBehaviour
         HeIsAngry();
     }
 
-    /// <summary>
-    /// 아이템 판매 후 처리용 함수
-    /// </summary>
-    public void BuyItemFromDesk()
-    {
-        //player.GrantExperience(wantItem.SellPrice);
-        WantItemClear();
-        WantItemMarkOnOff(Emoji.EXCLAMATION);
-        GetStoreManager().PlusRepu(10);
-        StateMachine.ChangeState(new NpcLeaveState(this));
-    }
 
     public void BuyItemFromTable()
     {

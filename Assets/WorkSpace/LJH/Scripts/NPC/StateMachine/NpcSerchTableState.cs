@@ -16,6 +16,8 @@ public class NpcSearchTableState : INpcState
     public void Enter()
     {
         Table table = npc.SearchTable();
+        
+        npc.wantItemManager.ActiveWantItem();
 
         if (table != null)
         {

@@ -77,12 +77,6 @@ public class Door : InteractableObj
                 npc.StopMove();
                 npc.transform.position = movePos;
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
-
-                if (grid == gridList[0])
-                {
-                    store.EnqueueInNpcQue(npc);
-                    return;
-                }
             }
         }
 
@@ -117,12 +111,6 @@ public class Door : InteractableObj
                 npc.StopMove();
                 npc.transform.position = movePos;
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
-
-                if (grid == gridList[0])
-                {
-                    store.EnqueueInNpcQue(npc);
-                    return;
-                }
             }
         }
 
