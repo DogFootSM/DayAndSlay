@@ -6,8 +6,8 @@ using UnityEngine;
 public class NpcWaitItemState : INpcState
 {
     private Npc npc;
-    //Todo : waitTime = 60f
-    private float waitTime = 5f;
+    //Todo : waitTime = 30f
+    private float waitTime = 30f;
     private float elapsed = 0f;
 
     public NpcWaitItemState(Npc npc)
@@ -33,7 +33,12 @@ public class NpcWaitItemState : INpcState
             npc.StateMachine.ChangeState(new NpcLeaveState(npc));
         }
         
+        
+        
     }
 
-    public void Exit() { }
+    public void Exit()
+    {
+        npc.RigidBodyUnLocked();
+    }
 }

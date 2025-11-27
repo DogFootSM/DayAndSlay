@@ -417,7 +417,15 @@ public class Npc : MonoBehaviour
     public void RigidbodyZero()
     {
         var rb = GetComponent<Rigidbody2D>();
-        if (rb) rb.velocity = Vector2.zero;
+        
+        rb.velocity = Vector2.zero;
+
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    public void RigidBodyUnLocked()
+    {
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
     
 }

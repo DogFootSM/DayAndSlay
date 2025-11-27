@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
 {
+    [SerializeField] private int tempDamage;
     [SerializeField] private GameObject itemPrefab;
     
     private DamageEffect damageEffect;
@@ -95,7 +96,7 @@ public class MonsterMethod : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            HitMethod(5);
+            HitMethod(tempDamage);
             //animator.PlayHit();
         }
 

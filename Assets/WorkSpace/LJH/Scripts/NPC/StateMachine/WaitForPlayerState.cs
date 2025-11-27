@@ -18,6 +18,7 @@ public class WaitForPlayerState : INpcState
         npc.StopMove();
         npc.RigidbodyZero();  
         
+        
         if (npc.GetStoreManager().PeekInNpcQue() == npc)
         {
             npc.WantItemMarkOnOff(Emoji.EXCLAMATION);
