@@ -18,23 +18,19 @@ public class NpcDecisionInStoreState : INpcState
 
     public void Enter()
     {
-        if (npc == store.PeekInNpcQue())
-        {
-            //카운터로 이동
-            Vector3 deskPos = targetSensor.GetDeskPosition();
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, deskPos, new WaitForPlayerState(npc)));
-
-        }
-        else
-        {
-            // 랜덤 포지션으로 이동
-            Vector3 randomPos = targetSensor.GetRandomPositionInStore();
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos, new NpcDecisionInStoreState(npc, store, targetSensor)));
-        }
+        // 랜덤 포지션으로 이동
+        Debug.Log("상점내부에서 고민 스테이트");
+        Vector3 randomPos = targetSensor.GetRandomPositionInStore();
+        
+        npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos,
+            new NpcIdleState(npc))); 
     }
 
-    public void Update() 
+    public void Update()
     {
     }
-    public void Exit() { }
+
+    public void Exit()
+    {
+    }
 }

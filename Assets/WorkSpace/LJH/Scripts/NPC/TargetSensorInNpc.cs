@@ -31,7 +31,6 @@ public class TargetSensorInNpc : MonoBehaviour
         inStoreDoorPos = storage.OutsideDoorPos;
         outStoreDoorPos = storage.StoreDoorPos;
         castleDoorPos = storage.CastleDoorPos;
-        deskPos = storage.DeskPos;
         StartCoroutine(RandominitCoroutine());
 
 

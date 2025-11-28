@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Zenject;
 
 public class Npc : MonoBehaviour
 {
     
     private Rigidbody2D rb;
-    [Inject] PlayerContext playerContext;
+    [Inject] public WantItemManager wantItemManager;
+    [Inject] private PlayerContext playerContext;
     [Inject] private StoreManager storeManager;
     private PlayerController player;
 
@@ -40,6 +42,8 @@ public class Npc : MonoBehaviour
     private Collider2D npcCol;
     private Collider2D playerCol;
     private bool isIgnoringCollision = false;
+    
+    public bool isSearchTableEnteredFirst = false;
 
     /// <summary>
     /// TargetSeneorInNpc 따오기
@@ -176,7 +180,7 @@ public class Npc : MonoBehaviour
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             isNight = true;
-            StateMachine.ChangeState(new NpcMoveState(this, GetSensor().GetCastleDoorPosition(), new NpcGoneState(this)));
+            StateMachine.ChangeState(new NpcLeaveState(this));
         }
     }
 
@@ -199,10 +203,14 @@ public class Npc : MonoBehaviour
         Table[] tables = FindObjectsOfType<Table>();
         foreach (var table in tables)
         {
+            Debug.Log(table.name);
             if (table.CurItemData == wantItem)
             {
+                Debug.Log("테이블 뒤져봤더니 원하던거 나옴");
+                Debug.Log($"물건 있는 테이블의 위치 {table.transform.position}");
                 return table;
             }
+            Debug.Log("테이블 뒤져봐도 원하는거 안뜸");
         }
         return null;
     }
@@ -279,32 +287,6 @@ public class Npc : MonoBehaviour
         onArrive?.Invoke();
     }
 
-    /// <summary>
-    /// 느낌표 뜬 엔피씨가 있을때 플레이어가 호출할 함수
-    /// </summary>
-    public void TalkToPlayer()
-    {
-        talkPopUp.gameObject.SetActive(true);
-        if (wantItem != null)
-        {
-            talkPopUp.GetComponentInChildren<TextMeshProUGUI>().text = $"{wantItem.name}을/를 구매하고 싶은데..\n매물이 있을까요?";
-        }
-    }
-
-    /// <summary>
-    /// 대화 이후 호출할 함수
-    /// </summary>
-    public void AcceptTransaction()
-    {
-        StateMachine.ChangeState(new NpcWaitItemState(this));
-    }
-    /// <summary>
-    /// 거래 수락시에 호출할 함수
-    /// </summary>
-    public void TalkExit()
-    {
-        talkPopUp.gameObject?.SetActive(false);
-    }
 
     public void FailBuyItem()
     {
@@ -312,29 +294,28 @@ public class Npc : MonoBehaviour
         HeIsAngry();
     }
 
-    /// <summary>
-    /// 아이템 판매 후 처리용 함수
-    /// </summary>
-    public void BuyItemFromDesk()
-    {
-        //player.GrantExperience(wantItem.SellPrice);
-        WantItemClear();
-        WantItemMarkOnOff(Emoji.EXCLAMATION);
-        GetStoreManager().PlusRepu(10);
-        StateMachine.ChangeState(new NpcLeaveState(this));
-    }
+    [SerializeField] private GameObject buyEffect;
+
 
     public void BuyItemFromTable()
     {
         if (tableWithItem != null)
         {
             //player.GrantExperience(wantItem.SellPrice);
-            tableWithItem.CurItemData = null;
-            WantItemClear();
-            GetStoreManager().PlusRepu(10);
-            StateMachine.ChangeState(new NpcLeaveState(this));
+            StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요
         }
+    }
+
+    private IEnumerator LeaveCoroutine()
+    {
+        buyEffect.SetActive(true);
+        tableWithItem.CurItemData = null;
+        GetStoreManager().PlusRepu(10);
+        
+        yield return new WaitUntil(() => !buyEffect.activeSelf);
+        
+        StateMachine.ChangeState(new NpcLeaveState(this));
     }
 
     private void WantItemClear()
@@ -348,6 +329,7 @@ public class Npc : MonoBehaviour
     public void LeaveStore()
     {
         Vector3 door = targetSensor.GetLeavePosition();
+        wantItemManager.InActiveWantItem(this);
         StateMachine.ChangeState(new NpcMoveState(this, door + new Vector3(0, -2, 0), new NpcGoneState(this)));
     }
     
@@ -388,28 +370,7 @@ public class Npc : MonoBehaviour
         GameObject mark = transform.GetChild((int)num).gameObject;
         mark.SetActive(!mark.activeSelf);
     }
-
-
-    public bool ArrivedDesk()
-    {
-        return Vector3.Distance(transform.position, targetSensor.GetDeskPosition()) < 1f;
-    }
-
-    public void TestCoroutine()
-    {
-        StartCoroutine(TestCo());
-    }
-
-    private IEnumerator TestCo()
-    {
-        PauseMovement();
-        yield return new WaitForSeconds(3f);
-        TalkToPlayer();
-        StateMachine.ChangeState(new NpcWaitItemState(this));
-        yield return new WaitForSeconds(2f);
-        TalkExit();
-    }
-
+    
     /// <summary>
     /// NPC 떠남
     /// </summary>
@@ -430,7 +391,15 @@ public class Npc : MonoBehaviour
     public void RigidbodyZero()
     {
         var rb = GetComponent<Rigidbody2D>();
-        if (rb) rb.velocity = Vector2.zero;
+        
+        rb.velocity = Vector2.zero;
+
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    public void RigidBodyUnLocked()
+    {
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
     
 }

@@ -13,11 +13,13 @@ public class WeaponForge : InteractableObj
     GameObject popUp;
     
     [SerializeField] private SystemWindowController controller;
+    
+    public InventoryInteraction inventory;
 
     public override void Interaction()
     {
         Debug.Log("웨펀포지 열기 실행");
-        popUp.SetActive(false);
+        
         forgeUi.SetActive(!forgeUi.activeSelf);
         controller.OpenSystemWindow(SystemType.WEAPON);
     }
@@ -26,5 +28,10 @@ public class WeaponForge : InteractableObj
     {
         popUp.GetComponent<PopUp>().objName = "무기 제작대";
         popUp.SetActive(!popUp.gameObject.activeSelf);
+
+        if (inventory == null)
+        {
+            inventory = collision.gameObject.GetComponent<InventoryInteraction>();
+        }
     }
 }

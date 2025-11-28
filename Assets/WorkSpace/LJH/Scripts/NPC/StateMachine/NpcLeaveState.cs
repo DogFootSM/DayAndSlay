@@ -6,17 +6,14 @@ using UnityEngine;
 public class NpcLeaveState : INpcState
 {
     private Npc npc;
-    private StoreManager storeManager;
     public NpcLeaveState(Npc npc)
     {
         this.npc = npc;
-        storeManager = npc.GetStoreManager();
     }
 
     public void Enter()
     {
         npc.StopMove();
-        storeManager.DequeueInNpcQue();
         npc.LeaveStore();
     }
 

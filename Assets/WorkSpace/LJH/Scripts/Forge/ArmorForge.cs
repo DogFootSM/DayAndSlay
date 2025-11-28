@@ -13,9 +13,10 @@ public class ArmorForge : InteractableObj
 
     [SerializeField] private SystemWindowController controller;
     
+    public InventoryInteraction inventory;
+    
     public override void Interaction()
     {
-        popUp.SetActive(false);
         forgeUi.SetActive(!forgeUi.activeSelf);
         controller.OpenSystemWindow(SystemType.HELMET);
     }
@@ -24,5 +25,10 @@ public class ArmorForge : InteractableObj
     {
         popUp.GetComponent<PopUp>().objName = "방어구 제작대";
         popUp.SetActive(!popUp.gameObject.activeSelf);
+        
+        if (inventory == null)
+        {
+            inventory = collision.gameObject.GetComponent<InventoryInteraction>();
+        }
     }
 }

@@ -20,9 +20,10 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] List<Npc> npc = new List<Npc>();
 
 
-    [SerializeField] GameObject popUp;
-    [SerializeField] TestPlayer player;
-    [SerializeField] StoreManager storeManager;
+    [SerializeField] private GameObject popUp;
+    [SerializeField] private TestPlayer player;
+    [SerializeField] private StoreManager storeManager;
+    [SerializeField] private WantItemManager wantItemManager;
 
     public override void InstallBindings()
     {
@@ -65,5 +66,9 @@ public class GameSceneInstaller : MonoInstaller
         Container
             .Bind<StoreManager>()
             .FromInstance(storeManager);
+        
+        Container
+            .Bind<WantItemManager>()
+            .FromInstance(wantItemManager);
     }
 }

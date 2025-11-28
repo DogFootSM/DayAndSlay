@@ -19,18 +19,22 @@ public class NpcDecisionState : INpcState
         if (DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             Vector3 castlePos = targetSensor.GetCastleDoorPosition();
+            Debug.Log("디시션 엔터에서 곤스테이트 호출");
             npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
             return;
         }
 
         if (npc.IsBuyer)
         {
+            //npc가 구매자이고 화가 난 경우
             if (npc.CheckHeIsAngry())
             {
                 Vector3 castlePos = targetSensor.GetCastleDoorPosition();
+                Debug.Log("구매자이고 화가난 경우에서 곤스테이트 호출");
                 npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
             }
 
+            //npc가 구매자이고 화가 나지 않은 경우
             else
             {
                 Vector3 storeDoorPos = targetSensor.GetEnterPosition();

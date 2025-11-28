@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [CreateAssetMenu (fileName = "itemData", menuName = "Scriptable Object / itemData")]
@@ -41,11 +42,15 @@ public class ItemData : ScriptableObject
     public string ItemDescB;
     
     public int ingredients_1;
+    public int ingredients_1_Count;
     public int ingredients_2;
+    public int ingredients_2_Count;
     public int ingredients_3;
+    public int ingredients_3_Count;
     public int ingredients_4;
+    public int ingredients_4_Count;
 
-    public List<int> Ingrediants = new();
+    [FormerlySerializedAs("Ingrediants")] public List<int> Ingredients = new();
 
 
     

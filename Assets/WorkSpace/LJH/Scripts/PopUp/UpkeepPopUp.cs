@@ -17,12 +17,14 @@ public class UpkeepPopUp : MonoBehaviour
     [SerializeField] private Button taxPayButton;
     
     [SerializeField] private float animationDuration = 0.75f;
+    private RectMask2D mask;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         clip = audio.clip;
+        mask = GetComponentInChildren<RectMask2D>();
     }
 
     private void Start()
@@ -50,23 +52,21 @@ public class UpkeepPopUp : MonoBehaviour
     {
         yield return new WaitForSeconds(animationDuration);
 
-        AllTextActive(true);
     }
 
     private IEnumerator CloseAnimationCompleteCoroutine()
     {
-        AllTextActive(false);
-
         yield return new WaitForSeconds(animationDuration);
 
         gameObject.SetActive(false);
     }
 
-    private void AllTextActive(bool isActive)
+    /// <summary>
+    /// 마스크렌더링 / 애니메이션 이벤트로 호출
+    /// </summary>
+    /// <param name="padding">패딩값 left, bottom, right, up</param>
+    public void RenderPadding(float padding)
     {
-        foreach (var text in upkeepTextDict)
-        {
-            text.Value.SetActive(isActive);
-        }
+        mask.padding = new Vector4(padding, 0, padding, 0);
     }
 }

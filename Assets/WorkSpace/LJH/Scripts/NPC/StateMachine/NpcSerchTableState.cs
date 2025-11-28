@@ -16,11 +16,18 @@ public class NpcSearchTableState : INpcState
     public void Enter()
     {
         Table table = npc.SearchTable();
+        
+        if (!npc.isSearchTableEnteredFirst)
+        {
+            npc.wantItemManager.ActiveWantItem(npc);
+            npc.isSearchTableEnteredFirst = true;
+        }
 
         if (table != null)
         {
             npc.SetTargetTable(table);
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position));
+            
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position + new Vector3(0, -2f, 0), new NpcItemBuyState(npc, table)));
         }
         else
         {

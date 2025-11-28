@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
 {
+    [SerializeField] private int tempDamage;
     [SerializeField] private GameObject itemPrefab;
     
     private DamageEffect damageEffect;
@@ -23,6 +24,9 @@ public class MonsterMethod : MonoBehaviour
     private int currentPathIndex;
 
     private List<Vector3> path = new List<Vector3>();
+    
+    private HitController hitController;
+    private HitEffectPool _hitEffect => HitEffectPool.Instance;
 
     
     public void SetPlayer(GameObject player) => this.player = player;
@@ -37,7 +41,6 @@ public class MonsterMethod : MonoBehaviour
     
     //테스트용
     [SerializeField] private GameObject stunImage;
-
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -93,7 +96,7 @@ public class MonsterMethod : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            HitMethod(50);
+            HitMethod(tempDamage);
             //animator.PlayHit();
         }
 
@@ -268,6 +271,10 @@ public class MonsterMethod : MonoBehaviour
     public void HitMethod(int damage)
     {
         damageEffect.DamageTextEvent(damage);
+        if(hitController == null)
+            hitController = GetComponent<HitController>();
+        
+        hitController.ActiveHitEffect(damage);
         
         ai.TakeDamage(damage);
         //Todo : 크리 떴을때로 변경
@@ -277,9 +284,10 @@ public class MonsterMethod : MonoBehaviour
         }
     }
 
-    public void StunMethod()
+    
+    public virtual void StunMethod(float duration)
     {
-        
+        ai.ReceiveStun(duration);
     }
 
     public void DropItem()

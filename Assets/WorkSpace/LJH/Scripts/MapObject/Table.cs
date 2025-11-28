@@ -8,9 +8,9 @@ public class Table : InteractableObj
     [SerializeField] private SpriteRenderer registeredItemRenderer;
 
     [Inject(Id = "PopUp")] private GameObject popUp;
-    private PopUp tableAskPopup;
+    //private PopUp tableAskPopup;
     private TextMeshProUGUI tableAskText;
-    private ItemData curItemData;
+    [SerializeField] private ItemData curItemData;
     public ItemData CurItemData
     {
         get => curItemData;
@@ -20,32 +20,26 @@ public class Table : InteractableObj
     {
     }
 
+    private void Start()
+    {
+        registeredItemRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
     public override void UiOnOffMethod(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("NPC"))
-        {
-            Npc npc= collision.gameObject.GetComponent<Npc>();
-            npc.BuyItemFromTable();
-
-            return;
-        }
-
-        if (tableAskPopup == null)
-        {
-            //TODO: POPUP TEXT 구조 수정되면 GetComponent로 받아오는건 안해도 될듯
-            tableAskPopup = popUp.GetComponent<PopUp>();
-            tableAskText = popUp.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            tableAskPopup.objName = "가판대";
-        }
+        string _objName;
+          
+        _objName = popUp.GetComponent<PopUp>().objName = "가판대";
+        
 
         //TODO: 안내 멘트는 수정해야함. 
         if (curItemData != null)
         {
-            tableAskText.text = $"{tableAskPopup.objName}에서 아이템을 회수하시겠습니까?";
+            popUp.GetComponent<PopUp>().SetText($"{_objName}에서 아이템을 회수하시겠습니까?");
         }
         else
         {
-            tableAskText.text = $"E키를 눌러서 {tableAskPopup.objName}에 아이템을 등록하세요.";
+            popUp.GetComponent<PopUp>().SetText($"E키를 눌러서 {_objName}에 아이템을 등록하세요.");
         }
 
         popUp.SetActive(!popUp.gameObject.activeSelf);

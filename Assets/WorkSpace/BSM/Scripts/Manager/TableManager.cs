@@ -51,8 +51,6 @@ public class TableManager : MonoBehaviour
         }
         else if (target is StoreManager storeManager)
         {
-            this.targetNpc = storeManager.PeekInNpcQue();
-
             if (targetNpc == null)
             {
                 return;
@@ -123,12 +121,6 @@ public class TableManager : MonoBehaviour
         {
             targetTable.TakeItem(itemToRegister); 
         }
-
-        if (targetNpc != null)
-        {
-            targetNpc.BuyItemFromDesk();
-        }
-
         removeInventorySlot.RemoveItem();
         OnPlayerExitRangeClosePanel();
     }

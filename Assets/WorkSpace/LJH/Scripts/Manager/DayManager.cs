@@ -21,7 +21,7 @@ public class DayManager : MonoBehaviour, ISavable
     public DayAndNight dayOrNight;
 
     // 9Minute
-    private const int DefaultDayCount = 54;
+    private const int DefaultDayCount = 240;
 
     Coroutine timeCoroutine;
 
