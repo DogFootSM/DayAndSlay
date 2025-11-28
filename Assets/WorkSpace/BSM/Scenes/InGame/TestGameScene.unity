@@ -1088,16 +1088,16 @@ MonoBehaviour:
   armorForge: {fileID: 0}
   targetPosStorage: {fileID: 0}
   loadingScene:
-    sceneAsset: {fileID: 0}
-    path: 
+    sceneAsset: {fileID: 102900000, guid: 5a649dfc05d391d41b767179f37aaae2, type: 3}
+    path: Assets/WorkSpace/LJH/Scene/LoadingScene.unity
     isDirty: 0
   dungeonScene:
-    sceneAsset: {fileID: 0}
-    path: 
+    sceneAsset: {fileID: 102900000, guid: 1a75dbf11365bba4d8f53a4150fe7a39, type: 3}
+    path: Assets/WorkSpace/Release/Scene/Release_DungeonScene.unity
     isDirty: 0
   outsideScene:
-    sceneAsset: {fileID: 0}
-    path: 
+    sceneAsset: {fileID: 102900000, guid: 2cbfc74638e695246851a0e6e4a19bae, type: 3}
+    path: Assets/WorkSpace/Release/Scene/Release_TownScene.unity
     isDirty: 0
   npc: []
   popUp: {fileID: 766017142}
@@ -6806,6 +6806,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5139601436713379332, guid: 4e641462e404d9544a491fc32f6a73be, type: 3}
+      propertyPath: mainMenuScene.path
+      value: Assets/WorkSpace/BSM/Scenes/Start/StartScene.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5139601436713379332, guid: 4e641462e404d9544a491fc32f6a73be, type: 3}
+      propertyPath: mainMenuScene.isDirty
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5139601436713379332, guid: 4e641462e404d9544a491fc32f6a73be, type: 3}
+      propertyPath: mainMenuScene.sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 80be271e62778c6459b1cc213f4f6d0a, type: 3}
     - target: {fileID: 5139601436713379334, guid: 4e641462e404d9544a491fc32f6a73be, type: 3}
       propertyPath: m_Name
       value: GameManager

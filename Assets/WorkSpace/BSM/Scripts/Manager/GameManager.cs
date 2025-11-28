@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Zenject;
 
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
     [SerializeField] private GameObject QuitAskPanel;
+    [SerializeField] private SceneReference mainMenuScene;
     
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
@@ -271,7 +273,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 메인 메뉴 화면으로 이동
+    /// 메인 메뉴 화면으로 이동 전 데이터 변경 사항 확인
     /// </summary>
     public void CheckMainMenu()
     {
@@ -286,12 +288,16 @@ public class GameManager : MonoBehaviour
 
         GotoMainMenu();
     }
-
+    
+    /// <summary>
+    /// 메인 메뉴 씬으로 이동
+    /// </summary>
     public void GotoMainMenu()
     {
-        SaveConfig();
-        //TODO: 메인 메뉴 씬 이동
-        Debug.Log("메인 메뉴 이동");
+        SaveConfig(); 
+        SceneManager.LoadScene(mainMenuScene.Name); 
+        PlayerRoot playerRoot = FindObjectOfType<PlayerRoot>();
+        Destroy(playerRoot.gameObject);
     }
     
     /// <summary>

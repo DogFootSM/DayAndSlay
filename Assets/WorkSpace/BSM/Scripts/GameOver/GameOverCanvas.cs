@@ -2,18 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
 public class GameOverCanvas : MonoBehaviour
 {
-    [Inject(Id = "TownScene")] [Header("¿Ãµø«“ æ¿")]
-    private SceneReference scene;
+    [Inject(Id = "outSideScene")]
+    private SceneReference townScene;
+    
+    [Inject(Id = "LoadingScene")]
+    private SceneReference loadingScene;
     
     [SerializeField] private Button confirmButton;
     [SerializeField] private PlayerRoot playerRoot;
     [SerializeField] private PlayerController playerController;
-    [SerializeField] private SceneReference townScene;
     
     private void Awake()
     {
@@ -26,5 +29,6 @@ public class GameOverCanvas : MonoBehaviour
         playerController.PlayerResurrection();
         playerRoot.TranslateScenePosition(new Vector2(0, 0));
         Loading.LoadScene(townScene);
+        SceneManager.LoadScene(loadingScene.Name);
     } 
 }

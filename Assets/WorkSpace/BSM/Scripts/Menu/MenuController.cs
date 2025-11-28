@@ -48,6 +48,9 @@ public class MenuController : MonoBehaviour
         gameManager.MainSceneConfirmQuit();
     }
 
+    /// <summary>
+    /// 메인 메뉴로 이동
+    /// </summary>
     private void MainMenu()
     {
         gameManager.CheckMainMenu();
