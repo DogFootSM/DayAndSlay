@@ -8,7 +8,7 @@ public class EquipCreateButton : MonoBehaviour
     public ItemData curSelectedItem {get;  set;}
     private void Start()
     {
-        inventory = GameObject.FindWithTag("Player").GetComponent<InventoryInteraction>();
+        inventory = GameObject.FindWithTag("Player").GetComponentInChildren<InventoryInteraction>();
         
     }
     
