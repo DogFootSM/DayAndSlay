@@ -8,6 +8,7 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private Button continueButton;
     [SerializeField] private Button optionButton;
+    [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button quitButton;
     
     [SerializeField] private SystemWindowController systemWindowController;
@@ -19,6 +20,7 @@ public class MenuController : MonoBehaviour
         continueButton.onClick.AddListener(CloseMenu);
         optionButton.onClick.AddListener(OpenSettingPanel);
         quitButton.onClick.AddListener(OnClickQuit);
+        mainMenuButton.onClick.AddListener(MainMenu);
     }
 
     /// <summary>
@@ -45,5 +47,9 @@ public class MenuController : MonoBehaviour
     {
         gameManager.MainSceneConfirmQuit();
     }
-    
+
+    private void MainMenu()
+    {
+        gameManager.CheckMainMenu();
+    }
 }

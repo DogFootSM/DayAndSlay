@@ -229,9 +229,9 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 메인 화면 게임 종료
+    /// 유저 게임 환경 설정 데이터 저장
     /// </summary>
-    public void MainSceneConfirmQuit()
+    private void SaveConfig()
     {
         //현재 디스플레이 설정 정보 저장
         dataManager.SaveDisplayData(ResolutionIndex, windowMode, (int)Cursor.lockState);
@@ -241,7 +241,14 @@ public class GameManager : MonoBehaviour
             soundManager.GetMasterVolume(), soundManager.GetBgmVolume(), soundManager.GetSfxVolume(),
             soundManager.GetMasterMute(), soundManager.GetBgmMute(), soundManager.GetSfxMute()
         );
-        
+    }
+    
+    /// <summary>
+    /// 메인 화면 게임 종료
+    /// </summary>
+    public void MainSceneConfirmQuit()
+    {
+        SaveConfig();
         dataManager.SaveQuickSlotSetting();
         //TODO: 캐릭터 스탯 정보, 아이템 착용 정보, 스킬 정보, 인벤토리 정보 업데이트
 
@@ -253,14 +260,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void TitleSceneConfirmQuit()
     {
-        //현재 디스플레이 설정 정보 저장
-        dataManager.SaveDisplayData(ResolutionIndex, windowMode, (int)Cursor.lockState);
-
-        //현재 오디오 설정 정보 저장
-        dataManager.SaveAudioData(
-            soundManager.GetMasterVolume(), soundManager.GetBgmVolume(), soundManager.GetSfxVolume(),
-            soundManager.GetMasterMute(), soundManager.GetBgmMute(), soundManager.GetSfxMute()
-        );
+        SaveConfig();
         
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -268,6 +268,30 @@ public class GameManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    /// <summary>
+    /// 메인 메뉴 화면으로 이동
+    /// </summary>
+    public void CheckMainMenu()
+    {
+        if (HasUnsavedChanges)
+        {
+            //변경된 사항 알림 UI Open
+            QuitAskPanel.SetActive(true);
+            QuitConfirm quitConfirm = QuitAskPanel.GetComponent<QuitConfirm>();
+            quitConfirm.CheckExitOrMainMenu(false);
+            return;
+        }
+
+        GotoMainMenu();
+    }
+
+    public void GotoMainMenu()
+    {
+        SaveConfig();
+        //TODO: 메인 메뉴 씬 이동
+        Debug.Log("메인 메뉴 이동");
     }
     
     /// <summary>
@@ -280,6 +304,8 @@ public class GameManager : MonoBehaviour
         {
             //변경된 사항 알림 UI Open
             QuitAskPanel.SetActive(true);
+            QuitConfirm quitConfirm = QuitAskPanel.GetComponent<QuitConfirm>();
+            quitConfirm.CheckExitOrMainMenu(true);
             return false;
         }
 

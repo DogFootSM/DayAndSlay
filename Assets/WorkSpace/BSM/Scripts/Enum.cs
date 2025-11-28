@@ -448,4 +448,4 @@ public enum BuffType
 public enum WeaponTierType
 {
     TIER_1_1 =1, TIER_2_1, TIER_3_1, TIER_4_1, TIER_5_1, NONE
-}
+} 

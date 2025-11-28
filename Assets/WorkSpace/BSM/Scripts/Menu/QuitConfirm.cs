@@ -8,8 +8,9 @@ public class QuitConfirm : MonoBehaviour
 {
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
-
+    
     private GameManager gameManager => GameManager.Instance;
+    private bool isExit;
     
     private void Awake()
     { 
@@ -31,7 +32,24 @@ public class QuitConfirm : MonoBehaviour
     private void ConfirmQuit()
     {
         gameManager.HasUnsavedChanges = false;
-        gameManager.MainSceneConfirmQuit();
+        
+        if (isExit)
+        {
+            gameManager.MainSceneConfirmQuit();
+        }
+        else
+        {
+            gameManager.GotoMainMenu();
+        } 
+    }
+
+    /// <summary>
+    /// 게임 종료인지 메인 메뉴 이동인지 확인
+    /// </summary>
+    /// <param name="isExit"></param>
+    public void CheckExitOrMainMenu(bool isExit)
+    {
+        this.isExit = isExit;
     }
     
 }
