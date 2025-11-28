@@ -95,10 +95,10 @@ public class ItemParser
                     item.ingredients_3 = int.TryParse(values[23], out temp) ? temp : 0;
                     item.ingredients_4 = int.TryParse(values[25], out temp) ? temp : 0;
                     
-                    item.Ingrediants.Add(item.ingredients_1);
-                    item.Ingrediants.Add(item.ingredients_2);
-                    item.Ingrediants.Add(item.ingredients_3);
-                    item.Ingrediants.Add(item.ingredients_4);
+                    item.Ingredients.Add(item.ingredients_1);
+                    item.Ingredients.Add(item.ingredients_2);
+                    item.Ingredients.Add(item.ingredients_3);
+                    item.Ingredients.Add(item.ingredients_4);
                 }
 
                 else

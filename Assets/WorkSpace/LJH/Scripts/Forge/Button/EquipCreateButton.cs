@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EquipCreateButton : MonoBehaviour
 {
-    InventoryInteraction inventory;
+    public InventoryInteraction inventory;
     public ItemData curSelectedItem {get;  set;}
     private void Start()
     {
-		//ToDo : 제작 가져오기
+        inventory = GameObject.FindWithTag("Player").GetComponent<InventoryInteraction>();
+        
     }
     
     /// <summary>
@@ -19,8 +20,6 @@ public class EquipCreateButton : MonoBehaviour
 
     public void CreateItem()
     {
-        //Todo : 재료 체크 필요함 
-        //예를 들면 curSelectedItem의 Ingrediant가 모두 있지 않으면 버튼 비활성화 or 팝업 노출 같은 식으로
         inventory.AddItemToInventory(curSelectedItem);
     }
 }
