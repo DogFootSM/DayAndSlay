@@ -26,10 +26,9 @@ public class GameOverCanvas : MonoBehaviour
 
     private void MoveToTown()
     {
-        Debug.Log($"마을로 이동 {playerRoot == null}");
         playerController.PlayerResurrection();
-        playerRoot.TranslateScenePosition(new Vector2(-47.22f, -16f));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
+        playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
+        mapManager.MapChange(MapType.TOWN_STORE2F);
         Loading.LoadScene(townScene);
         SceneManager.LoadScene(loadingScene.Name);
     } 

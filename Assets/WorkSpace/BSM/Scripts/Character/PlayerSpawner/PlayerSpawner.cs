@@ -32,7 +32,7 @@ public class PlayerSpawner : MonoBehaviour
     {
         playerInstance = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);  
         characterAnimatorController = playerInstance.GetComponentInChildren<CharacterAnimatorController>();
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
+        mapManager.MapChange(MapType.TOWN_STORE2F);
     }
 
     /// <summary>
