@@ -59,9 +59,11 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
 
     private IEnumerator StartDelayCoroutine()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         
-        player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
+        //Tag로 검색되는 오브젝트가 PlayerRoot로 바뀌어 겟컴포칠드런으로 플레이어 찾아줌
+        player = GameObject.FindWithTag("Player")?.GetComponentInChildren<PlayerController>();
+        
         method.SetPlayer(player.gameObject);
         
         tree = new BehaviourTree(BuildRoot());

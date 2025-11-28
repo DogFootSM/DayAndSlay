@@ -51,7 +51,7 @@ public class MonsterSpawner : MonoBehaviour
 
     IEnumerator DelayCoroutine()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         Init();
         MonsterSpawnPosSet();
         MonsterSpawn();
