@@ -118,7 +118,7 @@ private void Awake()
     
     private void ApplyPlayerSpawnPos(Vector3 pos)
     {
-        //PlayerRoot.PlayerRootInstance.TranslateScenePosition(pos);
+        PlayerRoot.PlayerRootInstance.TranslateScenePosition(pos);
         Debug.Log($"플레이어 스폰 위치 적용됨: {pos}");
     }
 
