@@ -27,7 +27,7 @@ public class FollowCamera : MonoBehaviour
     private void Awake()
     {
         mainCam = Camera.main;
-        mainCam.orthographicSize = 3f;
+        mainCam.orthographicSize = 5f;
         ProjectContext.Instance.Container.Inject(this);
         mapManager.FollowCamera = this;
     }
