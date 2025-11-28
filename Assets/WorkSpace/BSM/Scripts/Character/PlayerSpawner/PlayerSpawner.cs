@@ -21,6 +21,8 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
+        if (PlayerRoot.PlayerRootInstance != null) return;
+        
         PlayerSpawn();
         PlayerSpriteLoad();
     }
