@@ -103,6 +103,28 @@ public class InventoryInteraction :
     }
 
     /// <summary>
+    /// 인벤토리 내 제작에 필요한 아이템이 있는지 확인 
+    /// </summary>
+    /// <param name="itemId">필요한 재료 아이템 아이디</param>
+    /// <param name="requireCount">필요한 재료 아이템 개수</param>
+    /// <returns>필요한 아이템이 있으면 해당 슬롯을 반환, 없다면 Null을 반환</returns>
+    public InventorySlot HasRequiredMaterials(int itemId, int requireCount)
+    {
+        InventorySlot requireItemInSlot = null;
+
+        foreach (var slot in inventorySlots)
+        {
+            if (slot.CurSlotItem.ItemId == itemId && slot.ItemCount >= requireCount)
+            {
+                requireItemInSlot = slot;
+                break;
+            } 
+        }
+
+        return requireItemInSlot;
+    }
+    
+    /// <summary>
     /// 아이템 습득 후 인벤토리에 저장
     /// </summary>
     /// <param name="collectedItem">습득 아이템 객체</param>
