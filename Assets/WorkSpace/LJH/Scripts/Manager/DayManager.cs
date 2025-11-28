@@ -10,9 +10,12 @@ using Zenject;
 
 public class DayManager : MonoBehaviour, ISavable
 {
+    [SerializeField] private NpcSpawner npcSpawner;
+    
     [SerializeField] private Image morning;
     [SerializeField] private Image afternoon;
     [SerializeField] private Image evening;
+    [SerializeField] private Image night;
 
     [SerializeField] private GameObject taxUI;
     
@@ -21,7 +24,7 @@ public class DayManager : MonoBehaviour, ISavable
     public DayAndNight dayOrNight;
 
     // 9Minute
-    private const int DefaultDayCount = 240;
+    [SerializeField] private  int DefaultDayCount = 480;
 
     Coroutine timeCoroutine;
 
@@ -31,6 +34,9 @@ public class DayManager : MonoBehaviour, ISavable
 
     private bool isAfternoonStarted = false;
     private bool isEveningStarted = false;
+    private bool isNightStarted = false;
+
+    private bool isMorning = true;
 
     /// <summary>
     ///  시계 영역
@@ -52,7 +58,7 @@ public class DayManager : MonoBehaviour, ISavable
         if (instance == null)
         {
             instance = this;
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -62,7 +68,44 @@ public class DayManager : MonoBehaviour, ISavable
 
     private void Start()
     {
+        isMorning = true;
+        UpdateClockDisplay(8, 0);
+    }
+
+    public void OpenStore()
+    {
+        StartCoroutine(FlowToNineCoroutine());
+    }
+    
+    //아침 시작시 8시 > 9시까지 흐르게 해주는 코루틴
+    private IEnumerator FlowToNineCoroutine()
+    {
+        isMorning = false;
+        
+        float clockMinutes = 8 * 60; // 8시 시작 → 480분
+        float target = 9 * 60;       // 9시 → 540분
+
+        while (clockMinutes < target)
+        {
+            // 빠른 진행 (원하면 속도 조절 가능)
+            clockMinutes += Time.deltaTime * 60f; 
+            // 600배속 → 60초 정도면 1시간 흐름
+
+            int hour = (int)(clockMinutes / 60);
+            int minute = (int)(clockMinutes % 60);
+
+            UpdateClockDisplay(hour, minute);
+
+            yield return null;
+        }
+
+        // 9시 도달 보정
+        UpdateClockDisplay(9, 0);
+
+        // 낮 시작되며 엔피씨 스폰 시작
         StartDay();
+        StartCoroutine(npcSpawner.NpcSpawnCoroutine());
+
     }
 
 
@@ -124,6 +167,7 @@ public class DayManager : MonoBehaviour, ISavable
         morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
         afternoon.color = new Color(afternoon.color.r, afternoon.color.g, afternoon.color.b, 0f);
         evening.color = new Color(evening.color.r, evening.color.g, evening.color.b, 0f);
+        night.color = new Color(night.color.r, night.color.g, night.color.b, 0f);
     }
 
     /// <summary>
@@ -227,6 +271,11 @@ public class DayManager : MonoBehaviour, ISavable
 
         dayOrNight = DayAndNight.NIGHT;
         //Todo : 어두워지고 상점 문이 닫혀야함
+        
+        morning.color = new Color(1,1,1,0);
+        afternoon.color = new Color(1,1,1,0);
+        evening.color = new Color(1,1,1,0);
+        night.color = new Color(1,1,1,1);
     }
 
     /// <summary>

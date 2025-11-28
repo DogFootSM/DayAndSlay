@@ -22,11 +22,12 @@ public class NpcSpawner : MonoBehaviour
     void Start()
     {
         Init();
-
-        StartCoroutine(NpcSpawnCoroutine());
+        
+        //테스트시에만 활성화
+        //StartCoroutine(NpcSpawnCoroutine());
     }
 
-    IEnumerator NpcSpawnCoroutine()
+    public IEnumerator NpcSpawnCoroutine()
     {
         //낮될때마다 재실행 시켜줘야함
         while (DayManager.instance.dayOrNight == DayAndNight.DAY)

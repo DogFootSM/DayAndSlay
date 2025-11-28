@@ -20,7 +20,7 @@ public class StoreManager : InteractableObj
 
     public override void Interaction()
     {
-        //판매 현황을 넣던가 지우던가
+        DayManager.instance.OpenStore();
     }
     public override void UiOnOffMethod(Collision2D collision)
     {

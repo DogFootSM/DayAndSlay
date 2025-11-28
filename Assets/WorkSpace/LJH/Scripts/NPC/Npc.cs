@@ -46,7 +46,7 @@ public class Npc : MonoBehaviour
     public bool isSearchTableEnteredFirst = false;
 
     /// <summary>
-    /// TargetSeneorInNpc 따오기
+    /// TargetSensorInNpc 따오기
     /// </summary>
     /// <returns></returns>
     public TargetSensorInNpc GetSensor() => targetSensor;
@@ -203,7 +203,6 @@ public class Npc : MonoBehaviour
         Table[] tables = FindObjectsOfType<Table>();
         foreach (var table in tables)
         {
-            Debug.Log(table.name);
             if (table.CurItemData == wantItem)
             {
                 return table;
