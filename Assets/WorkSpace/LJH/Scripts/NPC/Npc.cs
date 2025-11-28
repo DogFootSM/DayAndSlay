@@ -206,11 +206,8 @@ public class Npc : MonoBehaviour
             Debug.Log(table.name);
             if (table.CurItemData == wantItem)
             {
-                Debug.Log("테이블 뒤져봤더니 원하던거 나옴");
-                Debug.Log($"물건 있는 테이블의 위치 {table.transform.position}");
                 return table;
             }
-            Debug.Log("테이블 뒤져봐도 원하는거 안뜸");
         }
         return null;
     }
