@@ -12,8 +12,11 @@ public class PlayerDeath : PlayerState
     }
 
     public override void Update()
-    {
-        // !IsDead -> StateChange(Idle); 
+    { 
+        if (!playerController.IsDead)
+        {
+            playerController.ChangeState(CharacterStateType.IDLE);
+        }
     }
     
 }

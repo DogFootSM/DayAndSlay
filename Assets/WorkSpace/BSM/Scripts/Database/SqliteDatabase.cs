@@ -22,7 +22,7 @@ public class SqliteDatabase
         string path = Path.Join(Application.streamingAssetsPath, dbFileName);
 
         dbConnection = new SqliteConnection("URI=file:" + path);
-        dbConnection.Open();
+        dbConnection.Open(); 
     }
 
     ~SqliteDatabase()
@@ -49,8 +49,7 @@ public class SqliteDatabase
             dbCommand.ExecuteNonQuery();
         }
     }
-
-
+    
     /// <summary>
     /// 캐릭터 데이터 테이블 생성
     /// </summary>

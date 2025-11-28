@@ -39,6 +39,15 @@ public class SystemWindowController : MonoBehaviour
     }
 
     /// <summary>
+    /// 시스템 창 오픈 같은 상호작용 키 입력 가능 여부 갱신
+    /// </summary>
+    /// <param name="isDead">플레이어 사망 상태</param>
+    public void CanInputKeyUpdate(bool isDead)
+    {
+        canInputKey = !isDead;
+    }
+    
+    /// <summary>
     /// 시스템 창 오픈
     /// </summary>
     /// <param name="systemType">시스템 창 종류</param>

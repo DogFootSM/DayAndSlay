@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Zenject;
 
@@ -12,7 +13,8 @@ public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
     [SerializeField] private GameObject QuitAskPanel;
-
+    [SerializeField] private SceneReference mainMenuScene;
+    
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
@@ -34,13 +36,14 @@ public class GameManager : MonoBehaviour
     public bool HasUnsavedChanges; //캐릭터의 변경 사항 유무
     public int ResolutionIndex; //현재 사용중인 해상도 드롭다운의 인덱스
     public int CurDayState = 1; //현재 진행중인 날짜의 낮, 밤 상태 (게임 시간 흐름에 따라 변화)
-
+    
+    
     private const int GWL_STYLE = -16;
     private const uint WS_POPUP = 0x80000000;
     private const uint WS_VISIBLE = 0x10000000;
     private const uint SWP_SHOWWINDOW = 0x0040;
     private const uint WS_OVERLAPPEDWINDOW = 0x00CF0000;
-
+    
     private SoundManager soundManager => SoundManager.Instance;
     private Coroutine borderlessCo;
 
@@ -228,9 +231,9 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 메인 화면 게임 종료
+    /// 유저 게임 환경 설정 데이터 저장
     /// </summary>
-    public void MainSceneConfirmQuit()
+    private void SaveConfig()
     {
         //현재 디스플레이 설정 정보 저장
         dataManager.SaveDisplayData(ResolutionIndex, windowMode, (int)Cursor.lockState);
@@ -240,7 +243,14 @@ public class GameManager : MonoBehaviour
             soundManager.GetMasterVolume(), soundManager.GetBgmVolume(), soundManager.GetSfxVolume(),
             soundManager.GetMasterMute(), soundManager.GetBgmMute(), soundManager.GetSfxMute()
         );
-        
+    }
+    
+    /// <summary>
+    /// 메인 화면 게임 종료
+    /// </summary>
+    public void MainSceneConfirmQuit()
+    {
+        SaveConfig();
         dataManager.SaveQuickSlotSetting();
         //TODO: 캐릭터 스탯 정보, 아이템 착용 정보, 스킬 정보, 인벤토리 정보 업데이트
 
@@ -252,14 +262,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void TitleSceneConfirmQuit()
     {
-        //현재 디스플레이 설정 정보 저장
-        dataManager.SaveDisplayData(ResolutionIndex, windowMode, (int)Cursor.lockState);
-
-        //현재 오디오 설정 정보 저장
-        dataManager.SaveAudioData(
-            soundManager.GetMasterVolume(), soundManager.GetBgmVolume(), soundManager.GetSfxVolume(),
-            soundManager.GetMasterMute(), soundManager.GetBgmMute(), soundManager.GetSfxMute()
-        );
+        SaveConfig();
         
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -267,6 +270,34 @@ public class GameManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    /// <summary>
+    /// 메인 메뉴 화면으로 이동 전 데이터 변경 사항 확인
+    /// </summary>
+    public void CheckMainMenu()
+    {
+        if (HasUnsavedChanges)
+        {
+            //변경된 사항 알림 UI Open
+            QuitAskPanel.SetActive(true);
+            QuitConfirm quitConfirm = QuitAskPanel.GetComponent<QuitConfirm>();
+            quitConfirm.CheckExitOrMainMenu(false);
+            return;
+        }
+
+        GotoMainMenu();
+    }
+    
+    /// <summary>
+    /// 메인 메뉴 씬으로 이동
+    /// </summary>
+    public void GotoMainMenu()
+    {
+        SaveConfig(); 
+        SceneManager.LoadScene(mainMenuScene.Name); 
+        PlayerRoot playerRoot = FindObjectOfType<PlayerRoot>();
+        Destroy(playerRoot.gameObject);
     }
     
     /// <summary>
@@ -279,6 +310,8 @@ public class GameManager : MonoBehaviour
         {
             //변경된 사항 알림 UI Open
             QuitAskPanel.SetActive(true);
+            QuitConfirm quitConfirm = QuitAskPanel.GetComponent<QuitConfirm>();
+            quitConfirm.CheckExitOrMainMenu(true);
             return false;
         }
 

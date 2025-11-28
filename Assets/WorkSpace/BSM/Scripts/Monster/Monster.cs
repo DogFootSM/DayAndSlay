@@ -65,7 +65,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
 
             if (go != null)
             {
-                player = go.GetComponent<PlayerController>();
+                player = go.GetComponentInChildren<PlayerController>();
             }
              
             if (player != null) break;
@@ -86,7 +86,7 @@ public class Monster : MonoBehaviour, IEffectReceiver
         if (isStunned) return;
         if (Input.GetKeyDown(KeyCode.G))
         {
-            player.TakeDamage(this, 0.1f);
+            player.TakeDamage(this, 1f);
         }
 
         if (IsMove)
