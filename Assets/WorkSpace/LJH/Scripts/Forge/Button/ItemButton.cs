@@ -48,10 +48,17 @@ public class ItemButton : MonoBehaviour
     //인수에서 인벤토리 집어넣어줘야할듯
     private bool HasIngredientCheck()
     {
-        return createButton.inventory.HasRequiredMaterials(itemData.ingredients_1, itemData.ingredients_1_Count) &&
-               createButton.inventory.HasRequiredMaterials(itemData.ingredients_2, itemData.ingredients_2_Count) &&
-               createButton.inventory.HasRequiredMaterials(itemData.ingredients_3, itemData.ingredients_3_Count) &&
-               createButton.inventory.HasRequiredMaterials(itemData.ingredients_4, itemData.ingredients_4_Count);
+        bool hasAllIngredients = createButton.inventory.HasRequiredMaterials(itemData.ingredients_1, itemData.ingredients_1_Count) &&
+                                 createButton.inventory.HasRequiredMaterials(itemData.ingredients_2, itemData.ingredients_2_Count) &&
+                                 createButton.inventory.HasRequiredMaterials(itemData.ingredients_3, itemData.ingredients_3_Count);
+
+        if (hasAllIngredients && itemData.ingredients_4 != 0)
+        {
+            hasAllIngredients = createButton.inventory.HasRequiredMaterials(itemData.ingredients_4, itemData.ingredients_4_Count);
+        }
+        
+        
+        return hasAllIngredients;
     }
 
 

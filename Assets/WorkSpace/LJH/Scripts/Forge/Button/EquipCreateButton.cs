@@ -21,5 +21,9 @@ public class EquipCreateButton : MonoBehaviour
     public void CreateItem()
     {
         inventory.AddItemToInventory(curSelectedItem);
+        inventory.RemoveItemFromInventory(curSelectedItem.ingredients_1, curSelectedItem.ingredients_1_Count);
+        inventory.RemoveItemFromInventory(curSelectedItem.ingredients_2, curSelectedItem.ingredients_2_Count);
+        inventory.RemoveItemFromInventory(curSelectedItem.ingredients_3, curSelectedItem.ingredients_3_Count);
+        inventory.RemoveItemFromInventory(curSelectedItem.ingredients_4, curSelectedItem.ingredients_4_Count);
     }
 }
