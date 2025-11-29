@@ -106,18 +106,15 @@ public class InventoryInteraction :
     /// <returns>필요한 아이템이 있으면 해당 슬롯을 반환, 없다면 Null을 반환</returns>
     public InventorySlot HasRequiredMaterials(int itemId, int requireCount)
     {
-        InventorySlot requireItemInSlot = null;
-
-        foreach (var slot in inventorySlots)
+        if (OwnedMaterialDict.ContainsKey(itemId))
         {
-            if (slot.CurSlotItem.ItemId == itemId && slot.ItemCount >= requireCount)
+            if (OwnedMaterialDict[itemId].ItemCount - requireCount >= 0)
             {
-                requireItemInSlot = slot;
-                break;
-            } 
+                return OwnedMaterialDict[itemId];
+            }
         }
-
-        return requireItemInSlot;
+        
+        return null;
     }
     
     /// <summary>
