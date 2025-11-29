@@ -43,14 +43,10 @@ public class InventoryInteraction :
     {
         base.Awake();
         saveManager.SavableRegister(this);
-        //SetSlotItemData();
-        //SetOwnedItemSet(); 
-        //equipButton.onClick.AddListener(Equip);
     }
 
     private void Start()
     {
-        //TODO: 테스트용으로 Start에서 호출
         SetSlotItemData();
         SetOwnedItemSet();
         equipButton.onClick.AddListener(Equip);
@@ -130,6 +126,7 @@ public class InventoryInteraction :
     /// <param name="collectedItem">습득 아이템 객체</param>
     public void AddItemToInventory(ItemData collectedItem)
     {
+        //중첩 가능한 재료 아이템을 보유중인 슬롯
         if (ownedItemSet.Contains(collectedItem.ItemId)
             && collectedItem.IsOverlaped)
         {
@@ -141,18 +138,22 @@ public class InventoryInteraction :
                 if (inventorySlots[i].CurSlotItem.ItemId == collectedItem.ItemId)
                 {
                     inventorySlots[i].AddItem(collectedItem);
+                    
+                    AddMaterialItemToDictionary(inventorySlots[i].CurSlotItem.ItemId, inventorySlots[i]);
                     //TODO: 아이템 습득 애니메이션 재생
                     return;
                 }
             }
         }
-
+        
+        //아이템을 가지고 있지 않는 첫 번째 슬롯
         var emptySlots = inventorySlots.FirstOrDefault(x => x.CurSlotItem == null);
 
         if (emptySlots != null)
         {
             emptySlots.AddItem(collectedItem);
             ownedItemSet.Add(collectedItem.ItemId);
+            AddMaterialItemToDictionary(collectedItem.ItemId, emptySlots);
             //TODO: 아이템 습득 애니메이션 재생
             return;
         }

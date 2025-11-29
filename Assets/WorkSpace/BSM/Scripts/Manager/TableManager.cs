@@ -121,7 +121,7 @@ public class TableManager : MonoBehaviour
         {
             targetTable.TakeItem(itemToRegister); 
         }
-        removeInventorySlot.RemoveItem();
+        removeInventorySlot.AllRemoveItem();
         OnPlayerExitRangeClosePanel();
     }
 
