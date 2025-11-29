@@ -37,7 +37,7 @@ public class NpcSpawner : MonoBehaviour
             int npcIndex = Random.Range(0, npcPreset.Count);
             npcList.Add(container.InstantiatePrefabForComponent<Npc>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
             
-            Npc npc = npcList[npcList.Count - 1];
+            Npc npc = npcList[^1];
             
             //npc의 타입 설정
             //GenderType gender = (GenderType)Random.Range(0, 2);

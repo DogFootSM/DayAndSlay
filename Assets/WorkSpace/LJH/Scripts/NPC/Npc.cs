@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Zenject;
@@ -193,8 +195,46 @@ public class Npc : MonoBehaviour
 
     private void SetupItemWish()
     {
-        wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
+        wantItemList = SelectItemListByDate();
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
+    }
+
+    private List<ItemData> SelectItemListByDate()
+    {
+        List<ItemData> temp_wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
+        List<ItemData> filteredList;
+        switch (IngameManager.instance.currentDay)
+        {
+            case 1 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier == 1)
+                    .ToList();
+                break;
+            
+            case 2 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier >= 1 && item.Tier <= 2)
+                    .ToList();
+                break;
+            
+            case 3 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier >= 1 && item.Tier <= 3)
+                    .ToList();
+                break;
+            
+            case 4 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier >= 1 && item.Tier <= 4)
+                    .ToList();
+                break;
+            
+            default:
+                filteredList = temp_wantItemList;
+                break;
+        }
+
+        return filteredList;
     }
 
 

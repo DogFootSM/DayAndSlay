@@ -9,7 +9,7 @@ public class IngameManager : MonoBehaviour
 {
     public static IngameManager instance;
 
-    public int currentDay;
+    public int currentDay = 1;
     
     [SerializeField] private Button upkeepButton;
     [SerializeField] private GameObject upkeepUI;
