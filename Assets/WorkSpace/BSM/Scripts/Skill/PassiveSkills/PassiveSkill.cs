@@ -160,7 +160,6 @@ public abstract class PassiveSkill : SkillFactory
     protected void TeleportCooldownBuff(float baseFactor, float levelFactor)
     {
         float skillLevelPerStats = baseFactor + (skillNode.CurSkillLevel - 1) * levelFactor;
-        //플레이어 모델에 추가해야함
         skillNode.PlayerModel.UpdateTeleportCoolDown(skillLevelPerStats);
     }
     
