@@ -13,7 +13,7 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private NpcSpawner npcSpawner;
     
     [SerializeField] private Image morning;
-    [SerializeField] private Image afternoon;
+    [SerializeField] private Image day;
     [SerializeField] private Image evening;
     [SerializeField] private Image night;
 
@@ -32,7 +32,7 @@ public class DayManager : MonoBehaviour, ISavable
     [Inject] SqlManager sqlManager;
     [Inject] SaveManager saveManager;
 
-    private bool isAfternoonStarted = false;
+    private bool isdayStarted = false;
     private bool isEveningStarted = false;
     private bool isNightStarted = false;
 
@@ -53,6 +53,38 @@ public class DayManager : MonoBehaviour, ISavable
 
     public DayAndNight GetDayOrNight() => dayOrNight;
 
+    /// <summary>
+    /// 아침,낮,밤 설정
+    /// </summary>
+    /// <param name="dn">DayAndNight enum값</param>
+    public void SetDayOrNight(DayAndNight dn)
+    {
+        SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
+
+        switch (dn)
+        {
+            case DayAndNight.MORNING:
+                morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
+                break;
+            case DayAndNight.DAY:
+                day.color = new Color(day.color.r, day.color.g, day.color.b, 1f);
+                break;
+            case DayAndNight.NIGHT:
+                night.color = new Color(night.color.r, night.color.g, night.color.b, 1f);
+                break;
+        }
+
+        dayOrNight = dn;
+    }
+    
+    private void SetAllAlphaToZero()
+    {
+        morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 0f);
+        day.color = new Color(day.color.r, day.color.g, day.color.b, 0f);
+        evening.color = new Color(evening.color.r, evening.color.g, evening.color.b, 0f);
+        night.color = new Color(night.color.r, night.color.g, night.color.b, 0f);
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -68,7 +100,7 @@ public class DayManager : MonoBehaviour, ISavable
 
     private void Start()
     {
-        isMorning = true;
+        StartMorning();
         UpdateClockDisplay(8, 0);
     }
 
@@ -146,6 +178,15 @@ public class DayManager : MonoBehaviour, ISavable
         StartDay();
     }
 
+    /// <summary>
+    /// 저장 및 던젼 종료시 호출
+    /// </summary>
+    public void StartMorning()
+    {
+        SetDayOrNight(DayAndNight.MORNING);
+        isMorning = true;
+    }
+
 
     /// <summary>
     /// Method for StartDay
@@ -153,21 +194,13 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
-        dayOrNight = DayAndNight.DAY;
+        SetDayOrNight(DayAndNight.DAY);
 
         if (timeCoroutine == null)
         {
             timeCoroutine = StartCoroutine(TimeCoroutine());
         }
         //Todo : 밝아지고 상점 문이 열려야함
-
-
-        //오전, 오후, 저녁 그림 초기값 세팅
-
-        morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
-        afternoon.color = new Color(afternoon.color.r, afternoon.color.g, afternoon.color.b, 0f);
-        evening.color = new Color(evening.color.r, evening.color.g, evening.color.b, 0f);
-        night.color = new Color(night.color.r, night.color.g, night.color.b, 0f);
     }
 
     /// <summary>
@@ -199,15 +232,15 @@ public class DayManager : MonoBehaviour, ISavable
                 UpdateClockDisplay(currentHour, currentMinute);
             }
 
-            if (!isAfternoonStarted && elapsedGameTime >= DefaultDayCount * 2 / 3f)
+            if (!isdayStarted && elapsedGameTime >= DefaultDayCount * 2 / 3f)
             {
-                StartCoroutine(FadeOutCoroutine(morning, afternoon));
-                isAfternoonStarted = true;
+                StartCoroutine(FadeOutCoroutine(morning, day));
+                isdayStarted = true;
             }
 
             if (!isEveningStarted && elapsedGameTime >= DefaultDayCount - (DefaultDayCount * 0.01f))
             {
-                StartCoroutine(FadeOutCoroutine(afternoon, evening));
+                StartCoroutine(FadeOutCoroutine(day, evening));
                 isEveningStarted = true;
             }
 
@@ -269,11 +302,11 @@ public class DayManager : MonoBehaviour, ISavable
             timeCoroutine = null;
         }
 
-        dayOrNight = DayAndNight.NIGHT;
+        SetDayOrNight(DayAndNight.NIGHT);
         //Todo : 어두워지고 상점 문이 닫혀야함
         
         morning.color = new Color(1,1,1,0);
-        afternoon.color = new Color(1,1,1,0);
+        day.color = new Color(1,1,1,0);
         evening.color = new Color(1,1,1,0);
         night.color = new Color(1,1,1,1);
     }
