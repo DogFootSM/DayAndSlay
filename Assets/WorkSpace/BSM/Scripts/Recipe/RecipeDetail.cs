@@ -23,6 +23,13 @@ public class RecipeDetail : MonoBehaviour
         Init();
     }
 
+    private void OnDisable()
+    {
+        ItemNameText.gameObject.SetActive(false);
+        ItemImage.gameObject.SetActive(false);
+        ReturnRecipeMaterialPool();
+    }
+
     /// <summary>
     /// 재료 레시피 풀 초기화
     /// </summary>
@@ -57,6 +64,8 @@ public class RecipeDetail : MonoBehaviour
     public void UpdateRecipeDetail(ItemData itemData)
     {
         validMaterialIds.Clear();
+        ItemNameText.gameObject.SetActive(true);
+        ItemImage.gameObject.SetActive(true);
         ItemNameText.text = itemData.Name;
         ItemImage.sprite = itemData.ItemImage;
 
