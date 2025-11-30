@@ -11,20 +11,17 @@ public class NpcSpawner : MonoBehaviour
     private Vector3 npcSpawnPos;
 
     [Header("NPC가 물건을 구매할 의향 있게 태어나는 확률 1 / npcBuyProbability")]
-    [SerializeField] float npcBuyProbability = 3f;
+    [SerializeField] private float npcBuyProbability = 3f;
 
-    private float npcSpawnDelay = 5f;
+    [SerializeField] private float npcSpawnDelay = 5f;
     private WaitForSeconds delayTime;
 
     [Inject]
     private List<Npc> npcPreset = new List<Npc>();
     private List<Npc> npcList = new List<Npc>();
-    void Start()
+    private void Start()
     {
         Init();
-        
-        //테스트시에만 활성화
-        //StartCoroutine(NpcSpawnCoroutine());
     }
 
     public IEnumerator NpcSpawnCoroutine()
