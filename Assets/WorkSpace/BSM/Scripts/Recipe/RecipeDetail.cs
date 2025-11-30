@@ -15,7 +15,7 @@ public class RecipeDetail : MonoBehaviour
     [SerializeField] private GameObject detailPanel;
     
     private Queue<GameObject> materialPool = new Queue<GameObject>();
-    private List<int> validMaterialIds = new List<int>();
+    private List<(int,int)> validMaterialIds = new List<(int,int)>();
     private ItemDatabaseManager itemDatabase => ItemDatabaseManager.instance;
     
     private void Awake()
@@ -62,22 +62,22 @@ public class RecipeDetail : MonoBehaviour
 
         if (itemData.ingredients_1 != 0)
         {
-            validMaterialIds.Add(itemData.ingredients_1);
+            validMaterialIds.Add((itemData.ingredients_1, itemData.ingredients_1_Count));
         }
         
         if (itemData.ingredients_2 != 0)
         {
-            validMaterialIds.Add(itemData.ingredients_2);
+            validMaterialIds.Add((itemData.ingredients_2, itemData.ingredients_2_Count));
         }
         
         if (itemData.ingredients_3 != 0)
         {
-            validMaterialIds.Add(itemData.ingredients_3);
+            validMaterialIds.Add((itemData.ingredients_3, itemData.ingredients_3_Count));
         }
         
         if (itemData.ingredients_4 != 0)
         {
-            validMaterialIds.Add(itemData.ingredients_4);
+            validMaterialIds.Add((itemData.ingredients_4, itemData.ingredients_4_Count));
         } 
         
         SetRecipeMaterial(validMaterialIds.Count);
@@ -91,12 +91,12 @@ public class RecipeDetail : MonoBehaviour
     {
         for (int i = 0; i < validCount; i++)
         {
-            int requestMaterialId = validMaterialIds[i];
+            int requestMaterialId = validMaterialIds[i].Item1;
 
             ItemData recipeMaterialData = itemDatabase.GetItemByID(requestMaterialId);
 
             RecipeMaterial recipeMaterial = GetRecipeMaterialPool().GetComponent<RecipeMaterial>();
-            recipeMaterial.SetMaterialData(recipeMaterialData);
+            recipeMaterial.SetMaterialData(recipeMaterialData, validMaterialIds[i].Item2);
             recipeMaterial.gameObject.SetActive(true);
         } 
     }
