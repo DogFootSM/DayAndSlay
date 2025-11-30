@@ -630,9 +630,9 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <summary>
     /// PlayerStat 데이터 저장
     /// </summary>
-    public void Save(SqlManager sqlManager)
+    public bool Save(SqlManager sqlManager)
     { 
-        sqlManager.UpdateCharacterDataColumn(
+        return sqlManager.UpdateCharacterDataColumn(
             new[]
             {
                 sqlManager.GetCharacterColumn(CharacterDataColumns.EXP),
@@ -659,9 +659,6 @@ public class PlayerModel : MonoBehaviour, ISavable
             },
             "slot_id",
             $"{dataManager.SlotId}"
-        );
-
-
-        Debug.Log("스탯 저장 진행");
+        ); 
     }
 }

@@ -102,9 +102,9 @@ public class SqlManager : IInitializable
     /// <param name="columnValue">업데이트 값</param>
     /// <param name="condition">업데이트 조건</param>
     /// <param name="conditionValue">업데이트 조건 값</param>
-    public void UpdateCharacterDataColumn(string[] columnName, string[] columnValue, string condition, string conditionValue)
+    public bool UpdateCharacterDataColumn(string[] columnName, string[] columnValue, string condition, string conditionValue)
     {
-        sqlDatabase.CharacterUpdateTable(columnName, columnValue, condition, conditionValue);
+        return sqlDatabase.CharacterUpdateTable(columnName, columnValue, condition, conditionValue);
     }
 
     /// <summary>
@@ -122,9 +122,9 @@ public class SqlManager : IInitializable
     /// </summary>
     /// <param name="columnName">변경할 컬러명</param>
     /// <param name="columnValue">변경할 컬럼값</param>
-    public void UpsertItemDataColumn(string[] columnName, string[] columnValue)
+    public bool UpsertItemDataColumn(string[] columnName, string[] columnValue)
     {
-        sqlDatabase.ItemUpsertTable(columnName, columnValue);
+        return sqlDatabase.ItemUpsertTable(columnName, columnValue);
     }
 
     /// <summary>
@@ -164,10 +164,10 @@ public class SqlManager : IInitializable
     /// <param name="columnValue">업데이트 컬럼 리스트 데이터 값</param>
     /// <param name="condition">업데이트 진행할 조건, 캐릭터 슬롯 ID, 스킬 ID</param>
     /// <param name="conditionValue">슬롯의 Number, 업데이트 할 스킬 ID</param>
-    public void UpdateSkillDataColumn(string[] column, string[] columnValue, string[] condition,
+    public bool UpdateSkillDataColumn(string[] column, string[] columnValue, string[] condition,
         string[] conditionValue)
     {
-        sqlDatabase.SkillUpdateTable(column, columnValue, condition, conditionValue);   
+        return sqlDatabase.SkillUpdateTable(column, columnValue, condition, conditionValue);   
     }
     
 }

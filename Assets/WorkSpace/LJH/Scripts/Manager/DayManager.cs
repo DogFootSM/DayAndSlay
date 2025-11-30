@@ -233,9 +233,9 @@ public class DayManager : MonoBehaviour, ISavable
     /// ≥∑π„ ¿˙¿Â
     /// </summary>
     /// <param name="sqlManager"></param>
-    public void Save(SqlManager sqlManager)
+    public bool Save(SqlManager sqlManager)
     {
-        sqlManager.UpdateCharacterDataColumn
+        return sqlManager.UpdateCharacterDataColumn
         (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.LAST_PLAYED_TIME) },
             new[] { $"{dayOrNight}" },
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),

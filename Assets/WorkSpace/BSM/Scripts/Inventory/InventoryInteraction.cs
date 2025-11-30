@@ -382,11 +382,13 @@ public class InventoryInteraction :
     /// <summary>
     /// 아이템 데이터 저장
     /// </summary>
-    public void Save(SqlManager sqlManager)
+    public bool Save(SqlManager sqlManager)
     {
         //(ItemID, SlotID, ItemAmount, InventorySlotId, IsEquip)
         List<(string, string, string, string, int)> items = new();
 
+        bool success = true;
+        
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             if (inventorySlots[i].CurSlotItem != null)
@@ -399,7 +401,7 @@ public class InventoryInteraction :
 
         for (int i = 0; i < items.Count; i++)
         {
-            sqlManager.UpsertItemDataColumn(
+            bool result = sqlManager.UpsertItemDataColumn(
                 new[]
                 {
                     sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_ID),
@@ -417,7 +419,15 @@ public class InventoryInteraction :
                     $"{items[i].Item5}" //장비 착용 여부
                 }
             );
+
+            if (!result)
+            {
+                success = false;
+                break;
+            } 
         }
+
+        return success;
     }
 
 }
