@@ -42,6 +42,7 @@ public class SaveManager : MonoBehaviour
             if (!savable.Save(sqlManager))
             {
                 success = false;
+                break;
             } 
         }
   
