@@ -318,7 +318,7 @@ public class DayManager : MonoBehaviour, ISavable
     public bool Save(SqlManager sqlManager)
     {
         return sqlManager.UpdateCharacterDataColumn
-        (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.LAST_PLAYED_TIME) },
+        (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.GOLD) },
             new[] { $"{dayOrNight}" },
             sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
             $"{dataManager.SlotId}"

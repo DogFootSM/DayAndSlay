@@ -12,7 +12,10 @@ public class CharacterSlot : BaseUI
 {
     [HideInInspector] public int slotId;
     [SerializeField] private List<Image> characterSlotImages;
-
+    [SerializeField] private TextMeshProUGUI currentDayText;
+    [SerializeField] private TextMeshProUGUI debtText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    
     [Inject] private SqlManager sqlManager;
     [Inject] private CanvasManager canvasManager;
     [Inject] private DataManager dataManager;
@@ -24,7 +27,21 @@ public class CharacterSlot : BaseUI
     private CharacterSlotController characterSlotController;
 
     private int isCreate;
+    private int currentDay;
+    private int debt;
+    private int level;
 
+    //0  없음
+    //1 ~ 20만 빚이 조금 있음
+    //20만 1 ~ 40만 빚이 있음
+    //40만 1 ~ 60만 빚이 조금 많음
+    //60만 1 ~ 80만 빚이 많음
+    //80 ~ 빚이 매우 많음
+    private string[] debtRange = new string[]
+    {
+        "빚이 조금 있음", "빚이 있음", "빚이 조금 많음", "빚이 많음", "빚이 매우 많음",
+    };
+    
     private void Start()
     {
         Bind();
@@ -68,7 +85,7 @@ public class CharacterSlot : BaseUI
             sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),
             sqlManager.GetCharacterColumn(CharacterDataColumns.BODY_SPRITE),
             sqlManager.GetCharacterColumn(CharacterDataColumns.SHIRT_SPRITE),
-            sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE)
+            sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE), 
         }, new string[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
             new string[] { $"{slotId}" }, 
             null);
@@ -81,6 +98,37 @@ public class CharacterSlot : BaseUI
                     Resources.Load<Sprite>($"Preset/{(CharacterPresetType)i}/{dataReader.GetString(i)}");
             }
         }
+        
+        dataReader = sqlManager.ReadDataColumn(new[]
+            {
+                sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTDAY),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.DEBT),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.CHAR_LEVEL),
+            }, new string[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID)}, 
+            new string[] { $"{slotId}" }, 
+            null);
+
+        while (dataReader.Read())
+        {
+            currentDay = dataReader.GetInt32(0);
+            debt = dataReader.GetInt32(1);
+            level = dataReader.GetInt32(2);
+        }
+        
+        
+
+        if (debt == 0)
+        {
+            debtText.text = "빚이 없음";
+        }
+        else
+        {
+            int index = (debt / 200000) > 4 ? 4 : debt / 200000;
+            debtText.text = debtRange[index];
+        }
+        
+        currentDayText.text = $"{currentDay}일차"; 
+        levelText.text = $"Lv.{level}"; 
     }
 
     /// <summary>

@@ -7,58 +7,33 @@ using UnityEngine.UI;
 
 public class IngameManager : MonoBehaviour
 {
-    public static IngameManager instance;
-
-    private int currentDay = 1;
-    
     [SerializeField] private Button upkeepButton;
     [SerializeField] private GameObject upkeepUI;
     [SerializeField] private GameObject taxUI;
-
-
     [SerializeField] private TextMeshProUGUI dayText;
     
-    //현재 며칠차인지
-    public int GetCurrentDay() => currentDay;
-
-    public void AddDay()
-    {
-        currentDay++;
-        dayText.text = currentDay.ToString();
-    }
-
-    public bool IsTaxDay() => currentDay % 5 == 0;
-    public void OnTaxUI() => taxUI.SetActive(true);
-    
-    
+    public static IngameManager instance;
     public StageNum curStage;
-
-    /// <summary>
-    /// 테스트용 1억 골드인 상태로 시작
-    /// </summary>
-    [SerializeField] private int gold;
-    public int GetCurrentGold() => gold;
-    public void SetGold(int gold) => this.gold += gold;
     
-
-    private int money;
-
+    private int gold = 0;
+    private int currentDay = 1;
+    
     /// <summary>
     /// 빚
     /// </summary>
-    public int debt;
+    private int debt;
     
     /// <summary>
     /// 이자
     /// </summary>
-    public int interest;
+    private int interest;
     
     /*
     /// <summary>
     /// 시설물 이용료(DLC)
     /// </summary>
     //public int facilityCost;
-    
+
     /// <summary>
     /// 인건비 (DLC)
     /// </summary>
@@ -68,6 +43,62 @@ public class IngameManager : MonoBehaviour
     /// 총 유지비
     /// </summary>
     public int upkeepCost;
+    
+    private void Awake()
+    {
+        SingletonInit();
+    }
+
+    private void Start()
+    {
+        upkeepButton.onClick.AddListener(UpKeepUIOnOff);
+        SetUpKeep();
+    }
+    
+    /// <summary>
+    /// 싱글톤 초기화
+    /// </summary>
+    private void SingletonInit()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+        DontDestroyOnLoad(gameObject);
+    }
+    
+    /// <summary>
+    /// 게임 저장 시
+    /// 현재 날짜에서 다음 날짜로 증가
+    /// </summary>
+    public void AddDay()
+    {
+        currentDay++;
+        dayText.text = currentDay.ToString();
+    }
+    
+    /// <summary>
+    /// 현재 며칠차인지
+    /// </summary>
+    /// <returns></returns>
+    public int GetCurrentDay() => currentDay;
+    
+    /// <summary>
+    /// DB에서 불러온 날짜 설정
+    /// </summary>
+    /// <param name="day">현재까지 진행한 날짜</param>
+    public void SetCurrentDay(int day) => currentDay = day;
+    
+    public bool IsTaxDay() => currentDay % 5 == 0;
+    public void OnTaxUI() => taxUI.SetActive(true);
+    
+    public int GetCurrentGold() => gold;
+    public void SetGold(int gold) => this.gold += gold;
 
     public void PayTax(int value)
     {
@@ -78,21 +109,8 @@ public class IngameManager : MonoBehaviour
         debt -= change;
         
         Debug.Log($"이후 빚 {debt}");
-        
     }
     
-    private void Awake()
-    {
-        SingletonInit();
-    }
-
-    private void Start()
-    {
-        upkeepButton.onClick.AddListener(UpKeepUIOnOff);
-        dayText.text = currentDay.ToString();
-        SetUpKeep();
-    }
-
     private void UpKeepUIOnOff()
     {
         UpkeepPopUp popup = upkeepUI.GetComponent<UpkeepPopUp>();
@@ -107,22 +125,7 @@ public class IngameManager : MonoBehaviour
             popup.PlayOpen();
         }
     }
-
-
-    private void SingletonInit()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        
-        DontDestroyOnLoad(gameObject);
-    }
-
+ 
     public void SetStage(StageNum stage) 
     {
         curStage = stage;
@@ -141,9 +144,8 @@ public class IngameManager : MonoBehaviour
     /// <summary>
     /// 유지비 차감 함수(시스템에서 호출)
     /// </summary>
-    public void PayWeeklyUpKeepCost() => money -= UpKeepCostCalc();
-
-
+    public void PayWeeklyUpKeepCost() => gold -= UpKeepCostCalc();
+    
     public void SetUpKeep()
     { 
         interest = GetInterest();    
@@ -173,6 +175,14 @@ public class IngameManager : MonoBehaviour
         }
     }
 
-
+    
+    /// <summary>
+    /// DB에서 불러온 Debt 값 초기화
+    /// </summary>
+    /// <param name="debt"></param>
+    public void SetDebt(int debt)
+    {
+        this.debt = debt;
+    }
 
 }

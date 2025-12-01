@@ -260,7 +260,12 @@ public class PlayerModel : MonoBehaviour, ISavable
     //TODO: 사용 방법 생각
     public float CriticalPer;
     public float CriticalDamage;
-    
+
+    #region InGameManagerData
+    private int gold;
+    private int currentDay;
+    private int debt;
+    #endregion
     
     private float moveSpeedFactor;
     private float attackSpeedFactor;
@@ -272,6 +277,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     public CharacterWeaponType ModelCurWeaponType => curWeaponType;
 
     private WeaponTierType curWeaponTier;
+    private IngameManager ingameManagerInstance => IngameManager.instance;
     
     private void Awake()
     {
@@ -305,7 +311,10 @@ public class PlayerModel : MonoBehaviour, ISavable
                 sqlManager.GetCharacterColumn(CharacterDataColumns.STRENGTH),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.AGILITY),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.INTELLIGENCE),
-                sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT)
+                sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.GOLD),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTDAY),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.DEBT)
             },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new[] { $"{slotId}" },
@@ -321,6 +330,10 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.baseIntelligence = dataReader.GetFloat(5);
             playerStats.skillPoints = dataReader.GetInt32(6);
             
+            gold = dataReader.GetInt32(7);
+            currentDay = dataReader.GetInt32(8);
+            debt = dataReader.GetInt32(9);
+            
             //기본값들로 변하지 않을 값
             playerStats.baseMoveSpeed = 3;
             playerStats.baseAttackSpeed = 0.5f;
@@ -332,7 +345,16 @@ public class PlayerModel : MonoBehaviour, ISavable
             playerStats.baseCriticalPer = 0f;
             playerStats.baseCriticalDamage = 1.5f;
         }
+         
+        //DB에서 불러온 Gold 정보 InGameManager에 설정
+        ingameManagerInstance.SetGold(gold);
         
+        //DB에서 불러온 Current Day정보 InGameManager에 설정
+        ingameManagerInstance.SetCurrentDay(currentDay);
+        
+        //DB에서 불러온 Debt 정보 InGameManager에 설정
+        ingameManagerInstance.SetDebt(debt);
+         
         playerStats.FinalCriticalDamage = playerStats.baseCriticalDamage;
         MoveSpeed = GetFactoredMoveSpeed();
         AttackSpeed = GetFactorAttackSpeed();
