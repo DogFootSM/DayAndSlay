@@ -567,8 +567,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc61bed85ae8164b89e8f2401d4ccb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  townScene:
+    sceneAsset: {fileID: 102900000, guid: 2cbfc74638e695246851a0e6e4a19bae, type: 3}
+    path: Assets/WorkSpace/Release/Scene/Release_TownScene.unity
+    isDirty: 0
+  loadingScene:
+    sceneAsset: {fileID: 102900000, guid: 5a649dfc05d391d41b767179f37aaae2, type: 3}
+    path: Assets/WorkSpace/LJH/Scene/LoadingScene.unity
+    isDirty: 0
   confirmButton: {fileID: 109805599}
-  playerRoot: {fileID: 2868245122426560334}
+  playerRoot: {fileID: 0}
   playerController: {fileID: 4126903575924666333}
 --- !u!1 &1427116228
 GameObject:
@@ -3570,7 +3578,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2868245122426560335}
-  - component: {fileID: 2868245122426560334}
   m_Layer: 15
   m_Name: PlayerRoot
   m_TagString: Player
@@ -3595,18 +3602,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2868245122426560334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2868245122426560333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08ba038d592db7044a61b31efd309b92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2903087921821663001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4821,7 +4816,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 704b224c8b7420a4c87fd8c8d3eb9f42, type: 2}
+  m_Sprite: {fileID: -37720027, guid: 82340e92652c7264a8e3ec48ab8bb6b7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5168,7 +5163,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ab8562652c44fa04392ca19846f5d687, type: 2}
+  m_Sprite: {fileID: 1915208073, guid: a7180231546eb6f4393a00402a990fa6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5349,6 +5344,7 @@ GameObject:
   - component: {fileID: 1650009201344869912}
   - component: {fileID: 4214345111700395151}
   - component: {fileID: 3363357325521931514}
+  - component: {fileID: 1969593198646906290}
   m_Layer: 15
   m_Name: Player_ver_0.4
   m_TagString: Player
@@ -5721,6 +5717,18 @@ MonoBehaviour:
   playerModel: {fileID: 4126903575924666332}
   playerController: {fileID: 4126903575924666333}
   castingBar: {fileID: 1591300045087148224}
+--- !u!114 &1969593198646906290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126903575924666329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ba038d592db7044a61b31efd309b92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4126903576020535778
 GameObject:
   m_ObjectHideFlags: 0

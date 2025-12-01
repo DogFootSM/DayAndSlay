@@ -30,6 +30,7 @@ public class RecipeElement : MonoBehaviour
     {
         layoutElement = GetComponent<LayoutElement>(); 
         expandAniHash = Animator.StringToHash("isExpand");
+        recipeAnimator.keepAnimatorStateOnDisable = true;
     }
 
     private void OnEnable()
@@ -37,6 +38,7 @@ public class RecipeElement : MonoBehaviour
         RecipeObserver.OnChangedMainCategory += UpdateVisibilityByMainCategory;
         RecipeObserver.OnChangedSubCategory += UpdateVisibilityBySubCategory;
         RecipeObserver.OnSearchItemName += UpdateVisibilityBySearch;
+        recipeAnimator.Rebind();
     }
 
     private void OnDisable()

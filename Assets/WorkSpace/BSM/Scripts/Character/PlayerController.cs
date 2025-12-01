@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (isDead) return;
-  
+
         KeyInput();
         characterStates[(int)curState].Update();   
         InventoryToTableItem();
@@ -368,7 +368,7 @@ public class PlayerController : MonoBehaviour
         _bodyObject.SetActive(true);
         _cemeteryObject.SetActive(false);
         playerModel.CurHp = playerModel.MaxHp;
-        systemWindowController.CanInputKeyUpdate(true);
+        systemWindowController.CanInputKeyUpdate(isDead);
         gameOverCanvas.SetActive(false);
     }
     

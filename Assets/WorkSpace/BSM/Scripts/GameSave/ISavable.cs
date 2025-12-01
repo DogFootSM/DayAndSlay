@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ISavable
 {
-    public void Save(SqlManager sqlManager);
+    public bool Save(SqlManager sqlManager);
 }

@@ -43,14 +43,10 @@ public class InventoryInteraction :
     {
         base.Awake();
         saveManager.SavableRegister(this);
-        //SetSlotItemData();
-        //SetOwnedItemSet(); 
-        //equipButton.onClick.AddListener(Equip);
     }
 
     private void Start()
     {
-        //TODO: 테스트용으로 Start에서 호출
         SetSlotItemData();
         SetOwnedItemSet();
         equipButton.onClick.AddListener(Equip);
@@ -110,20 +106,15 @@ public class InventoryInteraction :
     /// <returns>필요한 아이템이 있으면 해당 슬롯을 반환, 없다면 Null을 반환</returns>
     public InventorySlot HasRequiredMaterials(int itemId, int requireCount)
     {
-        InventorySlot requireItemInSlot = null;
-
-        foreach (var slot in inventorySlots)
+        if (OwnedMaterialDict.ContainsKey(itemId))
         {
-            if (slot.CurSlotItem == null) continue;
-            
-            if (slot.CurSlotItem.ItemId == itemId && slot.ItemCount >= requireCount)
+            if (OwnedMaterialDict[itemId].ItemCount - requireCount >= 0)
             {
-                requireItemInSlot = slot;
-                break;
-            } 
+                return OwnedMaterialDict[itemId];
+            }
         }
-
-        return requireItemInSlot;
+        
+        return null;
     }
     
     /// <summary>
@@ -132,6 +123,7 @@ public class InventoryInteraction :
     /// <param name="collectedItem">습득 아이템 객체</param>
     public void AddItemToInventory(ItemData collectedItem)
     {
+        //중첩 가능한 재료 아이템을 보유중인 슬롯
         if (ownedItemSet.Contains(collectedItem.ItemId)
             && collectedItem.IsOverlaped)
         {
@@ -143,18 +135,22 @@ public class InventoryInteraction :
                 if (inventorySlots[i].CurSlotItem.ItemId == collectedItem.ItemId)
                 {
                     inventorySlots[i].AddItem(collectedItem);
+                    
+                    AddMaterialItemToDictionary(inventorySlots[i].CurSlotItem.ItemId, inventorySlots[i]);
                     //TODO: 아이템 습득 애니메이션 재생
                     return;
                 }
             }
         }
-
+        
+        //아이템을 가지고 있지 않는 첫 번째 슬롯
         var emptySlots = inventorySlots.FirstOrDefault(x => x.CurSlotItem == null);
 
         if (emptySlots != null)
         {
             emptySlots.AddItem(collectedItem);
             ownedItemSet.Add(collectedItem.ItemId);
+            AddMaterialItemToDictionary(collectedItem.ItemId, emptySlots);
             //TODO: 아이템 습득 애니메이션 재생
             return;
         }
@@ -386,11 +382,13 @@ public class InventoryInteraction :
     /// <summary>
     /// 아이템 데이터 저장
     /// </summary>
-    public void Save(SqlManager sqlManager)
+    public bool Save(SqlManager sqlManager)
     {
         //(ItemID, SlotID, ItemAmount, InventorySlotId, IsEquip)
         List<(string, string, string, string, int)> items = new();
 
+        bool success = true;
+        
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             if (inventorySlots[i].CurSlotItem != null)
@@ -403,7 +401,7 @@ public class InventoryInteraction :
 
         for (int i = 0; i < items.Count; i++)
         {
-            sqlManager.UpsertItemDataColumn(
+            bool result = sqlManager.UpsertItemDataColumn(
                 new[]
                 {
                     sqlManager.GetCharacterItemColumn(CharacterItemDataColumns.ITEM_ID),
@@ -421,7 +419,15 @@ public class InventoryInteraction :
                     $"{items[i].Item5}" //장비 착용 여부
                 }
             );
+
+            if (!result)
+            {
+                success = false;
+                break;
+            } 
         }
+
+        return success;
     }
 
 }

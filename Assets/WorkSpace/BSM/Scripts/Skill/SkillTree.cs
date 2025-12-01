@@ -214,20 +214,30 @@ public class SkillTree : MonoBehaviour, ISavable
     /// <summary>
     /// 스킬 데이터 저장
     /// </summary>
-    public void Save(SqlManager sqlManager)
+    public bool Save(SqlManager sqlManager)
     {
+        bool success = true;
+        
         for (int i = 0; i < allskillNodes.Count; i++)
         {
             int lockState = allskillNodes[i].UnLocked ? 1 : 0;
             
-            sqlManager.UpdateSkillDataColumn
+            bool result = sqlManager.UpdateSkillDataColumn
             (
                 new[] {"skill_level", "skill_unlocked"},
                 new[] { $"{allskillNodes[i].CurSkillLevel}", $"{lockState}"},
                 new[] { "slot_id", "skill_id"},
                 new[] { $"{dataManager.SlotId}", allskillNodes[i].skillData.SkillId}
             );
+
+            if (!result)
+            {
+                success = false;
+                break;
+            } 
         }
+        
+        return success;
     }
 
     /// <summary>

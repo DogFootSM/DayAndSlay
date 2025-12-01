@@ -33,14 +33,25 @@ public class SaveManager : MonoBehaviour
     /// <summary>
     /// 각각의 데이터 저장 로직 호출
     /// </summary>
-    public void GameDataSave()
+    public bool GameDataSave()
     {
+        bool success = true;
+        
         foreach (var savable in savables)
         {
-            savable.Save(sqlManager);
+            if (!savable.Save(sqlManager))
+            {
+                success = false;
+                break;
+            } 
         }
-
-        gameManager.HasUnsavedChanges = false;
+  
+        if (success)
+        {
+            gameManager.HasUnsavedChanges = false;
+        } 
+        
+        return success;
     }
  
 }

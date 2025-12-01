@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
 using Zenject;
 
 public class GameSaveHandler : MonoBehaviour
@@ -12,6 +10,7 @@ public class GameSaveHandler : MonoBehaviour
     [SerializeField] private SavePromptUI savePromptUI;
     [SerializeField] private Image saveDimmedImage;
     [SerializeField] private GameObject blinkText;
+    [SerializeField] private GameObject saveFailAlert;
     
     [Inject] private SaveManager saveManager;
     
@@ -40,8 +39,9 @@ public class GameSaveHandler : MonoBehaviour
         {
             saveFadeCo = StartCoroutine(GameSaveFadeRoutine());
         } 
+        
     }
-    
+ 
     /// <summary>
     /// 페이드 인, 아웃 코루틴
     /// </summary>
@@ -50,6 +50,8 @@ public class GameSaveHandler : MonoBehaviour
     {
         float elapsedTime = 0;
         float hideProgress = 1.5f;
+        
+        saveDimmedImage.gameObject.SetActive(true);
         
         //FadeOut
         while (elapsedTime < hideProgress)
@@ -62,9 +64,9 @@ public class GameSaveHandler : MonoBehaviour
         
         blinkText.SetActive(true); 
         
-        //SaveManager의 저장 로직 호출
-        saveManager.GameDataSave();
-        //TODO: Save 호출 필요, Wait으로 기다리는게 아닌 async로 기다리기?
+        //SaveManager의 저장 로직 호출 및 저장 결과 반환
+        bool saveSuccess = saveManager.GameDataSave();
+        
         yield return WaitCache.GetWait(2f);
         
         elapsedTime = 1.5f;
@@ -80,12 +82,20 @@ public class GameSaveHandler : MonoBehaviour
 
         //텍스트 블링크 비활성화
         blinkText.SetActive(false);
+        saveDimmedImage.gameObject.SetActive(false);
         
         //코루틴 상태 초기화
         if (saveFadeCo != null)
         {
             StopCoroutine(saveFadeCo);
             saveFadeCo = null;
-        } 
+        }
+        
+        //저장 실패 시 실패 얼럿 활성화
+        if (!saveSuccess)
+        {
+            saveFailAlert.SetActive(true); 
+        }
+        
     } 
 }

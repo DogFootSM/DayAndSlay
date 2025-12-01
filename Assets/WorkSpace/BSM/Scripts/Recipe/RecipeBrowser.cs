@@ -79,6 +79,7 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
     {   
         mainCategoryDropdown.value = 0;
         recipeSearchInputField.text = string.Empty;
+        recipeElement = null;
     }
 
     private void ChangedSubCategoryRecipeList(int value)

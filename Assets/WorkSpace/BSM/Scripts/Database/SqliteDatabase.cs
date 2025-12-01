@@ -179,7 +179,7 @@ public class SqliteDatabase
     /// <summary>
     /// 캐릭터 컬럼 DB 업데이트
     /// </summary>
-    public void CharacterUpdateTable(string[] column, string[] columnValue, string condition, string conditionValue)
+    public bool CharacterUpdateTable(string[] column, string[] columnValue, string condition, string conditionValue)
     {
         condition ??= string.Empty;
         conditionValue ??= string.Empty;
@@ -212,7 +212,9 @@ public class SqliteDatabase
             }
 
             dbCommand.CommandText = query;
-            dbCommand.ExecuteNonQuery();
+            int result = dbCommand.ExecuteNonQuery();
+
+            return result > 0;
         }
     }
 
@@ -306,7 +308,7 @@ public class SqliteDatabase
     /// </summary>
     /// <param name="column">변경할 컬럼명</param>
     /// <param name="columnValue">변경할 컬럼 값</param>
-    public void ItemUpsertTable(string[] column, string[] columnValue)
+    public bool ItemUpsertTable(string[] column, string[] columnValue)
     {
         column ??= Array.Empty<string>();
         columnValue ??= Array.Empty<string>();
@@ -342,7 +344,9 @@ public class SqliteDatabase
             query += ") ON CONFLICT(slot_id, item_id) DO UPDATE SET item_amount = excluded.item_amount, inventory_slot_id = excluded.inventory_slot_id, is_equipment = excluded.is_equipment";
  
             dbCommand.CommandText = query;
-            dbCommand.ExecuteNonQuery();
+            int result = dbCommand.ExecuteNonQuery();
+
+            return result > 0;
         }
     }
 
@@ -415,7 +419,7 @@ public class SqliteDatabase
     /// <param name="columnValue">업데이트할 행 데이터 값</param>
     /// <param name="condition">업데이트 조건</param>
     /// <param name="conditionValue">조건의 값</param>
-    public void SkillUpdateTable(string[] column, string[] columnValue, string[] condition, string[] conditionValue)
+    public bool SkillUpdateTable(string[] column, string[] columnValue, string[] condition, string[] conditionValue)
     {
         using (dbCommand = dbConnection.CreateCommand())
         {
@@ -446,7 +450,9 @@ public class SqliteDatabase
             }  
              
             dbCommand.CommandText = query;
-            dbCommand.ExecuteNonQuery();
+            int result = dbCommand.ExecuteNonQuery();
+
+            return result > 0;
         } 
     }
     
