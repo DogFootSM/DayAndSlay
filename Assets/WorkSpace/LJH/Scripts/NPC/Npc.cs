@@ -176,7 +176,7 @@ public class Npc : MonoBehaviour
     }
     
     private void Update()
-    {
+    {   
         StateMachine.Tick();
 
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
@@ -195,6 +195,8 @@ public class Npc : MonoBehaviour
 
     private void SetupItemWish()
     {
+        if (!IsBuyer) return;
+        
         wantItemList = SelectItemListByDate();
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
     }
@@ -203,7 +205,7 @@ public class Npc : MonoBehaviour
     {
         List<ItemData> temp_wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
         List<ItemData> filteredList;
-        switch (IngameManager.instance.currentDay)
+        switch (IngameManager.instance.GetCurrentDay())
         {
             case 1 :
                 filteredList = temp_wantItemList
