@@ -18,6 +18,7 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private Image night;
 
     [SerializeField] private GameObject taxUI;
+    [SerializeField] private GameObject wantItemList;
     
     public static DayManager instance;
 
@@ -166,7 +167,7 @@ public class DayManager : MonoBehaviour, ISavable
             return;
         }
 
-        StartDay();
+        StartMorning();
     }
     
     private IEnumerator TaxRoutine()
@@ -175,7 +176,7 @@ public class DayManager : MonoBehaviour, ISavable
         taxUI.SetActive(true);
         yield return new WaitUntil(() => !taxUI.activeSelf);
 
-        StartDay();
+        StartMorning();
     }
 
     /// <summary>
@@ -194,6 +195,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
+        wantItemList.SetActive(true);
         SetDayOrNight(DayAndNight.DAY);
 
         if (timeCoroutine == null)
