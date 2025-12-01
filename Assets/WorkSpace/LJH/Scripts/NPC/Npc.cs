@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Zenject;
@@ -46,7 +48,7 @@ public class Npc : MonoBehaviour
     public bool isSearchTableEnteredFirst = false;
 
     /// <summary>
-    /// TargetSeneorInNpc 따오기
+    /// TargetSensorInNpc 따오기
     /// </summary>
     /// <returns></returns>
     public TargetSensorInNpc GetSensor() => targetSensor;
@@ -174,7 +176,7 @@ public class Npc : MonoBehaviour
     }
     
     private void Update()
-    {
+    {   
         StateMachine.Tick();
 
         if (!isNight && DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
@@ -193,8 +195,48 @@ public class Npc : MonoBehaviour
 
     private void SetupItemWish()
     {
-        wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
+        if (!IsBuyer) return;
+        
+        wantItemList = SelectItemListByDate();
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
+    }
+
+    private List<ItemData> SelectItemListByDate()
+    {
+        List<ItemData> temp_wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
+        List<ItemData> filteredList;
+        switch (IngameManager.instance.GetCurrentDay())
+        {
+            case 1 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier == 1)
+                    .ToList();
+                break;
+            
+            case 2 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier >= 1 && item.Tier <= 2)
+                    .ToList();
+                break;
+            
+            case 3 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier >= 1 && item.Tier <= 3)
+                    .ToList();
+                break;
+            
+            case 4 :
+                filteredList = temp_wantItemList
+                    .Where(item => item.Tier >= 1 && item.Tier <= 4)
+                    .ToList();
+                break;
+            
+            default:
+                filteredList = temp_wantItemList;
+                break;
+        }
+
+        return filteredList;
     }
 
 
@@ -203,14 +245,10 @@ public class Npc : MonoBehaviour
         Table[] tables = FindObjectsOfType<Table>();
         foreach (var table in tables)
         {
-            Debug.Log(table.name);
             if (table.CurItemData == wantItem)
             {
-                Debug.Log("테이블 뒤져봤더니 원하던거 나옴");
-                Debug.Log($"물건 있는 테이블의 위치 {table.transform.position}");
                 return table;
             }
-            Debug.Log("테이블 뒤져봐도 원하는거 안뜸");
         }
         return null;
     }

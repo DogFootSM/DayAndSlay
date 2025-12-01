@@ -23,6 +23,7 @@ public class ItemGrab : MonoBehaviour
             if (grabItem != null)
             { 
                 //드랍된 아이템의 ItemData 추가
+                grabItem.StartPickupEffect(transform);
                 inventoryInteraction.AddItemToInventory(grabItem.itemData);   
             } 
         }

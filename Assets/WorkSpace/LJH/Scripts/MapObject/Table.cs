@@ -20,11 +20,6 @@ public class Table : InteractableObj
     {
     }
 
-    private void Start()
-    {
-        registeredItemRenderer = GetComponentInChildren<SpriteRenderer>();
-    }
-
     public override void UiOnOffMethod(Collision2D collision)
     {
         string _objName;
@@ -52,8 +47,8 @@ public class Table : InteractableObj
     /// <param name="item">인벤토리에서 넘겨 받은 아이템 데이터</param>
     public void TakeItem(ItemData item)
     {
-        this.curItemData = item;
-        registeredItemRenderer.sprite = item.ItemImage;
+        curItemData = item;
+        registeredItemRenderer.GetComponent<SpriteRenderer>().sprite = item.ItemImage;
     }
 
     /// <summary>
@@ -64,6 +59,6 @@ public class Table : InteractableObj
     {
         inventoryInteraction.AddItemToInventory(curItemData);
         curItemData = null;
-        registeredItemRenderer.sprite = null;
+        registeredItemRenderer.GetComponent<SpriteRenderer>().sprite = null;
     }
 }

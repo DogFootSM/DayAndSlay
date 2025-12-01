@@ -19,7 +19,6 @@ public class NpcDecisionInStoreState : INpcState
     public void Enter()
     {
         // 랜덤 포지션으로 이동
-        Debug.Log("상점내부에서 고민 스테이트");
         Vector3 randomPos = targetSensor.GetRandomPositionInStore();
         
         npc.StateMachine.ChangeState(new NpcMoveState(npc, randomPos,
