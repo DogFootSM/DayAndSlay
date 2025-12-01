@@ -666,6 +666,9 @@ public class PlayerModel : MonoBehaviour, ISavable
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TYPE),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_TIER),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTDAY),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.DEBT),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
             },
             new[]
             {
@@ -677,7 +680,12 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{playerStats.baseIntelligence}",
                 $"{playerStats.skillPoints}",
                 $"{(int)curWeaponType}",
-                $"{(int)curWeaponTier}"
+                $"{(int)curWeaponTier}",
+                $"{ingameManagerInstance.GetCurrentDay()}",
+                $"{ingameManagerInstance.GetDebt()}",
+                
+                //TODO: 무기 저장 시 현재 빈손인지 확인하고 처리해서 저장하기
+                $"{$"WEAPON_{curWeaponType.ToString()}_{curWeaponTier.ToString()}"}"
             },
             "slot_id",
             $"{dataManager.SlotId}"

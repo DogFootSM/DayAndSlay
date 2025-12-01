@@ -185,4 +185,13 @@ public class IngameManager : MonoBehaviour
         this.debt = debt;
     }
 
+    /// <summary>
+    /// 현재 빚 정보 반환
+    /// </summary>
+    /// <returns></returns>
+    public int GetDebt()
+    {
+        return debt;
+    }
+    
 }
