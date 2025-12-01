@@ -101,7 +101,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (InventoryInteraction.OwnedMaterialDict.ContainsKey(curSlotItem.ItemId))
         {
-            InventoryInteraction.OwnedMaterialDict[curSlotItem.ItemId] = null;
+            InventoryInteraction.OwnedMaterialDict.Remove(curSlotItem.ItemId);
         }
          
         curSlotItem = null;
