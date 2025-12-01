@@ -44,12 +44,12 @@ public class DungeonDoor : MonoBehaviour
     private IEnumerator RoomFindCoroutine()
     {
         yield return new WaitForSeconds(0.05f);
-        floorTilemap.Add(GameObject.Find("Room_0").transform.GetChild(1).GetComponent<Tilemap>());
-        floorTilemap.Add(GameObject.Find("Room_1").transform.GetChild(1).GetComponent<Tilemap>());
-        floorTilemap.Add(GameObject.Find("Room_2").transform.GetChild(1).GetComponent<Tilemap>());
-        floorTilemap.Add(GameObject.Find("Room_3").transform.GetChild(1).GetComponent<Tilemap>());
-        floorTilemap.Add(GameObject.Find("Room_4").transform.GetChild(1).GetComponent<Tilemap>());
-        floorTilemap.Add(GameObject.Find("BossRoom").transform.GetChild(1).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_0").transform.GetChild(0).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_1").transform.GetChild(0).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_2").transform.GetChild(0).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_3").transform.GetChild(0).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("Room_4").transform.GetChild(0).GetComponent<Tilemap>());
+        floorTilemap.Add(GameObject.Find("BossRoom").transform.GetChild(0).GetComponent<Tilemap>());
     }
 
     
@@ -184,9 +184,6 @@ public class DungeonDoor : MonoBehaviour
     /// </summary>
     private void MapGridChecker()
     {
-        Debug.Log("MapGridChecker 호출됨");
-        
-        Debug.Log($"isReverse가 {isReverse}인 {transform.parent.gameObject.name} 의 Togrid{toGrid.transform.position}");
         
         Vector3 checkPosition = toGrid.transform.position;
 
@@ -194,10 +191,8 @@ public class DungeonDoor : MonoBehaviour
         foreach (Tilemap tilemap in floorTilemap)
         {
             Vector3Int gridPosition = tilemap.WorldToCell(checkPosition);
-            
             if (tilemap.HasTile(gridPosition))
             {
-                Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap)+3}으로 MapGridChecker 실행됨");
                 mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap) + 3);
             }
         }

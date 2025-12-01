@@ -11,22 +11,20 @@ public class NpcSpawner : MonoBehaviour
     private Vector3 npcSpawnPos;
 
     [Header("NPC가 물건을 구매할 의향 있게 태어나는 확률 1 / npcBuyProbability")]
-    [SerializeField] float npcBuyProbability = 3f;
+    [SerializeField] private float npcBuyProbability = 3f;
 
-    private float npcSpawnDelay = 5f;
+    [SerializeField] private float npcSpawnDelay = 5f;
     private WaitForSeconds delayTime;
 
     [Inject]
     private List<Npc> npcPreset = new List<Npc>();
     private List<Npc> npcList = new List<Npc>();
-    void Start()
+    private void Start()
     {
         Init();
-
-        StartCoroutine(NpcSpawnCoroutine());
     }
 
-    IEnumerator NpcSpawnCoroutine()
+    public IEnumerator NpcSpawnCoroutine()
     {
         //낮될때마다 재실행 시켜줘야함
         while (DayManager.instance.dayOrNight == DayAndNight.DAY)
@@ -36,7 +34,7 @@ public class NpcSpawner : MonoBehaviour
             int npcIndex = Random.Range(0, npcPreset.Count);
             npcList.Add(container.InstantiatePrefabForComponent<Npc>(npcPreset[npcIndex], npcSpawnPos, Quaternion.identity,null));
             
-            Npc npc = npcList[npcList.Count - 1];
+            Npc npc = npcList[^1];
             
             //npc의 타입 설정
             //GenderType gender = (GenderType)Random.Range(0, 2);

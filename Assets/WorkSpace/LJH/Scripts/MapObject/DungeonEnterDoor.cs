@@ -24,11 +24,15 @@ public class DungeonEnterDoor : InteractableObj
 
     public override void Interaction()
     {
+        if (DayManager.instance.GetDayOrNight() != DayAndNight.NIGHT) return;
+        
         stagePopUp.SetActive(!stagePopUp.activeSelf);
     }
 
     public override void UiOnOffMethod(Collision2D collision)
     {
+        if (DayManager.instance.GetDayOrNight() != DayAndNight.NIGHT) return;
+        
         if (collision.gameObject.CompareTag("Player"))
         {
             popUp.GetComponent<PopUp>().objName = "던전 선택";

@@ -378,6 +378,7 @@ public enum DoorType
 [Serializable]
 public enum DayAndNight
 {
+    MORNING,
     DAY,
     NIGHT,
 }

@@ -114,6 +114,8 @@ public class InventoryInteraction :
 
         foreach (var slot in inventorySlots)
         {
+            if (slot.CurSlotItem == null) continue;
+            
             if (slot.CurSlotItem.ItemId == itemId && slot.ItemCount >= requireCount)
             {
                 requireItemInSlot = slot;
