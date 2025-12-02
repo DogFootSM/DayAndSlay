@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SystemWindowButton : MonoBehaviour
+public class SystemWindowButton : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] private SystemType systemType;
     [SerializeField] private SystemWindowController windowController;
@@ -12,6 +13,8 @@ public class SystemWindowButton : MonoBehaviour
     [NonSerialized] public bool isActive;
         
     private Button systemWindowButton;
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private int _tabOpenAnimHash = Animator.StringToHash("TabOpen");
     private int _tabCloseAnimHash = Animator.StringToHash("TabClose");
     
@@ -39,5 +42,9 @@ public class SystemWindowButton : MonoBehaviour
         
         _tabAnimator.Play(_tabCloseAnimHash);
     }
-    
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        soundManager.PlaySfx(SFXSound.INVENTORY_TAB_HOVER);
+    }
 }

@@ -22,6 +22,7 @@ public class SystemWindowController : MonoBehaviour
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
     private SystemType currentSystemType = SystemType.SIZE;
     private Coroutine _flippingCo;
+    private SoundManager soundManager => SoundManager.Instance;
     
     private int _bookFlippingAnimHash = Animator.StringToHash("BookFlipping");
     private int _bookFlippingReverseAnimHash = Animator.StringToHash("BookFlippingReverse");
@@ -60,6 +61,7 @@ public class SystemWindowController : MonoBehaviour
         
         if (canvasStack.Count == 0)
         {
+            soundManager.PlaySfx(SFXSound.INVENTORY_OPEN);
             canvasStack.Push(parentCanvas);
             parentCanvas.SetActive(true);
             _bookAnimator.Play(_bookFlippingAnimHash);
@@ -67,10 +69,16 @@ public class SystemWindowController : MonoBehaviour
         
         if (canvasStack.Peek().Equals(openWindow))
         {
+            soundManager.PlaySfx(SFXSound.INVENTORY_CLOSE);
             AllCloseSystemWindows();
         }
         else
         {
+            if (canvasStack.Count > 1)
+            {
+                soundManager.PlaySfx(SFXSound.INVENTORY_FLIP);
+            }
+            
             SwitchSystemWindows(openWindow);
         } 
     }
