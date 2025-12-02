@@ -19,10 +19,10 @@ public class SpritePreset : BaseUI
     public CharacterWeaponType CurWeaponType;
     
     private Sprite curSprite;
-
     private Button prevButton;
     private Button nextButton;
-
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private int presetIndex;
     
     private void Start()
@@ -38,7 +38,17 @@ public class SpritePreset : BaseUI
     /// </summary>
     private void SpriteLoad()
     {
-        spriteList = Resources.LoadAll<Sprite>($"Preset/{CurPresetType.ToString()}").ToList();
+        if (CurPresetType == CharacterPresetType.WEAPON)
+        {
+            spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_BOW_TIER_1_1"));
+            spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_SPEAR_TIER_1_1"));
+            spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_SHORT_SWORD_TIER_1_1"));
+            spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_WAND_TIER_1_1"));
+        }
+        else
+        {
+            spriteList = Resources.LoadAll<Sprite>($"Preset/{CurPresetType.ToString()}").ToList();
+        }
     }
     
     /// <summary>
@@ -65,6 +75,7 @@ public class SpritePreset : BaseUI
     private void PrevPreset()
     {
         presetIndex--;
+        soundManager.PlaySfx(SFXSound.ARROW_BUTTON_SELECT);
         
         if(presetIndex < 0) presetIndex = spriteList.Count - 1;
         SendSelectedPreset(); 
@@ -76,6 +87,8 @@ public class SpritePreset : BaseUI
     private void NextPreset()
     {
         presetIndex++;
+        soundManager.PlaySfx(SFXSound.ARROW_BUTTON_SELECT);
+        
         if(presetIndex > spriteList.Count - 1) presetIndex = 0;
         SendSelectedPreset();
     }
@@ -87,7 +100,7 @@ public class SpritePreset : BaseUI
     {
         curSprite = spriteList[presetIndex]; 
         SelectPreset.ChangePreset(CurPresetType, curSprite);
-
+        
         if (CurPresetType == CharacterPresetType.WEAPON)
         {
             CurWeaponType = (CharacterWeaponType)presetIndex;
