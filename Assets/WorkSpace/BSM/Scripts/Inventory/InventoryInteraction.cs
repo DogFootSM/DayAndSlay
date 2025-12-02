@@ -30,7 +30,8 @@ public class InventoryInteraction :
     
     private HashSet<int> ownedItemSet = new HashSet<int>();
     private List<RaycastResult> results = new List<RaycastResult>();
-     
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private InventorySlot beginSlot;
     private InventorySlot endSlot;
     private InventorySlot selectedSlot;
@@ -75,12 +76,14 @@ public class InventoryInteraction :
     {
         if (selectedSlot.IsEquip)
         {
+            soundManager.PlaySfx(SFXSound.ITEM_UNEQUIP);
             equipment.UnEquipItem(selectedSlot.CurSlotItem.Parts);
             selectedSlot.IsEquip = false;
             UpdateEquipButton();
         }
         else
         { 
+            soundManager.PlaySfx(SFXSound.ITEM_EQUIP);
             equipment.EquipItem(selectedSlot.CurSlotItem);
             UpdateEquipState(selectedSlot); 
             UpdateEquipButton();

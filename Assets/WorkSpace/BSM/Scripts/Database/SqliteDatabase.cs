@@ -70,9 +70,9 @@ public class SqliteDatabase
                                 shirt_sprite        TEXT NOT NULL DEFAULT 'none', 
                                 weapon_sprite       TEXT NOT NULL DEFAULT 'none',
                                 weapon_tier         INTEGER NOT NULL DEFAULT 0,
-                                last_played_time    TEXT NOT NULL DEFAULT 'none',
+                                gold                INTEGER NOT NULL DEFAULT 0,
                                 weapon_type         INTEGER NOT NULL DEFAULT 0,
-                                remaining_days      INTEGER NOT NULL DEFAULT 150,
+                                currentday          INTEGER NOT NULL DEFAULT 1,
                                 exp                 INTEGER NOT NULL DEFAULT 0,
                                 stats_point         INTEGER NOT NULL DEFAULT 0,
                                 skill_point         INTEGER NOT NULL DEFAULT 0,
@@ -80,7 +80,7 @@ public class SqliteDatabase
                                 strength            INTEGER NOT NULL DEFAULT 5,
                                 agility             INTEGER NOT NULL DEFAULT 4,
                                 intelligence        INTEGER NOT NULL DEFAULT 3,
-                                objective_item      INTEGER NOT NULL DEFAULT 'none'
+                                debt                INTEGER NOT NULL DEFAULT 1000000
                                 )";
 
             dbCommand.ExecuteNonQuery();

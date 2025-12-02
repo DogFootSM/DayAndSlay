@@ -13,7 +13,8 @@ public class DisplayController : MonoBehaviour
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     
     private GameManager gameManager => GameManager.Instance;
-
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private readonly int[] windowModeValues = new[]{ 0, 3, 1 };
     private readonly int[] mouseLockValues = new[]{ 2, 0 };
  
@@ -100,5 +101,9 @@ public class DisplayController : MonoBehaviour
         resolutionDropdown.value = gameManager.GetResolution();
         resolutionDropdown.onValueChanged.AddListener(x => gameManager.SetResolution(x));
     }
-    
+
+    public void OnClickSound()
+    {
+        soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+    }
 }

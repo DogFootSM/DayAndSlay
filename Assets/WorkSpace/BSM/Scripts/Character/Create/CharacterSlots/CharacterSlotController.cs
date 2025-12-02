@@ -19,6 +19,8 @@ public class CharacterSlotController : MonoBehaviour
     [SerializeField] private GameObject DeleteAlert;
     [SerializeField] private int DeleteSlotId;
     
+    private SoundManager soundManager => SoundManager.Instance;
+    
     protected void Awake()
     {
         for (int i = 0; i < transform.childCount - 1; i++)
@@ -26,8 +28,16 @@ public class CharacterSlotController : MonoBehaviour
             characterSlots[i].slotId = i + 1;
         }
 
-        cancelButton.onClick.AddListener(() => DeleteAlert.SetActive(false));
-        confirmButton.onClick.AddListener(DeleteSlotConfirm);
+        cancelButton.onClick.AddListener(() =>
+        {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+            DeleteAlert.SetActive(false);
+        });
+        confirmButton.onClick.AddListener(() =>
+        {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+            DeleteSlotConfirm();
+        });
     }
 
     /// <summary>

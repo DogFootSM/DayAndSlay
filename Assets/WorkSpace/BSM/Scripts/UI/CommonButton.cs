@@ -14,8 +14,15 @@ public class CommonButton : MonoBehaviour, IPointerClickHandler
     
     [Inject] private CanvasManager canvasManager;
     
+    private SoundManager soundManager => SoundManager.Instance;
+    
     public void OnPointerClick(PointerEventData eventData)
     {
-        canvasManager.ChangeCanvas(canvasType);
+        soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+
+        if (canvasType != CanvasType.SIZE)
+        {
+            canvasManager.ChangeCanvas(canvasType);
+        } 
     }
 }
