@@ -41,8 +41,8 @@ public class SpritePreset : BaseUI
         if (CurPresetType == CharacterPresetType.WEAPON)
         {
             spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_BOW_TIER_1_1"));
-            spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_SPEAR_TIER_1_1"));
             spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_SHORT_SWORD_TIER_1_1"));
+            spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_SPEAR_TIER_1_1"));
             spriteList.Add(Resources.Load<Sprite>($"Preset/{CurPresetType.ToString()}/WEAPON_WAND_TIER_1_1"));
         }
         else
