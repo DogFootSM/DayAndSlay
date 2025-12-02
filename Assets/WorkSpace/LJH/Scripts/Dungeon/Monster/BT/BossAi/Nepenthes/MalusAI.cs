@@ -6,6 +6,9 @@ public class MalusAI : NepenthesAI
 {
     [Header("소환 조건 조정")]
     [SerializeField] private float summonThresholdPercent = 0;
+    private bool isFrenzy = false;
+    
+    public bool SetIsFrenzy(bool isFrenzy) => this.isFrenzy = isFrenzy;
 
 
     // 스킬 첫 번째 (소환) 사용 조건
@@ -43,7 +46,6 @@ public class MalusAI : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            //new IsPreparedCooldownNode(CanSkillCondition),
             new IsPreparedCooldownNode(() => CanSkill(skillSecondTimer)),
             new ActionNode(PerformSkillSecond),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
@@ -51,6 +53,7 @@ public class MalusAI : NepenthesAI
         
         list.Add(new Sequence(new List<BTNode>
         {
+            new WaitWhileActionNode(() => isFrenzy),
             new IsHPThresholdCheckNode(50f, model),
             new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
             new ActionNode(PerformSkillThird),

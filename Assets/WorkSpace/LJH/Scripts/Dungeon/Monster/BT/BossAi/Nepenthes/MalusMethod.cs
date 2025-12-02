@@ -6,8 +6,8 @@ public class MalusMethod : BossMethod
 {
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private BellusMethod bellus;
+    private MalusAI malusAi;
     
-    private List<GameObject> summonMonsterList = new List<GameObject>();
     public override void Skill_First()
     {
         Debug.Log("»Ñ¸® °ø°Ý");
@@ -35,17 +35,25 @@ public class MalusMethod : BossMethod
 
     private void SummonMonster()
     {
-        if (summonMonsterList.Count > 1) return;
+        GameObject[] summonMonsterList = new GameObject[] {};
+        
+        summonMonsterList = GameObject.FindGameObjectsWithTag("Monster");
+
+        if (summonMonsterList.Length >= 2) return;
         
         monsterPrefab.GetComponentInChildren<TargetSensor>().SetGrid(GameObject.Find("BossRoom").GetComponent<Grid>());
-        summonMonsterList.Add(Instantiate(monsterPrefab, transform.position + new Vector3(-1, 0, 0), Quaternion.identity));
+        Instantiate(monsterPrefab, transform.position + new Vector3(-1, 0, 0), Quaternion.identity);
     }
 
     private void Frenzy()
     {
+        if(malusAi == null)
+            malusAi = GetComponent<MalusAI>();
+        
         if(bossAi == null)
             bossAi = GetComponent<BossAI>();
         
+        malusAi.SetIsFrenzy(true);
         bossAi.skillFirstTimer /= 2;
     }
     
