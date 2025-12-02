@@ -9,7 +9,7 @@ using Zenject;
 public class CloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Inject] private CanvasManager canvasManager;
-    
+    private SoundManager soundManager => SoundManager.Instance;
     private Button closeButton;
     private Image buttonBackgroundImage;
     private Image closeButtonImage;
@@ -44,6 +44,7 @@ public class CloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
         ButtonBackgroundColorChange(1f, 1f, 1f);
         ButtonAlphaChange(1f);
     }

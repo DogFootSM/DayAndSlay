@@ -12,11 +12,21 @@ public class SettingController : MonoBehaviour
     
     [SerializedDictionary] [SerializeField]
     private SerializedDictionary<Setting, GameObject> settingPanels;
-
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private void Awake()
     {
-        audioTabButton.onClick.AddListener(() => OpenSettingPanel(Setting.AUDIO));
-        videoTabButton.onClick.AddListener(() => OpenSettingPanel(Setting.VIDEO));
+        audioTabButton.onClick.AddListener(() =>
+        {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+            OpenSettingPanel(Setting.AUDIO);
+        });
+        
+        videoTabButton.onClick.AddListener(() =>
+        {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+            OpenSettingPanel(Setting.VIDEO);
+        });
     }
 
     private void OnEnable()

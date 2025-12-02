@@ -17,7 +17,7 @@ public class CharacterCreate : BaseUI
    
     private Button createButton;
     private CharacterWeaponType curWeaponType; 
-     
+    private SoundManager soundManager => SoundManager.Instance;
     
     protected void Start()
     {
@@ -50,6 +50,7 @@ public class CharacterCreate : BaseUI
     private void PlayerCreate()
     {
         //현재 프리셋, 무기 타입 저장
+        soundManager.PlaySfx(SFXSound.GAMESTART);
         dataManager.SavePresetData(presets, (int)curWeaponType, (int)WeaponTierType.TIER_1_1); 
         dataManager.CreateDataUpdate();
         canvasManager.OnActiveLoadingCanvas(inGameScene); 

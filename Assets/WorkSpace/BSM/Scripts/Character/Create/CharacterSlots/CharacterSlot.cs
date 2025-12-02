@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
@@ -25,6 +26,7 @@ public class CharacterSlot : BaseUI
     private Button deleteButton;
     private IDataReader dataReader;
     private CharacterSlotController characterSlotController;
+    private SoundManager soundManager => SoundManager.Instance;
 
     private int isCreate;
     private int currentDay;
@@ -162,10 +164,12 @@ public class CharacterSlot : BaseUI
 
         if (isCreate == 0)
         {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
             canvasManager.ChangeCanvas(CanvasType.CHARACTER_CREATE);
         }
         else
         {
+            soundManager.PlaySfx(SFXSound.GAMESTART);
             characterSlotController.LoadInGameScene();
         }
     }
@@ -175,6 +179,7 @@ public class CharacterSlot : BaseUI
     /// </summary>
     private void DeleteCheck()
     {
+        soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
         characterSlotController.DeleteSlot(slotId);
     }
 }
