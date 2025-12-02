@@ -6,6 +6,7 @@ public class MalusMethod : BossMethod
 {
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private BellusMethod bellus;
+    private MalusAI malusAi;
     
     private List<GameObject> summonMonsterList = new List<GameObject>();
     public override void Skill_First()
@@ -43,9 +44,13 @@ public class MalusMethod : BossMethod
 
     private void Frenzy()
     {
+        if(malusAi == null)
+            malusAi = GetComponent<MalusAI>();
+        
         if(bossAi == null)
             bossAi = GetComponent<BossAI>();
         
+        malusAi.SetIsFrenzy(true);
         bossAi.skillFirstTimer /= 2;
     }
     
