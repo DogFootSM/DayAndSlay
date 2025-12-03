@@ -36,6 +36,7 @@ public class MinoMethod : BossMethod
 
     private void HeadButt()
     {
+        sound.PlaySFX(SoundType.SKILL1);
         Vector3 skillPos;
 
         Direction direction = GetDirectionToTarget(transform.position, player.transform.position);
@@ -69,12 +70,14 @@ public class MinoMethod : BossMethod
 
     private void Stomp()
     {
+        sound.PlaySFX(SoundType.SKILL2);
         skills.SetAllEffectPos(secondSkillData, transform.position);
     }
     
 
     private void Gigantism()
     {
+        sound.PlaySFX(SoundType.SKILL4);
         if (mino == null)
             mino = GetComponent<MinoAI>();
 
@@ -125,6 +128,7 @@ public class MinoMethod : BossMethod
 
     private void StoneSkin()
     {
+        sound.PlaySFX(SoundType.SKILL3);
         model.def += 10f;
     }
 

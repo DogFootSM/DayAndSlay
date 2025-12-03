@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
 {
+    protected MonsterSound sound;
+    
+    
     [SerializeField] private int tempDamage;
     [SerializeField] private GameObject itemPrefab;
     
@@ -20,6 +23,7 @@ public class MonsterMethod : MonoBehaviour
     protected GameObject player;
     protected PlayerController _player;
     protected Collider2D coll;
+    protected bool isDead = false;
     
     private int currentPathIndex;
 
@@ -90,6 +94,7 @@ public class MonsterMethod : MonoBehaviour
         MonsterDataInit(ai.GetMonsterData());
         damageEffect = GetComponent<DamageEffect>();
         model = ai.GetMonsterModel();
+        sound = GetComponent<MonsterSound>();
     }
 
     private void Update()
@@ -213,6 +218,7 @@ public class MonsterMethod : MonoBehaviour
     public virtual void AttackMethod()
     {
         Debug.Log("플레이어 공격함");
+        sound.PlaySFX(SoundType.ATTACK);
         
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
         
@@ -246,7 +252,11 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public virtual void DieMethod()
     {
+        if (isDead) return;
+        
+        isDead = true;
         animator.PlayDie();
+        sound.PlaySFX(SoundType.DEATH);
         StartCoroutine(MonsterDestroyRoutine());
     }
 
@@ -268,18 +278,19 @@ public class MonsterMethod : MonoBehaviour
     // 기타 유틸
     // ==============================
 
-    public void HitMethod(int damage)
+    public void HitMethod(float damage)
     {
+        sound.PlaySFX(SoundType.HIT);
         damageEffect.DamageTextEvent(damage);
         if(hitController == null)
             hitController = GetComponent<HitController>();
         
         hitController.ActiveHitEffect(damage);
         
-        ai.TakeDamage(damage);
         //Todo : 크리 떴을때로 변경
         if (damage >= model.MaxHp / 4)
         {
+            sound.PlaySFX(SoundType.DAMAGE);
             ai.ReceiveKnockBack(player.transform.position);
         }
     }

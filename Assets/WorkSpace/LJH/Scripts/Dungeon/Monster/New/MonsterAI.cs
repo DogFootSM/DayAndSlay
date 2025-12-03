@@ -186,7 +186,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         stateMachine.ChangeState(new NewMonsterDieState());
     }
 
-    public virtual void Hit(int damage)
+    public virtual void Hit(float damage)
     {
         method.HitMethod(damage);
     }
@@ -214,6 +214,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
             calcDefense -= CalculateDefenseDeBuff();
         }
 
+        Hit(damage);
         model.SetMonsterHp(-damage);
     }
     /// <summary>
