@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,6 @@ using UnityEngine.UI;
 public class UpkeepPopUp : MonoBehaviour
 {
     private Animator animator;
-    private AudioSource audio;
-    private AudioClip clip;
 
     [SerializeField][SerializedDictionary] private SerializedDictionary<string, GameObject> upkeepTextDict;
     //private int currentValue = 0;
@@ -18,12 +17,11 @@ public class UpkeepPopUp : MonoBehaviour
     
     [SerializeField] private float animationDuration = 0.75f;
     private RectMask2D mask;
-
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        audio = GetComponent<AudioSource>();
-        clip = audio.clip;
         mask = GetComponentInChildren<RectMask2D>();
     }
 
@@ -31,18 +29,17 @@ public class UpkeepPopUp : MonoBehaviour
     {
         IngameManager.instance.SetUpKeepText(upkeepTextDict);
     }
-
-
+  
     public void PlayOpen()
     {
-        audio.PlayOneShot(clip);
+        soundManager.PlaySfx(SFXSound.INVENTORY_FLIP);
         animator.Play("UpkeepOpen");
         StartCoroutine(OpenAnimationCompleteCoroutine());
     }
 
     public void PlayClose()
     {
-        audio.PlayOneShot(clip);
+        soundManager.PlaySfx(SFXSound.INVENTORY_FLIP);
         animator.Play("UpkeepClose");
         StartCoroutine(CloseAnimationCompleteCoroutine());
     }
