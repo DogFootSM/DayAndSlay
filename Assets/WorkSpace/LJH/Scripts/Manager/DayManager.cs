@@ -326,7 +326,6 @@ public class DayManager : MonoBehaviour, ISavable
             $"{dataManager.SlotId}"
         );
     }
-
     
     /// <summary>
     /// 시계 UI에 표시
@@ -335,12 +334,30 @@ public class DayManager : MonoBehaviour, ISavable
     /// <param name="minute"></param>
     private void UpdateClockDisplay(int hour, int minute)
     {
-        string hourString = hour.ToString("D2");
+        string ampm = (hour >= 12) ? "오후" : "오전";
+    
+   
+        int displayHour;
+
+        if (hour == 0)
+        {
+            displayHour = 12;
+        }
+        else if (hour > 12) 
+        {
+            displayHour = hour - 12;
+        }
+        else
+        {
+            displayHour = hour;
+        }
+
+        string hourString = displayHour.ToString("D2");
         string minuteString = minute.ToString("D2");
 
         if (clockText != null)
         {
-            clockText.text = $"{hourString}:{minuteString}";
+            clockText.text = $"{ampm} {hourString}:{minuteString}";
         }
     }
 }
