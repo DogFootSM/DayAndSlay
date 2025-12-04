@@ -280,6 +280,9 @@ public class MonsterMethod : MonoBehaviour
 
     public void HitMethod(float damage)
     {
+        //몬스터가 죽은 경우 피격되지 않게 처라
+        if (isDead) return;
+        
         sound.PlaySFX(SoundType.HIT);
         damageEffect.DamageTextEvent(damage);
         if(hitController == null)

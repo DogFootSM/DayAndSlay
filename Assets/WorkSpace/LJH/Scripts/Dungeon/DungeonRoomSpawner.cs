@@ -46,7 +46,10 @@ private void Awake()
     /// 规 积己
     /// </summary>
 	private void BuildMap()
-	{
+    {
+        if(IngameManager.instance != null)
+            stageNum = IngameManager.instance.GetStage();
+        
 		for (int i = 0; i < roomPos.Count; i++)
         {
             //焊胶 规
