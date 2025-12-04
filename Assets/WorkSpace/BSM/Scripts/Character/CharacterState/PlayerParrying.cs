@@ -9,6 +9,14 @@ public class PlayerParrying : PlayerState
 
     private int parryingHash;
     
+    private Dictionary<Direction, int> parryingHashes = new Dictionary<Direction, int>()
+    {
+        {Direction.Down, Animator.StringToHash("DownParrying")},
+        {Direction.Up, Animator.StringToHash("UpParrying")},
+        {Direction.Left, Animator.StringToHash("RightParrying")},
+        {Direction.Right, Animator.StringToHash("LeftParrying")},
+    };
+    
     public PlayerParrying(PlayerController playerController) : base(playerController)
     {
     }
@@ -22,7 +30,7 @@ public class PlayerParrying : PlayerState
             _ => 0
         };
         
-        parryingHash = animationHashes[playerController.LastMoveKey][index];
+        parryingHash = parryingHashes[playerController.LastMoveKey];
 
         playerController.CanParrying = false;
         playerController.IsParrying = true;
