@@ -92,8 +92,12 @@ public class IngameManager : MonoBehaviour
     /// DB에서 불러온 날짜 설정
     /// </summary>
     /// <param name="day">현재까지 진행한 날짜</param>
-    public void SetCurrentDay(int day) => currentDay = day;
-    
+    public void SetCurrentDay(int day)
+    {
+        currentDay = day;
+        dayText.text = $"{currentDay}일차";
+    }
+
     public bool IsTaxDay() => currentDay % 5 == 0;
     public void OnTaxUI() => taxUI.SetActive(true);
     
