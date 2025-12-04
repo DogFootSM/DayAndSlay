@@ -124,7 +124,7 @@ public class InventoryInteraction :
     /// 아이템 습득 후 인벤토리에 저장
     /// </summary>
     /// <param name="collectedItem">습득 아이템 객체</param>
-    public void AddItemToInventory(ItemData collectedItem)
+    public bool AddItemToInventory(ItemData collectedItem)
     {
         //중첩 가능한 재료 아이템을 보유중인 슬롯
         if (ownedItemSet.Contains(collectedItem.ItemId)
@@ -140,8 +140,7 @@ public class InventoryInteraction :
                     inventorySlots[i].AddItem(collectedItem);
                     
                     AddMaterialItemToDictionary(inventorySlots[i].CurSlotItem.ItemId, inventorySlots[i]);
-                    //TODO: 아이템 습득 애니메이션 재생
-                    return;
+                    return true;
                 }
             }
         }
@@ -154,12 +153,11 @@ public class InventoryInteraction :
             emptySlots.AddItem(collectedItem);
             ownedItemSet.Add(collectedItem.ItemId);
             AddMaterialItemToDictionary(collectedItem.ItemId, emptySlots);
-            //TODO: 아이템 습득 애니메이션 재생
-            return;
+            return true;
         }
 
+        return false;
         //TODO: 빈 슬롯에 대한 안내 방법 추가
-        Debug.Log("빈 슬롯이 없습니다.");
     }
  
 

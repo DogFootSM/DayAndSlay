@@ -6,9 +6,11 @@ using UnityEngine;
 public class ItemGrab : MonoBehaviour
 {
     [SerializeField] private InventoryInteraction inventoryInteraction;
-
+    [SerializeField] private Animator notEmptySlotAnimator;
+    
     private LayerMask itemLayerMask;
-
+    private int emptySlotHash = Animator.StringToHash("EmptySlot");
+    
     private void Awake()
     {
         itemLayerMask = LayerMask.GetMask("Item"); 
@@ -23,8 +25,16 @@ public class ItemGrab : MonoBehaviour
             if (grabItem != null)
             { 
                 //드랍된 아이템의 ItemData 추가
-                grabItem.StartPickupEffect(transform);
-                inventoryInteraction.AddItemToInventory(grabItem.itemData);   
+                bool isEat = inventoryInteraction.AddItemToInventory(grabItem.itemData);
+
+                if (isEat)
+                {
+                    grabItem.StartPickupEffect(transform);
+                }
+                else
+                {
+                    notEmptySlotAnimator.Play(emptySlotHash);
+                }
             } 
         }
     } 
