@@ -243,10 +243,10 @@ public class DataManager : MonoBehaviour
 
     /// <summary>
     /// 초기 캐릭터 생성 시 아이템 지급
+    /// 활:0, 검:1, 창:2, 완드:3
     /// </summary>
     private void StartItemDataInsert(int weaponType)
-    {
-        //TODO: 아이템 ID 양식 정립되면 수정하기.
+    {  
         sqlManager.UpsertItemDataColumn(
             new[]
             {
@@ -258,7 +258,7 @@ public class DataManager : MonoBehaviour
             },
             new[]
             {
-                //TODO: 지급 무기 수정
+                //100001 02, 100101 02, 100201 02, 100301 02
                 $"{100001 + (weaponType * 100)}02", //지급할 Item_id
                 $"{SlotId}", //해당 캐릭터 slotId
                 "1", //지급할 개수

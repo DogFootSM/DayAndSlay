@@ -249,7 +249,6 @@ public enum Direction
 [Serializable]
 public enum MapType
 {
-    //TODO: 추후 내용 수정 필요
     TOWN_OUTSIDE,
     TOWN_STORE1F,
     TOWN_STORE2F,
