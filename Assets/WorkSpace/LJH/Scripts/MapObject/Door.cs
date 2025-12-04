@@ -36,6 +36,8 @@ public class Door : InteractableObj
 
     public override void Interaction()
     {
+        if (DayManager.instance.GetDayOrNight() == DayAndNight.DAY) return;
+        
         if (player == null)
         {
             player = GameObject.FindWithTag("Player");
@@ -69,6 +71,8 @@ public class Door : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
+        
+        
         if (collision.gameObject.CompareTag("NPC"))
         {
             if(doorType == DoorType.DOOR)
@@ -82,6 +86,12 @@ public class Door : InteractableObj
 
         else if (collision.gameObject.CompareTag("Player"))
         {
+            if (DayManager.instance.GetDayOrNight() == DayAndNight.DAY)
+            {
+                popUp.GetComponent<PopUp>().SetText($"피곤하긴 하지만 손님이 우선이지..");
+            }
+            
+            
             switch (doorType)
             {
                 case DoorType.DOOR:
