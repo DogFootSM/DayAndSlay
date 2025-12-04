@@ -78,6 +78,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         {
             StopCoroutine(defenseUpSpeedDownCo);
             defenseUpSpeedDownCo = null;
+            playerController.ResetBuffSkillCoolDown(BuffType.ERODED_SHADOW, 0);
 
             //스피드, 방어력 원상 복구
             playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
@@ -90,6 +91,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             attackUpDefenseDownCo = null;
         }
 
+        playerController.ResetBuffSkillCoolDown(BuffType.ERODED_MOON, duration);
         attackUpDefenseDownCo = StartCoroutine(AttackUpDefenseDownRoutine(duration, defenseDecrease, attackIncrease));
     }
 
@@ -105,7 +107,6 @@ public class PlayerSkillReceiver : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         isPowerTradeBuffActive = false;
         playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
         playerModel.FinalPhysicalDamage = playerModel.PlayerStats.PhysicalAttack;
@@ -121,6 +122,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         if (isPowerTradeBuffActive && attackUpDefenseDownCo != null)
         {
+            playerController.ResetBuffSkillCoolDown(BuffType.ERODED_MOON, 0);
             StopCoroutine(attackUpDefenseDownCo);
             attackUpDefenseDownCo = null;
             //방어력, 공격력 원상 복구 
@@ -133,7 +135,8 @@ public class PlayerSkillReceiver : MonoBehaviour
             StopCoroutine(defenseUpSpeedDownCo);
             defenseUpSpeedDownCo = null;
         }
-
+        
+        playerController.ResetBuffSkillCoolDown(BuffType.ERODED_SHADOW, duration);
         defenseUpSpeedDownCo = StartCoroutine(DefenseUpSpeedDownRoutine(duration, speedDecrease, defenseIncrease));
     }
 
@@ -149,7 +152,6 @@ public class PlayerSkillReceiver : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         isDefenceTradeBuffActive = false;
         playerModel.FinalPhysicalDefense = playerModel.PlayerStats.PhysicalDefense;
         playerModel.MoveSpeed = playerModel.GetFactoredMoveSpeed();
@@ -260,6 +262,7 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         if (removeCastCo == null)
         {
+            playerController.ResetBuffSkillCoolDown(BuffType.REMOVE_CASTING, duration);
             removeCastCo = StartCoroutine(RemoveCastingTimeCoroutine(duration));
         } 
     }
@@ -458,14 +461,15 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// </summary>
     /// <param name="duration">버프 지속 시간</param>
     /// <param name="factor">증가할 이동속도 값</param>
-    public void ReceiveMoveSpeedBuff(float duration, float factor)
+    public void ReceiveMoveSpeedBuff(float duration, float factor, BuffType buffType)
     {
         if (moveSpeedBuffCo != null)
         {
             StopCoroutine(moveSpeedBuffCo);
             moveSpeedBuffCo = null;
         }
-
+        
+        playerController.ResetBuffSkillCoolDown(buffType, duration);
         moveSpeedBuffCo = StartCoroutine(MoveSpeedBuffRoutine(duration, factor));
     }
 

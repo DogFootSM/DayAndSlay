@@ -17,7 +17,6 @@ public class SSAS008 : MeleeSkill
         float defenseIncrease = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
         ExecuteDefenseUpSpeedDown(skillNode.skillData.BuffDuration, moveSpeedDecrease, defenseIncrease);
-        //TODO: 사용 시 아이콘 하나 띄우기
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)

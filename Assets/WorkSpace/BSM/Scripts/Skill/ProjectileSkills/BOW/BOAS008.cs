@@ -16,7 +16,7 @@ public class BOAS008 : MeleeSkill
         float buffFactor = skillNode.skillData.SkillAbilityValue +
                            ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
-        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, buffFactor);
+        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, buffFactor, BuffType.BOW_MOVESPEED);
     }
 
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)

@@ -420,8 +420,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="cooldownDuration"></param>
     public void ResetBuffSkillCoolDown(BuffType buffType, float cooldownDuration)
     {
-        //TODO: 추후 버프 스킬 사용 시 아이콘 필요하다면 여길 호출
-        buffIconController.UseBuff(buffType, playerModel.DodgeCooldown);
+        buffIconController.UseBuff(buffType, cooldownDuration);
     }
      
     private IEnumerator DodgeCoolDownCoroutine(BuffType buffType)
