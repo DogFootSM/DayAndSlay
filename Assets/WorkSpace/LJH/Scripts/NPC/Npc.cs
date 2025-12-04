@@ -25,7 +25,6 @@ public class Npc : MonoBehaviour
 
     public ItemData wantItem;
     [SerializeField] private List<ItemData> wantItemList;
-    [SerializeField] private PopUp talkPopUp;
     [SerializeField] private TargetSensorInNpc targetSensor;
     [SerializeField] private AstarPath astarPath;
 

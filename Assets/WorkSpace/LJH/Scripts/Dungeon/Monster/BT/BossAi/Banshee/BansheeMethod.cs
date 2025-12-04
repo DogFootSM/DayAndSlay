@@ -76,6 +76,7 @@ public class BansheeMethod : BossMethod
     }
     private void Scream()
     {
+        sound.PlaySFX(SoundType.SKILL1);
         skills.SetAllEffectPos(secondSkillData, transform.position);
     }
 
@@ -86,6 +87,7 @@ public class BansheeMethod : BossMethod
     /// <returns></returns>
     private IEnumerator MoveSpeedBuff()
     {
+        sound.PlaySFX(SoundType.SKILL3);
         float preMoveSpeed = monsterData.MoveSpeed;
         monsterData.MoveSpeed *= 1.5f;
         yield return new WaitForSeconds(thirdSkillData.Duration);
@@ -98,6 +100,7 @@ public class BansheeMethod : BossMethod
     /// </summary>
     public void Teleport_Banshee()
     {
+        sound.PlaySFX(SoundType.SKILL2);
         Vector3 pos = player.transform.position;
 
         float randomX = Random.Range(pos.x - 3, pos.x + 3);
@@ -114,6 +117,7 @@ public class BansheeMethod : BossMethod
     /// </summary>
     public void SpiritRush()
     {
+        sound.PlaySFX(SoundType.SKILL4);
         StartCoroutine(SpiritRushingCoroutine());
         if (spirit == null)
             spirit = skills.GetSkillVFX(fourthSkillData)[0].GetComponent<SpiritRush>();

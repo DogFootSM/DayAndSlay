@@ -688,6 +688,8 @@ GameObject:
   - component: {fileID: 5621701078819483824}
   - component: {fileID: -4293558480212594783}
   - component: {fileID: 2747171817074802712}
+  - component: {fileID: 431423919221830365}
+  - component: {fileID: -6253166612369348037}
   m_Layer: 17
   m_Name: Spider
   m_TagString: Monster
@@ -985,6 +987,128 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitEffectCanvas: {fileID: 1824391148748434451}
+--- !u!114 &431423919221830365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9110040514710003671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02b1caefba39b4289461513ccba615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipDict:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 8300000, guid: f7cbfd1f0303b4f4cb7eb992026dfad1, type: 3}
+    - Key: 1
+      Value: {fileID: 8300000, guid: d54bcd13f85571d4f8aaebed5ff71661, type: 3}
+    - Key: 3
+      Value: {fileID: 8300000, guid: 00c95fa8f2a2baf4a8d2d44d4d7f7e95, type: 3}
+  hitClips:
+  - {fileID: 8300000, guid: b5bbce1d277a3b340b2781a49f367456, type: 3}
+  - {fileID: 8300000, guid: 1923bac2e1452c9448a639380386ffde, type: 3}
+  - {fileID: 8300000, guid: 8a5a41434ee3ee849b5fd9c98026a43a, type: 3}
+  - {fileID: 8300000, guid: e0e8a436f69a2c64d8da1360b196bf4d, type: 3}
+  - {fileID: 8300000, guid: df0ad53a957c20245a5658cc7817de9b, type: 3}
+--- !u!82 &-6253166612369348037
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9110040514710003671}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 823319002062565818, guid: 9c3c0f666afde004c91537987db36407, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.208
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2415267261834744651
 PrefabInstance:
   m_ObjectHideFlags: 0
