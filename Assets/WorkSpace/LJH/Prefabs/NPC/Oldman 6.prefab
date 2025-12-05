@@ -281,17 +281,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06ea6cad2377604089e7a1a20359863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestObj: {fileID: 2014547901283289774, guid: 4254a540b51f2e0458787213ffa071ef, type: 3}
+  wantItemManager: {fileID: 0}
   gender: 0
   age: 2
   IsBuyer: 0
   animator: {fileID: 8718226567737597652}
   wantItem: {fileID: 0}
   wantItemList: []
-  talkPopUp: {fileID: 7430772317654058477}
   targetSensor: {fileID: 7409554168982966319}
   astarPath: {fileID: 4850916542717644743}
   isAngry: 0
+  isSearchTableEnteredFirst: 0
+  buyEffect: {fileID: 0}
 --- !u!95 &8718226567737597652
 Animator:
   serializedVersion: 5
@@ -607,7 +608,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8297117647250375585
@@ -818,7 +819,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &4147820734106292704
