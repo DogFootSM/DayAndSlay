@@ -29,7 +29,8 @@ public class StageSelect : MonoBehaviour
 
     private void TapButton(StageNum stage)
     {
-        IngameManager.instance.SetStage(stage);
+        //IngameManager.instance.SetStage(stage);
+        DungeonRoomSpawner.stageNum = stage;
         //for (int i = 0; i < buttons.Count - 1; i++)
         //{
         //    buttons[i].GetComponent<Image>().color = Color.white;

@@ -30,7 +30,7 @@ public class DungeonRoomSpawner : MonoBehaviour
     [SerializeField] private GameObject doorPrefab;
     [SerializeField] private GameObject doorMarker;
 
-    [SerializeField] private StageNum stageNum;
+    public static StageNum stageNum;
 
     public List<GameObject> RoomList = new List<GameObject>();
 

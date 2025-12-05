@@ -74,8 +74,6 @@ public class DungeonManager : MonoBehaviour
 
     private IEnumerator BossDoorOpenCoroutine()
     {
-        Debug.Log(stone);
-        Debug.Log(stone.GetComponent<SpriteRenderer>());
         SpriteRenderer stoneRenderer = stone.GetComponent<SpriteRenderer>();
         Color stoneColor = stoneRenderer.color;
 
