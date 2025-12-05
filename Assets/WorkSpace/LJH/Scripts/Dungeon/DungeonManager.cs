@@ -17,6 +17,8 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private Camera doorCamera;
     [Inject] MapManager mapManager;
     
+    private SoundManager soundManager => SoundManager.Instance;
+    
     private int _remainingBossCount;
     public int RemainingBossCount
     {
@@ -61,7 +63,7 @@ public class DungeonManager : MonoBehaviour
         
         Debug.Log(Camera.main.name);
         
-        
+        soundManager.PlayBGM(BGMSound.DENGEON_1_BGM);
         doorCamera.transform.position = Camera.main.transform.position;
     }
 
