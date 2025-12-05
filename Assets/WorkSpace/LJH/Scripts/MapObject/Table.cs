@@ -22,6 +22,8 @@ public class Table : InteractableObj
 
     public override void UiOnOffMethod(Collision2D collision)
     {
+        if (!collision.gameObject.CompareTag("Player")) return;
+        
         string _objName;
           
         _objName = popUp.GetComponent<PopUp>().objName = "가판대";
