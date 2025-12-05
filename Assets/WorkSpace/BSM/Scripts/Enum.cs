@@ -249,7 +249,6 @@ public enum Direction
 [Serializable]
 public enum MapType
 {
-    //TODO: 추후 내용 수정 필요
     TOWN_OUTSIDE,
     TOWN_STORE1F,
     TOWN_STORE2F,
@@ -347,7 +346,7 @@ public enum SFXSound
 [Serializable]
 public enum BGMSound
 {
-    START_SCENE_BGM, TOWN_SCENE_BGM, DENGEON_1_BGM
+    START_SCENE_BGM, TOWN_SCENE_BGM1, TOWN_SCENE_BGM2, TOWN_SCENE_BGM3, TOWN_SCENE_BGM4, TOWN_SCENE_BGM5, DENGEON_1_BGM, BOSSROOM
 }
 
 /// <summary>

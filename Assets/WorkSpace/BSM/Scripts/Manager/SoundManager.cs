@@ -44,7 +44,7 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         //오디오 설정 Data Load
-        dataManager.LoadAudioData();
+        dataManager.LoadAudioData(); 
         PlayBGM(BGMSound.START_SCENE_BGM);
     } 
 
@@ -218,5 +218,21 @@ public class SoundManager : MonoBehaviour
     {
         bgmAudioSource.clip = bgmSounds[bgmSound];
         bgmAudioSource.Play();
-    } 
+    }
+
+    /// <summary>
+    /// 버튼 클릭에 따른 BGM Source Pause Or Play
+    /// </summary>
+    /// <param name="isPlay">BGM 재생 요청 혹은 퍼즈 요청 상태</param>
+    public void PauseOrPlayBGM(bool isPlay)
+    {
+        if (isPlay)
+        {
+            bgmAudioSource.UnPause();
+        }
+        else
+        {
+            bgmAudioSource.Pause();
+        } 
+    }
 }
