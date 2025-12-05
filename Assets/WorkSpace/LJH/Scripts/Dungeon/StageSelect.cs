@@ -30,12 +30,12 @@ public class StageSelect : MonoBehaviour
     private void TapButton(StageNum stage)
     {
         IngameManager.instance.SetStage(stage);
-        for (int i = 0; i < buttons.Count - 1; i++)
-        {
-            buttons[i].GetComponent<Image>().color = Color.white;
-        }
-        
-        buttons[(int)stage].GetComponent<Image>().color = Color.yellow;
+        //for (int i = 0; i < buttons.Count - 1; i++)
+        //{
+        //    buttons[i].GetComponent<Image>().color = Color.white;
+        //}
+        //
+        //buttons[(int)stage].GetComponent<Image>().color = Color.yellow;
     }
 
     private void OkayButton()
