@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class EquipCreateButton : MonoBehaviour
 {
     [SerializeField] ItemCreatePopup createPopup;
+    [SerializeField] CreateOkayPopup okayPopup;
     public InventoryInteraction inventory;
     public ItemData curSelectedItem {get;  set;}
     
@@ -36,8 +37,14 @@ public class EquipCreateButton : MonoBehaviour
 
     private IEnumerator CreateCoroutine()
     {
+        //제작 대기 팝업
         createPopup.gameObject.SetActive(true);
         yield return new WaitUntil( () => !createPopup.gameObject.activeSelf);
+        
+        //제작 완료 팝업
+        okayPopup.SetCurItemInfo(curSelectedItem);
+        okayPopup.gameObject.SetActive(true);
+        yield return new WaitUntil( () => !okayPopup.gameObject.activeSelf);
         
         inventory.AddItemToInventory(curSelectedItem);
     }
