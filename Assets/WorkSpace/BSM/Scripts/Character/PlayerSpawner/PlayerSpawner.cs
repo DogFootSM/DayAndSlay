@@ -12,7 +12,7 @@ public class PlayerSpawner : MonoBehaviour
     [Inject] private MapManager mapManager;
     [Inject] private DataManager dataManager;  
     private GameObject playerInstance;
-    private CharacterAnimatorController characterAnimatorController;
+    private CharacterAnimatorController characterAnimatorController; 
     
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class PlayerSpawner : MonoBehaviour
         if (PlayerRoot.PlayerRootInstance != null) return;
         
         PlayerSpawn();
-        PlayerSpriteLoad();
+        PlayerSpriteLoad(); 
     }
 
     /// <summary>
