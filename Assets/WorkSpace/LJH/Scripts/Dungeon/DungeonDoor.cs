@@ -132,7 +132,7 @@ public class DungeonDoor : MonoBehaviour
         {
             if (room.name == "BossRoom")
             {
-                //SoundManager.Instance.PlayBGM(BGMSound.BOSSROOM);
+                SoundManager.Instance.PlayBGM(BGMSound.BOSSROOM);
             }
             
             MapGridChecker();
