@@ -10,6 +10,16 @@ public class PopUp : MonoBehaviour
     public void SetText(string text) => this.text.text = text;
     private void OnEnable()
     {
-        text.text = $"E키를 눌러서 \n {objName} 사용하기";
+        if (text.text == null)
+        {
+            text.text = $"E키를 눌러서 \n {objName} 사용하기";
+        }
     }
+
+    private void OnDisable()
+    {
+        text.text = null;
+    }
+    
+    
 }

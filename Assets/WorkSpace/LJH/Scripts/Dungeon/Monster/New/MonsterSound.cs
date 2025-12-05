@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum SoundType
 {
+    NOTUSED,
     ATTACK,
     HIT,
     DAMAGE,

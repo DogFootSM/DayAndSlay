@@ -20,13 +20,15 @@ public class StoreManager : InteractableObj
 
     public override void Interaction()
     {
+        if (DayManager.instance.GetDayOrNight() != DayAndNight.MORNING) return;
         DayManager.instance.OpenStore();
     }
     public override void UiOnOffMethod(Collision2D collision)
     {
+        if (DayManager.instance.GetDayOrNight() != DayAndNight.MORNING) return;
         if (collision.gameObject.CompareTag("Player"))
         {
-            popUp.GetComponent<PopUp>().objName = "카운터";
+            popUp.GetComponent<PopUp>().SetText("가게 오픈하기");
             popUp.SetActive(!popUp.gameObject.activeSelf);
         }
     }
