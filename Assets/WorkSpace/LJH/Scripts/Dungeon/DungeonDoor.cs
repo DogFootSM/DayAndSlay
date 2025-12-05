@@ -130,6 +130,11 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
+            if (room.name == "BossRoom")
+            {
+                //SoundManager.Instance.PlayBGM(BGMSound.BOSSROOM);
+            }
+            
             MapGridChecker();
             minimap.CamPosSet(room.transform.position);
             
