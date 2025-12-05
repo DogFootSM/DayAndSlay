@@ -88,6 +88,7 @@ public class Npc : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isIgnoringCollision)
         {
+            collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             PauseMovement();
 
             if (blockCoroutine == null)
@@ -119,7 +120,6 @@ public class Npc : MonoBehaviour
 
         npcCol.isTrigger = true;
         blockCoroutine = null;
-
         StartCoroutine(ResumeNPCCoroutine(1f));
 
     }
@@ -148,7 +148,6 @@ public class Npc : MonoBehaviour
         if (prevState != null) return;
         
         prevState = StateMachine.CurrentState;
-        
         if (moveCoroutine != null)
         {
             animator.Play("Idle");
