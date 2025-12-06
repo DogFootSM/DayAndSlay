@@ -53,6 +53,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void InvestSkillPoint()
     {
+        SoundManager.Instance.PlaySfx(SFXSound.UI_BUTTON_CLICK);
         CurSkillNode.ApplySkillLevel();
         UpdateSkillLevelUI();
         UpdateSkillPreviewPrerequisite?.Invoke(CurSkillNode);

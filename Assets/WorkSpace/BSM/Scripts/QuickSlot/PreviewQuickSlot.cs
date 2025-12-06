@@ -36,6 +36,7 @@ public class PreviewQuickSlot : MonoBehaviour,
     
     public void OnPointerClick(PointerEventData eventData)
     {
+        SoundManager.Instance.PlaySfx(SFXSound.SLOTDROP);
         quickSlotManager.RegisteredSkillNode(curSlotType);
     }
 }
