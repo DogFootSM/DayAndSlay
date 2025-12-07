@@ -195,45 +195,35 @@ public class Npc : MonoBehaviour
     {
         if (!IsBuyer) return;
         
-        wantItemList = SelectItemListByDate();
+        wantItemList = SelectItemListByCleared();
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
     }
 
-    private List<ItemData> SelectItemListByDate()
+    private List<ItemData> SelectItemListByCleared()
     {
-        List<ItemData> temp_wantItemList = ItemDatabaseManager.instance.GetAllEquipItem();
+        List<ItemData> allItems = ItemDatabaseManager.instance.GetAllEquipItem();
         List<ItemData> filteredList;
-        switch (IngameManager.instance.GetCurrentDay())
-        {
-            case 1 :
-                filteredList = temp_wantItemList
-                    .Where(item => item.Tier == 1)
-                    .ToList();
-                break;
-            
-            case 2 :
-                filteredList = temp_wantItemList
-                    .Where(item => item.Tier >= 1 && item.Tier <= 2)
-                    .ToList();
-                break;
-            
-            case 3 :
-                filteredList = temp_wantItemList
-                    .Where(item => item.Tier >= 1 && item.Tier <= 3)
-                    .ToList();
-                break;
-            
-            case 4 :
-                filteredList = temp_wantItemList
-                    .Where(item => item.Tier >= 1 && item.Tier <= 4)
-                    .ToList();
-                break;
-            
-            default:
-                filteredList = temp_wantItemList;
-                break;
-        }
 
+        // Stage 3까지 클리어: 모든 아이템
+        if (DungeonManager.is3StageCleared)
+        {
+            filteredList = allItems;
+        }
+        // Stage 2까지만 클리어: 1 2티어 아이템
+        else if (DungeonManager.is2StageCleared)
+        {
+            filteredList = allItems
+                .Where(item => item.Tier >= 1 && item.Tier <= 2)
+                .ToList();
+        }
+        // Stage 2 미클리어: 1 티어 아이템
+        else
+        {
+            filteredList = allItems
+                .Where(item => item.Tier == 1)
+                .ToList();
+        }
+    
         return filteredList;
     }
 

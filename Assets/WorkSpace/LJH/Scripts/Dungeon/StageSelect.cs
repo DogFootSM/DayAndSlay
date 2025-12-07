@@ -8,10 +8,19 @@ public class StageSelect : MonoBehaviour
     [SerializeField] private Button okayButton;
     [SerializeField] private Button cancelButton;
     [SerializeField] private DungeonEnterDoor door;
-
+    
     private void Start()
     {
         ButtonInit();
+        StageSelectableCheck();
+    }
+
+    private void StageSelectableCheck()
+    {
+        //1Stage 클리어 체크시 2스테이지 오픈
+        buttons[1].interactable = DungeonManager.is1StageCleared;
+        //2Stage 클리어 체크시 3스테이지 오픈
+        buttons[2].interactable = DungeonManager.is2StageCleared;
     }
 
 
