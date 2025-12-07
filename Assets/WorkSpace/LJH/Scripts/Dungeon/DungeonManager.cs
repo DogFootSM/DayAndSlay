@@ -6,6 +6,11 @@ using Zenject;
 
 public class DungeonManager : MonoBehaviour
 {
+    //스테이지 클리어 여부
+    public static bool is1StageCleared = false;
+    public static bool is2StageCleared = false;
+    public static bool is3StageCleared = false;
+
     public static DungeonManager Instance;
     public DropItemPool pool;
 
@@ -33,6 +38,7 @@ public class DungeonManager : MonoBehaviour
             {
                 // 3. 특정 함수를 실행합니다.
                 BossDoorOpen();
+                StageClearedCheck(DungeonRoomSpawner.stageNum);
             }
 
             Debug.Log($"[Boss Count] 남은 보스 수: {_remainingBossCount}");
@@ -65,6 +71,27 @@ public class DungeonManager : MonoBehaviour
         
         soundManager.PlayBGM(BGMSound.DENGEON_1_BGM);
         doorCamera.transform.position = Camera.main.transform.position;
+    }
+
+    public void StageClearedCheck(StageNum stageNum)
+    {
+        switch (stageNum)
+        {
+            case StageNum.STAGE1 :
+                is1StageCleared = true;
+                break;
+            
+            case StageNum.STAGE2 :
+                is2StageCleared = true;
+                break;
+            
+            case StageNum.STAGE3 :
+                is3StageCleared = true;
+                break;
+            
+            default:
+                break;
+        }
     }
 
     public void BossDoorOpen()
