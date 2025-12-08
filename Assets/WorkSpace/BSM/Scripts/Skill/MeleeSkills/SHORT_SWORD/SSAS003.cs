@@ -26,6 +26,7 @@ public class SSAS003 : MeleeSkill
         SetOverlapSize(direction, skillNode.skillData.SkillRange);
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
+        SoundManager.Instance.PlaySfx(SFXSound.SSAS003);
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction,rightDeg, leftDeg, upDeg, downDeg);
         SetParticleRotationX(direction);

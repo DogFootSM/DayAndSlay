@@ -22,6 +22,7 @@ public class SSAS005 : MeleeSkill
         skillDamage = GetSkillDamage();
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
+        SoundManager.Instance.PlaySfx(SFXSound.SSAS005);
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction,180f, 0f, 270f, 90f); 
         SetParticleLocalScale(new Vector3(1.8f, 0.1f), new Vector3(0.1f, 1.8f));
@@ -34,15 +35,15 @@ public class SSAS005 : MeleeSkill
          
         Collider2D[] cols = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0, monsterLayer);
         
-        Test(cols);
+        Stun(cols);
     }
 
-    private void Test(Collider2D[] cols)
+    private void Stun(Collider2D[] cols)
     {
-        skillNode.PlayerSkillReceiver.StartCoroutine(TestRoutine(cols));
+        skillNode.PlayerSkillReceiver.StartCoroutine(StunCoRoutine(cols));
     }
 
-    private IEnumerator TestRoutine(Collider2D[] cols)
+    private IEnumerator StunCoRoutine(Collider2D[] cols)
     {
         yield return WaitCache.GetWait(0.25f);
        

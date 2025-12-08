@@ -11,6 +11,8 @@ public class SPAS005 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
+        
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS005);
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         ExecuteMovementBlock(skillNode.skillData.BuffDuration);
 

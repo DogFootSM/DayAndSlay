@@ -27,7 +27,7 @@ public class SSAS001 : MeleeSkill
         skillDamage = GetSkillDamage();
         
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
-        
+        SoundManager.Instance.PlaySfx(SFXSound.SSAS001);
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
 

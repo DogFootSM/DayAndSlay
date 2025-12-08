@@ -30,6 +30,7 @@ public class SSAS002 : MeleeSkill
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
         
         //이펙트 재생
+        SoundManager.Instance.PlaySfx(SFXSound.SSAS002);
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         
         //바라보는 방향에 따른 이펙트 회전

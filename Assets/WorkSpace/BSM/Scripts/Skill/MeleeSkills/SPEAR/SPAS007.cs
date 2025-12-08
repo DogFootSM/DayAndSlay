@@ -28,7 +28,7 @@ public class SPAS007 : MeleeSkill
         {
             effectAction.Add(() => RegisterAction(cols));
         } 
-        
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS007);
         ExecuteJumpAttackInPlace(effectAction); 
     }
 
