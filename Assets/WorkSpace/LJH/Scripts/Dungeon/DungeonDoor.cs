@@ -132,7 +132,7 @@ public class DungeonDoor : MonoBehaviour
         {
             if (room.name == "BossRoom")
             {
-                //SoundManager.Instance.PlayBGM(BGMSound.BOSSROOM);
+                SoundManager.Instance.PlayBGM(BGMSound.BOSSROOM);
             }
             
             MapGridChecker();
@@ -183,7 +183,7 @@ public class DungeonDoor : MonoBehaviour
     
     
     
-    
+    /*
     /// <summary>
     /// 목적지를 대조하여 맞는 방위치로 카메라 맵을 변경해주는 메서드
     /// </summary>
@@ -191,15 +191,64 @@ public class DungeonDoor : MonoBehaviour
     {
         
         Vector3 checkPosition = toGrid.transform.position;
-
+        Debug.Log($"맵 포커싱 변경 시도1");
+        Debug.Log($"체크 포지션 = {checkPosition}");
 
         foreach (Tilemap tilemap in floorTilemap)
         {
+            Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap) + 3}에서 맵 포커싱 변경 시도");
             Vector3Int gridPosition = tilemap.WorldToCell(checkPosition);
+            Debug.Log($"무슨 타일맵인가 = {tilemap.transform.parent.name}");
+            Debug.Log($"뚫었는가? {tilemap.HasTile(gridPosition)}");
             if (tilemap.HasTile(gridPosition))
             {
+                Debug.Log($"{(MapType)floorTilemap.IndexOf(tilemap) + 3}로 맵 포커싱 변경");
                 mapManager.MapChange((MapType)floorTilemap.IndexOf(tilemap) + 3);
             }
+        }
+    }*/
+    
+    private void MapGridChecker()
+    {
+        // 타일 체크 기준이 되는 월드 좌표
+        Vector3 checkPosition = toGrid.transform.position;
+        Debug.Log($"[체커] 맵 포커싱 검사 시작 / 월드 좌표 = {checkPosition}");
+
+        foreach (Tilemap tilemap in floorTilemap)
+        {
+            int idx = floorTilemap.IndexOf(tilemap);
+            MapType type = (MapType)(idx + 3);
+
+            Debug.Log($"============================");
+            Debug.Log($"[체커] {type} 타일맵 검사 시작");
+            Debug.Log($"현재 검사 중인 타일맵 오브젝트 = {tilemap.transform.parent.name}");
+
+            // 월드 좌표를 타일 좌표로 변환
+            Vector3Int gridPosition = tilemap.WorldToCell(checkPosition);
+            Debug.Log($"타일 좌표(gridPosition) = {gridPosition}");
+
+            // 타일맵의 전체 영역 (타일이 존재할 수 있는 범위)
+            Debug.Log($"타일맵 cellBounds = {tilemap.cellBounds}");
+
+            // 변환된 gridPosition이 cellBounds 안에 포함되는지 검사
+            Debug.Log($"cellBounds 안에 포함됨? {tilemap.cellBounds.Contains(gridPosition)}");
+
+            // 실제로 그 위치에 타일이 있는지 검사
+            bool hasTile = tilemap.HasTile(gridPosition);
+            Debug.Log($"HasTile 결과 = {hasTile}");
+
+            // 그 좌표의 실제 타일 객체를 가져와 확인
+            var tile = tilemap.GetTile(gridPosition);
+            Debug.Log($"GetTile 결과 = {(tile == null ? "NULL (타일 없음)" : tile.name)}");
+
+            // 타일이 존재하면 맵 전환 실행
+            if (hasTile)
+            {
+                Debug.Log($"★★ 타일 발견! {type} 맵으로 포커싱 변경 ★★");
+                mapManager.MapChange(type);
+            }
+
+            Debug.Log($"============================\n");
         }
     }
 

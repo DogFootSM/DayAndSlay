@@ -36,11 +36,6 @@ public class NpcSpawner : MonoBehaviour
             
             Npc npc = npcList[^1];
             
-            //npc의 타입 설정
-            //GenderType gender = (GenderType)Random.Range(0, 2);
-            //AgeType age = (AgeType)Random.Range(0, 3);
-            //npc.SetNpcType(gender, age);
-            
             //npc의 바이어 y/n 설정
             npc.IsBuyer = Random.value < 1f / npcBuyProbability;
             npc.name = npc.name.Replace("(Clone)", "");

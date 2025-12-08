@@ -91,7 +91,6 @@ public class DayManager : MonoBehaviour, ISavable
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {

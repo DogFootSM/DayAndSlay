@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-public class MonsterCsvImporter
+public class MonsterParser
 {
     [MenuItem("Tools/Import CSV/Monster Data")]
     public static void ImportMonsterData()
@@ -22,13 +22,12 @@ public class MonsterCsvImporter
         string[] lines = File.ReadAllLines(csvPath);
         Debug.Log($"몬스터 CSV 줄 수: {lines.Length}");
 
-        for (int i = 1; i < lines.Length; i++) // 첫 줄은 헤더
+        for (int i = 1; i < lines.Length; i++)
         {
-            Debug.Log($"[Line {i}] 원본: {lines[i]}");
+            string line = lines[i].Trim();
+            if (string.IsNullOrWhiteSpace(line)) continue;
 
-            string[] values = lines[i].Split(',');
-            Debug.Log($"[Line {i}] 필드 수: {values.Length}");
-
+            string[] values = line.Split(',');
             if (values.Length < 8)
             {
                 Debug.LogWarning($"[Line {i}] 필드 부족으로 스킵됨");
@@ -37,10 +36,23 @@ public class MonsterCsvImporter
 
             try
             {
-                MonsterData monster = ScriptableObject.CreateInstance<MonsterData>();
+                int monsterId = int.Parse(values[0]);
+                string monsterName = values[1];
 
-                monster.Id = int.Parse(values[0]);
-                monster.Name = values[1];
+                string assetPath = $"{assetFolder}/{monsterId}_{monsterName}.asset";
+
+                MonsterData monster = AssetDatabase.LoadAssetAtPath<MonsterData>(assetPath);
+                bool isNew = false;
+
+                if (monster == null)
+                {
+                    monster = ScriptableObject.CreateInstance<MonsterData>();
+                    isNew = true;
+                }
+
+                // 기본 데이터 파싱
+                monster.Id = monsterId;
+                monster.Name = monsterName;
                 monster.Hp = int.Parse(values[2]);
                 monster.Attack = int.Parse(values[3]);
                 monster.AttackRange = float.Parse(values[4]);
@@ -48,79 +60,76 @@ public class MonsterCsvImporter
                 monster.MoveSpeed = float.Parse(values[6]);
                 monster.AttackCooldown = float.Parse(values[7]);
 
-                Debug.Log($"[Line {i}] 기본 정보 파싱 완료: ID={monster.Id}, Name={monster.Name}");
+                // ------------------------------------------------------------
+                // 드랍 테이블
+                // ------------------------------------------------------------
+                monster.DropTable.Clear();
 
-                // 드랍 테이블이 존재하면 파싱
-                if (values.Length > 8 && !string.IsNullOrWhiteSpace(values[8]))
+                if (values.Length > 12 && !string.IsNullOrWhiteSpace(values[12]))
                 {
-                    string[] drops = values[8].Split('|');
+                    string[] drops = values[12].Split('|');
 
                     foreach (string dropStr in drops)
                     {
                         if (int.TryParse(dropStr, out int itemId))
                         {
-                            ItemData itemData = LoadItemById(itemId);
-                            if (itemData == null)
+                            // ? 드랍률 결정: ID의 4번째 자리(인덱스 3)를 보고 판정
+                            string idStr = itemId.ToString();
+
+                            float dropRate = 0f;
+
+                            if (idStr.Length >= 4)
                             {
-                                Debug.LogWarning($"드랍 아이템 ID {itemId} 찾을 수 없음 (라인 {i + 1})");
-                                continue;
+                                char grade = idStr[3];
+
+                                if (grade == '0')      // 일반 재료
+                                    dropRate = 30f;
+                                else if (grade == '1') // 레어 재료
+                                    dropRate = 10f;
+                                else
+                                    dropRate = 0f;     // 기타
                             }
-
-                            float rate = itemData.Parts switch
-                            {
-                                Parts.RARE_INGREDIANT => 10f,
-                                Parts.INGREDIANT => 30f,
-                                _ => 0f
-                            };
-
-                            Debug.Log($"[Line {i}] 드랍 아이템 ID={itemId}, Rate={rate}");
 
                             monster.DropTable.Add(new DropItemEntry
                             {
                                 ItemId = itemId,
-                                DropRate = rate
+                                DropRate = dropRate
                             });
+
+                            Debug.Log($"[Line {i}] 드랍 등록 → ID={itemId}, Rate={dropRate}");
                         }
                         else
                         {
-                            Debug.LogWarning($"[Line {i}] 드랍 ID 파싱 실패: {dropStr}");
+                            Debug.LogWarning($"[Line {i}] 드랍 ID 파싱 실패: {dropStr} → 0으로 대체");
+
+                            monster.DropTable.Add(new DropItemEntry
+                            {
+                                ItemId = 0,
+                                DropRate = 0f
+                            });
                         }
                     }
                 }
 
-                string assetPath = $"{assetFolder}/{monster.Id}_{monster.Name}.asset";
-
-                if (File.Exists(assetPath))
+                if (isNew)
                 {
-                    Debug.LogWarning($"이미 존재하는 에셋: {assetPath}, 스킵됨");
-                    continue;
+                    AssetDatabase.CreateAsset(monster, assetPath);
+                    Debug.Log($"[생성] 몬스터 SO 생성됨 → {assetPath}");
                 }
-
-                AssetDatabase.CreateAsset(monster, assetPath);
-                Debug.Log($"에셋 생성됨: {assetPath}");
+                else
+                {
+                    EditorUtility.SetDirty(monster);
+                    Debug.Log($"[업데이트] 기존 몬스터 SO 갱신됨 → {assetPath}");
+                }
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"라인 {i + 1} 처리 중 에러: {ex.Message}");
+                Debug.LogError($"[Line {i}] 처리 중 에러: {ex.Message}");
             }
         }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log("몬스터 ScriptableObject 생성 완료");
-    }
-
-    // 아이템 ID로 ScriptableObject 찾기
-    private static ItemData LoadItemById(int id)
-    {
-        string[] guids = AssetDatabase.FindAssets("t:ItemData");
-        foreach (var guid in guids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            ItemData item = AssetDatabase.LoadAssetAtPath<ItemData>(path);
-            if (item != null && item.ItemId == id)
-                return item;
-        }
-        return null;
+        Debug.Log("몬스터 ScriptableObject 생성/업데이트 완료");
     }
 }

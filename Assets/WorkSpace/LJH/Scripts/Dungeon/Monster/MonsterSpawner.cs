@@ -88,8 +88,16 @@ public class MonsterSpawner : MonoBehaviour
             
             foreach (Vector3Int pos in bounds.allPositionsWithin)
             {
+                //타일이 바닥인지 검사 && 벽이 아닌지
                 if (floorTilemap.HasTile(pos) && !wallTilemap.HasTile(pos))
                 {
+                    
+                    //인접 타일 벽인지 검사
+                    if (CheckNeighborWalls(pos, wallTilemap))
+                    {
+                        continue;
+                    }
+                    
                     // Cell -> World 좌표 변환
                     Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
                     floorPositions.Add(worldPos);
@@ -103,6 +111,30 @@ public class MonsterSpawner : MonoBehaviour
                 spawner.transform.position = new Vector3(spawnerPos.x, spawnerPos.y, 0);
             }
         }
+    }
+    
+    private bool CheckNeighborWalls(Vector3Int currentPos, Tilemap wallTilemap)
+    {
+        // 상, 하, 좌, 우 이웃 위치 정의
+        Vector3Int[] neighbors = new Vector3Int[]
+        {
+            currentPos + Vector3Int.up,    // 상 (Y + 1)
+            currentPos + Vector3Int.down,  // 하 (Y - 1)
+            currentPos + Vector3Int.left,  // 좌 (X - 1)
+            currentPos + Vector3Int.right  // 우 (X + 1)
+        };
+
+        foreach (Vector3Int neighborPos in neighbors)
+        {
+            // 이웃 위치에 벽 타일이 하나라도 있다면, true 반환 (유효하지 않음)
+            if (wallTilemap.HasTile(neighborPos))
+            {
+                return true; 
+            }
+        }
+
+        // 4방향 모두 벽이 없다면, false 반환 (유효함)
+        return false;
     }
 
     virtual public void MonsterSpawn()

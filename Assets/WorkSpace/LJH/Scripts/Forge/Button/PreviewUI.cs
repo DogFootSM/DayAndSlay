@@ -49,13 +49,13 @@ public class PreviewUI : BaseUI
 
     private void SetIngredientTextColor(TextMeshProUGUI text, ItemData itemData)
     {
-        //B4A721 Èñ±Í Àç·á »ö
+        //9E00E5 Èñ±Í Àç·á »ö
         //6F3232 ±âº» Àç·á »ö
         Color color = text.color;
         
         if (itemData.Parts == Parts.RARE_INGREDIANT)
         {
-            ColorUtility.TryParseHtmlString("#B4A721", out color);
+            ColorUtility.TryParseHtmlString("#9E00E5", out color);
         }
 
         else if (itemData.Parts == Parts.INGREDIANT)

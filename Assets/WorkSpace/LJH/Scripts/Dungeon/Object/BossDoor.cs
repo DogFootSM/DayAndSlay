@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,10 +14,21 @@ public class BossDoor : InteractableObj
     [SerializeField] private Button yesButton;
     [SerializeField] private Button noButton;
 
+    private PlayerRoot player;
+    private MapManager mapManager;
+    
     private void Start()
     {
         yesButton.onClick.AddListener(YesButton);
         noButton.onClick.AddListener(NoButton);
+        StartCoroutine(IndependentCoroutine());
+    }
+
+    private IEnumerator IndependentCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        transform.SetParent(null);
     }
 
     public override void Interaction()
@@ -26,6 +38,9 @@ public class BossDoor : InteractableObj
 
     public override void UiOnOffMethod(Collider2D collider)
     {
+        if(collider.CompareTag("Player"))
+            player = collider.GetComponent<PlayerRoot>();
+        
         dungeonExitPopUp.SetActive(!dungeonExitPopUp.activeSelf);
     }
 
@@ -36,6 +51,10 @@ public class BossDoor : InteractableObj
     {
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
+        
+        //타운씬 던젼도어 아래쪽 위치 강제로 할당
+        player?.TranslateScenePosition(new Vector2(-83.75f, -30));
+        mapManager.MapChange(MapType.TOWN_OUTSIDE);
     }
 
     /// <summary>

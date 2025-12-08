@@ -50,36 +50,23 @@ public class MonsterMethod : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
+            rb.velocity = Vector2.zero;
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            StartCoroutine(FreezeDelay(collision));
+            collision.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
     }
 
-    private IEnumerator FreezeDelay(Collision2D collision)
-    {   
-        Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
-        
-        playerRb.constraints = RigidbodyConstraints2D.FreezeAll;
-        yield return new WaitForSeconds(0.05f);
-        playerRb.constraints = RigidbodyConstraints2D.None;
-        playerRb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        playerRb.velocity = Vector2.zero;
-    }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.tag == "Player")
         {
+            collision.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            
-            Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
-            
-            playerRb.constraints = RigidbodyConstraints2D.None;
-            playerRb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            playerRb.velocity = Vector2.zero;
 
         }
+        
     }
     
     
