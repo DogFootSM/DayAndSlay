@@ -23,6 +23,7 @@ public class WDAS009 : MeleeSkill
 
     private void ExecutePostCastAction(Vector2 playerPosition)
     {
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS009);
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         ExecuteRemoveCast(skillNode.skillData.BuffDuration);
     }

@@ -111,6 +111,7 @@ public class PlayerModel : MonoBehaviour, ISavable
 
     private IDataReader dataReader;
     private GameManager gameManager => GameManager.Instance;
+    private SoundManager soundManager => SoundManager.Instance;
     
     private PlayerStats playerStats;
     public PlayerStats PlayerStats => playerStats;
@@ -559,8 +560,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// </summary>
     private void LevelUp()
     {
-        //TODO: 레벨업 사운드 및 이팩트 재생
-        
+        soundManager.PlaySfx(SFXSound.LEVELUP);
         playerStats.level += GetExpToNextLevel();
         gameManager.HasUnsavedChanges = true;
         skillTree.NotifySkillPointChanged();

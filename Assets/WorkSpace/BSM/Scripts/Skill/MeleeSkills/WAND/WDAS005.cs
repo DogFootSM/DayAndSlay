@@ -27,7 +27,7 @@ public class WDAS005 : MeleeSkill
     {
         float buffFactor = skillNode.skillData.SkillAbilityValue +
                            ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
-        
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS005);
         ExecuteShield(shieldCount, buffFactor, skillNode.skillData.BuffDuration, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle");
     }
     

@@ -27,6 +27,7 @@ public class WDAS008 : MeleeSkill
     {
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
         
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS008);
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         if (cols.Length > 0)
