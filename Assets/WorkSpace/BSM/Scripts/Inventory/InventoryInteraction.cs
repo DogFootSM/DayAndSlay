@@ -290,6 +290,7 @@ public class InventoryInteraction :
         if (endSlot == null || beginSlot == null) return;
         
         if (beginSlot.CurSlotItem == null) return;
+        SoundManager.Instance.PlaySfx(SFXSound.SLOTDROP);
         
         if (endSlot.CurSlotItem == null)
         {

@@ -69,7 +69,7 @@ public abstract class PassiveSkill : SkillFactory
         
         //기본 Factor + 레벨당 추가 Factor 값에 기본 공격 속도를 곱한 증가할 공격 속도 값
         float skillAttackFactor = (skillNode.PlayerModel.PlayerStats.SkillAttack * (baseFactor + skillLevelPerStats));
-        //모델에 해당 함수 추가해야함
+        //TODO:모델에 해당 함수 추가해야함
         //skillNode.PlayerModel.UpdateSkillAttackFactor(skillAttackFactor);
     }
     

@@ -17,6 +17,8 @@ public class SPAS002 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
+        
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS002);
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
         skillDamage = GetSkillDamage();

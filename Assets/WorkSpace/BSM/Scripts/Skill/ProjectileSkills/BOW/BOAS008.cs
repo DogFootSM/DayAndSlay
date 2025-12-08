@@ -11,6 +11,7 @@ public class BOAS008 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
+        SoundManager.Instance.PlaySfx(SFXSound.BOAS008);
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         float buffFactor = skillNode.skillData.SkillAbilityValue +

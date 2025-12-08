@@ -33,7 +33,9 @@ public class WDAS007 : MeleeSkill
         Sort.SortMonstersByNearest(cols, playerPosition);
         float cx = 0;
         float cy = 0;
-
+        
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS007);
+        
         if (cols.Length > 0)
         {
             int detected = skillNode.skillData.DetectedCount < cols.Length ? skillNode.skillData.DetectedCount : cols.Length;

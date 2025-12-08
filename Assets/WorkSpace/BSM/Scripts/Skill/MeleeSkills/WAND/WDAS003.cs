@@ -31,7 +31,7 @@ public class WDAS003 : MeleeSkill
     private void ExecutePostCastAction(Vector2 playerPosition)
     {
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition, overlapSize, 0, monsterLayer);
-    
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS003);
         //레벨당 슬로우 효과
         float slowLevelPer = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         

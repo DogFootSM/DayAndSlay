@@ -33,6 +33,8 @@ public class SSAS004 : MeleeSkill
         
         if (detected.Length > 0)
         {
+            SoundManager.Instance.PlaySfx(SFXSound.SSAS004);
+            
             //몬스터 감지 가능 수와 감지한 수 비교 후 타격할 몬스터 수 설정
             int detectedCount = skillNode.skillData.DetectedCount <= detected.Length ? skillNode.skillData.DetectedCount : detected.Length;
             

@@ -42,6 +42,7 @@ public class BOAS010 : MeleeSkill
         float maxY = overlapSize.y / 2;
         int index = 0;
         
+        SoundManager.Instance.PlaySfx(SFXSound.BOAS010);
         while (elapsedTime < 1f)
         {
             elapsedTime += Time.deltaTime;

@@ -32,6 +32,7 @@ public class SPAS003 : MeleeSkill
 
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS003);
         SkillEffect(playerPosition + offset + (direction * 1.55f), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         
         //파티클 회전 및 크기 수정

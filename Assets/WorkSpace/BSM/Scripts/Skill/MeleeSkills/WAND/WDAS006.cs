@@ -40,7 +40,7 @@ public class WDAS006 : MeleeSkill
 
         //감지된 적이 없으면 return
         if (cols.Length < 1) return;
-        
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS006);
         //가장 가까운 적 위치 탐색
         Sort.SortMonstersByNearest(cols, playerPosition);
          

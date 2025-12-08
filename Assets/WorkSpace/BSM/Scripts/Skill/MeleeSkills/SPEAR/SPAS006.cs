@@ -11,6 +11,7 @@ public class SPAS006 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS006);
         SkillEffect(playerPosition + Vector2.up, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         
         //현재 스킬 레벨 당 +10% 추가

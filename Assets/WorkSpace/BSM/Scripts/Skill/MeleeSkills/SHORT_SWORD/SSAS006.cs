@@ -28,6 +28,8 @@ public class SSAS006 : MeleeSkill
         float defenseDeBuffFactor = skillNode.skillData.SkillAbilityValue +
                                     ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
+        SoundManager.Instance.PlaySfx(SFXSound.SSAS006);
+        
         if (cols.Length > 0)
         {
             skillActions.Add(new List<Action>());

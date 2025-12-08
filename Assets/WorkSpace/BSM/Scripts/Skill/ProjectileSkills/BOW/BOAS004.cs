@@ -46,6 +46,7 @@ public class BOAS004 : ProjectileSkill
     {
         yield return WaitCache.GetWait(0.9f);
         
+        SoundManager.Instance.PlaySfx(SFXSound.BOAS004);
         //이펙트 재생
         SingleEffect(playerPosition + direction, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", effectIndex);
         

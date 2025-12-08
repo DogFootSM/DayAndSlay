@@ -41,6 +41,7 @@ public class SPAS001 : MeleeSkill
         ListClear();
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS001);
         SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_2_Particle",
             skillNode.skillData.SkillEffectPrefab[1]);
         

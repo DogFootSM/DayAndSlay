@@ -32,6 +32,7 @@ public class WDAS010 : MeleeSkill
 
     private void ExecutePostCastAction(Vector2 direction, Vector2 playerPosition)
     { 
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS010);
         SpawnParticleAtRandomPosition(hitPos, skillNode.skillData.SkillRadiusRange, 0, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", 8);
         
         delayCo = skillNode.PlayerSkillReceiver.StartCoroutine(DelayHitRoutine(direction, playerPosition));

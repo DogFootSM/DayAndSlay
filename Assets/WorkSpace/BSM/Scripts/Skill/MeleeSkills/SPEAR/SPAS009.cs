@@ -12,6 +12,8 @@ public class SPAS009 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
+        
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS009);
         ExecuteFollowCharacterWithParticle(skillNode.skillData.SkillEffectPrefab[0], skillNode.skillData.BuffDuration, $"{skillNode.skillData.SkillId}_1_Particle");
         ExecuteFindNearByMonsters(skillNode.skillData.SkillRadiusRange ,1f, this, skillNode.skillData.BuffDuration);
     }

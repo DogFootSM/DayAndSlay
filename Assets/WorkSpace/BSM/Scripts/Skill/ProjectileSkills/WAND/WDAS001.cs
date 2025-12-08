@@ -36,6 +36,7 @@ public class WDAS001 : ProjectileSkill
     /// <returns></returns>
     private void ExecutePostCastAction(Vector2 position, Vector2 direction)
     {
+        SoundManager.Instance.PlaySfx(SFXSound.WDAS001);
         SingleEffect(position + direction, skillNode.skillData.SkillEffectPrefab[0], $"{skillNode.skillData.SkillId}_1_Particle", effectIndex);
         
         //몸 주변에 발사 이펙트 재생

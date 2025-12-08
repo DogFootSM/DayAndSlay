@@ -30,6 +30,7 @@ public class BOAS002 : ProjectileSkill
         float slowRatio = skillNode.skillData.SkillAbilityValue +
                           ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
+        SoundManager.Instance.PlaySfx(SFXSound.BOAS002);
         for (int i = 0; i < skillNode.skillData.SkillHitCount; i++)
         {
             //활 주변에 발사 이펙트 재생
