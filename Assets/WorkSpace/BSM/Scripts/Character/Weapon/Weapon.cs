@@ -59,6 +59,7 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void NormalAttack()
     {
+        SoundManager.Instance.PlaySfx(SFXSound.NORMAL_ATTACK);
         attackHandler.NormalAttack(curDirection, playerObject.transform.position, curEquippedItem, playerModel);
     }
 
