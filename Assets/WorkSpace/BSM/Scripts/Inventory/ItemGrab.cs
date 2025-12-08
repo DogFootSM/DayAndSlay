@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ItemGrab : MonoBehaviour
 {
@@ -25,7 +26,14 @@ public class ItemGrab : MonoBehaviour
             if (grabItem != null)
             { 
                 //드랍된 아이템의 ItemData 추가
-                bool isEat = inventoryInteraction.AddItemToInventory(grabItem.itemData);
+                
+                //1 ~5 개 아이템 습득
+                int random = Random.Range(1, 6);
+                bool isEat = true;
+                for (int i = 0; i < random; i++)
+                {
+                    isEat = inventoryInteraction.AddItemToInventory(grabItem.itemData);
+                }
 
                 if (isEat)
                 {
