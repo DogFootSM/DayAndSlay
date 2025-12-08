@@ -11,6 +11,7 @@ public class SSAS008 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS008_02);
         SkillEffect(playerPosition + new Vector2(0, 1.5f), 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         
         float moveSpeedDecrease = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);

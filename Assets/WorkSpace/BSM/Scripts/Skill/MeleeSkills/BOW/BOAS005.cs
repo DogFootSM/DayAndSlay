@@ -18,6 +18,7 @@ public class BOAS005 : MeleeSkill
     public override void UseSkill(Vector2 direction, Vector2 playerPosition)
     {
         ListClear();
+        SoundManager.Instance.PlaySfx(SFXSound.BOAS005);
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetDirectionToRotation(direction);
 

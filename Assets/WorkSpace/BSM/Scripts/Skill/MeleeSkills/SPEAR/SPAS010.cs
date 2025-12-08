@@ -55,6 +55,7 @@ public class SPAS010 : MeleeSkill
         
         Vector2 center = new Vector2(cx, cy);
         
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS010);
         SkillEffect(center, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         //감지된 몬스터가 있을 경우에만 창 이펙트 재생

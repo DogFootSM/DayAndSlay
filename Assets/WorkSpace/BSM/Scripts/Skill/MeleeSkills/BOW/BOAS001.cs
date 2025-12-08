@@ -18,6 +18,8 @@ public class BOAS001 : MeleeSkill
     {
         ListClear();
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
+        
+        SoundManager.Instance.PlaySfx(SFXSound.BOAS001);
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))

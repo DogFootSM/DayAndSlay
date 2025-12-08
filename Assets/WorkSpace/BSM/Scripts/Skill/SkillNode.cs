@@ -122,6 +122,7 @@ public class SkillNode
         Collider2D[] cols = Physics2D.OverlapBoxAll(playerPosition + (direction * (skillData.SkillRange / 2)), overlapSize, 0, monsterLayer);
         Sort.SortMonstersByNearest(cols, playerPosition);
         
+        SoundManager.Instance.PlaySfx(SFXSound.SPAS008_01);
         if (cols.Length > 0)
         {
             targetCollider = cols[0];
