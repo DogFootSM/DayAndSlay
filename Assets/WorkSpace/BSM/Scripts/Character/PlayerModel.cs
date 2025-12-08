@@ -1,12 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Zenject;
 
 [Serializable]
@@ -18,6 +12,9 @@ public class PlayerStats
 
     public int level;                    //캐릭터 레벨
     public int exp;                     //캐릭터 보유 경험치
+    private int baseHealth = 100;                    //캐릭터 체력 => 이재호 추가
+    private float baseAttack = 10;                  //캐릭터 공격력 => 이재호 추가
+    private float baseDefense = 10;                 //캐릭터 방어력 => 이재호 추가
     public float baseStrength;                //캐릭터 힘 능력치
     public float baseAgility;                 //캐릭터 민첩 능력치
     public float baseIntelligence;            //캐릭터 지능 능력치
@@ -30,11 +27,17 @@ public class PlayerStats
     public float baseCoolDown;
     public float baseCastingSpeed;
     public float baseResistance;
-        
+
+    public int EquipHealth;             //장비 장착 체력 능력치 => 이재호 추가
     public float EquipStrength;         //장비 장착 힘 능력치 
     public float EquipAgility;          //장비 장착 민첩 능력치
     public float EquipIntelligence;     //장비 장착 지능 능력치
-
+    public float EquipAttack;           //장비 장착 공격력 능력치 => 이재호 추가
+    public float EquipDefence;         //장비 장착 방어력 능력치 => 이재호 추가
+    public float EquipCritical;         //장비 장착 크리티컬 확률 능력치
+    
+    private WeaponType WeaponType;// => 이재호 추가
+    
     #region 패시브에 사용할 능력치
     public float StrengthFactor;        //기본 힘 * factor 만큼 증가한 능력치    
     public float AgilityFactor;         //기본 민첩 * factor 만큼 증가
@@ -43,6 +46,7 @@ public class PlayerStats
 
     
     #region 상태창에서 보여지고 실질적으로 사용될 스탯 정보
+    
     public float FinalStrength => baseStrength + EquipStrength + StrengthFactor;
     public float FinalAgility => baseAgility + EquipAgility + AgilityFactor;
     public float FinalIntelligence => baseIntelligence + EquipIntelligence + IntelligenceFactor;
@@ -65,17 +69,24 @@ public class PlayerStats
     
     //TODO: 공격력 계산 공식 수정 필요
     //캐릭터 체력
-    public int Health => level * (int)(FinalStrength * 0.2f);
-
+    //public int Health => level * (int)(FinalStrength * 0.2f); 체력 공식 아래로 수정
+    public int Health => baseHealth + level * 5 + EquipHealth; // => 이재호 추가
     //캐릭터 물리 공격력
-    public float PhysicalAttack => level * FinalStrength * 0.2f;
-
+    public float PhysicalAttack => GetAttackStatByWeapon(WeaponType);
+    
+    //이재호가 추가한 스텟
+    public float MeleeAttack => FinalStrength * 0.3f + (baseAttack + EquipAttack) * 0.8f;
+    public float RangeAttack => FinalAgility * 0.3f + (baseAttack + EquipAttack) * 0.8f;
+    public float MagicAttack => FinalIntelligence * 0.3f + (baseAttack + EquipAttack) * 0.8f;
+    
+    
     //캐릭터 물리 방어력
-    private float physicalDefense => level * (Health + FinalStrength) * 0.2f;
+    private float physicalDefense => baseDefense + EquipDefence;
     public float PhysicalDefense => physicalDefense + (physicalDefense * DefenseFactor);
     
+    
     //캐릭터 스킬 공격력
-    public float SkillAttack => level * EquipStrength * FinalIntelligence * 0.2f;
+    public float SkillAttack => PhysicalAttack * 0.9f;
 
     //캐릭터 스킬 방어력
     private float skillDefense => level * (Health + FinalIntelligence) * 0.2f;
@@ -91,6 +102,43 @@ public class PlayerStats
         EquipStrength += itemData.Strength * sign;
         EquipAgility += itemData.Agility * sign;
         EquipIntelligence += itemData.Intelligence * sign;
+        EquipAttack += itemData.Attack * sign;
+        EquipDefence += itemData.Defence * sign;
+        EquipHealth += itemData.Hp * sign;
+        EquipCritical += itemData.Critical * sign;
+
+        if (itemData.Parts == Parts.WEAPON)
+        {
+            WeaponType = itemData.WeaponType;
+        }
+    }
+
+    /// <summary>
+    /// 이재호가 추가한 메서드
+    /// 현재 장착한 아이템에 따라 공격력 반환
+    /// </summary>
+    /// <param name="weaponType">현재 장착한 무기 타입</param>
+    /// <returns>공격력</returns>
+    public float GetAttackStatByWeapon(WeaponType weaponType)
+    {
+        switch (weaponType)
+        {
+            case WeaponType.BOW :
+                return RangeAttack;
+            
+            case WeaponType.SHORT_SWORD :
+                return MeleeAttack;
+            
+            case WeaponType.SPEAR :
+                return MeleeAttack;
+            
+            case WeaponType.WAND :
+                return MagicAttack;
+            
+            //선택된 무기가 없는 경우
+            default:
+                return 0;
+        }
     }
 }
 
@@ -463,7 +511,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     /// <returns></returns>
     public float GetFactorCriticalPerFactor()
     {
-        return playerStats.baseCriticalPer + criticalPerFactor;
+        return playerStats.baseCriticalPer + playerStats.EquipCritical + criticalPerFactor;
     }
 
     /// <summary>
