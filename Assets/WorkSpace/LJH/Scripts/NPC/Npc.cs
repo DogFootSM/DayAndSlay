@@ -315,7 +315,18 @@ public class Npc : MonoBehaviour
         onArrive?.Invoke();
     }
 
+    public IEnumerator AngryTimeOutCoroutine()
+    {
+        yield return new WaitForSeconds(150f);
+        
+        FailBuyItem();
+    }
+    
 
+
+    /// <summary>
+    /// 2분 30초 동안 원하는 아이템을 구하지 못 할 경우 호출
+    /// </summary>
     public void FailBuyItem()
     {
         WantItemClear();
@@ -329,7 +340,8 @@ public class Npc : MonoBehaviour
     {
         if (tableWithItem != null)
         {
-            //player.GrantExperience(wantItem.SellPrice);
+            player.GrantExperience(wantItem.SellPrice);
+            
             StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요
         }

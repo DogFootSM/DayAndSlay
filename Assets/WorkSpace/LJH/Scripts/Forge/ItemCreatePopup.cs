@@ -22,7 +22,7 @@ public class ItemCreatePopup : MonoBehaviour
 
     private void OnEnable()
     {
-        //SoundManager.Instance.PlaySfx(SFXSound.CREATE);
+        SoundManager.Instance.PlaySfx(SFXSound.CREATE);
         StartCoroutine(SliderCoroutine());
         StartCoroutine(TextCoroutine());
         animator.Play("ForgeOkayButton");
