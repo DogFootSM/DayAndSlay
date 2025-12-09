@@ -39,7 +39,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     public bool isSkillUsing = false;
 
     private Rigidbody2D rigid;
-
+    private GameObject markInstance;
     private Vector3 lastPlayerPos;
  
     protected virtual void Awake()
@@ -49,7 +49,9 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         animator = GetComponent<MonsterAnimator>();
         rigid = GetComponent<Rigidbody2D>();
         lastPlayerPos = transform.position;
-        //markObject.SetActive(false);
+        
+        markInstance = Instantiate(markObject, transform.position, Quaternion.identity, transform);
+        markInstance.SetActive(false);
     }
 
     protected virtual void Start()
@@ -81,7 +83,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         
         if (tree == null) return;
         tree.Tick();
-
+    
         //테스트 시에만 주석 해제
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
@@ -247,7 +249,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
 
     public void ReceiveMarkOnTarget()
     {
-        markObject.SetActive(!markObject.activeSelf);
+        markInstance.SetActive(!markInstance.activeSelf);
     }
     
     /// <summary>

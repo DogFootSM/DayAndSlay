@@ -22,7 +22,6 @@ public class SPAS004 : MeleeSkill
         skillDamage = GetSkillDamage();
         hitPos = playerPosition + (direction * (skillNode.skillData.SkillRange / 2));
         
-        //TODO: 이펙트 재생 위치 상의 필요
         SoundManager.Instance.PlaySfx(SFXSound.SPAS004);
         SkillEffect(playerPosition + (direction * 4f), 0, $"{skillNode.skillData.SkillId}_1_Particle",
             skillNode.skillData.SkillEffectPrefab[0]);
