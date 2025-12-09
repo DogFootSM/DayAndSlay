@@ -56,8 +56,7 @@ public class QuickSlotManager : MonoBehaviour
     private void InitQuickSlotData()
     {
         quickSlotSetting = dataManager.LoadQuickSlotSetting();
-
-        //TODO: 퀵슬롯 데이터 lOAD
+        
         //각 무기 그룹을 순회
         foreach (var weaponGroup in quickSlotSetting.WeaponGroups)
         {

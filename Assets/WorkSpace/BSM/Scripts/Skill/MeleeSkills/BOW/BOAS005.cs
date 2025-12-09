@@ -51,7 +51,7 @@ public class BOAS005 : MeleeSkill
             IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             skillActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
             skillActions[i].Add(() => ExecuteAttackDeBuffByMonster(receiver, skillNode.skillData.DeBuffDuration, deBuffLevelPer));
-            skillActions[i].Add(() => RemoveTriggerModuleList(0));
+            skillActions[i].Add(() => RemoveTriggerModuleList());
             
             triggerModules[i].AddCollider(cols[i]);
             interactions[i].ReceiveAction(skillActions[i]);

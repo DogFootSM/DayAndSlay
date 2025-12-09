@@ -39,7 +39,6 @@ public abstract class MeleeSkill : SkillFactory
     {
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
-            //TODO: 감지 모양 및 크기 추후 수정
             overlapSize = new Vector2(skillRange, 1f);
         }
         else
@@ -59,14 +58,18 @@ public abstract class MeleeSkill : SkillFactory
     /// <returns></returns>
     protected float GetSkillDamage()
     {
+        float damage = skillNode.PlayerModel.PlayerStats.SkillAttack * 
+                       (skillNode.skillData.SkillDamage + (skillNode.skillData.SkillDamage * skillNode.skillData.SkillDamageIncreaseRate * skillNode.CurSkillLevel));
+        
         //다음 스킬의 데미지 증가 버프가 걸려있는 상태
         if (skillNode.PlayerModel.NextSkillBuffActive)
         {
             skillNode.PlayerModel.NextSkillBuffActive = false;
-            return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel * (1f + skillNode.PlayerModel.NextSkillDamageMultiplier);
+
+            return damage * (1f + skillNode.PlayerModel.NextSkillDamageMultiplier);
         } 
-        
-        return skillNode.skillData.SkillDamage * skillNode.CurSkillLevel;
+         
+        return damage;
     }
 
     /// <summary>
@@ -200,11 +203,9 @@ public abstract class MeleeSkill : SkillFactory
     /// <returns></returns>
     protected float GetDefensePenetrationDamage(IEffectReceiver receiver)
     {
-        //TODO: 몬스터 방어력 무시 수치를 어떤식으로 전달?
         float defensePenetrationRate = skillNode.skillData.SkillAbilityValue +
                                        ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
         
-        //TODO: 몬스터 방어력 무시 계산?
         float defensePenetration = receiver.GetDefense() * defensePenetrationRate;
 
         return defensePenetration;
@@ -304,9 +305,8 @@ public abstract class MeleeSkill : SkillFactory
     /// <summary>
     /// 파티클 트리거 리스트 감지된 콜라이더 제거
     /// </summary>
-    protected void RemoveTriggerModuleList(int triggerIndex)
+    protected void RemoveTriggerModuleList()
     {  
-        //TODO:매개 변수 필요없을 경우 제거
         for (int i = 0; i < triggerModules.Count; i++)
         {
             for (int j = triggerModules[i].colliderCount -1; j >= 0; j--)
@@ -375,12 +375,25 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="hitCount">몬스터 타격 횟수</param>
     protected void Hit(IEffectReceiver monster, float damage, int hitCount)
     {
+        skillNode.PlayerSkillReceiver.StartCoroutine(HitCoroutine(monster, damage, hitCount));
+    }
+    
+    /// <summary>
+    /// 일정 시간만큼 지연 후 몬스터 Hit
+    /// </summary>
+    /// <param name="monster"></param>
+    /// <param name="damage"></param>
+    /// <param name="hitCount"></param>
+    /// <returns></returns>
+    private IEnumerator HitCoroutine(IEffectReceiver monster, float damage, int hitCount)
+    {
         for (int i = 0; i < hitCount; i++)
         {
             monster.TakeDamage(damage);
-        } 
+            yield return WaitCache.GetWait(0.15f);
+        }
     }
-
+    
     /// <summary>
     /// 점프 동작 호출
     /// </summary>

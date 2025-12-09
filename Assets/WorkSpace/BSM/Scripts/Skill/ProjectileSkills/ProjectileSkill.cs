@@ -64,11 +64,10 @@ public abstract class ProjectileSkill : SkillFactory
     /// <summary>
     /// 해당 스킬의 레벨에 따른 데미지 설정
     /// </summary>
-    /// <param name="skillDamage"></param>
+    /// <param name="skillDamage">Skill Data가 가지고 있는 스킬 데미지</param>
     protected void SetSkillDamage(float skillDamage)
     {
-        //TODO: 스킬 데미지 공식 수정 필요
-        this.skillDamage = skillDamage + (skillDamage * skillNode.CurSkillLevel);
+        this.skillDamage = skillNode.PlayerModel.PlayerStats.SkillAttack * (skillDamage + (skillDamage * skillNode.skillData.SkillDamageIncreaseRate * skillNode.CurSkillLevel));
     }
 
     /// <summary>
@@ -102,14 +101,33 @@ public abstract class ProjectileSkill : SkillFactory
         skillNode.PlayerSkillReceiver.ReceiveCasting(finalCastingTime);
     }
     
+    /// <summary>
+    /// 몬스터에게 데미지 전달
+    /// </summary>
+    /// <param name="monster">감지한 몬스터</param>
+    /// <param name="damage">스킬 데미지</param>
+    /// <param name="hitCount">몬스터 타격 횟수</param>
     protected void Hit(IEffectReceiver receiver, int hitCount, float damage)
+    {
+        skillNode.PlayerSkillReceiver.StartCoroutine(HitCoroutine(receiver, damage, hitCount));
+    }
+
+    /// <summary>
+    /// 일정 시간만큼 지연 후 몬스터 Hit
+    /// </summary>
+    /// <param name="monster"></param>
+    /// <param name="damage"></param>
+    /// <param name="hitCount"></param>
+    /// <returns></returns>
+    private IEnumerator HitCoroutine(IEffectReceiver monster, float damage, int hitCount)
     {
         for (int i = 0; i < hitCount; i++)
         {
-            receiver.TakeDamage(damage);
+            monster.TakeDamage(damage);
+            yield return WaitCache.GetWait(0.15f);
         }
     }
-
+    
     /// <summary>
     /// 캐스팅 이후 수행할 동작 코루틴
     /// </summary>

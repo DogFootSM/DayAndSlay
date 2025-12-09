@@ -59,7 +59,7 @@ public class WDAS004 : MeleeSkill
                 
             skillActions[j].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
             skillActions[j].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
-            skillActions[j].Add(() => RemoveTriggerModuleList(0));
+            skillActions[j].Add(() => RemoveTriggerModuleList());
                 
             triggerModules[j].AddCollider(cols[j]);
             interactions[j].ReceiveAction(skillActions[j]);

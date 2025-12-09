@@ -89,6 +89,8 @@ public class MainQuickSlot : MonoBehaviour,
         
         if (!QuickSlotData.WeaponQuickSlotDict[quickSlotManager.CurrentWeaponType].ContainsKey(beginSlot.CurrentQuickSlot)) return;
         
+        
+        SoundManager.Instance.PlaySfx(SFXSound.SLOTDROP);
         mainQuickSlotRaycaster.Raycast(eventData, raycastResults);
 
         foreach (RaycastResult raycastResult in raycastResults)

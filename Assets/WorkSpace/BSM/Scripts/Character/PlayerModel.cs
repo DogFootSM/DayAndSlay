@@ -6,7 +6,6 @@ using Zenject;
 [Serializable]
 public class PlayerStats
 {
-    //TODO: 스탯 공식 수정 필요, Critical float 타입으로 변경
     //레벨당 최대 경험치
     public int MaxExp => 100 + (int)(level * 10.5f);
 
@@ -67,7 +66,6 @@ public class PlayerStats
     //방어력 관통 수치
     public float ArmorPenetration; 
     
-    //TODO: 공격력 계산 공식 수정 필요
     //캐릭터 체력
     //public int Health => level * (int)(FinalStrength * 0.2f); 체력 공식 아래로 수정
     public int Health => baseHealth + level * 5 + EquipHealth; // => 이재호 추가
