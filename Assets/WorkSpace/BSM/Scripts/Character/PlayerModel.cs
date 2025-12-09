@@ -64,7 +64,8 @@ public class PlayerStats
     public float DefenseFactor;
 
     //방어력 관통 수치
-    public float ArmorPenetration; 
+    public float ArmorPenetration;
+    public float SkillAttackFactor;
     
     //캐릭터 체력
     //public int Health => level * (int)(FinalStrength * 0.2f); 체력 공식 아래로 수정
@@ -84,7 +85,7 @@ public class PlayerStats
     
     
     //캐릭터 스킬 공격력
-    public float SkillAttack => PhysicalAttack * 0.9f;
+    public float SkillAttack => PhysicalAttack * 0.9f + ((PhysicalAttack * 0.9f) * SkillAttackFactor);
 
     //캐릭터 스킬 방어력
     private float skillDefense => level * (Health + FinalIntelligence) * 0.2f;
@@ -494,6 +495,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         return playerStats.baseAttackSpeed + (attackSpeedFactor * playerStats.baseAttackSpeed);
     }
 
+    public void UpdateSkillAttackFactor(float factor)
+    {
+        playerStats.SkillAttackFactor = factor;
+    }
+    
     /// <summary>
     /// 현재 크리티컬 확률에 Factor만큼 증가
     /// </summary>

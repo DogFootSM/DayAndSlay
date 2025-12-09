@@ -37,7 +37,6 @@ public class WDAS002 : MeleeSkill
 
     private void ExecutePostCastAction(Vector2 particleSpawnPos, Collider2D[] cols)
     {
-        //TODO: 스킬 이펙트 재생 위치 조정
         SoundManager.Instance.PlaySfx(SFXSound.WDAS002);
         SkillEffect(particleSpawnPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 

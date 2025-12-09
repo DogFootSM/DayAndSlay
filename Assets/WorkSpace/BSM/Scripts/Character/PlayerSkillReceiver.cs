@@ -808,7 +808,6 @@ public class PlayerSkillReceiver : MonoBehaviour
     {
         yield return WaitCache.GetWait(delay);
         
-        //TODO: 조금만 생성하고 while 돌면서 돌려쓸지 말지 생각
         for (int i = 0; i < prefabCount; i++)
         {
             GameObject instance = SkillParticlePooling.Instance.GetSkillPool(effectId, particlePrefab);

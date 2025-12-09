@@ -99,7 +99,6 @@ public class ParticleInteraction : MonoBehaviour
         hitInstance.SetActive(true);
         hitInstance.transform.position = hitEffectPosition;
         
-        //TODO: 방향을 설정할지, 아니면 그냥 결대로 이펙트에 맞게 타격 방향도 따라갈지
         hitInstance.transform.right = effectDirection;
                 
         //타격 이펙트 풀에 반납할 ID 설정
