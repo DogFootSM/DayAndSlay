@@ -51,7 +51,7 @@ public class DamageEffect : MonoBehaviour
         
         //피해 입은 데미지 설정
         DamageText damageText = instance.GetComponent<DamageText>();
-        damageText.SetDamageText(damage.ToString(), unitType);
+        damageText.SetDamageText(((int)damage).ToString(), unitType);
         
         instance.SetActive(true);
     }
