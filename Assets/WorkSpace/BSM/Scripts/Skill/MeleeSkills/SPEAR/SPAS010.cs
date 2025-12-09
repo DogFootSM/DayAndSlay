@@ -22,7 +22,6 @@ public class SPAS010 : MeleeSkill
         SetOverlapSize(skillNode.skillData.SkillRadiusRange);
         GetMonstersCenter(playerPosition);
         
-        //TODO: Hit Action 추가 필요
         pos = playerPosition; 
     }
 
@@ -58,13 +57,33 @@ public class SPAS010 : MeleeSkill
         SoundManager.Instance.PlaySfx(SFXSound.SPAS010);
         SkillEffect(center, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
 
+        skillDamage = GetSkillDamage();
+        
         //감지된 몬스터가 있을 경우에만 창 이펙트 재생
         if (cols.Length > 0)
         {
-            SpawnParticleAtRandomPosition(center, skillNode.skillData.SkillRadiusRange, 2f, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", 50);
+            SpawnParticleAtRandomPosition(center, skillNode.skillData.SkillRadiusRange, 1.5f, skillNode.skillData.SkillEffectPrefab[1], $"{skillNode.skillData.SkillId}_2_Particle", 50);
+            DelayHit(cols);
         }
+         
     }
 
+    private void DelayHit(Collider2D[] cols)
+    {
+        skillNode.PlayerSkillReceiver.StartCoroutine(DelayHitCoroutine(cols));
+    }
+
+    private IEnumerator DelayHitCoroutine(Collider2D[] cols)
+    {
+        yield return WaitCache.GetWait(1.5f);
+        
+        for (int i = 0; i < cols.Length; i++)
+        {
+            IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
+            Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
+        } 
+    }
+    
     public override void ApplyPassiveEffects(CharacterWeaponType weaponType)
     {
     }
