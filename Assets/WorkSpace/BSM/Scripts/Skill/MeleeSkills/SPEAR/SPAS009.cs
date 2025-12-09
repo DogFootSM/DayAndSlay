@@ -35,7 +35,7 @@ public class SPAS009 : MeleeSkill
             skillActions.Add(new List<Action>());
             
             skillActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-            skillActions[i].Add(() => RemoveTriggerModuleList(i));
+            skillActions[i].Add(() => RemoveTriggerModuleList());
             triggerModules[i].AddCollider(cols[i]);
             interactions[i].ReceiveAction(skillActions[i]);
         } 

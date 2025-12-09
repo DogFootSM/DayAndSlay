@@ -654,7 +654,6 @@ public class PlayerSkillReceiver : MonoBehaviour
         float fallVelocity = 0;
         float gravity = 9f;
         
-        //TODO: 점프했을 때 충돌끄고, 착지했을 때 충돌 켜야 될듯
         playerController.PlayerJumpTrigger();
         
         //제자리 점프

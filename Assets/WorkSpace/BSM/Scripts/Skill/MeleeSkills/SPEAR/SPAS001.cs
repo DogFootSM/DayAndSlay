@@ -77,7 +77,7 @@ public class SPAS001 : MeleeSkill
                 triggerModules[0].AddCollider(cols[i]);
             }
 
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            skillActions[0].Add(() => RemoveTriggerModuleList());
             interactions[0].ReceiveAction(skillActions[0]);
         }
     }

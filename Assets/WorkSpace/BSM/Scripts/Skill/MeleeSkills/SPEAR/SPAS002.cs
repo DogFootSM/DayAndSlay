@@ -22,7 +22,8 @@ public class SPAS002 : MeleeSkill
         SkillEffect(playerPosition, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
         SetParticleStartRotationFromDeg(0, direction, 0, 180f, 90f, 270f);
         skillDamage = GetSkillDamage();
-
+        Debug.Log($"Damage : {skillDamage}");
+        
         if (direction.x > 0)
         {
             particleSystemRenderer.flip = Vector3.zero;
@@ -49,7 +50,7 @@ public class SPAS002 : MeleeSkill
                 
                 triggerModules[0].AddCollider(cols[i]);
             }
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            skillActions[0].Add(() => RemoveTriggerModuleList());
             interactions[0].ReceiveAction(skillActions[0]);
         }
         

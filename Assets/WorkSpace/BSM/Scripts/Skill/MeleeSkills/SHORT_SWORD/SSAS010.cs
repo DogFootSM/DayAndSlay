@@ -49,7 +49,7 @@ public class SSAS010 : MeleeSkill
                 IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
                 skillActions.Add(new List<Action>());
                 skillActions[i].Add(() => Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount));
-                skillActions[i].Add(() => RemoveTriggerModuleList(i));
+                skillActions[i].Add(() => RemoveTriggerModuleList());
 
                 if (triggerModules[i].enabled)
                 {

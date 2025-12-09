@@ -49,7 +49,7 @@ public class SPAS007 : MeleeSkill
             skillActions[0].Add(() => ExecuteStun(receiver, skillNode.skillData.DeBuffDuration));
             triggerModules[0].AddCollider(cols[i]);
         }
-        skillActions[0].Add(() => RemoveTriggerModuleList(0));
+        skillActions[0].Add(() => RemoveTriggerModuleList());
         interactions[0].ReceiveAction(skillActions[0]);
     }
     
