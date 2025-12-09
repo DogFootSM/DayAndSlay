@@ -48,10 +48,30 @@ public class TargetSensorInNpc : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 상점 외부 랜덤 포지션
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetRandomPosition() => randomPos;
+    /// <summary>
+    /// 상점 내부 랜덤 포지션
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetRandomPositionInStore() => randomPosInStore;
+    /// <summary>
+    /// 상점 들어가는 문
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetEnterPosition() => inStoreDoorPos;
+    /// <summary>
+    /// 상점 나가는 문
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetLeavePosition() => outStoreDoorPos;
+    /// <summary>
+    /// 성문
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetCastleDoorPosition() => castleDoorPos;
     public Vector3 GetDeskPosition() => deskPos;
 

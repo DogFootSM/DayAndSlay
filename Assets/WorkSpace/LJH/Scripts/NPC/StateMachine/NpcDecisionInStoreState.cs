@@ -18,6 +18,14 @@ public class NpcDecisionInStoreState : INpcState
 
     public void Enter()
     {
+        
+        if (npc.CheckHeIsAngry())
+        {
+            Debug.Log("구매자이고 화가난 경우에서 곤스테이트 호출");
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, targetSensor.GetLeavePosition() + new Vector3(0, -2f, 0), new NpcGoneState(npc)));
+            store.MinusRepu(10);
+            return;
+        }
         // 랜덤 포지션으로 이동
         Vector3 randomPos = targetSensor.GetRandomPositionInStore();
         

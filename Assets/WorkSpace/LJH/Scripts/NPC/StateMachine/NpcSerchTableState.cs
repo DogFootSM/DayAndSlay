@@ -23,7 +23,7 @@ public class NpcSearchTableState : INpcState
             npc.isSearchTableEnteredFirst = true;
         }
 
-        if (table != null)
+        if (npc.wantItem != null && table != null)
         {
             npc.SetTargetTable(table);
             
@@ -31,6 +31,7 @@ public class NpcSearchTableState : INpcState
         }
         else
         {
+            npc.StartCoroutine(npc.AngryTimeOutCoroutine());
             npc.StateMachine.ChangeState(new NpcDecisionInStoreState(npc, npc.GetStoreManager(), npc.GetSensor()));
         }
     }

@@ -16,6 +16,8 @@ public class Npc : MonoBehaviour
     [Inject] private StoreManager storeManager;
     private PlayerController player;
 
+    [SerializeField] private float angryTime;
+
     [SerializeField] private GenderType gender;
     [SerializeField] private AgeType age;
     
@@ -317,7 +319,7 @@ public class Npc : MonoBehaviour
 
     public IEnumerator AngryTimeOutCoroutine()
     {
-        yield return new WaitForSeconds(150f);
+        yield return new WaitForSeconds(angryTime);
         
         FailBuyItem();
     }
@@ -329,6 +331,7 @@ public class Npc : MonoBehaviour
     /// </summary>
     public void FailBuyItem()
     {
+        WantItemMarkOnOff(Emoji.ANGRY);
         WantItemClear();
         HeIsAngry();
     }
@@ -416,8 +419,6 @@ public class Npc : MonoBehaviour
     /// </summary>
     public void NpcGone()
     {
-        if(isAngry) WantItemMarkOnOff(Emoji.ANGRY);
-        
         StartCoroutine(GoneCoroutine());
     }
 

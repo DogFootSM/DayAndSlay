@@ -26,20 +26,8 @@ public class NpcDecisionState : INpcState
 
         if (npc.IsBuyer)
         {
-            //npc가 구매자이고 화가 난 경우
-            if (npc.CheckHeIsAngry())
-            {
-                Vector3 castlePos = targetSensor.GetCastleDoorPosition();
-                Debug.Log("구매자이고 화가난 경우에서 곤스테이트 호출");
-                npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
-            }
-
-            //npc가 구매자이고 화가 나지 않은 경우
-            else
-            {
-                Vector3 storeDoorPos = targetSensor.GetEnterPosition();
-                npc.StateMachine.ChangeState(new NpcMoveState(npc, storeDoorPos, new NpcIdleState(npc)));
-            }
+            Vector3 storeDoorPos = targetSensor.GetEnterPosition();
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, storeDoorPos, new NpcIdleState(npc)));
         }
         else
         {
@@ -49,6 +37,11 @@ public class NpcDecisionState : INpcState
         }
     }
 
-    public void Update() { }
-    public void Exit() { }
+    public void Update()
+    {
+    }
+
+    public void Exit()
+    {
+    }
 }
