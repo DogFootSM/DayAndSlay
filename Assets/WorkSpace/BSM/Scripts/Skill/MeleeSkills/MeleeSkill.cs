@@ -375,12 +375,25 @@ public abstract class MeleeSkill : SkillFactory
     /// <param name="hitCount">몬스터 타격 횟수</param>
     protected void Hit(IEffectReceiver monster, float damage, int hitCount)
     {
+        skillNode.PlayerSkillReceiver.StartCoroutine(HitCoroutine(monster, damage, hitCount));
+    }
+    
+    /// <summary>
+    /// 일정 시간만큼 지연 후 몬스터 Hit
+    /// </summary>
+    /// <param name="monster"></param>
+    /// <param name="damage"></param>
+    /// <param name="hitCount"></param>
+    /// <returns></returns>
+    private IEnumerator HitCoroutine(IEffectReceiver monster, float damage, int hitCount)
+    {
         for (int i = 0; i < hitCount; i++)
         {
             monster.TakeDamage(damage);
-        } 
+            yield return WaitCache.GetWait(0.15f);
+        }
     }
-
+    
     /// <summary>
     /// 점프 동작 호출
     /// </summary>

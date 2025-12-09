@@ -655,6 +655,8 @@ public class PlayerSkillReceiver : MonoBehaviour
         float gravity = 9f;
         
         //TODO: 점프했을 때 충돌끄고, 착지했을 때 충돌 켜야 될듯
+        playerController.PlayerJumpTrigger();
+        
         //제자리 점프
         while (jumpVelocity > 0)
         {
@@ -674,6 +676,7 @@ public class PlayerSkillReceiver : MonoBehaviour
         }
 
         //하강 완료 후 원래 y 위치로 보정
+        playerController.PlayerJumpTrigger();
         transform.position = new Vector2(transform.position.x, originPosY);
 
         //땅에 착지했을 때 스킬 이펙트 Action 실행
