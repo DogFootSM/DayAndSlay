@@ -157,7 +157,6 @@ public class InventoryInteraction :
         }
 
         return false;
-        //TODO: 빈 슬롯에 대한 안내 방법 추가
     }
  
 

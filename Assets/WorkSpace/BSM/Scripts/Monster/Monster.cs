@@ -101,7 +101,6 @@ public class Monster : MonoBehaviour, IEffectReceiver
     {
         float calcDefense = defense;
         
-        //TODO: 임시 디버프 방어력 계산
         if (isDefenseDeBuffed)
         {
             calcDefense -= CalculateDefenseDeBuff();
@@ -109,7 +108,6 @@ public class Monster : MonoBehaviour, IEffectReceiver
         
         //Debug.Log($"방어력 :{calcDefense}");
         
-        //TODO: 몬스터 피해 공식 수정 필요
         hp -= damage;
         Debug.Log($"{gameObject.name} 남은 hp :{hp}");
     }

@@ -61,7 +61,7 @@ public class SSAS001 : MeleeSkill
                 interactions[0].ReceiveAction(skillActions[0]); 
             }
              
-            skillActions[0].Add(() => RemoveTriggerModuleList(0));
+            skillActions[0].Add(() => RemoveTriggerModuleList());
         } 
     }
  

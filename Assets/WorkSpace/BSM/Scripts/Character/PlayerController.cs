@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
     private DamageEffect _damageEffect;
     private Coroutine dodgeCoolDownCo;
     private Coroutine parryingCoolDownCo;
+    private BoxCollider2D boxCollider;
     
     private LayerMask tableLayerMask;
     private LayerMask informationDeskLayerMask;
@@ -141,6 +142,7 @@ public class PlayerController : MonoBehaviour
         curWeapon = GetComponentInChildren<Weapon>(); 
         skillSlotInvoker = GetComponent<SkillSlotInvoker>();
         _damageEffect = GetComponentInChildren<DamageEffect>();
+        boxCollider = GetComponent<BoxCollider2D>();
         
         characterStates[(int)CharacterStateType.IDLE] = new PlayerIdle(this);
         characterStates[(int)CharacterStateType.WALK] = new PlayerWalk(this);
@@ -419,7 +421,16 @@ public class PlayerController : MonoBehaviour
     {
         buffIconController.UseBuff(buffType, cooldownDuration);
     }
-     
+
+    /// <summary>
+    /// 캐릭터 점프 시 Trigger 활성화
+    /// 착지 시 Trigger 해제
+    /// </summary>
+    public void PlayerJumpTrigger()
+    {
+        boxCollider.isTrigger = !boxCollider.isTrigger;
+    }
+    
     private IEnumerator DodgeCoolDownCoroutine(BuffType buffType)
     {
         float elapsedTime = 0;

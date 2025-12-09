@@ -18,6 +18,8 @@ public class SystemWindowController : MonoBehaviour
     
     [SerializedDictionary("SystemType", "SystemWindowTabButton")] [SerializeField] 
     private SerializedDictionary<SystemType, SystemWindowButton> systemWindowButtons;
+
+    public bool IsRecipeActive;
     
     private Stack<GameObject> canvasStack = new Stack<GameObject>();
     private SystemType currentSystemType = SystemType.SIZE;
@@ -182,6 +184,8 @@ public class SystemWindowController : MonoBehaviour
     /// </summary>
     private void InputSystemKey()
     {
+        if (IsRecipeActive) return;
+        
         if (Input.GetKeyDown(KeyCode.K))
         {
             OpenSystemWindow(SystemType.SKILL);

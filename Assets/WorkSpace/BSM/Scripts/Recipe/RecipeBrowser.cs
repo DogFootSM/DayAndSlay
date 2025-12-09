@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] private SystemWindowController systemWindowController;
     [SerializeField] private TMP_Dropdown mainCategoryDropdown;
     [SerializeField] private TMP_Dropdown subCategoryDropdown;
     [SerializeField] private GameObject recipeListParent;
@@ -80,6 +81,18 @@ public class RecipeBrowser : MonoBehaviour, IPointerClickHandler
         mainCategoryDropdown.value = 0;
         recipeSearchInputField.text = string.Empty;
         recipeElement = null;
+    }
+
+    private void Update()
+    {
+        if (recipeSearchInputField.isFocused)
+        {
+            systemWindowController.IsRecipeActive = true;
+        }
+        else
+        {
+            systemWindowController.IsRecipeActive = false;
+        }
     }
 
     private void ChangedSubCategoryRecipeList(int value)

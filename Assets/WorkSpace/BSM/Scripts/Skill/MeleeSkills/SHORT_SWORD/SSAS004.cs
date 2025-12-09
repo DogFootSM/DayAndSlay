@@ -45,7 +45,7 @@ public class SSAS004 : MeleeSkill
                 skillActions.Add(new List<Action>());
                 skillActions[i].Add(() => ExecuteSlow(monster, skillNode.skillData.DeBuffDuration, slowRatio));
                 skillActions[i].Add(() => Hit(monster, skillDamage, skillNode.skillData.SkillHitCount));
-                skillActions[i].Add(() => RemoveTriggerModuleList(i));
+                skillActions[i].Add(() => RemoveTriggerModuleList());
                 triggerModules[i].AddCollider(detected[i]);
                 interactions[i].ReceiveAction(skillActions[i]); 
             } 
