@@ -735,8 +735,6 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{(int)curWeaponTier}",
                 $"{ingameManagerInstance.GetCurrentDay()}",
                 $"{ingameManagerInstance.GetDebt()}",
-                
-                //TODO: 무기 저장 시 현재 빈손인지 확인하고 처리해서 저장하기
                 $"{$"WEAPON_{curWeaponType.ToString()}_{curWeaponTier.ToString()}"}"
             },
             "slot_id",
