@@ -204,10 +204,12 @@ public class Npc : MonoBehaviour
         List<ItemData> allItems = ItemDatabaseManager.instance.GetAllEquipItem();
         List<ItemData> filteredList;
 
-        // Stage 3까지 클리어: 모든 아이템
+        // Stage 3까지 클리어: 1 2 3티어 아이템
         if (DungeonManager.is3StageCleared)
         {
-            filteredList = allItems;
+            filteredList = allItems
+                .Where(item => item.Tier >= 1 && item.Tier <= 3)
+                .ToList();
         }
         // Stage 2까지만 클리어: 1 2티어 아이템
         else if (DungeonManager.is2StageCleared)
@@ -313,7 +315,18 @@ public class Npc : MonoBehaviour
         onArrive?.Invoke();
     }
 
+    public IEnumerator AngryTimeOutCoroutine()
+    {
+        yield return new WaitForSeconds(150f);
+        
+        FailBuyItem();
+    }
+    
 
+
+    /// <summary>
+    /// 2분 30초 동안 원하는 아이템을 구하지 못 할 경우 호출
+    /// </summary>
     public void FailBuyItem()
     {
         WantItemClear();
@@ -327,7 +340,8 @@ public class Npc : MonoBehaviour
     {
         if (tableWithItem != null)
         {
-            //player.GrantExperience(wantItem.SellPrice);
+            player.GrantExperience(wantItem.SellPrice);
+            
             StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요
         }

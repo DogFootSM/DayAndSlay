@@ -15,7 +15,7 @@ public class IngameManager : MonoBehaviour
     public static IngameManager instance;
     public StageNum curStage;
     
-    private int gold = 0;
+    private static int gold = 0;
     private int currentDay = 1;
     
     /// <summary>
@@ -102,7 +102,8 @@ public class IngameManager : MonoBehaviour
     public void OnTaxUI() => taxUI.SetActive(true);
     
     public int GetCurrentGold() => gold;
-    public void SetGold(int gold) => this.gold += gold;
+
+    public void SetGold(int goldValue) => gold += goldValue;
 
     public void PayTax(int value)
     {

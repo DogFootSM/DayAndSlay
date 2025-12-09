@@ -12,6 +12,7 @@ public class CreateOkayPopup : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI text;
     public void SetCurItemInfo(ItemData item)
     {
+        SoundManager.Instance.PlaySfx(SFXSound.CREATE_RESULT);
         itemImage.sprite = item.ItemImage;
         text.text = $"{item.name} \n 제작 완료";
     }
