@@ -40,7 +40,6 @@ public class SPAS008 : MeleeSkill
         Vector2 dir = (Vector2)skillNode.GetMarkOnTarget().transform.position - playerPosition;
         skillDamage = GetSkillDamage();
         
-        //TODO: 이펙트 생성 위치 조정 필요
         SkillEffect(skillNode.GetMarkOnTarget().transform.position, 0, $"{skillNode.skillData.SkillId}_2_Particle", skillNode.skillData.SkillEffectPrefab[1]);
         Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
 

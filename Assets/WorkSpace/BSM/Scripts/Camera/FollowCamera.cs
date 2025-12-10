@@ -49,6 +49,8 @@ public class FollowCamera : MonoBehaviour
         if (!mainCam.Equals(Camera.main))
         {
             mainCam = Camera.main;
+            mainCam.orthographicSize = 5f;
+            mapManager.FollowCamera = this;
         }
     }
 

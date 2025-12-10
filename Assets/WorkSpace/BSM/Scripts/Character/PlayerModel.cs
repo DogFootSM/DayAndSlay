@@ -64,7 +64,8 @@ public class PlayerStats
     public float DefenseFactor;
 
     //방어력 관통 수치
-    public float ArmorPenetration; 
+    public float ArmorPenetration;
+    public float SkillAttackFactor;
     
     //캐릭터 체력
     //public int Health => level * (int)(FinalStrength * 0.2f); 체력 공식 아래로 수정
@@ -84,7 +85,7 @@ public class PlayerStats
     
     
     //캐릭터 스킬 공격력
-    public float SkillAttack => PhysicalAttack * 0.9f;
+    public float SkillAttack => PhysicalAttack * 0.9f + ((PhysicalAttack * 0.9f) * SkillAttackFactor);
 
     //캐릭터 스킬 방어력
     private float skillDefense => level * (Health + FinalIntelligence) * 0.2f;
@@ -312,6 +313,10 @@ public class PlayerModel : MonoBehaviour, ISavable
     private int gold;
     private int currentDay;
     private int debt;
+    private bool hasDungeonEntered;
+    private bool is1StageCleared;
+    private bool is2StageCleared;
+    private bool is3StageCleared;
     #endregion
     
     private float moveSpeedFactor;
@@ -361,7 +366,11 @@ public class PlayerModel : MonoBehaviour, ISavable
                 sqlManager.GetCharacterColumn(CharacterDataColumns.SKILL_POINT),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.GOLD),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTDAY),
-                sqlManager.GetCharacterColumn(CharacterDataColumns.DEBT)
+                sqlManager.GetCharacterColumn(CharacterDataColumns.DEBT),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.HASDUNGEONENTERED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS1STAGECLEARED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS2STAGECLEARED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS3STAGECLEARED),
             },
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new[] { $"{slotId}" },
@@ -380,6 +389,10 @@ public class PlayerModel : MonoBehaviour, ISavable
             gold = dataReader.GetInt32(7);
             currentDay = dataReader.GetInt32(8);
             debt = dataReader.GetInt32(9);
+            hasDungeonEntered = dataReader.GetBoolean(10);
+            is1StageCleared = dataReader.GetBoolean(11);
+            is2StageCleared = dataReader.GetBoolean(12);
+            is3StageCleared = dataReader.GetBoolean(13);
             
             //기본값들로 변하지 않을 값
             playerStats.baseMoveSpeed = 3;
@@ -401,7 +414,15 @@ public class PlayerModel : MonoBehaviour, ISavable
         
         //DB에서 불러온 Debt 정보 InGameManager에 설정
         ingameManagerInstance.SetDebt(debt);
-         
+        
+        //DB에서 불러온 던전 입장 여부 설정
+        //DungeonManager.hasDungeonEntered = hasDungeonEntered;
+        
+        //DB에서 불러온 던전 스테이지 클리어 여부 설정
+        DungeonManager.is1StageCleared = is1StageCleared;
+        DungeonManager.is2StageCleared = is2StageCleared;
+        DungeonManager.is3StageCleared = is3StageCleared;
+        
         playerStats.FinalCriticalDamage = playerStats.baseCriticalDamage;
         MoveSpeed = GetFactoredMoveSpeed();
         AttackSpeed = GetFactorAttackSpeed();
@@ -494,6 +515,11 @@ public class PlayerModel : MonoBehaviour, ISavable
         return playerStats.baseAttackSpeed + (attackSpeedFactor * playerStats.baseAttackSpeed);
     }
 
+    public void UpdateSkillAttackFactor(float factor)
+    {
+        playerStats.SkillAttackFactor = factor;
+    }
+    
     /// <summary>
     /// 현재 크리티컬 확률에 Factor만큼 증가
     /// </summary>
@@ -715,6 +741,11 @@ public class PlayerModel : MonoBehaviour, ISavable
                 sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTDAY),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.DEBT),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.WEAPON_SPRITE),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.GOLD),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.HASDUNGEONENTERED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS1STAGECLEARED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS2STAGECLEARED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.IS3STAGECLEARED),
             },
             new[]
             {
@@ -729,9 +760,12 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{(int)curWeaponTier}",
                 $"{ingameManagerInstance.GetCurrentDay()}",
                 $"{ingameManagerInstance.GetDebt()}",
-                
-                //TODO: 무기 저장 시 현재 빈손인지 확인하고 처리해서 저장하기
-                $"{$"WEAPON_{curWeaponType.ToString()}_{curWeaponTier.ToString()}"}"
+                $"{$"WEAPON_{curWeaponType.ToString()}_{curWeaponTier.ToString()}"}",
+                $"{ingameManagerInstance.GetCurrentGold()}",
+                //$"{DungeonManager.hasDungeonEntered}",
+                $"{DungeonManager.is1StageCleared}",
+                $"{DungeonManager.is2StageCleared}",
+                $"{DungeonManager.is3StageCleared}",
             },
             "slot_id",
             $"{dataManager.SlotId}"
