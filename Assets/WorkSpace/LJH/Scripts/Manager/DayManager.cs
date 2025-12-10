@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
@@ -312,6 +313,12 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartNight()
     {
+        //남아있는 npc가 있을 경우 삭제 해줌
+        foreach (Npc npc in npcSpawner.GetNpcList())
+        {
+            npc?.NpcGone();
+        }
+
         if (timeCoroutine != null)
         {
             StopCoroutine(timeCoroutine);

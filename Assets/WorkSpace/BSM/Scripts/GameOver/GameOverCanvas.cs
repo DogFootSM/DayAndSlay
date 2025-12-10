@@ -26,10 +26,16 @@ public class GameOverCanvas : MonoBehaviour
 
     private void MoveToTown()
     {
-        playerController.PlayerResurrection();
-        playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
-        mapManager.MapChange(MapType.TOWN_STORE2F);
         Loading.LoadScene(townScene);
         SceneManager.LoadScene(loadingScene.Name);
-    } 
+
+        playerController.PlayerResurrection();
+        Invoke(nameof(Respawn), 0.1f);
+    }
+
+    private void Respawn()
+    {
+        playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
+        mapManager.MapChange(MapType.TOWN_STORE2F);
+    }
 }

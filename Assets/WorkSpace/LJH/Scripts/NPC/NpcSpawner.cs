@@ -42,11 +42,12 @@ public class NpcSpawner : MonoBehaviour
         }
     }
 
-    void Init()
+    private void Init()
     {
         npcSpawnPos = transform.position;
 
         delayTime = new WaitForSeconds(npcSpawnDelay);
     }
     
+    public List<Npc> GetNpcList() => npcList;
 }
