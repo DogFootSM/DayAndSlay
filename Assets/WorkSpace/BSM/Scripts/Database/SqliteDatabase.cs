@@ -80,7 +80,11 @@ public class SqliteDatabase
                                 strength            INTEGER NOT NULL DEFAULT 5,
                                 agility             INTEGER NOT NULL DEFAULT 4,
                                 intelligence        INTEGER NOT NULL DEFAULT 3,
-                                debt                INTEGER NOT NULL DEFAULT 1000000
+                                debt                INTEGER NOT NULL DEFAULT 1000000,
+                                hasdungeonentered   INTEGER DEFAULT 0,
+                                is1stagecleared     INTEGER DEFAULT 0,
+                                is2stagecleared     INTEGER DEFAULT 0,
+                                is3stagecleared     INTEGER DEFAULT 0,
                                 )";
 
             dbCommand.ExecuteNonQuery();
