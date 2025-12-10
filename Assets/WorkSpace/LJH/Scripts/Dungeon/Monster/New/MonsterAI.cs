@@ -75,7 +75,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
 
     protected virtual void Update()
     {   
-        if (GetIsStun()) return;
+        if (GetIsStun() && model.curHp > 0) return;
         
         if (isSkillUsing) return;
         

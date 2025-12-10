@@ -6,6 +6,9 @@ using Zenject;
 
 public class DungeonManager : MonoBehaviour
 {
+    //던젼에 입장 한적이 있는지
+    public static bool hasDungeonEntered = false;
+    
     //스테이지 클리어 여부
     public static bool is1StageCleared = false;
     public static bool is2StageCleared = false;
@@ -53,6 +56,8 @@ public class DungeonManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        
+        if(!hasDungeonEntered) hasDungeonEntered = true;
     }
 
     private void Start()
