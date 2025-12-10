@@ -19,6 +19,8 @@ public class DayManager : MonoBehaviour, ISavable
 
     [SerializeField] private GameObject taxUI;
     [SerializeField] private GameObject wantItemList;
+
+    [SerializeField] private SpriteRenderer nightFilter;
     
     public static DayManager instance;
 
@@ -100,7 +102,12 @@ public class DayManager : MonoBehaviour, ISavable
 
     private void Start()
     {
-        StartMorning();
+        if(DungeonManager.hasDungeonEntered)
+            StartMorning();
+        
+        else
+            StartNight();
+        
         UpdateClockDisplay(8, 0);
     }
 
@@ -178,11 +185,19 @@ public class DayManager : MonoBehaviour, ISavable
         StartMorning();
     }
 
+    private void SetNightFilterAlpha(float alpha)
+    {
+        Color filterCol = nightFilter.color;
+        filterCol.a = alpha;
+        nightFilter.color = filterCol;
+    }
+
     /// <summary>
     /// 저장 및 던젼 종료시 호출
     /// </summary>
     public void StartMorning()
     {
+        SetNightFilterAlpha(0);
         SetDayOrNight(DayAndNight.MORNING);
         isMorning = true;
     }
@@ -304,6 +319,7 @@ public class DayManager : MonoBehaviour, ISavable
         }
 
         SetDayOrNight(DayAndNight.NIGHT);
+        SetNightFilterAlpha(0.7f);
         //Todo : 어두워지고 상점 문이 닫혀야함
         
         morning.color = new Color(1,1,1,0);

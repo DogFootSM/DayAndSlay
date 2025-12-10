@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class BossDoor : InteractableObj
 {
@@ -15,6 +16,7 @@ public class BossDoor : InteractableObj
     [SerializeField] private Button noButton;
 
     private PlayerRoot player;
+    [Inject]
     private MapManager mapManager;
     
     private void Start()
@@ -49,12 +51,12 @@ public class BossDoor : InteractableObj
     /// </summary>
     private void YesButton()
     {
+        player?.TranslateScenePosition(new Vector2(-83.75f, -30));
+        mapManager.MapChange(MapType.TOWN_OUTSIDE);
+        
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
         
-        //타운씬 던젼도어 아래쪽 위치 강제로 할당
-        player?.TranslateScenePosition(new Vector2(-83.75f, -30));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
     }
 
     /// <summary>
