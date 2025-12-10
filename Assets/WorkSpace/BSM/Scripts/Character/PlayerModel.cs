@@ -416,7 +416,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         ingameManagerInstance.SetDebt(debt);
         
         //DB에서 불러온 던전 입장 여부 설정
-        //DungeonManager.hasDungeonEntered = hasDungeonEntered;
+        DungeonManager.hasDungeonEntered = hasDungeonEntered;
         
         //DB에서 불러온 던전 스테이지 클리어 여부 설정
         DungeonManager.is1StageCleared = is1StageCleared;
@@ -762,10 +762,10 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{ingameManagerInstance.GetDebt()}",
                 $"{$"WEAPON_{curWeaponType.ToString()}_{curWeaponTier.ToString()}"}",
                 $"{ingameManagerInstance.GetCurrentGold()}",
-                //$"{DungeonManager.hasDungeonEntered}",
-                $"{DungeonManager.is1StageCleared}",
-                $"{DungeonManager.is2StageCleared}",
-                $"{DungeonManager.is3StageCleared}",
+                $"{(DungeonManager.hasDungeonEntered ? 1 : 0)}",
+                $"{(DungeonManager.is1StageCleared ? 1 : 0)}",
+                $"{(DungeonManager.is2StageCleared ? 1 : 0)}",
+                $"{(DungeonManager.is3StageCleared ? 1 : 0)}",
             },
             "slot_id",
             $"{dataManager.SlotId}"
