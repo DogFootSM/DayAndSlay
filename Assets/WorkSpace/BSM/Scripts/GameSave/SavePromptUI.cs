@@ -20,6 +20,7 @@ public class SavePromptUI : MonoBehaviour
     private readonly string[] saveAlertText =
     {
         "낮잠을 주무시겠습니까?\n낮잠을 자면 게임이 저장되며, \n밤에 잠을 잘 수 없습니다.",
+        "",
         "잠을 주무시겠습니까?\n 잠을 자면 게임이 저장되며, \n아침이 됩니다."
     };
 
