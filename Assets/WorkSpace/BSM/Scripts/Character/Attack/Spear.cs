@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class Spear : IAttackHandler
 {
-    private Vector3 pos;
-    private Vector3 dir;
-
     private Vector2 overlapSize;
     private LayerMask monsterLayer = LayerMask.GetMask("Monster");
     private MonsterAI targetMonster;
-    private float distance = 9999f;
-
+    
+    private float distance;
+    private Vector3 pos;
+    private Vector3 dir;
+    
     public Spear()
     {
     }
@@ -26,9 +26,12 @@ public class Spear : IAttackHandler
     /// <param name="playerModel"></param>
     public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
+#if UNITY_EDITOR
+        //기즈모 테스트용 pos,dir 코드
         pos = position;
         dir = direction;
         distance = itemData.Range;
+#endif
             
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {

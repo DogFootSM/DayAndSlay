@@ -11,6 +11,7 @@ using Zenject;
 public class CharacterSlotController : MonoBehaviour
 {
     [Inject] private SqlManager sqlManager;
+    [Inject] private DataManager dataManager;
     [SerializeField] private List<CharacterSlot> characterSlots;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button confirmButton;
@@ -62,6 +63,7 @@ public class CharacterSlotController : MonoBehaviour
             $"{DeleteSlotId}");
 
         characterSlots[DeleteSlotId - 1].IsCreatedCharacter();
+        dataManager.DeleteQuickSlotSetting(DeleteSlotId);
     }
 
     /// <summary>

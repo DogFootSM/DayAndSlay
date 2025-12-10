@@ -10,14 +10,16 @@ public class Wand : IAttackHandler
     
     private Vector3 pos;
     private Vector3 dir;
-    private float distance = 9999f;
+    private float distance;
+    
     public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
-        Debug.Log("완드 일반 공격");
-        
+#if UNITY_EDITOR
+        //기즈모 테스트용 pos,dir 코드
         pos = position;
         dir = direction;
         distance = itemData.Range;
+#endif
         
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
