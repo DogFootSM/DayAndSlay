@@ -23,7 +23,7 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private GameObject wantItemList;
 
     [SerializeField] private List<GameObject> lights;
-    private List<Light2D> _lights = new List<Light2D>();
+    [SerializeField] private List<Light2D> _lights = new List<Light2D>();
     [SerializeField] private Light2D globalLight;
     private float morningIntensity = 0.75f;
     private float dayIntensity = 1f;
@@ -113,7 +113,8 @@ public class DayManager : MonoBehaviour, ISavable
     {
         foreach (var light in lights)
         {
-            _lights.Add(light.GetComponent<Light2D>());
+            if (light.GetComponent<Light2D>()) _lights.Add(light.GetComponent<Light2D>());
+            else _lights.Add(light.GetComponentInChildren<Light2D>());
         }
         
         if(DungeonManager.hasDungeonEntered)
