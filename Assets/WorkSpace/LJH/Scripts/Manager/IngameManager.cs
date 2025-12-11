@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
@@ -113,9 +114,11 @@ public class IngameManager : MonoBehaviour
 
         debt -= change;
         
+        //ÇöÀç ºú¿¡ µû¸¥ Å»¸ð ÁøÇà or Å»¸ð º¹±¸
+        PlayerController.OnChangedDebtState?.Invoke(debt);
         Debug.Log($"ÀÌÈÄ ºú {debt}");
     }
-    
+
     private void UpKeepUIOnOff()
     {
         UpkeepPopUp popup = upkeepUI.GetComponent<UpkeepPopUp>();

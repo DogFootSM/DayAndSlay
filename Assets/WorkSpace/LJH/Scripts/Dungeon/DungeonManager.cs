@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using Zenject;
 
@@ -27,6 +28,7 @@ public class DungeonManager : MonoBehaviour
     [Inject] MapManager mapManager;
     
     [SerializeField] private Light2D light;
+    [SerializeField] private Volume dungeonVolume;
     
     private SoundManager soundManager => SoundManager.Instance;
     
@@ -79,10 +81,37 @@ public class DungeonManager : MonoBehaviour
         
         soundManager.PlayBGM(BGMSound.DENGEON_1_BGM);
         doorCamera.transform.position = Camera.main.transform.position;
-        
-        if (DungeonRoomSpawner.stageNum == 0) light.intensity = 0.4f;
-        else light.intensity = 1f;
 
+        if (DungeonRoomSpawner.stageNum == 0)
+        {
+            light.intensity = 0.8f;
+            dungeonVolume.profile.TryGet(out Bloom bloom);
+            bloom.tint = new ColorParameter(new Color(1f, 0.3f, 0f), true);
+
+            dungeonVolume.profile.TryGet(out ColorAdjustments colorAdjustments);
+            colorAdjustments.colorFilter = new ColorParameter(new Color(0.33f, 0.33f, 0.33f), true, true, true, true); 
+        }
+        else if (DungeonRoomSpawner.stageNum == (StageNum)1)
+        {
+            light.intensity = 1f;
+            
+            dungeonVolume.profile.TryGet(out Bloom bloom);
+            bloom.tint =  new ColorParameter(new Color(1f, 1f, 1f), true);
+
+            dungeonVolume.profile.TryGet(out ColorAdjustments colorAdjustments);
+            colorAdjustments.colorFilter = new ColorParameter(new Color(0.6f, 0.6f, 0.6f), true, true, true, true); 
+        }
+        else if (DungeonRoomSpawner.stageNum == (StageNum)2)
+        {
+            light.intensity = 1f;
+            
+            dungeonVolume.profile.TryGet(out Bloom bloom); 
+            bloom.tint =  new ColorParameter(new Color(0f, 0.5f, 1f), true);
+
+            dungeonVolume.profile.TryGet(out ColorAdjustments colorAdjustments);
+            colorAdjustments.colorFilter = new ColorParameter(new Color(1f, 1f, 1f), true, true, true, true); 
+        }
+        
     }
 
     public void StageClearedCheck(StageNum stageNum)

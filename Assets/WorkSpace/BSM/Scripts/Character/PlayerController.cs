@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterAnimatorController characterAnimatorController;
     [SerializeField] private SystemWindowController systemWindowController;
     [SerializeField] private GameObject gameOverCanvas;
+    [SerializeField] private SpriteRenderer hairSpriteRenderer;
     
     [Header("플레이어 사망 오브젝트 On/Off")]
     [SerializeField] private GameObject _cemeteryObject;
@@ -99,6 +100,8 @@ public class PlayerController : MonoBehaviour
     
     private bool isDead = false;
     public bool IsDead => isDead;
+
+    public static Action<int> OnChangedDebtState;
     
     private void Awake()
     {
@@ -109,11 +112,22 @@ public class PlayerController : MonoBehaviour
         curSkillTree.ChangedWeaponType((WeaponType)curWeaponType);
     }
 
+    private void OnEnable()
+    {
+        OnChangedDebtState += UpdateHairLossByDebt;
+    }
+
+    private void OnDisable()
+    {
+        OnChangedDebtState -= UpdateHairLossByDebt; 
+    }
+ 
     private void Start()
     {
         ChangedWeaponType(curWeaponType);
+        UpdateHairLossByDebt(playerModel.Debt);
     }
-
+    
     private void Update()
     {
         if (isDead) return;
@@ -490,4 +504,15 @@ public class PlayerController : MonoBehaviour
             ParryingCo = null;
         } 
     } 
+    
+    /// <summary>
+    /// 현재 나의 빚 상황에 따른 탈모 진행 or 탈모 복구
+    /// </summary>
+    /// <param name="debt"></param>
+    private void UpdateHairLossByDebt(int debt)
+    {
+        float skinHair = debt == 0 ? 1f : ((float)debt / 1000000) > 1f ? 0f : 1 - (float)debt / 1000000;
+         
+        hairSpriteRenderer.color = new Color(1f, 1f, 1f, skinHair);
+    }
 }

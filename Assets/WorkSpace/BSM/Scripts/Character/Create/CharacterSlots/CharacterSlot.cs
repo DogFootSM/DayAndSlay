@@ -16,6 +16,7 @@ public class CharacterSlot : BaseUI
     [SerializeField] private TextMeshProUGUI currentDayText;
     [SerializeField] private TextMeshProUGUI debtText;
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private Image hairImage;
     
     [Inject] private SqlManager sqlManager;
     [Inject] private CanvasManager canvasManager;
@@ -116,23 +117,46 @@ public class CharacterSlot : BaseUI
             debt = dataReader.GetInt32(1);
             level = dataReader.GetInt32(2);
         }
-        
-        
 
+        SetDebtText();
+        SetHairLossColor();
+        SetInfo();
+    }
+
+    /// <summary>
+    /// DB에서 불러온 진행 날짜 및 레벨 설정
+    /// </summary>
+    private void SetInfo()
+    {
+        currentDayText.text = $"{currentDay}일차"; 
+        levelText.text = $"Lv.{level}"; 
+    }
+    
+    /// <summary>
+    /// 빚에 따른 탈모 진행도 반영
+    /// </summary>
+    private void SetHairLossColor()
+    {
+        float skinHair = debt == 0 ? 1f : ((float)debt / 1000000) > 1f ? 0f : 1 - (float)debt / 1000000;
+        hairImage.color = new Color(1f, 1f, 1f, skinHair);
+    }
+    
+    /// <summary>
+    /// DB에서 불러온 빚에 따른 빚 상태 텍스트 설정
+    /// </summary>
+    private void SetDebtText()
+    {
         if (debt == 0)
         {
-            debtText.text = "빚이 없음";
+            debtText.text = "빚이 없음"; 
         }
         else
         {
             int index = (debt / 200000) > 4 ? 4 : debt / 200000;
             debtText.text = debtRange[index];
         }
-        
-        currentDayText.text = $"{currentDay}일차"; 
-        levelText.text = $"Lv.{level}"; 
     }
-
+    
     /// <summary>
     /// UI 요소 바인딩
     /// </summary>

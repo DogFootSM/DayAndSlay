@@ -10,7 +10,7 @@ public class DungeonRoomSpawner : MonoBehaviour
 
     [SerializeField] private DungeonPathfinder dungeonPathfinder;
 
-    //Todo : ½ºÅ×ÀÌÁö¿¡ µû¶ó rooms ¸ñ·Ï º¯°æ
+    //Todo : ìŠ¤í…Œì´ì§€ì— ë”°ë¼ rooms ëª©ë¡ ë³€ê²½
     [SerializeField] [SerializedDictionary]
     private SerializedDictionary<string, List<GameObject>> roomsDict;
 
@@ -36,14 +36,14 @@ public class DungeonRoomSpawner : MonoBehaviour
 
 private void Awake()
     {
-        //·ë»ı¼º ¹× ´øÀüÆĞ½ºÆÄÀÎ´õ ·ë¸®½ºÆ®¿¡ ÁÖÀÔ
+        //ë£¸ìƒì„± ë° ë˜ì „íŒ¨ìŠ¤íŒŒì¸ë” ë£¸ë¦¬ìŠ¤íŠ¸ì— ì£¼ì…
         Init();
         BuildMap();
         FindPlayerSpawnPos();
     }
 
     /// <summary>
-    /// ¹æ »ı¼º
+    /// ë°© ìƒì„±
     /// </summary>
 	private void BuildMap()
     {
@@ -52,7 +52,7 @@ private void Awake()
         
 		for (int i = 0; i < roomPos.Count; i++)
         {
-            //º¸½º ¹æ
+            //ë³´ìŠ¤ ë°©
             if (i == roomPos.Count - 1)
             {
                 GameObject bossRoom = bossRoomsDict[stageNum.ToString()][0];
@@ -60,7 +60,7 @@ private void Awake()
                 RoomList[i].GetComponent<Room>().SetBossRoom(true);
                 RoomList[i].name = $"BossRoom";
             }
-            //ÀÏ¹İ ¹æ
+            //ì¼ë°˜ ë°©
             else
             {
                 GameObject room = roomsDict[stageNum.ToString()][Random.Range(0, roomsDict[stageNum.ToString()].Count)];
@@ -69,7 +69,7 @@ private void Awake()
                 RoomList[i].name = $"Room_{i}";
             }
 
-            //·ë ¸®½ºÆ®¿¡ Ãß°¡
+            //ë£¸ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
             dungeonPathfinder.SetRoomList(RoomList[i].GetComponent<Grid>());
         }
 	}
@@ -78,7 +78,7 @@ private void Awake()
     {
         if (RoomList.Count == 0)
         {
-            Debug.LogWarning("RoomList ºñ¾îÀÖÀ½. ½ºÆù À§Ä¡ Ã£±â ½ÇÆĞ");
+            Debug.LogWarning("RoomList ë¹„ì–´ìˆìŒ. ìŠ¤í° ìœ„ì¹˜ ì°¾ê¸° ì‹¤íŒ¨");
             return;
         }
 
@@ -89,7 +89,7 @@ private void Awake()
 
         if (floor == null)
         {
-            Debug.LogWarning("Ã¹ ¹øÂ° ¹æ¿¡ floor Å¸ÀÏ¸Ê ¾øÀ½.");
+            Debug.LogWarning("ì²« ë²ˆì§¸ ë°©ì— floor íƒ€ì¼ë§µ ì—†ìŒ.");
             return;
         }
 
@@ -98,19 +98,19 @@ private void Awake()
 
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
-            if (!floor.HasTile(pos)) continue;           // floor ÀÖ¾î¾ß ÇÏ°í
-            if (wall != null && wall.HasTile(pos)) continue; // wall ¾ø¾î¾ß ÇÔ
+            if (!floor.HasTile(pos)) continue;           // floor ìˆì–´ì•¼ í•˜ê³ 
+            if (wall != null && wall.HasTile(pos)) continue; // wall ì—†ì–´ì•¼ í•¨
 
             validCells.Add(pos);
         }
 
         if (validCells.Count == 0)
         {
-            Debug.LogWarning("0¹ø ¹æ¿¡¼­ ½ºÆù °¡´ÉÇÑ Å¸ÀÏ ¾øÀ½.");
+            Debug.LogWarning("0ë²ˆ ë°©ì—ì„œ ìŠ¤í° ê°€ëŠ¥í•œ íƒ€ì¼ ì—†ìŒ.");
             return;
         }
 
-        // ·£´ı ¼¿ ¼±ÅÃ
+        // ëœë¤ ì…€ ì„ íƒ
         Vector3Int cell = validCells[Random.Range(0, validCells.Count)];
 
         Vector3 worldPos = floor.CellToWorld(cell) + floor.cellSize / 2f;
@@ -125,7 +125,7 @@ private void Awake()
     }
 
     /// <summary>
-    /// ¹® »ı¼º
+    /// ë¬¸ ìƒì„±
     /// </summary>
     public void BuildDoor(List<Grid> route, bool isReverse)
     {
@@ -133,15 +133,15 @@ private void Awake()
         {
             GameObject room = r.gameObject;
 
-            // ¸ŞÀÎ ·çÆ®: ¸¶Áö¸· ¹æ Á¦¿Ü
+            // ë©”ì¸ ë£¨íŠ¸: ë§ˆì§€ë§‰ ë°© ì œì™¸
             if (!isReverse && room == RoomList[^1])
                 continue;
             
-            // ¸ŞÀÎ·çÆ®¿¡¼­ »çÀÌµå ·çÆ®ÀÇ ¸¶Áö¸· ¹æµµ Á¦¿ÜÇØ¾ßÇÔ
+            // ë©”ì¸ë£¨íŠ¸ì—ì„œ ì‚¬ì´ë“œ ë£¨íŠ¸ì˜ ë§ˆì§€ë§‰ ë°©ë„ ì œì™¸í•´ì•¼í•¨
             if (!isReverse && room == route[^1].gameObject)
                 continue;
 
-            // »çÀÌµå ·çÆ®: routeÀÇ ¸¶Áö¸· ¹æ Á¦¿Ü
+            // ì‚¬ì´ë“œ ë£¨íŠ¸: routeì˜ ë§ˆì§€ë§‰ ë°© ì œì™¸
             
             if (isReverse && room == route[^1].gameObject)
                 continue;
@@ -156,14 +156,14 @@ private void Awake()
 
             foreach (Vector3Int pos in bounds.allPositionsWithin)
             {
-                // (1) ¹Ù´Ú Å¸ÀÏÀÌ¾î¾ß ÇÔ
+                // (1) ë°”ë‹¥ íƒ€ì¼ì´ì–´ì•¼ í•¨
                 if (!floor.HasTile(pos)) continue;
 
-                // (2) º® Å¸ÀÏÀÌ¾î¼­´Â ¾È µÊ
+                // (2) ë²½ íƒ€ì¼ì´ì–´ì„œëŠ” ì•ˆ ë¨
                 if (wall.HasTile(pos)) continue;
                 
 
-                // Cell ¡æ ¿ùµå ÁÂÇ¥ º¯È¯
+                // Cell â†’ ì›”ë“œ ì¢Œí‘œ ë³€í™˜
                 Vector3 worldPos = floor.CellToWorld(pos) + floor.cellSize / 2f;
                 possibleDoorPositions.Add(new Vector3(worldPos.x, worldPos.y, 0));
             }
