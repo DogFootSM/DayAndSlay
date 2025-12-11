@@ -310,6 +310,8 @@ public class PlayerModel : MonoBehaviour, ISavable
     public float CriticalDamage;
 
     #region InGameManagerData
+    public int Debt => debt;
+    
     private int gold;
     private int currentDay;
     private int debt;
