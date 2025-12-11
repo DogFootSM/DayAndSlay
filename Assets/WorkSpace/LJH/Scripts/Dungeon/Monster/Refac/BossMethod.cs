@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,13 @@ public abstract class BossMethod : MonsterMethod
     [SerializeField] protected MonsterSkillData fourthSkillData;
 
     public BossAI bossAi;
-    
+
     public abstract override void Skill_First();
     public abstract override void Skill_Second();
     public abstract override void Skill_Third();
     public abstract override void Skill_Fourth();
 
-    
+
     private readonly HashSet<GameObject> _hitPlayers = new HashSet<GameObject>();
 
     protected override void Start()
@@ -30,12 +31,18 @@ public abstract class BossMethod : MonsterMethod
         base.Start();
         BossCounting();
     }
-    
+
+
     protected void BossCounting()
     {
         DungeonManager.Instance.RemainingBossCount++;
     }
-    
+
+    protected void OnDestroy()
+    {
+        DungeonManager.Instance.RemainingBossCount--;
+    }
+
     public void SetPosEffect(ParticleSystem effect, GameObject target)
     {
         effect.transform.position = target.transform.position;
@@ -51,7 +58,7 @@ public abstract class BossMethod : MonsterMethod
 
             ai.TakeDamage(100);
             parryingCount++;
-            if (parryingCount < 3)
+            if (parryingCount > 2)
             {
                 StunMethod(1);
             }
@@ -231,16 +238,12 @@ public abstract class BossMethod : MonsterMethod
         StartCoroutine(WarningDeColorCoroutine(skills.GetSkillWarning(thirdSkillData), 0));
         StartCoroutine(WarningDeColorCoroutine(skills.GetSkillWarning(fourthSkillData), 0));
     }
-    
-
-    
     public override void DieMethod()
     {
         Debug.Log("»ç¸Á");
         
-        //»ç¸Á ÀÌÆåÆ® Àç»ý
-        DropItem();
-        DungeonManager.Instance.RemainingBossCount--;
-        Destroy(gameObject);
+        base.DieMethod();
     }
+    
+    
 }

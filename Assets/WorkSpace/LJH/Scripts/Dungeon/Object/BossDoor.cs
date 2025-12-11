@@ -15,7 +15,7 @@ public class BossDoor : InteractableObj
     [SerializeField] private Button yesButton;
     [SerializeField] private Button noButton;
 
-    private PlayerRoot player;
+    [SerializeField] private PlayerRoot player;
     [Inject]
     private MapManager mapManager;
     
@@ -35,7 +35,6 @@ public class BossDoor : InteractableObj
 
     public override void Interaction()
     {
-        dungeonExitPopUp.SetActive(true);
     }
 
     public override void UiOnOffMethod(Collider2D collider)
@@ -54,7 +53,8 @@ public class BossDoor : InteractableObj
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
         
-        Invoke(nameof(Respawn), 0.1f);
+        player.TranslateScenePosition(new Vector2(-83.75f, -30f));
+        mapManager.MapChange(MapType.TOWN_OUTSIDE);
     }
 
     /// <summary>
@@ -65,9 +65,4 @@ public class BossDoor : InteractableObj
         dungeonExitPopUp.SetActive(false);
     }
     
-    private void Respawn()
-    {
-        player.TranslateScenePosition(new Vector2(59f, -34f));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
-    }
 }
