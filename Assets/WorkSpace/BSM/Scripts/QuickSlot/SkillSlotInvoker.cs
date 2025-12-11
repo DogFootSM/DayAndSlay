@@ -88,6 +88,19 @@ public class SkillSlotInvoker : MonoBehaviour
                         StopCoroutine(markDashWaitCo);
                         markDashWaitCo = null;
                     }
+
+                    if (skillNode.GetMarkOnTarget() == null)
+                    {
+                        skillNode.IsCoolDownReset = false;
+                        skillNode.IsMarkOnTarget = false;
+                        
+                        //퀵슬롯이 변경되었을 경우를 대비해 퀵슬롯 타입을 찾음
+                        QuickSlotType type = CoolDownUIHub.SearchSkillCoolDown(beforeChangedSkillCooldown);
+                    
+                        CoolDownUIHub.CoolDownImageMap[type].SkillSlotUpdateCoolDown(skillNode);
+                        QuickSlotWaitUseUI.QuickSlotWaitUses[type].StopAnimation();
+                        return 0;
+                    }
                     
                     //현재 캐릭터 위치와 타겟 몬스터 위치 비교하여 방향 보정
                     if (Mathf.Abs(curDirection.x) > Mathf.Abs(curDirection.y))

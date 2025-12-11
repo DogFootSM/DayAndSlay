@@ -79,6 +79,8 @@ public class SPAS010 : MeleeSkill
         
         for (int i = 0; i < cols.Length; i++)
         {
+            if (cols[i] == null) continue;
+            
             IEffectReceiver receiver = cols[i].GetComponent<IEffectReceiver>();
             Hit(receiver, skillDamage, skillNode.skillData.SkillHitCount);
         } 
