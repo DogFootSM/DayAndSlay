@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Zenject;
 
@@ -21,7 +22,14 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private GameObject taxUI;
     [SerializeField] private GameObject wantItemList;
 
-    [SerializeField] private SpriteRenderer nightFilter;
+    [SerializeField] private List<GameObject> lights;
+    private List<Light2D> _lights = new List<Light2D>();
+    [SerializeField] private Light2D globalLight;
+    private float morningIntensity = 0.75f;
+    private float dayIntensity = 1f;
+    private float nightIntensity = 0.4f;
+    private float intensityIntervel = 0.1f;
+    
     
     public static DayManager instance;
 
@@ -103,6 +111,11 @@ public class DayManager : MonoBehaviour, ISavable
 
     private void Start()
     {
+        foreach (var light in lights)
+        {
+            _lights.Add(light.GetComponent<Light2D>());
+        }
+        
         if(DungeonManager.hasDungeonEntered)
             StartMorning();
         
@@ -186,11 +199,55 @@ public class DayManager : MonoBehaviour, ISavable
         StartMorning();
     }
 
-    private void SetNightFilterAlpha(float alpha)
+    private void SetNightFilterAlpha(DayAndNight dn)
     {
-        Color filterCol = nightFilter.color;
-        filterCol.a = alpha;
-        nightFilter.color = filterCol;
+        switch (dn)
+        {
+            case DayAndNight.MORNING:
+                LightSwitch(false);
+                StartCoroutine(BrightnessFadeCoroutine(morningIntensity));
+                break;
+            
+            case DayAndNight.DAY :
+                LightSwitch(false);
+                StartCoroutine(BrightnessFadeCoroutine(dayIntensity));
+                break;
+            
+            case DayAndNight.NIGHT:
+                LightSwitch(true);
+                StartCoroutine(BrightnessFadeCoroutine(nightIntensity));
+                break;
+        }
+    }
+
+    private void LightSwitch(bool onoff)
+    {
+        foreach (var _light in _lights)
+        {
+            _light.enabled = onoff;
+        }
+    }
+
+    private IEnumerator BrightnessFadeCoroutine(float toIntensity)
+    {
+        if (globalLight.intensity > toIntensity)
+        {
+            while (globalLight.intensity > toIntensity)
+            {
+                yield return new WaitForSeconds(intensityIntervel);
+                globalLight.intensity -= intensityIntervel;
+            }
+        }
+        else
+        {
+            while (globalLight.intensity < toIntensity)
+            {
+                yield return new WaitForSeconds(intensityIntervel);
+                globalLight.intensity += intensityIntervel;
+            }
+        }
+
+        globalLight.intensity = toIntensity;
     }
 
     /// <summary>
@@ -198,7 +255,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     public void StartMorning()
     {
-        SetNightFilterAlpha(0);
+        SetNightFilterAlpha(DayAndNight.MORNING);
         SetDayOrNight(DayAndNight.MORNING);
         isMorning = true;
     }
@@ -210,6 +267,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
+        SetNightFilterAlpha(DayAndNight.DAY);
         wantItemList.SetActive(true);
         SetDayOrNight(DayAndNight.DAY);
 
@@ -326,7 +384,7 @@ public class DayManager : MonoBehaviour, ISavable
         }
 
         SetDayOrNight(DayAndNight.NIGHT);
-        SetNightFilterAlpha(0.7f);
+        SetNightFilterAlpha(DayAndNight.NIGHT);
         //Todo : 어두워지고 상점 문이 닫혀야함
         
         morning.color = new Color(1,1,1,0);
