@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossMonsterSpawner : MonsterSpawner
@@ -26,5 +27,6 @@ public class BossMonsterSpawner : MonsterSpawner
         base.Start();
         DungeonManager.Instance.SetStoneInBossDoor(stone);
     }
+
 
 }

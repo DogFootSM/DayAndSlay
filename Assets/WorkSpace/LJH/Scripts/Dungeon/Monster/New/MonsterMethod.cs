@@ -222,13 +222,13 @@ public class MonsterMethod : MonoBehaviour
 
     private IEnumerator MonsterDestroyRoutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         DropItem();
         GainExp(monsterData.Experience);
         Destroy(gameObject);
     }
 
-    private void GainExp(int monsterExp)
+    protected void GainExp(int monsterExp)
     {
         player.GetComponent<PlayerModel>().GainExperience(monsterExp);
     }

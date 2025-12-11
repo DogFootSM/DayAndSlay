@@ -13,6 +13,7 @@ public class BellusMethod : BossMethod
         bellus = GetComponent<BellusAI>();
         
     }
+    
     public override void Skill_First()
     {
         Debug.Log("독장판 실행");

@@ -64,6 +64,7 @@ public class MonsterSpawner : MonoBehaviour
         if (player == null) return;
         
         Vector3Int currentCell = grid.WorldToCell(player.transform.position);
+        
         if (currentCell != prevPlayerCellPos)
         {
             prevPlayerCellPos = currentCell;
@@ -174,7 +175,7 @@ public class MonsterSpawner : MonoBehaviour
 
             if (IsBossRoom())
             {
-                prefabToSpawn = bossMonsters[Random.Range(0, bossMonsters.Count)];
+                prefabToSpawn = bossMonsters[i];
             }
             else
             {

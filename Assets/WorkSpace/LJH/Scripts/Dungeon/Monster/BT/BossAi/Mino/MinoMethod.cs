@@ -136,11 +136,8 @@ public class MinoMethod : BossMethod
     {
         Debug.Log("»ç¸Á");
         
-        //»ç¸Á ÀÌÆåÆ® Àç»ý
-        DropItem();
         DisGigantism();
-        DungeonManager.Instance.RemainingBossCount--;
-        Destroy(gameObject);
+        base.DieMethod();
     }
 
 

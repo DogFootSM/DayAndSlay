@@ -7,6 +7,7 @@ public class MalusMethod : BossMethod
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private BellusMethod bellus;
     private MalusAI malusAi;
+
     
     public override void Skill_First()
     {
