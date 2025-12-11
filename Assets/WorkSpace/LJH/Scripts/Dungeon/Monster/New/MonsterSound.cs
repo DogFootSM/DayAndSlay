@@ -29,6 +29,10 @@ public class MonsterSound : MonoBehaviour
 
     public void PlaySFX(SoundType type)
     {
+        //몬스터가 죽은 경우 예외 처리
+        if (audioSource == null) return;
+        if (!this) return;   
+        
         if (type == SoundType.HIT)
         {
             audioSource.clip = hitClips[Random.Range(0, hitClips.Count)];

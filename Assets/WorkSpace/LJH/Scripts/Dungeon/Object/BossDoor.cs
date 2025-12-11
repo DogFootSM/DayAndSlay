@@ -51,12 +51,10 @@ public class BossDoor : InteractableObj
     /// </summary>
     private void YesButton()
     {
-        player?.TranslateScenePosition(new Vector2(-83.75f, -30));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
-        
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
         
+        Invoke(nameof(Respawn), 0.1f);
     }
 
     /// <summary>
@@ -65,5 +63,11 @@ public class BossDoor : InteractableObj
     private void NoButton()
     {
         dungeonExitPopUp.SetActive(false);
+    }
+    
+    private void Respawn()
+    {
+        player.TranslateScenePosition(new Vector2(59f, -34f));
+        mapManager.MapChange(MapType.TOWN_OUTSIDE);
     }
 }

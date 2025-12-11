@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Zenject;
 
 public class DungeonManager : MonoBehaviour
@@ -24,6 +25,8 @@ public class DungeonManager : MonoBehaviour
     //Ä«¸Þ¶ó
     [SerializeField] private Camera doorCamera;
     [Inject] MapManager mapManager;
+    
+    [SerializeField] private Light2D light;
     
     private SoundManager soundManager => SoundManager.Instance;
     
@@ -76,6 +79,10 @@ public class DungeonManager : MonoBehaviour
         
         soundManager.PlayBGM(BGMSound.DENGEON_1_BGM);
         doorCamera.transform.position = Camera.main.transform.position;
+        
+        if (DungeonRoomSpawner.stageNum == 0) light.intensity = 0.4f;
+        else light.intensity = 1f;
+
     }
 
     public void StageClearedCheck(StageNum stageNum)
