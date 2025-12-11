@@ -45,30 +45,6 @@ public class MonsterMethod : MonoBehaviour
     
     //테스트용
     [SerializeField] private GameObject stunImage;
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Player")
-        {
-            rb.velocity = Vector2.zero;
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            collision.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        }
-    }
-
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Player")
-        {
-            collision.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-        }
-        
-    }
-    
     
     protected virtual void Start()
     {
@@ -149,7 +125,7 @@ public class MonsterMethod : MonoBehaviour
     #region Move
     // AI 스크립트에서 호출될 이동 함수
     
-    public virtual void Move()
+    public void Move()
     {
         if (path == null || path.Count == 0)
         {
@@ -182,7 +158,6 @@ public class MonsterMethod : MonoBehaviour
         animator.SetIsAction(false);
 
         rb.MovePosition(Vector3.MoveTowards(transform.position, targetWorldPos, monsterData.MoveSpeed * Time.deltaTime));
-
         if (Vector3.Distance(transform.position, targetWorldPos) < 0.01f)
         {
             currentPathIndex++;
@@ -191,7 +166,6 @@ public class MonsterMethod : MonoBehaviour
     
     public virtual void RequestPathUpdate(Vector3 start, Vector3 end)
     {
-        // Debug.Log("경로 갱신 요청");
         // A* Pathfinding 실행
         astarPath.DetectTarget(start, end);
     }
@@ -204,7 +178,6 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public virtual void AttackMethod()
     {
-        Debug.Log("플레이어 공격함");
         sound.PlaySFX(SoundType.ATTACK);
         
         Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
