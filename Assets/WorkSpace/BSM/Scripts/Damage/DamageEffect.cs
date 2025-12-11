@@ -50,8 +50,10 @@ public class DamageEffect : MonoBehaviour
         instance.transform.localPosition = Vector3.zero;
         
         //피해 입은 데미지 설정
+        int ceilling = Mathf.CeilToInt(damage);
+        
         DamageText damageText = instance.GetComponent<DamageText>();
-        damageText.SetDamageText(((int)damage).ToString(), unitType);
+        damageText.SetDamageText(ceilling.ToString(), unitType);
         
         instance.SetActive(true);
     }

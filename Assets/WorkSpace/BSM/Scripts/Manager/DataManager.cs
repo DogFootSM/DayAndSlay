@@ -117,6 +117,18 @@ public class DataManager : MonoBehaviour
         return quickslotSetting;
     }
 
+    public void DeleteQuickSlotSetting(int slotId)
+    {
+        //TODO: 테스트용 코드
+        //SetPath($"QuickSlotSaveData{SlotId}.json");
+        SetPath($"QuickSlotSaveData0.json");
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }   
+    }
+    
     /// <summary>
     /// 퀵슬롯 데이터 저장
     /// </summary>

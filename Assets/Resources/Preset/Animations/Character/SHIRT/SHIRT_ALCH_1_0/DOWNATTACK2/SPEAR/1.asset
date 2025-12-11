@@ -15,7 +15,7 @@ Sprite:
     height: 64
   m_Offset: {x: 0, y: 0}
   m_Border: {x: 0, y: 0, z: 0, w: 0}
-  m_PixelsToUnits: 100
+  m_PixelsToUnits: 32
   m_Pivot: {x: 0.5, y: 0.5}
   m_Extrude: 1
   m_IsPolygon: 0
@@ -103,7 +103,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 295c8f3d8fc2f53d00000000ec51b83d8fc2f5bd00000000ec51b83dae47e13d00000000ec51b8bd8fc2f53d00000000ec51b8bd8fc2f5bd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 0000603e0000c03e000000000000903e0000c0be000000000000903e0000b03e00000000000090be0000c03e00000000000090be0000c0be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -114,7 +114,7 @@ Sprite:
     textureRectOffset: {x: 23.076118, y: 20.042908}
     atlasRectOffset: {x: -1, y: -1}
     settingsRaw: 64
-    uvTransform: {x: 100, y: 96, z: 100, w: 480}
+    uvTransform: {x: 32, y: 96, z: 32, w: 480}
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
@@ -194,7 +194,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 295c8f3d8fc2f53d00000000ec51b83d8fc2f5bd00000000ec51b83dae47e13d00000000ec51b8bd8fc2f53d00000000ec51b8bd8fc2f5bd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 0000603e0000c03e000000000000903e0000c0be000000000000903e0000b03e00000000000090be0000c03e00000000000090be0000c0be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -205,13 +205,13 @@ Sprite:
     textureRectOffset: {x: 23.076118, y: 20.042908}
     atlasRectOffset: {x: -1, y: -1}
     settingsRaw: 64
-    uvTransform: {x: 100, y: 96, z: 100, w: 480}
+    uvTransform: {x: 32, y: 96, z: 32, w: 480}
     downscaleMultiplier: 1
   m_PhysicsShape:
-  - - {x: -0.089999996, y: 0.12}
-    - {x: -0.089999996, y: -0.12}
-    - {x: 0.089999996, y: -0.12}
-    - {x: 0.089999996, y: 0.11}
-    - {x: 0.07, y: 0.12}
+  - - {x: -0.28125, y: 0.375}
+    - {x: -0.28125, y: -0.375}
+    - {x: 0.28125, y: -0.375}
+    - {x: 0.28125, y: 0.34375}
+    - {x: 0.21875, y: 0.375}
   m_Bones: []
   m_SpriteID: 604d0e33a6219414aa27c2cf6d830502
