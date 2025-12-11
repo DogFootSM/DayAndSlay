@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Zenject;
@@ -21,7 +22,8 @@ public class DayManager : MonoBehaviour, ISavable
 
     [SerializeField] private GameObject taxUI;
     [SerializeField] private GameObject wantItemList;
-
+    [SerializeField] private Volume townSceneVolume;
+    
     [SerializeField] private List<GameObject> lights;
     [SerializeField] private List<Light2D> _lights = new List<Light2D>();
     [SerializeField] private Light2D globalLight;
@@ -76,13 +78,25 @@ public class DayManager : MonoBehaviour, ISavable
         switch (dn)
         {
             case DayAndNight.MORNING:
+                Debug.Log("¸ð´×");
                 morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
+                townSceneVolume.profile.TryGet(out ColorAdjustments morningAdjustments);
+                morningAdjustments.colorFilter = new ColorParameter(new Color(0.6f, 0.6f, 0.6f), true, true, true, true);
+                
                 break;
             case DayAndNight.DAY:
+                Debug.Log("µ¥ÀÌ");
                 day.color = new Color(day.color.r, day.color.g, day.color.b, 1f);
+                townSceneVolume.profile.TryGet(out ColorAdjustments dayAdjustments);
+                dayAdjustments.colorFilter = new ColorParameter(new Color(1f, 1f, 1f), true, true, true, true);
+                
                 break;
             case DayAndNight.NIGHT:
+                Debug.Log("³ªÀÕ");
                 night.color = new Color(night.color.r, night.color.g, night.color.b, 1f);
+                townSceneVolume.profile.TryGet(out ColorAdjustments nightAdjustments);
+                nightAdjustments.colorFilter = new ColorParameter(new Color(0.33f, 0.33f, 0.33f), true, true, true, true);
+                
                 break;
         }
 
@@ -111,11 +125,11 @@ public class DayManager : MonoBehaviour, ISavable
 
     private void Start()
     {
-        foreach (var light in lights)
-        {
-            if (light.GetComponent<Light2D>()) _lights.Add(light.GetComponent<Light2D>());
-            else _lights.Add(light.GetComponentInChildren<Light2D>());
-        }
+        // foreach (var light in lights)
+        // {
+        //     if (light.GetComponent<Light2D>()) _lights.Add(light.GetComponent<Light2D>());
+        //     else _lights.Add(light.GetComponentInChildren<Light2D>());
+        // }
         
         if(DungeonManager.hasDungeonEntered)
             StartMorning();
@@ -257,7 +271,7 @@ public class DayManager : MonoBehaviour, ISavable
     public void StartMorning()
     {
         SetNightFilterAlpha(DayAndNight.MORNING);
-        SetDayOrNight(DayAndNight.MORNING);
+        SetDayOrNight(DayAndNight.DAY);
         isMorning = true;
     }
 
