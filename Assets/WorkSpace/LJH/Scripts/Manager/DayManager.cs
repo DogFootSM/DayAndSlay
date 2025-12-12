@@ -149,7 +149,7 @@ public class DayManager : MonoBehaviour, ISavable
 
     public void OpenStore()
     {
-        StartCoroutine(FlowToNineCoroutine());
+        if(dayOrNight == DayAndNight.MORNING) ToggleDayNight();
     }
     
     //아침 시작시 8시 > 9시까지 흐르게 해주는 코루틴
@@ -193,7 +193,7 @@ public class DayManager : MonoBehaviour, ISavable
         {
             StartNight();
         }
-        else
+        else if(dayOrNight == DayAndNight.MORNING)
         {
             PreDayEvents(); // 아침 시작 전 이벤트 처리
         }
@@ -209,7 +209,7 @@ public class DayManager : MonoBehaviour, ISavable
             return;
         }
 
-        StartMorning();
+        StartCoroutine(FlowToNineCoroutine());
     }
     
     private IEnumerator TaxRoutine()
@@ -217,7 +217,7 @@ public class DayManager : MonoBehaviour, ISavable
         taxUI.SetActive(true);
         yield return new WaitUntil(() => !taxUI.activeSelf);
 
-        StartMorning();
+        StartCoroutine(FlowToNineCoroutine());
     }
 
     private void SetNightFilterAlpha(DayAndNight dn)
