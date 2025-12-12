@@ -10,6 +10,7 @@ public class MonsterMethod : MonoBehaviour
     
     [SerializeField] private int tempDamage;
     [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private GameObject healPack;
     
     private DamageEffect damageEffect;
     
@@ -223,6 +224,7 @@ public class MonsterMethod : MonoBehaviour
     private IEnumerator MonsterDestroyRoutine()
     {
         yield return new WaitForSeconds(1f);
+        DropHealPack();
         DropItem();
         GainExp(monsterData.Experience);
         Destroy(gameObject);
@@ -273,6 +275,20 @@ public class MonsterMethod : MonoBehaviour
         
         itemPrefab.GetComponent<Item>().SetItem(model.DropItemPick(randomNum));
         Instantiate(itemPrefab, transform.position, Quaternion.identity);
+    }
+
+    private void DropHealPack()
+    {
+        float randomNum = Random.Range(0, 3);
+        
+        if (randomNum == 2) return;
+        
+        int healAmountMin = Mathf.FloorToInt(model.MaxHp * 0.1f);
+        int healAmountMax = Mathf.FloorToInt(model.MaxHp * 0.2f);
+        int healAmount = Random.Range(healAmountMin, healAmountMax);
+        
+        GameObject healObj = Instantiate(healPack, transform.position, Quaternion.identity);
+        healObj.GetComponent<HealthPack>().SetRecoveryAmount(healAmount);
     }
     
     

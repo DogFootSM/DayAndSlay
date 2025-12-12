@@ -86,7 +86,6 @@ public class UpkeepPayPopUp : MonoBehaviour
     public void PayTax()
     {
         ingameManager.PayTaxResult(isPass, this.gameObject, alertPopup);
-        StartCoroutine(AlertPopUpCoroutine());
     }
 
     private IEnumerator AlertPopUpCoroutine()
@@ -136,7 +135,10 @@ public class UpkeepPayPopUp : MonoBehaviour
             text.Value.SetActive(isActive);
         }
     }
-    
+    public void Pay()
+    {
+        StartCoroutine(AlertPopUpCoroutine());
+    }
     public void AlertPopUpClose(GameObject popUp)
     {
         popUp.SetActive(false);

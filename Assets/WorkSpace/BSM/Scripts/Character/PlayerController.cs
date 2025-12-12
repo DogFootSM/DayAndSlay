@@ -515,4 +515,26 @@ public class PlayerController : MonoBehaviour
          
         hairSpriteRenderer.color = new Color(1f, 1f, 1f, skinHair);
     }
+    
+    /// <summary>
+    /// 캐릭터 회복
+    /// 이재호가 추가한 메서드
+    /// </summary>
+    /// <param name="heal"></param>
+    public void PlayerHealing(float heal)
+    {
+        if (isDead) return;
+        
+        if (playerModel.MaxHp <= playerModel.CurHp + heal)
+        {
+            playerModel.CurHp =  playerModel.MaxHp;
+            return;
+        }
+        
+        playerModel.CurHp += heal;
+        
+        //체력회복도 회복량 띄우면 좋을거같지만 일단 Todo
+        //_damageEffect.DamageTextEvent(heal);
+        //_damageEffect.DamageSkinEffect();
+    }
 }

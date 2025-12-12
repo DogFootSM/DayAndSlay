@@ -21,6 +21,7 @@ public class BossDoor : InteractableObj
     
     private void Start()
     {
+        player = FindObjectOfType<PlayerRoot>();
         yesButton.onClick.AddListener(YesButton);
         noButton.onClick.AddListener(NoButton);
         StartCoroutine(IndependentCoroutine());
@@ -39,10 +40,10 @@ public class BossDoor : InteractableObj
 
     public override void UiOnOffMethod(Collider2D collider)
     {
-        if(collider.CompareTag("Player"))
-            player = collider.GetComponent<PlayerRoot>();
+        Debug.Log(!transform.GetChild(0).gameObject.activeSelf);
         
-        dungeonExitPopUp.SetActive(!dungeonExitPopUp.activeSelf);
+        if(!transform.GetChild(0).gameObject.activeSelf)
+            dungeonExitPopUp.SetActive(!dungeonExitPopUp.activeSelf);
     }
 
     /// <summary>
@@ -52,9 +53,8 @@ public class BossDoor : InteractableObj
     {
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
-        
-        player.TranslateScenePosition(new Vector2(-83.75f, -30f));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
+
+        Invoke(nameof(Respawn), 0.5f);
     }
 
     /// <summary>
@@ -63,6 +63,12 @@ public class BossDoor : InteractableObj
     private void NoButton()
     {
         dungeonExitPopUp.SetActive(false);
+    }
+
+    private void Respawn()
+    {
+        player.TranslateScenePosition(new Vector2(-83.75f, -30f));
+        mapManager.MapChange(MapType.TOWN_OUTSIDE);
     }
     
 }

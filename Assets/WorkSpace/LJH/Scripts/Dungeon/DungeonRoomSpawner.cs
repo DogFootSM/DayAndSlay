@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -33,6 +34,9 @@ public class DungeonRoomSpawner : MonoBehaviour
     public static StageNum stageNum;
 
     public List<GameObject> RoomList = new List<GameObject>();
+    
+    [Inject]
+    private MapManager mapManager;
 
 private void Awake()
     {
@@ -40,6 +44,28 @@ private void Awake()
         Init();
         BuildMap();
         FindPlayerSpawnPos();
+        mapManager.TileMapDictInit(wideTileMap());
+        mapManager.MapDictInit();
+    }
+
+    private List<Tilemap> wideTileMap()
+    {
+        List<Tilemap> wideTileMaps = new List<Tilemap>();
+        for (int i = 0; i < RoomList.Count; i++) 
+        { 
+            List<Tilemap> tilemaps = RoomList[i].GetComponentsInChildren<Tilemap>().ToList();
+            Tilemap largestTilemap = null; float maxArea = 0f;
+            foreach (Tilemap tilemap in tilemaps)
+            {
+                Bounds b = tilemap.localBounds; float area = b.size.x * b.size.y;
+                if (area > maxArea)
+                {
+                    maxArea = area; largestTilemap = tilemap;
+                } 
+                
+            } 
+            
+            wideTileMaps.Add(largestTilemap); } return wideTileMaps;
     }
 
     /// <summary>
