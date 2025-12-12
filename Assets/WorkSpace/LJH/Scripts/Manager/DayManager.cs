@@ -29,9 +29,9 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private Light2D globalLight;
     private float morningIntensity = 0.75f;
     private float dayIntensity = 1f;
-    private float nightIntensity = 0.4f;
+    private float nightIntensity = 0.8f;
     private float intensityIntervel = 0.1f;
-    
+    private List<ITorchSwitch> torches = new List<ITorchSwitch>();
     
     public static DayManager instance;
 
@@ -67,6 +67,8 @@ public class DayManager : MonoBehaviour, ISavable
 
     public DayAndNight GetDayOrNight() => dayOrNight;
 
+    private ColorAdjustments ca;
+    
     /// <summary>
     /// 아침,낮,밤 설정
     /// </summary>
@@ -75,27 +77,32 @@ public class DayManager : MonoBehaviour, ISavable
     {
         SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
 
+        foreach (var torch in torches)
+        {
+            torch.TorchSwitch(dn == DayAndNight.NIGHT);
+        }
+        
         switch (dn)
         {
             case DayAndNight.MORNING:
-                Debug.Log("모닝");
                 morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
-                townSceneVolume.profile.TryGet(out ColorAdjustments morningAdjustments);
-                morningAdjustments.colorFilter = new ColorParameter(new Color(0.6f, 0.6f, 0.6f), true, true, true, true);
-                
+                townSceneVolume.profile.TryGet(out ca);
+                ca.active = true;
+                ca.colorFilter.value = new Color(0.6f, 0.6f, 0.6f);
                 break;
+            
             case DayAndNight.DAY:
-                Debug.Log("데이");
                 day.color = new Color(day.color.r, day.color.g, day.color.b, 1f);
-                townSceneVolume.profile.TryGet(out ColorAdjustments dayAdjustments);
-                dayAdjustments.colorFilter = new ColorParameter(new Color(1f, 1f, 1f), true, true, true, true);
-                
+                townSceneVolume.profile.TryGet(out ca);
+                ca.active = true;
+                ca.colorFilter.value = new Color(1f, 1f, 1f);
                 break;
+            
             case DayAndNight.NIGHT:
-                Debug.Log("나잇");
                 night.color = new Color(night.color.r, night.color.g, night.color.b, 1f);
-                townSceneVolume.profile.TryGet(out ColorAdjustments nightAdjustments);
-                nightAdjustments.colorFilter = new ColorParameter(new Color(0.33f, 0.33f, 0.33f), true, true, true, true);
+                townSceneVolume.profile.TryGet(out ca);
+                ca.active = true;
+                ca.colorFilter.value = new Color(0.33f, 0.33f, 0.33f);
                 
                 break;
         }
@@ -271,7 +278,7 @@ public class DayManager : MonoBehaviour, ISavable
     public void StartMorning()
     {
         SetNightFilterAlpha(DayAndNight.MORNING);
-        SetDayOrNight(DayAndNight.DAY);
+        SetDayOrNight(DayAndNight.MORNING);
         isMorning = true;
     }
 
@@ -455,4 +462,17 @@ public class DayManager : MonoBehaviour, ISavable
             clockText.text = $"{ampm} {hourString}:{minuteString}";
         }
     }
+
+    /// <summary>
+    /// 횃불 인터페이스 lIST 등록
+    /// </summary>
+    /// <param name="torch"></param>
+    public void TorchRegister(ITorchSwitch torch)
+    {
+        if (!torches.Contains(torch))
+        {
+            torches.Add(torch);
+        } 
+    }
+    
 }

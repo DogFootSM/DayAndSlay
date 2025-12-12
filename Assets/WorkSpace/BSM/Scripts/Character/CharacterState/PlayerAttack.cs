@@ -80,7 +80,7 @@ public class PlayerAttack : PlayerState
             {
                 elapsedTime += Time.deltaTime;
                 
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.LeftControl))
                 { 
                     // //공격 입력 시간 초기화
                     elapsedTime = 0;

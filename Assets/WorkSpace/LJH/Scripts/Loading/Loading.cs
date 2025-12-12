@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class Loading : MonoBehaviour
 {
     public static SceneReference nextScene;
-    [SerializeField] Image gage;
-
+    [SerializeField] private Slider barSlider;    
+    
     private void Start()
     {
         StartCoroutine(LoadingGageScene());
@@ -33,9 +33,9 @@ public class Loading : MonoBehaviour
             while (!op.isDone)
             {
                 yield return new WaitForSeconds(0.1f);
-                gage.fillAmount += 0.05f;
+                barSlider.value += 0.05f;
 
-                if (gage.fillAmount == 1.0f)
+                if (barSlider.value >= 1.0f)
                 {
                     op.allowSceneActivation = true;
                     yield break;
@@ -44,12 +44,12 @@ public class Loading : MonoBehaviour
         }
         else
         {
-            while (gage.fillAmount < 1.0f)
+            while (barSlider.value < 1.0f)
             {
                 yield return new WaitForSeconds(0.1f);
-                gage.fillAmount += 0.05f;
+                barSlider.value += 0.05f;
 
-                if (gage.fillAmount == 1.0f)
+                if (barSlider.value >= 1.0f)
                 {
                     SceneManager.UnloadSceneAsync("LoadingScene");
                     yield break;

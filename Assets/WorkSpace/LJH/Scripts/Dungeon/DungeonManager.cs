@@ -31,6 +31,8 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private Volume dungeonVolume;
     
     private SoundManager soundManager => SoundManager.Instance;
+    private Bloom bloom;
+    private ColorAdjustments colorAdjustments;
     
     private int _remainingBossCount;
     public int RemainingBossCount
@@ -85,31 +87,37 @@ public class DungeonManager : MonoBehaviour
         if (DungeonRoomSpawner.stageNum == 0)
         {
             light.intensity = 0.8f;
-            dungeonVolume.profile.TryGet(out Bloom bloom);
-            bloom.tint = new ColorParameter(new Color(1f, 0.3f, 0f), true);
+            dungeonVolume.profile.TryGet(out bloom);
+            bloom.active = true;
+            bloom.tint.value = new Color(1f, 0.3f, 0f);
 
-            dungeonVolume.profile.TryGet(out ColorAdjustments colorAdjustments);
-            colorAdjustments.colorFilter = new ColorParameter(new Color(0.33f, 0.33f, 0.33f), true, true, true, true); 
+            dungeonVolume.profile.TryGet(out colorAdjustments);
+            colorAdjustments.active = true;
+            colorAdjustments.colorFilter.value = new Color(0.33f, 0.33f, 0.33f);
         }
         else if (DungeonRoomSpawner.stageNum == (StageNum)1)
         {
             light.intensity = 1f;
             
-            dungeonVolume.profile.TryGet(out Bloom bloom);
-            bloom.tint =  new ColorParameter(new Color(1f, 1f, 1f), true);
+            dungeonVolume.profile.TryGet(out bloom);
+            bloom.active = true;
+            bloom.tint.value = new Color(1f, 1f, 1f);
 
-            dungeonVolume.profile.TryGet(out ColorAdjustments colorAdjustments);
-            colorAdjustments.colorFilter = new ColorParameter(new Color(0.6f, 0.6f, 0.6f), true, true, true, true); 
+            dungeonVolume.profile.TryGet(out colorAdjustments);
+            colorAdjustments.active = true;
+            colorAdjustments.colorFilter.value = new Color(0.6f, 0.6f, 0.6f);
         }
         else if (DungeonRoomSpawner.stageNum == (StageNum)2)
         {
             light.intensity = 1f;
             
-            dungeonVolume.profile.TryGet(out Bloom bloom); 
-            bloom.tint =  new ColorParameter(new Color(0f, 0.5f, 1f), true);
+            dungeonVolume.profile.TryGet(out bloom); 
+            bloom.active = true;
+            bloom.tint.value = new Color(0f, 0.5f, 1f);
 
-            dungeonVolume.profile.TryGet(out ColorAdjustments colorAdjustments);
-            colorAdjustments.colorFilter = new ColorParameter(new Color(1f, 1f, 1f), true, true, true, true); 
+            dungeonVolume.profile.TryGet(out colorAdjustments);
+            colorAdjustments.active = true;
+            colorAdjustments.colorFilter.value = new Color(1f, 1f, 1f);
         }
         
     }

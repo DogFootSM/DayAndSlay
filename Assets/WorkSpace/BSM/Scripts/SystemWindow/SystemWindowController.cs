@@ -190,11 +190,11 @@ public class SystemWindowController : MonoBehaviour
         {
             OpenSystemWindow(SystemType.SKILL);
         }
-        else if (Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.C))
         {
             OpenSystemWindow(SystemType.STATUS);
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.P))
         {
             OpenSystemWindow(SystemType.RECIPE);
         }
