@@ -79,7 +79,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {   
         if (GetIsStun() && model.curHp > 0) return;
         
-        if (isSkillUsing) return;
+        if (isSkillUsing && model.curHp > 0) return;
         
         if (tree == null) return;
         tree.Tick();
