@@ -31,7 +31,7 @@ public class DayManager : MonoBehaviour, ISavable
     private float dayIntensity = 1f;
     private float nightIntensity = 0.8f;
     private float intensityIntervel = 0.1f;
-    
+    private List<ITorchSwitch> torches = new List<ITorchSwitch>();
     
     public static DayManager instance;
 
@@ -77,6 +77,11 @@ public class DayManager : MonoBehaviour, ISavable
     {
         SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
 
+        foreach (var torch in torches)
+        {
+            torch.TorchSwitch(dn == DayAndNight.NIGHT);
+        }
+        
         switch (dn)
         {
             case DayAndNight.MORNING:
@@ -457,4 +462,17 @@ public class DayManager : MonoBehaviour, ISavable
             clockText.text = $"{ampm} {hourString}:{minuteString}";
         }
     }
+
+    /// <summary>
+    /// 횃불 인터페이스 lIST 등록
+    /// </summary>
+    /// <param name="torch"></param>
+    public void TorchRegister(ITorchSwitch torch)
+    {
+        if (!torches.Contains(torch))
+        {
+            torches.Add(torch);
+        } 
+    }
+    
 }
