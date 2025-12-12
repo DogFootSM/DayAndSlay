@@ -11,6 +11,7 @@ public class Arrow : MonoBehaviour
     
     private ArrowPool arrowPool => ArrowPool.Instance;
     private Coroutine arrowPoolReturnCo;
+    public MonsterAI monsterAI;
     
     private Vector2 startPos = new Vector2();
     private LayerMask monsterLayer; 
@@ -22,7 +23,6 @@ public class Arrow : MonoBehaviour
     private float slowRatio;
     private float slowDuration;
     private bool isSlowSkill;
-    private bool canHit = true;
     
     private void Awake()
     {
@@ -32,31 +32,31 @@ public class Arrow : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         //화살이 몬스터에 닿았을 경우
-        if ((1 << other.gameObject.layer & monsterLayer) != 0)
+        if ((1 << other.gameObject.layer & monsterLayer) != 0 && monsterAI == null)
         {
-            if (!canHit) return;
-            canHit = false;
-            
-            MonsterAI monster = other.gameObject.GetComponent<MonsterAI>();
-            monster.TakeDamage(damage);
-            
+            monsterAI = other.gameObject.GetComponent<MonsterAI>();;
+            monsterAI.TakeDamage(damage);
+             
             //현재 화살이 슬로우 스킬 화살이며 몬스터가 슬로우 적용중이지 않은 상태
-            if (isSlowSkill && !monster.IsSlow)
+            if (isSlowSkill && !monsterAI.IsSlow)
             {
                 IEffectReceiver receiver = other.gameObject.GetComponent<IEffectReceiver>();
                 receiver.ReceiveSlow(slowDuration, slowRatio); 
             }
-            
             arrowPool.ReturnPoolArrow(this.gameObject); 
-        }
+        } 
+    }
+
+    private void OnEnable()
+    {
+        monsterAI = null; 
     }
 
     private void OnDisable()
     {
-        isSlowSkill = false;
-        canHit = true;
+        isSlowSkill = false; 
         slowDuration = 0f;
-        slowRatio = 0f;
+        slowRatio = 0f; 
         
         if (arrowPoolReturnCo != null)
         {
