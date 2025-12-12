@@ -21,6 +21,20 @@ public class ItemGrab : MonoBehaviour
     {
         if (((1 << other.gameObject.layer) & itemLayerMask) != 0)
         {
+            //이재호가 추가한 헬스팩 먹는 로직
+            if (other.GetComponent<HealthPack>())
+            {
+                HealthPack healthPack = other.GetComponent<HealthPack>();
+                
+                healthPack.StartPickupEffect(transform);
+                int hp = Random.Range(30, 51);
+                GetComponentInParent<PlayerController>().PlayerHealing(hp);
+
+                return;
+            }
+            
+            
+            
             Item grabItem = other.GetComponent<Item>();
 
             if (grabItem != null)
@@ -30,10 +44,8 @@ public class ItemGrab : MonoBehaviour
                 //1 ~5 개 아이템 습득
                 int random = Random.Range(1, 6);
                 bool isEat = true;
-                for (int i = 0; i < random; i++)
-                {
-                    isEat = inventoryInteraction.AddItemToInventory(grabItem.itemData);
-                }
+
+                isEat = inventoryInteraction.AddItemToInventory(grabItem.itemData, random);
 
                 if (isEat)
                 {

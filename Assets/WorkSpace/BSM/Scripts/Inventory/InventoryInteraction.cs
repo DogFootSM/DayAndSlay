@@ -124,7 +124,8 @@ public class InventoryInteraction :
     /// 아이템 습득 후 인벤토리에 저장
     /// </summary>
     /// <param name="collectedItem">습득 아이템 객체</param>
-    public bool AddItemToInventory(ItemData collectedItem)
+    /// <param name="itemCount">습득한 아이템 개수</param>
+    public bool AddItemToInventory(ItemData collectedItem, int itemCount = 1)
     {
         //중첩 가능한 재료 아이템을 보유중인 슬롯
         if (ownedItemSet.Contains(collectedItem.ItemId)
@@ -137,20 +138,20 @@ public class InventoryInteraction :
                 //아이템 id가 같은것을 슬롯에서 찾으면 아이템 슬롯에 추가
                 if (inventorySlots[i].CurSlotItem.ItemId == collectedItem.ItemId)
                 {
-                    inventorySlots[i].AddItem(collectedItem);
-                    
+                    inventorySlots[i].AddItem(collectedItem, itemCount);
+
                     AddMaterialItemToDictionary(inventorySlots[i].CurSlotItem.ItemId, inventorySlots[i]);
                     return true;
                 }
             }
         }
-        
+
         //아이템을 가지고 있지 않는 첫 번째 슬롯
         var emptySlots = inventorySlots.FirstOrDefault(x => x.CurSlotItem == null);
 
         if (emptySlots != null)
         {
-            emptySlots.AddItem(collectedItem);
+            emptySlots.AddItem(collectedItem, itemCount);
             ownedItemSet.Add(collectedItem.ItemId);
             AddMaterialItemToDictionary(collectedItem.ItemId, emptySlots);
             return true;
