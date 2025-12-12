@@ -8,6 +8,7 @@ public class Spear : IAttackHandler
     private Vector2 overlapSize;
     private LayerMask monsterLayer = LayerMask.GetMask("Monster");
     private MonsterAI targetMonster;
+    private Vector2 curDirection;
     
     private float distance;
     private Vector3 pos;
@@ -17,6 +18,11 @@ public class Spear : IAttackHandler
     {
     }
 
+    public void SetDirection(Vector2 direction)
+    {
+        curDirection = direction;
+    }
+    
     /// <summary>
     /// 캐릭터 기본 원거리 공격
     /// </summary>
@@ -24,16 +30,16 @@ public class Spear : IAttackHandler
     /// <param name="position">캐릭터 위치</param>
     /// <param name="itemData"></param>
     /// <param name="playerModel"></param>
-    public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
+    public void NormalAttack(Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
 #if UNITY_EDITOR
         //기즈모 테스트용 pos,dir 코드
         pos = position;
-        dir = direction;
+        dir = curDirection;
         distance = itemData.Range;
 #endif
             
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        if (Mathf.Abs(curDirection.x) > Mathf.Abs(curDirection.y))
         {
             overlapSize = new Vector2(itemData.Range, 1f);
         }
@@ -43,7 +49,7 @@ public class Spear : IAttackHandler
         }
 
         Collider2D[] monsterCol =
-            Physics2D.OverlapBoxAll(position + (direction.normalized * itemData.Range / 2), overlapSize, 0, monsterLayer);
+            Physics2D.OverlapBoxAll(position + (curDirection.normalized * itemData.Range / 2), overlapSize, 0, monsterLayer);
         
         if (monsterCol.Length < 1) return;
 

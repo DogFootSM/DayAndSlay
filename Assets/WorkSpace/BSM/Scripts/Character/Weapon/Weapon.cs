@@ -53,16 +53,24 @@ public class Weapon : MonoBehaviour
     {
         curDirection = direction;
     }
-
+    
     /// <summary>
     /// 무기 핸들러의 기본 공격 호출
     /// </summary>
     public void NormalAttack()
     {
         SoundManager.Instance.PlaySfx(SFXSound.NORMAL_ATTACK);
-        attackHandler.NormalAttack(curDirection, playerObject.transform.position, curEquippedItem, playerModel);
+        attackHandler.NormalAttack(playerObject.transform.position, curEquippedItem, playerModel);
     }
-
+    
+    /// <summary>
+    /// 공격할 방향 설정 애니메이션 이벤트
+    /// </summary>
+    public void SetDirectionEvent()
+    {
+        attackHandler.SetDirection(curDirection);
+    }
+    
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

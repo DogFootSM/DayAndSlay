@@ -8,7 +8,8 @@ public class ShortSword : IAttackHandler
 
     private LayerMask monsterLayer = LayerMask.GetMask("Monster");
     private MonsterAI targetMonster;
-
+    private Vector2 curDirection;
+    
     private Vector3 pos;
     private Vector3 dir;
     private float distance;
@@ -17,6 +18,11 @@ public class ShortSword : IAttackHandler
     {
     }
 
+    public void SetDirection(Vector2 direction)
+    {
+        curDirection = direction;
+    }
+    
     /// <summary>
     /// 캐릭터 기본 근거리 공격
     /// </summary>
@@ -24,16 +30,16 @@ public class ShortSword : IAttackHandler
     /// <param name="position">캐릭터 위치</param>
     /// <param name="itemData"></param>
     /// <param name="playerModel"></param>
-    public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
+    public void NormalAttack(Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
 #if UNITY_EDITOR
         //기즈모 테스트용 pos,dir 코드
         pos = position;
-        dir = direction;
+        dir = curDirection;
         distance = itemData.Range;
 #endif
 
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        if (Mathf.Abs(curDirection.x) > Mathf.Abs(curDirection.y))
         {
             overlapSize = new Vector2(itemData.Range, 1f);
         }
@@ -43,7 +49,7 @@ public class ShortSword : IAttackHandler
         }
 
         Collider2D[] monsterColliders =
-            Physics2D.OverlapBoxAll(position + (direction.normalized * itemData.Range / 2), overlapSize, 0f,
+            Physics2D.OverlapBoxAll(position + (curDirection.normalized * itemData.Range / 2), overlapSize, 0f,
                 monsterLayer);
 
         if (monsterColliders.Length < 1) return;
