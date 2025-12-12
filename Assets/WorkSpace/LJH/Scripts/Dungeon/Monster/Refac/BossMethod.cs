@@ -25,25 +25,8 @@ public abstract class BossMethod : MonsterMethod
 
 
     private readonly HashSet<GameObject> _hitPlayers = new HashSet<GameObject>();
-
-    protected override void Start()
-    {
-        base.Start();
-        BossCounting();
-    }
-
-
-    protected void BossCounting()
-    {
-        DungeonManager.Instance.RemainingBossCount++;
-        Debug.Log("º¸½ºÄ«¿îÆÃ ½ÇÇàµÊ");
-    }
-
-    protected void OnDestroy()
-    {
-        DungeonManager.Instance.RemainingBossCount--;
-    }
-
+    
+    
     public void SetPosEffect(ParticleSystem effect, GameObject target)
     {
         effect.transform.position = target.transform.position;
@@ -244,6 +227,7 @@ public abstract class BossMethod : MonsterMethod
         Debug.Log("»ç¸Á");
         
         base.DieMethod();
+        DungeonManager.Instance.RemainingBossCount--;
     }
     
     
