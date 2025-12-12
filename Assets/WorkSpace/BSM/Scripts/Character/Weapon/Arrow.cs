@@ -22,7 +22,8 @@ public class Arrow : MonoBehaviour
     private float slowRatio;
     private float slowDuration;
     private bool isSlowSkill;
-
+    private bool canHit = true;
+    
     private void Awake()
     {
         monsterLayer = LayerMask.GetMask("Monster");
@@ -33,8 +34,8 @@ public class Arrow : MonoBehaviour
         //화살이 몬스터에 닿았을 경우
         if ((1 << other.gameObject.layer & monsterLayer) != 0)
         {
-            //Monster monster = other.gameObject.GetComponent<Monster>();
-            //monster.TakeDamage(damage);
+            if (!canHit) return;
+            canHit = false;
             
             MonsterAI monster = other.gameObject.GetComponent<MonsterAI>();
             monster.TakeDamage(damage);
@@ -53,6 +54,7 @@ public class Arrow : MonoBehaviour
     private void OnDisable()
     {
         isSlowSkill = false;
+        canHit = true;
         slowDuration = 0f;
         slowRatio = 0f;
         
@@ -74,7 +76,6 @@ public class Arrow : MonoBehaviour
         transform.position = pos;
         startPos = pos;
         range = weaponRange;
-        
         arrowRb.AddForce(dir * ARROW_SPEED, ForceMode2D.Impulse);
 
         arrowPoolReturnCo = StartCoroutine(ArrowReturnRoutine());

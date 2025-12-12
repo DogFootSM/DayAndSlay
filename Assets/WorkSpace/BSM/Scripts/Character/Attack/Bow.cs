@@ -17,7 +17,7 @@ public class Bow : IAttackHandler
         curDirection = direction;
     }
     
-    public void NormalAttack(Vector2 direction, Vector2 position, ItemData itemData, PlayerModel playerModel)
+    public void NormalAttack(Vector2 position, ItemData itemData, PlayerModel playerModel)
     {
         GameObject arrowInstance = arrowPool.GetPoolArrow();
         arrowInstance.SetActive(true);
