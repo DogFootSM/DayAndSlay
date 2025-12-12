@@ -27,8 +27,7 @@ public class ItemGrab : MonoBehaviour
                 HealthPack healthPack = other.GetComponent<HealthPack>();
                 
                 healthPack.StartPickupEffect(transform);
-                int hp = Random.Range(30, 51);
-                GetComponentInParent<PlayerController>().PlayerHealing(hp);
+                GetComponentInParent<PlayerController>().PlayerHealing(healthPack.HpRecoveryAmount);
 
                 return;
             }

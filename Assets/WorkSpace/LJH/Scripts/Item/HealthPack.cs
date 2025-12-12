@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,9 @@ public class HealthPack : MonoBehaviour
     [Tooltip("아이템 습득 효과가 지속될 시간 (초)")]
     [SerializeField] private float pickupDuration = 0.3f; // 습득 효과 지속 시간
 
+    [SerializeField] private int hpRecoveryAmount;
+    public int HpRecoveryAmount => hpRecoveryAmount;
+
     private IEnumerator FloatRoutine()
     {
         float timer = 0f; 
@@ -35,7 +39,7 @@ public class HealthPack : MonoBehaviour
             yield return null;
         }
     }
-    
+
     private void Start()
     {
         startPos = transform.position;
@@ -43,6 +47,8 @@ public class HealthPack : MonoBehaviour
         // 2. 둥실거리는 코루틴을 시작합니다.
         floatCoroutine = StartCoroutine(FloatRoutine());
     }
+    
+    public void SetRecoveryAmount(int amount) => hpRecoveryAmount = amount;
     
     /// <summary>
     /// 아이템 습득 효과를 시작하는 메서드

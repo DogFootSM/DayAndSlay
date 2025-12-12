@@ -283,7 +283,12 @@ public class MonsterMethod : MonoBehaviour
         
         if (randomNum == 2) return;
         
-        Instantiate(healPack, transform.position, Quaternion.identity);
+        int healAmountMin = Mathf.FloorToInt(model.MaxHp * 0.1f);
+        int healAmountMax = Mathf.FloorToInt(model.MaxHp * 0.2f);
+        int healAmount = Random.Range(healAmountMin, healAmountMax);
+        
+        GameObject healObj = Instantiate(healPack, transform.position, Quaternion.identity);
+        healObj.GetComponent<HealthPack>().SetRecoveryAmount(healAmount);
     }
     
     
