@@ -35,7 +35,7 @@ public class Table : InteractableObj
         }
         else
         {
-            popUp.GetComponent<PopUp>().SetText($"E키를 눌러서 {_objName}에 아이템을 등록하세요.");
+            popUp.GetComponent<PopUp>().SetText($"스페이스바를 눌러서 {_objName}에 아이템을 등록하세요.");
         }
 
         popUp.SetActive(!popUp.gameObject.activeSelf);

@@ -12,7 +12,7 @@ public class PopUp : MonoBehaviour
     {
         if (text.text == null)
         {
-            text.text = $"E키를 눌러서 \n {objName} 사용하기";
+            text.text = $"스페이스바를 눌러서 \n {objName} 사용하기";
         }
     }
 
