@@ -62,6 +62,16 @@ public class Weapon : MonoBehaviour
         SoundManager.Instance.PlaySfx(SFXSound.NORMAL_ATTACK);
         attackHandler.NormalAttack(playerObject.transform.position, curEquippedItem, playerModel);
     }
+
+    /// <summary>
+    /// 백대쉬 공격
+    /// </summary>
+    /// <param name="direction"></param>
+    public void BackDashAttack(Vector2 direction)
+    {
+        SoundManager.Instance.PlaySfx(SFXSound.NORMAL_ATTACK);
+        attackHandler.BackDashAttack(playerObject.transform.position, direction, curEquippedItem, playerModel);
+    }
     
     /// <summary>
     /// 공격할 방향 설정 애니메이션 이벤트

@@ -28,4 +28,17 @@ public class Bow : IAttackHandler
         
         arrow.SetArrowDamage(playerModel.FinalPhysicalDamage);
     }
+
+    public void BackDashAttack(Vector2 position, Vector2 direction, ItemData itemData, PlayerModel playerModel)
+    {
+        GameObject arrowInstance = arrowPool.GetPoolArrow();
+        arrowInstance.SetActive(true);
+        arrowInstance.transform.parent = null;
+
+        Arrow arrow = arrowInstance.GetComponent<Arrow>();
+        arrow.SetLaunchTransform(position + (direction.normalized * 0.5f),direction, itemData.Range);
+        
+        arrow.SetArrowDamage(playerModel.FinalPhysicalDamage);
+    }
+    
 }

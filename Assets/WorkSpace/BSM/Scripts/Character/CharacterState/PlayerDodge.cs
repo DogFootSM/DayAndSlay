@@ -18,6 +18,14 @@ public class PlayerDodge : PlayerState
         {Direction.Right, Animator.StringToHash("LeftBackDash")},
     };
     
+    private Dictionary<Direction, Vector2> directionMans = new Dictionary<Direction, Vector2>()
+    {
+        {Direction.Down, Vector2.down},
+        {Direction.Up, Vector2.up},
+        {Direction.Left, Vector2.right},
+        {Direction.Right, Vector2.left},
+    };
+    
     public PlayerDodge(PlayerController playerController) : base(playerController)
     {   
         obstacleLayer = LayerMask.GetMask("Wall");
@@ -53,9 +61,9 @@ public class PlayerDodge : PlayerState
             Direction.Up => Vector2.down,
             _ => Vector2.zero
         };
-
+     
         playerController.DodgeCo = playerController.StartCoroutine(DodgeCoroutine(direction, BACKDASH_JUMP_POWER));
-        playerController.CurWeapon.NormalAttack();
+        playerController.CurWeapon.BackDashAttack(directionMans[playerController.LastMoveKey]);
     }
 
     private IEnumerator DodgeCoroutine(Vector2 direction, float power)
