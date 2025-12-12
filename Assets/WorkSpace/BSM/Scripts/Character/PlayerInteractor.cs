@@ -29,7 +29,7 @@ public class PlayerInteractor : MonoBehaviour
 
         if (hit.collider != null)
         { 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (hit.collider.TryGetComponent<GameSaveHandler>(out GameSaveHandler saveHandler))
                 {

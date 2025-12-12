@@ -118,7 +118,7 @@ public class PlayerState : PlayerStateMachine
     /// </summary>
     protected void NormalAttackKeyDown()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             if (playerController.CurrentWeaponType == CharacterWeaponType.EMPTY) return;
             playerController.ChangeState(CharacterStateType.ATTACK);
