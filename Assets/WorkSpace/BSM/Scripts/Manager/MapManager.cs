@@ -19,6 +19,7 @@ public class MapManager : MonoBehaviour
 
     private MapType curMapType;
 
+    Camera camera;
 
     public List<Vector2> GetMapBoundary()
     {
@@ -84,6 +85,10 @@ public class MapManager : MonoBehaviour
 
             Vector2 bottomLeft = bounds.min + new Vector3(9f, 5f, 0) + value; // 좌하단
             Vector2 topRight = bounds.max + new Vector3(-9f, -5f, 0) + value; // 우상단
+            
+            camera = Camera.main;
+            
+            float a = camera.orthographicSize;
 
             List<Vector2> mapBoundary = new List<Vector2>();
             mapBoundary.Add(bottomLeft);

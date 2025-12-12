@@ -12,13 +12,11 @@ public class MinoMethod : BossMethod
 
     public override void Skill_First()
     {
-        //Todo : 부딪힌 적에게 피해
         HeadButt();
     }
 
     public override void Skill_Second()
     {
-        //Todo : 범위 내 적에게 피해
         Stomp();
     }
 

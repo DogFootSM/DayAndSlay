@@ -210,7 +210,6 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {
         float calcDefense = model.def;
         
-        //TODO: 임시 디버프 방어력 계산
         if (isDefenseDeBuffed)
         {
             calcDefense -= CalculateDefenseDeBuff();

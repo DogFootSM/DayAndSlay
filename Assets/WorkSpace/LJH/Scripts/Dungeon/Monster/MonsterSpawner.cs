@@ -141,8 +141,6 @@ public class MonsterSpawner : MonoBehaviour
     virtual public void MonsterSpawn()
     {
         //인게임 매니저에서 스테이지 따옴
-        //Todo : 실제 연결시에는 해당 코드 이용
-        //StageNum stageNum = IngameManager.instance.GetStage();
         
         List<GameObject> monsters = new List<GameObject>();
         List<GameObject> bossMonsters =  new List<GameObject>();

@@ -18,7 +18,6 @@ public class MalusMethod : BossMethod
 
     public override void Skill_Second()
     {
-        //Todo : 잡몹 소환
         Debug.Log("몬스터 소환함");
         
         SummonMonster();

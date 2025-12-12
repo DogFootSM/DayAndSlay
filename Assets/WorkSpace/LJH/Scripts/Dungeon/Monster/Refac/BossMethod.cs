@@ -36,6 +36,7 @@ public abstract class BossMethod : MonsterMethod
     protected void BossCounting()
     {
         DungeonManager.Instance.RemainingBossCount++;
+        Debug.Log("보스카운팅 실행됨");
     }
 
     protected void OnDestroy()

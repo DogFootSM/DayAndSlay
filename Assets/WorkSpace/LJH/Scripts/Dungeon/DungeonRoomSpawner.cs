@@ -11,7 +11,6 @@ public class DungeonRoomSpawner : MonoBehaviour
 
     [SerializeField] private DungeonPathfinder dungeonPathfinder;
 
-    //Todo : 스테이지에 따라 rooms 목록 변경
     [SerializeField] [SerializedDictionary]
     private SerializedDictionary<string, List<GameObject>> roomsDict;
 

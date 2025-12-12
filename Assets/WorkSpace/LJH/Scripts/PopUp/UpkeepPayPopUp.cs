@@ -47,7 +47,6 @@ public class UpkeepPayPopUp : MonoBehaviour
     public void CheckInputDept()
     {
         if (!int.TryParse(inputField.text, out int temp)) return;
-        //Todo : 300À» À¯ÀúÀÇ ÀÜ°í·Î ¹Ù²ã¾ßÇÔ
 
         if (int.Parse(inputField.text) > ingameManager.GetCurrentGold())
         {

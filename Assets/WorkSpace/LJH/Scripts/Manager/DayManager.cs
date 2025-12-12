@@ -214,7 +214,6 @@ public class DayManager : MonoBehaviour, ISavable
     
     private IEnumerator TaxRoutine()
     {
-        // TODO: 세금 UI 노출
         taxUI.SetActive(true);
         yield return new WaitUntil(() => !taxUI.activeSelf);
 
@@ -297,7 +296,6 @@ public class DayManager : MonoBehaviour, ISavable
         {
             timeCoroutine = StartCoroutine(TimeCoroutine());
         }
-        //Todo : 밝아지고 상점 문이 열려야함
     }
 
     /// <summary>
@@ -407,7 +405,6 @@ public class DayManager : MonoBehaviour, ISavable
 
         SetDayOrNight(DayAndNight.NIGHT);
         SetNightFilterAlpha(DayAndNight.NIGHT);
-        //Todo : 어두워지고 상점 문이 닫혀야함
         
         morning.color = new Color(1,1,1,0);
         day.color = new Color(1,1,1,0);

@@ -29,7 +29,6 @@ public class Table : InteractableObj
         _objName = popUp.GetComponent<PopUp>().objName = "가판대";
         
 
-        //TODO: 안내 멘트는 수정해야함. 
         if (curItemData != null)
         {
             popUp.GetComponent<PopUp>().SetText($"{_objName}에서 아이템을 회수하시겠습니까?");

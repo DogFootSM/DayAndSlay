@@ -96,6 +96,7 @@ public class MonsterMethod : MonoBehaviour
     /// </summary>
     public void IdleMethod()
     {
+        //Todo : asdf
     }
 
     #region Idle
@@ -251,13 +252,6 @@ public class MonsterMethod : MonoBehaviour
             hitController = GetComponent<HitController>();
         
         hitController.ActiveHitEffect(damage);
-        
-        //Todo : 크리 떴을때로 변경
-        if (damage >= model.MaxHp / 4)
-        {
-            sound.PlaySFX(SoundType.DAMAGE);
-            ai.ReceiveKnockBack(player.transform.position);
-        }
     }
 
     
