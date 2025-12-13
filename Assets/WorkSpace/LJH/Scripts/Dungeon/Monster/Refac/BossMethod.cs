@@ -32,45 +32,50 @@ public abstract class BossMethod : MonsterMethod
         effect.transform.position = target.transform.position;
     }
 
+    private bool Parrying()
+    {
+        if (_player == null)
+            _player = player.GetComponent<PlayerController>();
+
+        if (!_player.IsParrying)
+            return false;
+
+        ai.TakeDamage(
+            _player.GetComponent<PlayerModel>().FinalPhysicalDamage * 1.5f);
+
+        parryingCount++;
+
+        if (parryingCount >= 3)
+        {
+            StunMethod(1f);
+            parryingCount = 0;
+        }
+
+        animator.StartCoroutine(animator.PlayCounterCoroutine());
+        return true;
+    }
+
     public override void AttackMethod()
     {
-        if(_player == null)
+        if (_player == null)
             _player = player.GetComponent<PlayerController>();
-        
-        if (_player.IsParrying)
-        {
 
-            ai.TakeDamage(100);
-            parryingCount++;
-            if (parryingCount > 2)
-            {
-                StunMethod(1);
-            }
-            animator.StartCoroutine(animator.PlayCounterCoroutine());
+        Direction direction = ai.GetDirectionByAngle(
+            player.transform.position, transform.position);
 
-            if (parryingCount == 3)
-            {
-                parryingCount = 0;
-            }
+        float distance = Vector2.Distance(
+            player.transform.position, transform.position);
 
+        if (animator.GetCurrentDir() != direction)
             return;
-        }
 
-        
-        Direction direction = ai.GetDirectionByAngle(player.transform.position, transform.position);
-        
-        float distance = Vector2.Distance(player.transform.position, transform.position);
+        if (distance > ai.GetMonsterModel().AttackRange)
+            return;
 
-        //몬스터가 보는 방향과 플레이어와의 방향 비교)
-        if (animator.GetCurrentDir() == direction)
-        {
-            //사거리 비교
-            if (distance <= ai.GetMonsterModel().AttackRange)
-            {
-                PlayerHpDamaged(monsterData.Attack);
-                
-            }
-        }
+        if (Parrying())
+            return;
+
+        PlayerHpDamaged(monsterData.Attack);
     }
 
     public void WarningPlay(MonsterSkillData skill)
@@ -199,13 +204,21 @@ public abstract class BossMethod : MonsterMethod
             // 4. 피해 처리
             foreach (Collider2D hit in hitColliders)
             {
-                if (_hitPlayers.Contains(hit.gameObject)) continue;
+                if (_hitPlayers.Contains(hit.gameObject)) 
+                    continue;
 
-                if (hit.GetComponent<PlayerController>())
+                PlayerController pc = hit.GetComponent<PlayerController>();
+                
+                if (pc == null) continue;
+
+                if (Parrying())
                 {
-                    PlayerHpDamaged((int)data.Damage);
-                    Debug.Log($"Overlap Hit: {data.Damage}");
+                    _hitPlayers.Add(hit.gameObject);
+                    continue;
                 }
+
+                PlayerHpDamaged((int)data.Damage);
+                Debug.Log($"Overlap Hit: {data.Damage}");
 
                 _hitPlayers.Add(hit.gameObject);
             }
