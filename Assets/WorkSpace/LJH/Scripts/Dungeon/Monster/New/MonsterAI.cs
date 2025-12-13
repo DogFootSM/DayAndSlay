@@ -151,7 +151,15 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     // ========== 상태 메서드 ==========
     protected void Idle()
     {
-        stateMachine.ChangeState(new NewMonsterIdleState());
+        if (method.IsIdleMoving)
+        {
+            stateMachine.ChangeState(new NewMonsterMoveState(transform, transform));
+        }
+        else
+        {
+            stateMachine.ChangeState(new NewMonsterIdleState());
+        }
+
         method.IdleMethod();
     }
 

@@ -222,7 +222,7 @@ public class AstarPath : MonoBehaviour
     /// </summary>
     /// <param name="nextPos">이동할 다음 위치</param>
     /// <returns></returns>
-    private bool IsWalkable(Vector2Int nextPos)
+    public bool IsWalkable(Vector2Int nextPos)
     {
         Vector3Int cellPos = (Vector3Int)nextPos;
 

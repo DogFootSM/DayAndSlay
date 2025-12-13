@@ -34,9 +34,10 @@ public class TargetSensor : MonoBehaviour
 
     private void Start()
     {
-        
         astar.SetGridAndTilemap(grid);
     }
+    
+    public bool IsWalkable(Vector2Int nextPos) => astar.IsWalkable(nextPos);
 
     private void OnTriggerEnter2D(Collider2D other)
     {
