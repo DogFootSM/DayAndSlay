@@ -52,6 +52,7 @@ public class MapManager : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             Bounds bounds = tileMapsDict[(MapType)i + 3].localBounds;
+            
             Vector3 value = Vector3.zero;
             if ((MapType)i + 3 == MapType.DUNGEON_0)
             {
@@ -83,12 +84,17 @@ public class MapManager : MonoBehaviour
                 value = new Vector3(108, -60, 0);
             }
 
-            Vector2 bottomLeft = bounds.min + new Vector3(9f, 5f, 0) + value; // 좌하단
-            Vector2 topRight = bounds.max + new Vector3(-9f, -5f, 0) + value; // 우상단
-            
             camera = Camera.main;
+
+            float halfHeight = camera.orthographicSize;
+            float halfWidth  = camera.orthographicSize * camera.aspect;
+
+            Vector2 bottomLeft = bounds.min + new Vector3(halfWidth, halfHeight, 0) + value;
+            Vector2 topRight = bounds.max - new Vector3(halfWidth, halfHeight, 0) + value;
             
-            float a = camera.orthographicSize;
+            Debug.Log((MapType)i + 3);
+            Debug.Log($"좌하단 위치값{bottomLeft}");
+            Debug.Log($"우상단 위치값{topRight}");
 
             List<Vector2> mapBoundary = new List<Vector2>();
             mapBoundary.Add(bottomLeft);
