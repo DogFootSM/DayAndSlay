@@ -3,21 +3,44 @@ using UnityEngine;
 public class NewMonsterMoveState : NewIMonsterState
 {
     private Transform monsterTransform;
-    private Transform playerTransform;
 
-    public NewMonsterMoveState(Transform monsterT, Transform playerT)
+    private Transform playerTransform;   // Chase용
+    private Vector3? targetPosition;     // Idle용
+
+    // Chase 생성자
+    public NewMonsterMoveState(Transform monsterT, Transform targetT)
     {
-        this.monsterTransform = monsterT;
-        this.playerTransform = playerT;
+        monsterTransform = monsterT;
+        playerTransform = targetT;
+        targetPosition = null;
+    }
+
+    // Idle 생성자
+    public NewMonsterMoveState(Transform monsterT, Vector3 targetPos)
+    {
+        monsterTransform = monsterT;
+        playerTransform = null;
+        targetPosition = targetPos;
+    }
+    
+    private Vector3 GetTargetPosition()
+    {
+        if (playerTransform != null)
+            return playerTransform.position;
+
+        if (targetPosition.HasValue)
+            return targetPosition.Value;
+
+        return monsterTransform.position;
     }
     public void Enter(MonsterAnimator animator)
     {
-        // 1. 플레이어를 향하는 방향 계산
-        Vector2 directionToPlayer = playerTransform.position - monsterTransform.position;
+        Vector3 targetPos = GetTargetPosition();
+        
+        Vector2 delta = targetPos - monsterTransform.position;
 
-        // 2. 애니메이터에 방향 전달
-        animator.SetFacingByDelta(directionToPlayer);
-
+        animator.SetFacingByDelta(delta);
+        
         animator.PlayMove();
     }
     public void Update()

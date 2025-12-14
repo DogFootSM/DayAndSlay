@@ -17,8 +17,8 @@ public class MonsterMethod : MonoBehaviour
     
     protected MonsterData monsterData;
     protected MonsterModel model;
-    protected AstarPath astarPath;
-    [SerializeField] protected MonsterAI ai;
+    protected AstarPath astarPath; 
+    protected MonsterAI ai;
     protected MonsterAnimator animator;
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
@@ -50,6 +50,7 @@ public class MonsterMethod : MonoBehaviour
     
     protected bool isIdleMoving = false;
     public bool IsIdleMoving => isIdleMoving;
+    public Vector3 idleTargetPos;
 
     #endregion
 
@@ -139,7 +140,6 @@ public class MonsterMethod : MonoBehaviour
             }
 
             Vector3 target = GetRandomIdleTarget();
-            Debug.Log($"[IDLE] 이동 목표 {target}");
 
             yield return StartCoroutine(IdleMoveRoutine(target));
         }
@@ -149,6 +149,11 @@ public class MonsterMethod : MonoBehaviour
         return sensor.IsWalkable(cellPos);
     }
     
+    /// <summary>
+    /// 아이들 이동 메서드
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
     private IEnumerator IdleMoveRoutine(Vector3 target)
     {
         isIdleMoving = true;
@@ -165,6 +170,8 @@ public class MonsterMethod : MonoBehaviour
                 break;
             }
 
+            idleTargetPos = target;
+
             rb.MovePosition(Vector3.MoveTowards(
                 transform.position,
                 target,
@@ -176,6 +183,10 @@ public class MonsterMethod : MonoBehaviour
         isIdleMoving = false;
     }
     
+    /// <summary>
+    /// 랜덤 이동 좌표 반환 메서드
+    /// </summary>
+    /// <returns></returns>
     private Vector3 GetRandomIdleTarget()
     {
         // 현재 위치 → 셀 좌표
@@ -186,8 +197,22 @@ public class MonsterMethod : MonoBehaviour
         {
             int range = Random.Range(idleMoveMinRange, idleMoveMaxRange + 1);
 
-            int x = Random.Range(-range, range + 1);
-            int y = Random.Range(-range, range + 1);
+            int x = 0;
+            int y = 0;
+
+            // true = 가로 이동, false = 세로 이동
+            bool moveHorizontal = Random.value > 0.5f;
+
+            if (moveHorizontal)
+            {
+                x = Random.Range(-range, range + 1);
+                if (x == 0) continue; // 의미 없는 이동 방지
+            }
+            else
+            {
+                y = Random.Range(-range, range + 1);
+                if (y == 0) continue;
+            }
 
             Vector2Int targetCell = new Vector2Int(
                 curCell.x + x,
@@ -196,7 +221,6 @@ public class MonsterMethod : MonoBehaviour
 
             if (IsWalkableCell(targetCell))
             {
-                // 셀 → 월드 좌표 변환은 여기서 딱 한 번
                 return sensor.grid.GetCellCenterWorld(
                     new Vector3Int(targetCell.x, targetCell.y, 0)
                 );

@@ -153,7 +153,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {
         if (method.IsIdleMoving)
         {
-            stateMachine.ChangeState(new NewMonsterMoveState(transform, transform));
+            stateMachine.ChangeState(new NewMonsterMoveState(transform, method.idleTargetPos));
         }
         else
         {
