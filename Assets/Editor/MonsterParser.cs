@@ -55,19 +55,20 @@ public class MonsterParser
                 monster.Name = monsterName;
                 monster.Hp = int.Parse(values[2]);
                 monster.Attack = int.Parse(values[3]);
-                monster.AttackRange = float.Parse(values[4]);
-                monster.ChaseRange = float.Parse(values[5]);
-                monster.MoveSpeed = float.Parse(values[6]);
-                monster.AttackCooldown = float.Parse(values[7]);
+                monster.defence = int.Parse(values[4]);
+                monster.AttackRange = float.Parse(values[5]);
+                monster.ChaseRange = float.Parse(values[6]);
+                monster.MoveSpeed = float.Parse(values[7]);
+                monster.AttackCooldown = float.Parse(values[8]);
 
                 // ------------------------------------------------------------
                 // 드랍 테이블
                 // ------------------------------------------------------------
                 monster.DropTable.Clear();
 
-                if (values.Length > 12 && !string.IsNullOrWhiteSpace(values[12]))
+                if (values.Length > 13 && !string.IsNullOrWhiteSpace(values[13]))
                 {
-                    string[] drops = values[12].Split('|');
+                    string[] drops = values[13].Split('|');
 
                     foreach (string dropStr in drops)
                     {

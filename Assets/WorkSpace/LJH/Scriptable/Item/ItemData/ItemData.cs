@@ -39,7 +39,6 @@ public class ItemData : ScriptableObject
     public int SellPrice;
 
     public string ItemDescA;
-    public string ItemDescB;
     
     public int ingredients_1;
     public int ingredients_1_Count;
