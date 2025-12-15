@@ -63,9 +63,7 @@ public class SkillTree : MonoBehaviour, ISavable
     /// </summary>
     private void InitializeSkillData()
     {
-        //IDataReader reader = sqlManager.ReadSkillDataColumn($"{dataManager.SlotId}");
-        //TODO: 테스트용 슬롯 아이디 1고정
-        IDataReader reader = sqlManager.ReadSkillDataColumn("1");
+        IDataReader reader = sqlManager.ReadSkillDataColumn($"{dataManager.SlotId}");
 
         while (reader.Read())
         {
