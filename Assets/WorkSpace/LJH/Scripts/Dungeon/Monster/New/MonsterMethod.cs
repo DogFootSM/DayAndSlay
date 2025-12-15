@@ -112,7 +112,7 @@ public class MonsterMethod : MonoBehaviour
     // ==============================
 
     /// <summary>
-    /// Todo : Idle : 근처를 랜덤하게 1~2칸 이동
+    /// Idle : 근처를 랜덤하게 1~2칸 이동
     /// </summary>
     public void IdleMethod()
     {
