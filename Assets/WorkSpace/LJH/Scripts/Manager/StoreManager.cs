@@ -5,16 +5,52 @@ using UnityEngine;
 public class StoreManager : InteractableObj
 {
     [SerializeField] private GameObject popUp;
-    [SerializeField] private TextMeshProUGUI reputationTextObj;
+    /// <summary>
+    /// 현재 빚이 얼마인지
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI debtText;
 
-    private int reputation = 0;
-
-    public void PlusRepu(int plus) => reputationTextObj.text = $"평판 점수 : {reputation += plus}";
-    public void MinusRepu(int minus) => reputationTextObj.text = $"평판 점수 : {reputation -= minus}";
+    private int debt;
+    
+    //0  없음
+    //1 ~ 20만 빚이 조금 있음
+    //20만 1 ~ 40만 빚이 있음
+    //40만 1 ~ 60만 빚이 조금 많음
+    //60만 1 ~ 80만 빚이 많음
+    //80 ~ 빚이 매우 많음
+    private string[] debtRange = new string[]
+    {
+        "빚이 조금 있음", "빚이 있음", "빚이 조금 많음", "빚이 많음", "빚이 매우 많음",
+    };
 
     private void Start()
     {
-        reputationTextObj.text = $"평판 점수 : {reputation}";
+        SetDebtText();
+    }
+
+    /// <summary>
+    /// 빚 변경 메서드
+    /// </summary>
+    /// <param name="debt"></param>
+    public void SetDebt(int debt)
+    {
+        this.debt = debt;
+    }
+    
+    /// <summary>
+    /// DB에서 불러온 빚에 따른 빚 상태 텍스트 설정
+    /// </summary>
+    private void SetDebtText()
+    {
+        if (debt == 0)
+        {
+            debtText.text = "빚이 없음"; 
+        }
+        else
+        {
+            int index = (debt / 200000) > 4 ? 4 : debt / 200000;
+            debtText.text = debtRange[index];
+        }
     }
 
 

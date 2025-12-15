@@ -345,6 +345,7 @@ public class Npc : MonoBehaviour
         {
             player.GrantExperience(wantItem.SellPrice);
             
+            IngameManager.instance.SetGold(wantItem.SellPrice);
             StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요
         }
@@ -354,7 +355,6 @@ public class Npc : MonoBehaviour
     {
         buyEffect.SetActive(true);
         tableWithItem.CurItemData = null;
-        GetStoreManager().PlusRepu(10);
         
         yield return new WaitUntil(() => !buyEffect.activeSelf);
         

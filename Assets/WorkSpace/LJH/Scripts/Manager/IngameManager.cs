@@ -12,6 +12,7 @@ public class IngameManager : MonoBehaviour
     [SerializeField] private GameObject upkeepUI;
     [SerializeField] private GameObject taxUI;
     [SerializeField] private TextMeshProUGUI dayText;
+    [SerializeField] private StoreManager storeManager;
     
     public static IngameManager instance;
     public StageNum curStage;
@@ -23,6 +24,22 @@ public class IngameManager : MonoBehaviour
     /// ºú
     /// </summary>
     private int debt;
+    
+    public int Debt
+    {
+        get => debt;
+        set
+        {
+            if (debt == value) return;
+            debt = value;
+            OnDebtChanged();
+        }
+    }
+
+    private void OnDebtChanged()
+    {
+        storeManager.SetDebt(debt);
+    }
     
     /// <summary>
     /// ÀÌÀÚ
@@ -108,15 +125,12 @@ public class IngameManager : MonoBehaviour
 
     public void PayTax(int value)
     {
-        Debug.Log("Paytax");
-        Debug.Log($"ÀÌÀü ºú {debt}");
         int change = value - interest;
 
-        debt -= change;
+        Debt -= change;
         
         //ÇöÀç ºú¿¡ µû¸¥ Å»¸ð ÁøÇà or Å»¸ð º¹±¸
-        PlayerController.OnChangedDebtState?.Invoke(debt);
-        Debug.Log($"ÀÌÈÄ ºú {debt}");
+        PlayerController.OnChangedDebtState?.Invoke(Debt);
     }
 
     private void UpKeepUIOnOff()
@@ -145,7 +159,7 @@ public class IngameManager : MonoBehaviour
     /// ÀÌÀÚ °è»ê
     /// </summary>
     /// <returns></returns>
-    public int GetInterest() => interest = (int)(debt * 0.005f);
+    public int GetInterest() => interest = (int)(Debt * 0.005f);
 
     public int UpKeepCostCalc() => upkeepCost = GetInterest() /*+ facilityCost + manCost*/;
 
@@ -161,7 +175,7 @@ public class IngameManager : MonoBehaviour
     }
     public void SetUpKeepText(SerializedDictionary<string, GameObject> textDict)
     {
-        textDict["DebtValue"].GetComponent<TextMeshProUGUI>().text = debt.ToString("N0") + "Gold";        
+        textDict["DebtValue"].GetComponent<TextMeshProUGUI>().text = Debt.ToString("N0") + "Gold";        
         textDict["InterestValue"].GetComponent<TextMeshProUGUI>().text = GetInterest().ToString("N0") + "Gold";    
         textDict["TotalValue"].GetComponent<TextMeshProUGUI>().text = UpKeepCostCalc().ToString("N0") + "Gold";  
         textDict["GoldValue"].GetComponent<TextMeshProUGUI>().text = GetCurrentGold().ToString("N0") + "Gold";
@@ -190,7 +204,7 @@ public class IngameManager : MonoBehaviour
     /// <param name="debt"></param>
     public void SetDebt(int debt)
     {
-        this.debt = debt;
+        this.Debt = debt;
     }
 
     /// <summary>
@@ -199,7 +213,7 @@ public class IngameManager : MonoBehaviour
     /// <returns></returns>
     public int GetDebt()
     {
-        return debt;
+        return Debt;
     }
     
 }

@@ -133,14 +133,17 @@ public class DayManager : MonoBehaviour, ISavable
         //     if (light.GetComponent<Light2D>()) _lights.Add(light.GetComponent<Light2D>());
         //     else _lights.Add(light.GetComponentInChildren<Light2D>());
         // }
-        
-        if(DungeonManager.hasDungeonEntered)
+
+        if (DungeonManager.hasDungeonEntered)
+        {
+            Debug.Log($"던젼에 드간적 있니 ? : {DungeonManager.hasDungeonEntered}");
             StartMorning();
-        
+        }
         else
+        {
+            Debug.Log($"던젼에 드간적 있니 ? : {DungeonManager.hasDungeonEntered}");
             StartNight();
-        
-        UpdateClockDisplay(8, 0);
+        }
     }
 
     public void OpenStore()
@@ -272,6 +275,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     public void StartMorning()
     {
+        UpdateClockDisplay(8, 0);
         SetNightFilterAlpha(DayAndNight.MORNING);
         SetDayOrNight(DayAndNight.MORNING);
         isMorning = true;
@@ -387,6 +391,8 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartNight()
     {
+        UpdateClockDisplay(18, 0);
+        
         //남아있는 npc가 있을 경우 삭제 해줌
         foreach (Npc npc in npcSpawner.GetNpcList())
         {
