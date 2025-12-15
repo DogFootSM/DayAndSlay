@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class MonsterMethod : MonoBehaviour
@@ -16,8 +17,8 @@ public class MonsterMethod : MonoBehaviour
     
     protected MonsterData monsterData;
     protected MonsterModel model;
-    protected AstarPath astarPath;
-    [SerializeField] protected MonsterAI ai;
+    protected AstarPath astarPath; 
+    protected MonsterAI ai;
     protected MonsterAnimator animator;
     protected Rigidbody2D rb;
     protected TargetSensor sensor;
@@ -35,6 +36,23 @@ public class MonsterMethod : MonoBehaviour
 
     
     public void SetPlayer(GameObject player) => this.player = player;
+    
+    #region Idle
+
+    [SerializeField] private float idleMoveMinDelay = 2f;
+    [SerializeField] private float idleMoveMaxDelay = 4f;
+
+    [SerializeField] private int idleMoveMinRange = 1;
+    [SerializeField] private int idleMoveMaxRange = 2;
+
+    private Coroutine idleCoroutine;
+    private bool isIdling;
+    
+    protected bool isIdleMoving = false;
+    public bool IsIdleMoving => isIdleMoving;
+    public Vector3 idleTargetPos;
+
+    #endregion
 
     public virtual void Skill_First() { }
 
@@ -59,6 +77,8 @@ public class MonsterMethod : MonoBehaviour
         damageEffect = GetComponent<DamageEffect>();
         model = ai.GetMonsterModel();
         sound = GetComponent<MonsterSound>();
+        
+        
     }
 
     private void Update()
@@ -92,23 +112,136 @@ public class MonsterMethod : MonoBehaviour
     // ==============================
 
     /// <summary>
-    /// Todo : Idle : 근처를 랜덤하게 1~2칸 이동
+    /// Idle : 근처를 랜덤하게 1~2칸 이동
     /// </summary>
     public void IdleMethod()
     {
-        //Todo : asdf
+        if (idleCoroutine == null)
+        {
+            isIdling = true;
+            idleCoroutine = StartCoroutine(IdleRoutine());
+        }
     }
 
     #region Idle
     
     private IEnumerator IdleRoutine()
     {
-        yield return null;
+        while (isIdling && !isDead)
+        {
+            yield return new WaitForSeconds(
+                Random.Range(idleMoveMinDelay, idleMoveMaxDelay));
+
+            // 플레이어 추적 중이면 Idle 종료
+            if (astarPath.path != null && astarPath.path.Count > 0)
+            {
+                StopIdle();
+                yield break;
+            }
+
+            Vector3 target = GetRandomIdleTarget();
+
+            yield return StartCoroutine(IdleMoveRoutine(target));
+        }
+    }
+    private bool IsWalkableCell(Vector2Int cellPos)
+    {
+        return sensor.IsWalkable(cellPos);
+    }
+    
+    /// <summary>
+    /// 아이들 이동 메서드
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    private IEnumerator IdleMoveRoutine(Vector3 target)
+    {
+        isIdleMoving = true;
+
+        float timeOut = 1.5f;
+        float elapsed = 0f;
+
+        while (Vector3.Distance(transform.position, target) > 0.05f)
+        {
+            elapsed += Time.deltaTime;
+            if (elapsed >= timeOut)
+            {
+                Debug.Log("[IDLE] 이동 실패 → 중단");
+                break;
+            }
+
+            idleTargetPos = target;
+
+            rb.MovePosition(Vector3.MoveTowards(
+                transform.position,
+                target,
+                monsterData.MoveSpeed * Time.deltaTime));
+
+            yield return null;
+        }
+
+        isIdleMoving = false;
+    }
+    
+    /// <summary>
+    /// 랜덤 이동 좌표 반환 메서드
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 GetRandomIdleTarget()
+    {
+        // 현재 위치 → 셀 좌표
+        Vector3Int curCell3 = sensor.grid.WorldToCell(transform.position);
+        Vector2Int curCell = new Vector2Int(curCell3.x, curCell3.y);
+
+        for (int i = 0; i < 10; i++) // 최대 10회 시도
+        {
+            int range = Random.Range(idleMoveMinRange, idleMoveMaxRange + 1);
+
+            int x = 0;
+            int y = 0;
+
+            // true = 가로 이동, false = 세로 이동
+            bool moveHorizontal = Random.value > 0.5f;
+
+            if (moveHorizontal)
+            {
+                x = Random.Range(-range, range + 1);
+                if (x == 0) continue; // 의미 없는 이동 방지
+            }
+            else
+            {
+                y = Random.Range(-range, range + 1);
+                if (y == 0) continue;
+            }
+
+            Vector2Int targetCell = new Vector2Int(
+                curCell.x + x,
+                curCell.y + y
+            );
+
+            if (IsWalkableCell(targetCell))
+            {
+                return sensor.grid.GetCellCenterWorld(
+                    new Vector3Int(targetCell.x, targetCell.y, 0)
+                );
+            }
+        }
+
+        // 이동 가능한 셀 못 찾으면 제자리
+        Debug.Log("[IDLE] 이동 가능한 셀 없음");
+        return transform.position;
     }
     
     public void StopIdle()
     {
-        
+        isIdling = false;
+        isIdleMoving = false;
+
+        if (idleCoroutine != null)
+        {
+            StopCoroutine(idleCoroutine);
+            idleCoroutine = null;
+        }
     }
 
     #endregion

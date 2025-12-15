@@ -128,7 +128,7 @@ public class DungeonDoor : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (room.name == "BossRoom")
             {

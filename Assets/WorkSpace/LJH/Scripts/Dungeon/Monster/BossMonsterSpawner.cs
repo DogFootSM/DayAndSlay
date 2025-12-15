@@ -9,6 +9,9 @@ public class BossMonsterSpawner : MonsterSpawner
         //보스방의 경우 스폰 위치가 고정이라 해당 함수 비워둬서 Skip
     }
 
+    protected virtual int SetMonsterList() => monsterList.Count;
+    
+    
     /// <summary>
     /// Stage1 >> 미노타우르스, Stage2 >> 벨루스, 말루스, Stage3 >>밴시
     /// </summary>
@@ -26,6 +29,12 @@ public class BossMonsterSpawner : MonsterSpawner
     {
         base.Start();
         DungeonManager.Instance.SetStoneInBossDoor(stone);
+        Invoke(nameof(TTTT), 1f);
+    }
+
+    private void TTTT()
+    {
+        DungeonManager.Instance.RemainingBossCount = SetMonsterList();
     }
 
 
