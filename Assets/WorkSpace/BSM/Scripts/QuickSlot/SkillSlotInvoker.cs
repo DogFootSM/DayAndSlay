@@ -191,8 +191,7 @@ public class SkillSlotInvoker : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (slotSkill == null) return;
-
-        //TODO: 스킬 기즈모 테스트용
+        
         slotSkill.Gizmos();
     }
 }

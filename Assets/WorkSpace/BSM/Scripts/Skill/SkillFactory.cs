@@ -51,6 +51,5 @@ public abstract class SkillFactory
         return 0; 
     }
     
-    //TODO: 기즈모 테스트용
     public abstract void Gizmos();
 }

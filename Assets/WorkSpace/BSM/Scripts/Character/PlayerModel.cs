@@ -351,10 +351,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     private void SetStatsData()
     {
         playerStats = new PlayerStats();
-
-        //TODO: 테스트 용도로 슬롯ID 1으로 고정, 추후 제거하기
-        slotId = 1;
-        //slotId = dataManager.SlotId; 
+        slotId = dataManager.SlotId; 
         
         dataReader = sqlManager.ReadDataColumn(
             new[]
@@ -437,15 +434,6 @@ public class PlayerModel : MonoBehaviour, ISavable
         
         //경험치 바 초기화
         GainExperience(0);
-    }
-
-    private void Update()
-    {
-        //TODO: 테스트용 코드
-        if (Input.GetKeyDown(KeyCode.V))
-        { 
-            GainExperience(500);
-        } 
     }
 
     /// <summary>

@@ -100,9 +100,7 @@ public class DataManager : MonoBehaviour
     /// <returns>퀵슬롯 매니저에서 스킬 노드 초기화에 사용할 데이터 객체</returns>
     public QuickSlotSetting LoadQuickSlotSetting()
     {
-        //TODO: 테스트 끝나면 수정
-        //SetPath($"QuickSlotSaveData{SlotId}.json");
-        SetPath($"QuickSlotSaveData0.json");
+        SetPath($"QuickSlotSaveData{SlotId}.json");
 
         QuickSlotSetting quickslotSetting = new QuickSlotSetting();
         
@@ -119,9 +117,7 @@ public class DataManager : MonoBehaviour
 
     public void DeleteQuickSlotSetting(int slotId)
     {
-        //TODO: 테스트용 코드
-        //SetPath($"QuickSlotSaveData{SlotId}.json");
-        SetPath($"QuickSlotSaveData0.json");
+        SetPath($"QuickSlotSaveData{SlotId}.json");
 
         if (File.Exists(path))
         {
@@ -134,9 +130,7 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void SaveQuickSlotSetting()
     {
-        //TODO:테스트 끝나면 변경하기
-        //SetPath($"QuickSlotSaveData{SlotId}.json");
-        SetPath($"QuickSlotSaveData0.json");
+        SetPath($"QuickSlotSaveData{SlotId}.json");
         
         QuickSlotSetting quickslotSetting = new QuickSlotSetting();
         
@@ -295,9 +289,6 @@ public class DataManager : MonoBehaviour
     /// <param name="characterAnimatorController">현재 캐릭터</param>
     public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
     {
-        //TODO: 테스트용 슬롯 id 고정, 추후 제거하기
-        SlotId = 1;
-        
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
             {
                 //TODO:망토, 모자 등 애니메이션 추가 필요 데이터 테이블 컬럼에도 추가해야함
