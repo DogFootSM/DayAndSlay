@@ -54,6 +54,10 @@ public class MapManager : MonoBehaviour
             Bounds bounds = tileMapsDict[(MapType)i + 3].localBounds;
             
             Vector3 value = Vector3.zero;
+
+            int xOffset = 54;
+            int yOffset = -60;
+            
             if ((MapType)i + 3 == MapType.DUNGEON_0)
             {
                 value = new Vector3(0, 0, 0);
@@ -61,27 +65,27 @@ public class MapManager : MonoBehaviour
            
             if ((MapType)i + 3 == MapType.DUNGEON_1)
             {
-                value = new Vector3(54, 0, 0);
+                value = new Vector3(xOffset, 0, 0);
             }
            
             if ((MapType)i + 3 == MapType.DUNGEON_2)
             {
-                value = new Vector3(108, 0, 0);
+                value = new Vector3(xOffset * 2, 0, 0);
             }
            
             if ((MapType)i + 3 == MapType.DUNGEON_3)
             {
-                value = new Vector3(0, -60, 0);
+                value = new Vector3(0, yOffset, 0);
             }
            
             if ((MapType)i + 3 == MapType.DUNGEON_4)
             {
-                value = new Vector3(54, -60, 0);
+                value = new Vector3(xOffset, yOffset, 0);
             }
            
             if ((MapType)i + 3 == MapType.DUNGEON_BOSS)
             {
-                value = new Vector3(108, -60, 0);
+                value = new Vector3(xOffset * 2, yOffset, 0);
             }
 
             camera = Camera.main;
@@ -92,9 +96,6 @@ public class MapManager : MonoBehaviour
             Vector2 bottomLeft = bounds.min + new Vector3(halfWidth, halfHeight, 0) + value;
             Vector2 topRight = bounds.max - new Vector3(halfWidth, halfHeight, 0) + value;
             
-            Debug.Log((MapType)i + 3);
-            Debug.Log($"좌하단 위치값{bottomLeft}");
-            Debug.Log($"우상단 위치값{topRight}");
 
             List<Vector2> mapBoundary = new List<Vector2>();
             mapBoundary.Add(bottomLeft);
