@@ -61,8 +61,6 @@ public class MonsterMethod : MonoBehaviour
     public virtual void Skill_Fourth() { }
 
     protected int parryingCount;
-    
-    //테스트용
     [SerializeField] private GameObject stunImage;
     
     protected virtual void Start()
@@ -83,12 +81,6 @@ public class MonsterMethod : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            HitMethod(tempDamage);
-            //animator.PlayHit();
-        }
-
         if (!stunImage.activeSelf && ai.GetIsStun())
         {
             stunImage.SetActive(true);

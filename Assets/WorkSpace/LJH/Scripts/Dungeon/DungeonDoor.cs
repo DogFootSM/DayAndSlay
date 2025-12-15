@@ -27,11 +27,6 @@ public class DungeonDoor : MonoBehaviour
     [SerializeField] private bool isReverse;
     public void SetIsReverse(bool isReverse) => this.isReverse = isReverse;
     
-    
-    
-    //테스트용
-
-    [SerializeField] private Grid testToGrid;
     private void Start()
     {
         StartCoroutine(RoomFindCoroutine());

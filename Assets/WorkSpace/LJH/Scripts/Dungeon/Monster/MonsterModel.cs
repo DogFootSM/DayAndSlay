@@ -37,7 +37,6 @@ public class MonsterModel : MonoBehaviour
     {
         if (CompareTag("Boss"))
         {
-            //monsterData = GetComponent<BossMonsterAI>().GetMonsterData();
             monsterData = GetComponent<BossAI>().GetMonsterData();
         }
         else
@@ -50,6 +49,7 @@ public class MonsterModel : MonoBehaviour
         MaxHp = monsterData.Hp;
         curHp = monsterData.Hp;
         Attack = monsterData.Attack;
+        def = monsterData.defence;
         AttackRange = monsterData.AttackRange;
         ChaseRange = monsterData.ChaseRange;
         MoveSpeed = monsterData.MoveSpeed;

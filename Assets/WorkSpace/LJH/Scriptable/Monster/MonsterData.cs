@@ -17,6 +17,7 @@ public class MonsterData : ScriptableObject
     public string Name;
     public int Hp;
     public int Attack;
+    public int defence;
     public float AttackRange;
     public float ChaseRange;
     public float MoveSpeed;
