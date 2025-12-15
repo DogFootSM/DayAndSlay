@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;

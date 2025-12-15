@@ -1,8 +1,6 @@
 using AYellowpaper.SerializedCollections;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Database/ItemDatabase")]
 public class ItemDatabase : ScriptableObject
