@@ -64,7 +64,6 @@ public class DayManager : MonoBehaviour, ISavable
     public DayAndNight GetDayOrNight() => dayOrNight;
 
     private ColorAdjustments ca;
-    
     /// <summary>
     /// ¾ÆÄ§,³·,¹ã ¼³Á¤
     /// </summary>
