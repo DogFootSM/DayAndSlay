@@ -7,7 +7,7 @@ using Zenject;
 public class PlayerStats
 {
     //레벨당 최대 경험치
-    public int MaxExp => 100 + (int)(level * 10.5f);
+    public int MaxExp => 100 + (int)(level * 140f);
 
     public int level;                    //캐릭터 레벨
     public int exp;                     //캐릭터 보유 경험치
