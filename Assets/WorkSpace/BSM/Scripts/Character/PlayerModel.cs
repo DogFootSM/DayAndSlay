@@ -435,7 +435,7 @@ public class PlayerModel : MonoBehaviour, ISavable
         //경험치 바 초기화
         GainExperience(0);
     }
-
+ 
     /// <summary>
     /// 현재 무기타입 업데이트
     /// </summary>

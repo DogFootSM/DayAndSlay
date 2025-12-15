@@ -13,17 +13,18 @@ MonoBehaviour:
   m_Name: WDAS004
   m_EditorClassIdentifier: 
   SkillId: WDAS004
-  SkillName: "\uC36C\uB354\uC2A4\uD53C\uC5B4"
+  SkillName: "\uBA54\uD14C\uC624"
   PrerequisiteSkillsId:
   - WDAS002
-  SkillDescription: "\uBE60\uB978 \uBC88\uAC1C\uB97C \uB450 \uBC88 \uC5F0\uC18D\uC73C\uB85C
-    \uB0B4\uB9AC\uCCD0 \uAC10\uC804\uC2DC\uD0A8\uB2E4."
+  SkillDescription: "\uAC70\uB300\uD55C \uC6B4\uC11D\uC744 \uB5A8\uC5B4\uB728\uB824
+    \uC801\uC5D0\uAC8C \uD070 \uD53C\uD574\uB97C \uC900\uB2E4."
   SkillEffectPrefab:
   - {fileID: 5101240430442330044, guid: 1c9117b3f4a59074bbf556718831f845, type: 3}
-  SkillCooldown: 1
+  - {fileID: 0}
+  SkillCooldown: 12
   SkillMaxLevel: 6
   SkillDamage: 1.9
-  SkillDamageIncreaseRate: 0.14
+  SkillDamageIncreaseRate: 0.12
   SkillIcon: {fileID: 21300000, guid: cac68d3c81b928a48b013da1a6983e63, type: 2}
   RequiredWeapon: 3
   UseSkillDelay: 1.1
@@ -37,4 +38,4 @@ MonoBehaviour:
   DeBuffDuration: 2
   SkillAbilityValue: 0
   SkillAbilityFactor: 0
-  DetectedCount: 9999
+  DetectedCount: 5
