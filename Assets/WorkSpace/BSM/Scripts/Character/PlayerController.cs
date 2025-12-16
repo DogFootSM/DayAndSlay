@@ -135,7 +135,10 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         characterStates[(int)curState].Update();   
         InventoryToTableItem();
+
+#if UNITY_EDITOR
         Debug.DrawRay(transform.position, MoveDir * 10f, Color.red);
+#endif
     }
 
     private void FixedUpdate()
@@ -206,7 +209,6 @@ public class PlayerController : MonoBehaviour
         {
             curWeaponType = weaponType;
             curWeaponTier = itemData == null ? WeaponTierType.NONE : (WeaponTierType)itemData.Tier;
-            
             //무기 및 바디 애니메이션 교체
             characterAnimatorController.AnimatorChange((int)curWeaponType, (int)curWeaponTier, true);
         }
@@ -222,7 +224,7 @@ public class PlayerController : MonoBehaviour
                 }  
             } 
         }
-         
+            
         //웨폰 핸들러 변경
         if (itemData != null)
         {

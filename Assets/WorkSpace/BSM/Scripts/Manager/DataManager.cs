@@ -378,7 +378,6 @@ public class DataManager : MonoBehaviour
 
     public void ChangeWeaponSpriteLibraryAsset(SpriteLibraryAsset libraryAssets, int curWeapon, int weaponTier)
     {
-        Debug.Log("무기 티어 변경");
         for (int i = 0; i < (int)CharacterAnimationType.SIZE; i++)
         {
             changeSprites[0] = Resources.LoadAll<Sprite>($"Preset/Animations/Character/WEAPON/" +

@@ -49,7 +49,12 @@ public class Equipment : MonoBehaviour
         {
             equipmentUI.OnChangeEquipItem?.Invoke(equipSlotDict[key], false);
             playerModel.ApplyItemModifiers(equipSlotDict[key], false);
-            playerController.ChangedWeaponType((CharacterWeaponType)WeaponType.NOT_WEAPON);
+
+            if (key == Parts.WEAPON)
+            {
+                playerController.ChangedWeaponType((CharacterWeaponType)WeaponType.NOT_WEAPON);
+            }
+            
             equipSlotDict.Remove(key);
         } 
     } 
