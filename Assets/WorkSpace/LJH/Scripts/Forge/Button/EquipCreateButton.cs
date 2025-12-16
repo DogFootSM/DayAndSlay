@@ -14,23 +14,57 @@ public class EquipCreateButton : MonoBehaviour
     
     private void Start()
     {
-        inventory = GameObject.FindWithTag("Player").GetComponentInChildren<InventoryInteraction>();
+        inventory = GameObject.FindWithTag("Player")
+            .GetComponentInChildren<InventoryInteraction>();
+
         GetComponent<Button>().onClick.AddListener(CreateItem);
-        
+        GetComponent<Button>().interactable = false;
     }
-    
-    /// <summary>
-    /// 아이템 버튼에서 호출// 선택한 아이템 등록해주는 메서드
-    /// </summary>
-    /// <param name="item"></param>
-    public void SetCurSelectedItem(ItemData item) =>  curSelectedItem = item;
+
+    public void SetCurSelectedItem(ItemData item)
+    {
+        curSelectedItem = item;
+    }
+
+    public void RefreshInteractable()
+    {
+        GetComponent<Button>().interactable = HasIngredientCheck();
+    }
+
+    private bool HasIngredientCheck()
+    {
+        slotList.Clear();
+
+        if (curSelectedItem == null) return false;
+
+        bool result = true;
+
+        result &= CheckIngredient(curSelectedItem.ingredients_1, curSelectedItem.ingredients_1_Count);
+        result &= CheckIngredient(curSelectedItem.ingredients_2, curSelectedItem.ingredients_2_Count);
+        result &= CheckIngredient(curSelectedItem.ingredients_3, curSelectedItem.ingredients_3_Count);
+        result &= CheckIngredient(curSelectedItem.ingredients_4, curSelectedItem.ingredients_4_Count);
+
+        return result;
+    }
+
+    private bool CheckIngredient(int id, int count)
+    {
+        if (id == 0 || count == 0)
+            return true;
+
+        InventorySlot slot = inventory.HasRequiredMaterials(id, count);
+        slotList.Add(slot);
+
+        return slot != null;
+    }
 
     public void CreateItem()
     {
-        slotList[0]?.RemoveItem(curSelectedItem.ingredients_1_Count);
-        slotList[1]?.RemoveItem(curSelectedItem.ingredients_2_Count);
-        slotList[2]?.RemoveItem(curSelectedItem.ingredients_3_Count);
-        slotList[3]?.RemoveItem(curSelectedItem.ingredients_4_Count);
+        
+        if(curSelectedItem.ingredients_1_Count != 0) slotList[0]?.RemoveItem(curSelectedItem.ingredients_1_Count);
+        if(curSelectedItem.ingredients_2_Count != 0) slotList[1]?.RemoveItem(curSelectedItem.ingredients_2_Count);
+        if(curSelectedItem.ingredients_3_Count != 0) slotList[2]?.RemoveItem(curSelectedItem.ingredients_3_Count);
+        if(curSelectedItem.ingredients_4_Count != 0) slotList[3]?.RemoveItem(curSelectedItem.ingredients_4_Count);
         
         StartCoroutine(CreateCoroutine());
     }
