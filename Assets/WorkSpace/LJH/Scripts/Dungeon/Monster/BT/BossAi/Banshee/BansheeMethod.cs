@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BansheeMethod : BossMethod
@@ -13,24 +12,20 @@ public class BansheeMethod : BossMethod
     private GameObject spiritRushWarningzone;
     public override void Skill_First()
     {
-        Debug.Log("밴시가 비명을 지릅니다.");
         Scream();
     }
 
     public override void Skill_Second()
     {
-        Debug.Log("밴시가 이동합니다.");
     }
 
     public override void Skill_Third()
     {
-        Debug.Log("버프 사용");
         StartCoroutine(MoveSpeedBuff());
     }
 
     public override void Skill_Fourth()
     {
-        Debug.Log("궁극기 사용");
         SpiritRushWarningZoneChange();
 
     }

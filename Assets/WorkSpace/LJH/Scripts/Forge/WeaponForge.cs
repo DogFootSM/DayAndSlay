@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
@@ -18,8 +15,6 @@ public class WeaponForge : InteractableObj
 
     public override void Interaction()
     {
-        Debug.Log("웨펀포지 열기 실행");
-        
         forgeUi.SetActive(!forgeUi.activeSelf);
         controller.OpenSystemWindow(SystemType.WEAPON);
     }

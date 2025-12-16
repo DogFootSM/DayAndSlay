@@ -19,7 +19,6 @@ public class NpcDecisionState : INpcState
         if (DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
         {
             Vector3 castlePos = targetSensor.GetCastleDoorPosition();
-            Debug.Log("디시션 엔터에서 곤스테이트 호출");
             npc.StateMachine.ChangeState(new NpcMoveState(npc, castlePos, new NpcGoneState(npc)));
             return;
         }

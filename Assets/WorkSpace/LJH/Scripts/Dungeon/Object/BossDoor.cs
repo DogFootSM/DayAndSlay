@@ -40,8 +40,6 @@ public class BossDoor : InteractableObj
 
     public override void UiOnOffMethod(Collider2D collider)
     {
-        Debug.Log(!transform.GetChild(0).gameObject.activeSelf);
-        
         if(!transform.GetChild(0).gameObject.activeSelf)
             dungeonExitPopUp.SetActive(!dungeonExitPopUp.activeSelf);
     }

@@ -135,12 +135,10 @@ public class DayManager : MonoBehaviour, ISavable
 
         if (DungeonManager.hasDungeonEntered)
         {
-            Debug.Log($"던젼에 드간적 있니 ? : {DungeonManager.hasDungeonEntered}");
             StartMorning();
         }
         else
         {
-            Debug.Log($"던젼에 드간적 있니 ? : {DungeonManager.hasDungeonEntered}");
             StartNight();
         }
     }

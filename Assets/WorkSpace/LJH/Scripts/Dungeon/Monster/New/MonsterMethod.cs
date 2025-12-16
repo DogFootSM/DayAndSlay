@@ -157,7 +157,6 @@ public class MonsterMethod : MonoBehaviour
             elapsed += Time.deltaTime;
             if (elapsed >= timeOut)
             {
-                Debug.Log("[IDLE] 이동 실패 → 중단");
                 break;
             }
 
@@ -219,7 +218,6 @@ public class MonsterMethod : MonoBehaviour
         }
 
         // 이동 가능한 셀 못 찾으면 제자리
-        Debug.Log("[IDLE] 이동 가능한 셀 없음");
         return transform.position;
     }
     
