@@ -27,10 +27,11 @@ public class EquipCreateButton : MonoBehaviour
 
     public void CreateItem()
     {
-        slotList[0]?.RemoveItem(curSelectedItem.ingredients_1_Count);
-        slotList[1]?.RemoveItem(curSelectedItem.ingredients_2_Count);
-        slotList[2]?.RemoveItem(curSelectedItem.ingredients_3_Count);
-        slotList[3]?.RemoveItem(curSelectedItem.ingredients_4_Count);
+        
+        if(curSelectedItem.ingredients_1_Count != 0) slotList[0]?.RemoveItem(curSelectedItem.ingredients_1_Count);
+        if(curSelectedItem.ingredients_2_Count != 0) slotList[1]?.RemoveItem(curSelectedItem.ingredients_2_Count);
+        if(curSelectedItem.ingredients_3_Count != 0) slotList[2]?.RemoveItem(curSelectedItem.ingredients_3_Count);
+        if(curSelectedItem.ingredients_4_Count != 0) slotList[3]?.RemoveItem(curSelectedItem.ingredients_4_Count);
         
         StartCoroutine(CreateCoroutine());
     }
