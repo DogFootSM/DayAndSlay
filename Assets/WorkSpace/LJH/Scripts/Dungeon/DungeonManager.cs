@@ -93,7 +93,9 @@ public class DungeonManager : MonoBehaviour
 
             dungeonVolume.profile.TryGet(out colorAdjustments);
             colorAdjustments.active = true;
-            colorAdjustments.colorFilter.value = new Color(0.33f, 0.33f, 0.33f);
+            colorAdjustments.contrast.overrideState = true;
+            colorAdjustments.contrast.value = 17f;
+            colorAdjustments.colorFilter.value = new Color(0.45f, 0.45f, 0.45f);
         }
         else if (DungeonRoomSpawner.stageNum == (StageNum)1)
         {
@@ -105,6 +107,8 @@ public class DungeonManager : MonoBehaviour
 
             dungeonVolume.profile.TryGet(out colorAdjustments);
             colorAdjustments.active = true;
+            colorAdjustments.contrast.overrideState = true;
+            colorAdjustments.contrast.value = 17f;
             colorAdjustments.colorFilter.value = new Color(0.6f, 0.6f, 0.6f);
         }
         else if (DungeonRoomSpawner.stageNum == (StageNum)2)
@@ -117,6 +121,8 @@ public class DungeonManager : MonoBehaviour
 
             dungeonVolume.profile.TryGet(out colorAdjustments);
             colorAdjustments.active = true;
+            colorAdjustments.contrast.overrideState = true;
+            colorAdjustments.contrast.value = 17f;
             colorAdjustments.colorFilter.value = new Color(1f, 1f, 1f);
         }
         
