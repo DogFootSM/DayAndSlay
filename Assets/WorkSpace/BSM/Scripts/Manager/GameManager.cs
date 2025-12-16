@@ -293,6 +293,7 @@ public class GameManager : MonoBehaviour
     public void GotoMainMenu()
     {
         SaveConfig(); 
+        soundManager.PlayBGM(BGMSound.START_SCENE_BGM);
         SceneManager.LoadScene(mainMenuScene.Name); 
         PlayerRoot playerRoot = FindObjectOfType<PlayerRoot>();
         Destroy(playerRoot.gameObject);
