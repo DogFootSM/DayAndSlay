@@ -12,6 +12,7 @@ public class NeedHelpController : MonoBehaviour
 
     [SerializeField] private Button descTabButton;
     [SerializeField] private Button keyTabButton;
+    [SerializeField] private Button mapTabButton;
     
     [SerializeField] private List<GameObject> tabViewLists = new List<GameObject>();
     
@@ -30,7 +31,8 @@ public class NeedHelpController : MonoBehaviour
         });
         
         descTabButton.onClick.AddListener(() => ChangeTabView(0));
-        keyTabButton.onClick.AddListener(() => ChangeTabView(1)); 
+        keyTabButton.onClick.AddListener(() => ChangeTabView(1));
+        mapTabButton.onClick.AddListener(() => ChangeTabView(2));
     }
 
     private void OnEnable()
@@ -42,6 +44,7 @@ public class NeedHelpController : MonoBehaviour
     {
         tabViewLists[0].gameObject.SetActive(viewIndex == 0);
         tabViewLists[1].gameObject.SetActive(viewIndex == 1);
+        tabViewLists[2].gameObject.SetActive(viewIndex == 2);
     }
     
 }
