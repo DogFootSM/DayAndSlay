@@ -34,8 +34,8 @@ public class DungeonEnterDoor : InteractableObj
         if (DayManager.instance.GetDayOrNight() != DayAndNight.NIGHT) return;
         
         if (collision.gameObject.CompareTag("Player"))
-        {
-            popUp.GetComponent<PopUp>().objName = "던전 선택";
+        {   
+            popUp.GetComponent<PopUp>().SetText($"스페이스바를 눌러서 입장할 던젼을 선택하세요.");
 
             popUp.SetActive(!popUp.gameObject.activeSelf);
         }
