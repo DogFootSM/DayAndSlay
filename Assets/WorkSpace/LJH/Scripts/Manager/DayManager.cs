@@ -388,9 +388,9 @@ public class DayManager : MonoBehaviour, ISavable
     /// Method For StartNight
     /// NIGHT → DAY transition is managed by external conditions
     /// </summary>
-    private void StartNight()
+    public void StartNight()
     {
-        UpdateClockDisplay(18, 0);
+        UpdateClockDisplay(21, 0);
         
         //남아있는 npc가 있을 경우 삭제 해줌
         foreach (Npc npc in npcSpawner.GetNpcList())

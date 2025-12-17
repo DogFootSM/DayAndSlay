@@ -49,6 +49,15 @@ public class SaveManager : MonoBehaviour
         if (success)
         {
             gameManager.HasUnsavedChanges = false;
+
+            if (DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
+            {
+                DayManager.instance.StartMorning();
+            }
+            else if(DayManager.instance.GetDayOrNight() == DayAndNight.DAY)
+            {
+                DayManager.instance.StartNight();
+            } 
         } 
         
         return success;
