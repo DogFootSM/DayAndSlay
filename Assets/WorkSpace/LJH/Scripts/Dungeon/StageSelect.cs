@@ -24,11 +24,6 @@ public class StageSelect : MonoBehaviour
     {
         ButtonInit();
         StageSelectableCheck();
-
-        DungeonManager.is1StageCleared = true;
-        DungeonManager.is2StageCleared = true;
-        DungeonManager.is3StageCleared = true;
-
     }
 
     private void StageSelectableCheck()

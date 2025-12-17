@@ -208,7 +208,6 @@ public class Npc : MonoBehaviour
         // Stage 3까지 클리어: 1 2 3티어 아이템
         if (DungeonManager.is3StageCleared)
         {
-            Debug.Log($"{DungeonManager.is3StageCleared} 3스테이지클리어 상태");
             filteredList = allItems
                 .Where(item => item.Tier >= 1 && item.Tier <= 3)
                 .ToList();
@@ -216,7 +215,6 @@ public class Npc : MonoBehaviour
         // Stage 2까지만 클리어: 1 2티어 아이템
         else if (DungeonManager.is2StageCleared)
         {
-            Debug.Log($"{DungeonManager.is2StageCleared} 2스테이지클리어 상태");
             filteredList = allItems
                 .Where(item => item.Tier >= 1 && item.Tier <= 2)
                 .ToList();
@@ -373,8 +371,6 @@ public class Npc : MonoBehaviour
     /// </summary>
     public void LeaveStore()
     {
-        Debug.Log("리브스토어 호출");
-        
         Vector3 door = targetSensor.GetLeavePosition();
         wantItemManager.InActiveWantItem(this);
         StateMachine.ChangeState(new NpcMoveState(this, door + new Vector3(0, -2, 0), new NpcGoneState(this)));

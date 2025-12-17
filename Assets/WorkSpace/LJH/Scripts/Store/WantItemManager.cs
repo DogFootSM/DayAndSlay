@@ -39,8 +39,6 @@ public class WantItemManager : MonoBehaviour
     /// <param name="npc"></param>
     public void InActiveWantItem(Npc npc)
     {
-        Debug.Log("원트아이템풀에서 제거");
-        
         for (int i = 0; i < activedWantItems.Count; i++)
         {
             if (activedWantItems[i].GetComponentInChildren<TextMeshProUGUI>().text == npc.wantItemName)
