@@ -54,7 +54,7 @@ public class SaveManager : MonoBehaviour
             {
                 DayManager.instance.StartMorning();
             }
-            else if(DayManager.instance.GetDayOrNight() == DayAndNight.DAY)
+            else if(DayManager.instance.GetDayOrNight() == DayAndNight.MORNING)
             {
                 DayManager.instance.StartNight();
             } 
