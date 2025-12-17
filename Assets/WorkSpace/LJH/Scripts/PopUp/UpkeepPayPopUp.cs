@@ -25,13 +25,14 @@ public class UpkeepPayPopUp : MonoBehaviour
     private bool isPass;
     
     [SerializeField] private float animationDuration = 0.75f;
-
+    private RectMask2D mask;
+    
     private void Awake()
     {
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         clip = audio.clip;
-
+        mask = GetComponentInChildren<RectMask2D>();
         ingameManager = IngameManager.instance;
     }
 
@@ -94,6 +95,8 @@ public class UpkeepPayPopUp : MonoBehaviour
         ingameManager.SetGold(-currentValue);
         ingameManager.PayTax(currentValue);
         ingameManager.SetUpKeepText(upkeepTextDict);
+        
+        PlayClose();
     }
 
     public void PlayOpen()
@@ -134,6 +137,10 @@ public class UpkeepPayPopUp : MonoBehaviour
             text.Value.SetActive(isActive);
         }
     }
+    
+    /// <summary>
+    /// 버튼에서 이벤트로 호출
+    /// </summary>
     public void Pay()
     {
         StartCoroutine(AlertPopUpCoroutine());
@@ -141,5 +148,14 @@ public class UpkeepPayPopUp : MonoBehaviour
     public void AlertPopUpClose(GameObject popUp)
     {
         popUp.SetActive(false);
+    }
+    
+    /// <summary>
+    /// 마스크렌더링 / 애니메이션 이벤트로 호출
+    /// </summary>
+    /// <param name="padding">패딩값 left, bottom, right, up</param>
+    public void RenderPadding(float padding)
+    {
+        mask.padding = new Vector4(padding, 0, padding, 0);
     }
 }
