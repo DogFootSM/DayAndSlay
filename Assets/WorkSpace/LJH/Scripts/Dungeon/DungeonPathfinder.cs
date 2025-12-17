@@ -165,7 +165,7 @@ public class DungeonPathfinder : MonoBehaviour
 
         if (candidates.Count == 0)
         {
-            Debug.LogWarning("사이드루트 후보가 없습니다. (메인과 인접한 비-메인 방이 없음)");
+            //사이드 루트 없음
             return;
         }
 

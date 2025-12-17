@@ -30,7 +30,6 @@ public class NpcIdleState : INpcState
         ///Npc의 현재 위치가 Outside인 경우
         if (npc.IsInOutsideGrid())
         {
-            Debug.Log("외부로 인식됨");
             npc.StateMachine.ChangeState(new NpcDecisionState(npc));
         }
         

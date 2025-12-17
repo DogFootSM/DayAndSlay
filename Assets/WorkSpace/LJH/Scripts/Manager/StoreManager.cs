@@ -57,8 +57,10 @@ public class StoreManager : InteractableObj
     public override void Interaction()
     {
         if (DayManager.instance.GetDayOrNight() != DayAndNight.MORNING) return;
-        DayManager.instance.OpenStore();
-        popUp.SetActive(false);
+        {
+            popUp.SetActive(false);
+            DayManager.instance.OpenStore();
+        }
     }
     public override void UiOnOffMethod(Collision2D collision)
     {

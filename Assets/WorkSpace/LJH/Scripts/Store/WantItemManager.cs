@@ -39,10 +39,9 @@ public class WantItemManager : MonoBehaviour
     /// <param name="npc"></param>
     public void InActiveWantItem(Npc npc)
     {
-        
         for (int i = 0; i < activedWantItems.Count; i++)
         {
-            if (activedWantItems[i].GetComponentInChildren<TextMeshProUGUI>().text == npc.wantItem.Name)
+            if (activedWantItems[i].GetComponentInChildren<TextMeshProUGUI>().text == npc.wantItemName)
             {
                 //npc가 원하는 아이템과 동일한 아이템을 발견하면 제일 먼저들어온 아이템을 제거
                 _wantItemPool.ReturnWantItemInPool(activedWantItems[i]);

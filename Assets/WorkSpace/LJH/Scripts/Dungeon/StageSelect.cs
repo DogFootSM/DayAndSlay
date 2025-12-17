@@ -5,19 +5,25 @@ using UnityEngine.UI;
 public class StageSelect : MonoBehaviour
 {
     [SerializeField] private List<Button> buttons = new List<Button>();
+    [SerializeField] private List<Image> buttonsSelectedMark;
     [SerializeField] private Button okayButton;
     [SerializeField] private Button cancelButton;
     [SerializeField] private DungeonEnterDoor door;
-    
+
+    private void OnEnable()
+    {
+        //킬때 1스테이지로 초기화
+        for (int i = 0; i < buttonsSelectedMark.Count; i++)
+        {
+            buttonsSelectedMark[i].gameObject.SetActive(false);
+        }
+        
+        buttonsSelectedMark[0].gameObject.SetActive(true);
+    }
     private void Start()
     {
         ButtonInit();
         StageSelectableCheck();
-
-        DungeonManager.is1StageCleared = true;
-        DungeonManager.is2StageCleared = true;
-        DungeonManager.is3StageCleared = true;
-
     }
 
     private void StageSelectableCheck()
@@ -43,14 +49,15 @@ public class StageSelect : MonoBehaviour
 
     private void TapButton(StageNum stage)
     {
-        //IngameManager.instance.SetStage(stage);
         DungeonRoomSpawner.stageNum = stage;
-        //for (int i = 0; i < buttons.Count - 1; i++)
-        //{
-        //    buttons[i].GetComponent<Image>().color = Color.white;
-        //}
-        //
-        //buttons[(int)stage].GetComponent<Image>().color = Color.yellow;
+
+        //마크 다 끄고 선택한거만 On
+        for (int i = 0; i < buttonsSelectedMark.Count; i++)
+        {
+            buttonsSelectedMark[i].gameObject.SetActive(false);
+        }
+        
+        buttonsSelectedMark[(int)stage].gameObject.SetActive(true);
     }
 
     private void OkayButton()

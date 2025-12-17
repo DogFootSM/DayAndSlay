@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -51,7 +49,6 @@ public class DungeonManager : MonoBehaviour
                 StageClearedCheck(DungeonRoomSpawner.stageNum);
             }
 
-            Debug.Log($"[Boss Count] 남은 보스 수: {_remainingBossCount}");
         }
     }
 
@@ -78,8 +75,6 @@ public class DungeonManager : MonoBehaviour
         pool = GetComponent<DropItemPool>();
 
         pool.InitPool(12);
-        
-        Debug.Log(Camera.main.name);
         
         soundManager.PlayBGM(BGMSound.DENGEON_1_BGM);
         doorCamera.transform.position = Camera.main.transform.position;
