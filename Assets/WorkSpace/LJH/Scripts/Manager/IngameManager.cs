@@ -16,11 +16,20 @@ public class IngameManager : MonoBehaviour
     
     private static int gold = 0;
     private int currentDay = 1;
-    
+
+
+    /// <summary>
+    /// 저장용 변수 static
+    /// </summary>
+    private static int staticGold;
+    private static int staticCurrentDay;
+    private static int staticDebt;
     /// <summary>
     /// 빚
     /// </summary>
     private int debt;
+    
+    private bool initialized = false;
     
     public int Debt
     {
@@ -35,6 +44,8 @@ public class IngameManager : MonoBehaviour
 
     private void OnDebtChanged()
     {
+        if (!initialized) return;
+        
         storeManager.SetDebt(debt);
     }
     
@@ -58,16 +69,48 @@ public class IngameManager : MonoBehaviour
     /// 총 유지비
     /// </summary>
     public int upkeepCost;
-    
+
+
     private void Awake()
     {
         SingletonInit();
+        
+        RestoreState();
     }
 
     private void Start()
     {
         upkeepButton.onClick.AddListener(UpKeepUIOnOff);
         SetUpKeep();
+        
+        initialized = true;
+    }
+    
+    private void OnDestroy()
+    {
+        SaveState();
+    }
+    
+    /// <summary>
+    /// 불러오기
+    /// </summary>
+    private void RestoreState()
+    {
+        debt = staticDebt;
+        gold = staticGold;
+        currentDay = staticCurrentDay;
+        
+        storeManager.SetDebt(debt);
+    }
+    
+    /// <summary>
+    /// 저장
+    /// </summary>
+    private void SaveState()
+    {
+        staticDebt = debt;
+        staticGold = gold;
+        staticCurrentDay = currentDay;
     }
     
     /// <summary>
@@ -94,7 +137,7 @@ public class IngameManager : MonoBehaviour
     public void AddDay()
     {
         currentDay++;
-        dayText.text = currentDay.ToString();
+        dayText.text = $"{currentDay}일차";
     }
     
     /// <summary>
