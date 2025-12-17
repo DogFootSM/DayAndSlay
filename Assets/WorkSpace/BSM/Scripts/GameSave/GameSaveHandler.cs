@@ -24,9 +24,15 @@ public class GameSaveHandler : MonoBehaviour
 
     /// <summary>
     /// 저장 안내 얼럿 활성화
+    /// /// History : 2025.12.17
+    /// 작성자 : 이재호
+    /// 세금내는날 && 아침에는 저장 예외 처리 추가
     /// </summary>
     public void OpenSaveAlert()
-    { 
+    {
+        //세금내는 날 아침엔 침대에서 잘 수 없음
+        if (IngameManager.instance.IsTaxDay() && DayManager.instance.GetDayOrNight() == DayAndNight.MORNING) return;
+        
         saveAskAlert.SetActive(true); 
     }
 

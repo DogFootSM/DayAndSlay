@@ -32,6 +32,9 @@ public class SaveManager : MonoBehaviour
 
     /// <summary>
     /// 각각의 데이터 저장 로직 호출
+    /// History : 2025.12.17
+    /// 작성자 : 이재호
+    /// 현재 진행일자 추가해주는 AddDay 메서드 여기에 추가
     /// </summary>
     public bool GameDataSave()
     {
@@ -52,6 +55,7 @@ public class SaveManager : MonoBehaviour
 
             if (DayManager.instance.GetDayOrNight() == DayAndNight.NIGHT)
             {
+                IngameManager.instance.AddDay();
                 DayManager.instance.StartMorning();
             }
             else if(DayManager.instance.GetDayOrNight() == DayAndNight.MORNING)
