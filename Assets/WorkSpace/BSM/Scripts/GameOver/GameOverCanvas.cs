@@ -33,8 +33,14 @@ public class GameOverCanvas : MonoBehaviour
         Invoke(nameof(Respawn), 0.1f);
     }
 
+    /// <summary>
+    /// History : 2025.12.18
+    /// 작성자 : 이재호
+    /// 날짜 추가해야됨을 알려주는 static 변수 조작 추가
+    /// </summary>
     private void Respawn()
     {
+        IngameManager.shouldAddDay = true;
         playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
         mapManager.MapChange(MapType.TOWN_STORE2F);
     }

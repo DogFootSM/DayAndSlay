@@ -17,6 +17,11 @@ public class IngameManager : MonoBehaviour
     private static int gold = 0;
     private int currentDay = 1;
 
+    /// <summary>
+    /// 날짜 추가해야하는지 알려주는 스태틱 변수
+    /// </summary>
+    public static bool shouldAddDay = false;
+
 
     /// <summary>
     /// 저장용 변수 static
@@ -93,12 +98,21 @@ public class IngameManager : MonoBehaviour
     
     /// <summary>
     /// 불러오기
+    /// History : 2025.12.18
+    /// 작성자 : 이재호
+    /// 현재 진행일자 추가해주는 AddDay 메서드 추가
     /// </summary>
     private void RestoreState()
     {
         debt = staticDebt;
         gold = staticGold;
         currentDay = staticCurrentDay;
+     
+        if (shouldAddDay)
+        {
+            shouldAddDay = false;
+            AddDay();
+        }
         
         storeManager.SetDebt(debt);
     }

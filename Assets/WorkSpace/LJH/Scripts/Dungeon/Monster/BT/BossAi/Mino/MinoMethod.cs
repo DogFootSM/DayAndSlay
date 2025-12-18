@@ -113,6 +113,8 @@ public class MinoMethod : BossMethod
 
     private void DisGigantism()
     {
+        if (isDead) return; 
+        
         if(mino == null) 
             mino = GetComponent<MinoAI>();
 
@@ -132,8 +134,6 @@ public class MinoMethod : BossMethod
 
     public override void DieMethod()
     {
-        Debug.Log("»ç¸Á");
-        
         DisGigantism();
         base.DieMethod();
     }
