@@ -38,14 +38,12 @@ public class SqliteDatabase
         
         if (dbConnection.State == ConnectionState.Closed)
         {
-            Debug.Log($"DB 오픈 전 :{dbConnection.State}");
             dbConnection.Open(); 
         } 
     }
     
     public void ConnectDispose()
     {
-        Debug.Log("DB 연결 종료");
         dbConnection.Dispose();
         dbConnection.Close();
         dbConnection = null;
