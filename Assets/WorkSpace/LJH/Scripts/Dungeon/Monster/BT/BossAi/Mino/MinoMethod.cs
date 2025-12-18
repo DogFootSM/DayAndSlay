@@ -81,9 +81,9 @@ public class MinoMethod : BossMethod
 
         mino.SetIsMinoGiga(true);
 
-        monsterData.Attack *= 2;
-        monsterData.AttackRange += 3;
-        monsterData.MoveSpeed += 3;
+        model.Attack *= 2;
+        model.AttackRange += 3;
+        model.MoveSpeed += 3;
 
         StartCoroutine(GigantismScaleCoroutine());
     }
@@ -113,15 +113,17 @@ public class MinoMethod : BossMethod
 
     private void DisGigantism()
     {
+        if (isDead) return; 
+        
         if(mino == null) 
             mino = GetComponent<MinoAI>();
 
         mino.SetIsMinoGiga(false);
         
         transform.localScale = new Vector3(3, 3, 3);
-        monsterData.Attack /= 2;
-        monsterData.AttackRange -= 3;
-        monsterData.MoveSpeed -= 3;
+        model.Attack /= 2;
+        model.AttackRange -= 3;
+        model.MoveSpeed -= 3;
     }
 
     private void StoneSkin()
@@ -132,8 +134,6 @@ public class MinoMethod : BossMethod
 
     public override void DieMethod()
     {
-        Debug.Log("»ç¸Á");
-        
         DisGigantism();
         base.DieMethod();
     }

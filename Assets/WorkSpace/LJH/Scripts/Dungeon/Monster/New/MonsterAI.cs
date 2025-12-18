@@ -82,7 +82,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         if (isSkillUsing && model.curHp > 0) return;
         
         if (tree == null) return;
-        tree.Tick();
+            tree.Tick();
     
         //테스트 시에만 주석 해제
         //if (Input.GetKeyDown(KeyCode.Space))
