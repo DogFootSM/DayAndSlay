@@ -5196,7 +5196,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &797357182658836695
@@ -15846,7 +15846,7 @@ Transform:
   m_GameObject: {fileID: 5589250110024118669}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 3, y: 2, z: 0}
+  m_LocalScale: {x: 2.5, y: 1.75, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1086000396947568133}
@@ -21200,7 +21200,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 2}
+  m_Size: {x: 2.5, y: 1.75}
   m_EdgeRadius: 0
 --- !u!1 &6942209629899895489
 GameObject:
@@ -21584,7 +21584,7 @@ GameObject:
   - component: {fileID: 7469695074419078920}
   - component: {fileID: -7591143431245588105}
   - component: {fileID: 2450185539440437247}
-  - component: {fileID: 5923960667601013373}
+  - component: {fileID: 930673097637876547}
   - component: {fileID: 3147133901585233096}
   - component: {fileID: 1787741597909652184}
   - component: {fileID: 1989660627292761527}
@@ -21789,7 +21789,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &5923960667601013373
+--- !u!61 &930673097637876547
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21802,7 +21802,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
+  m_Offset: {x: 0, y: -0.12318203}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -21813,7 +21813,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.8}
+  m_Size: {x: 0.9, y: 1.1}
   m_EdgeRadius: 0
 --- !u!114 &3147133901585233096
 MonoBehaviour:
@@ -21886,7 +21886,11 @@ MonoBehaviour:
   tempDamage: 0
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
   healPack: {fileID: 9201345305476871192, guid: b6b85a199a3e2834584ca75c5a9858c5, type: 3}
-  ai: {fileID: 1989660627292761527}
+  idleMoveMinDelay: 2
+  idleMoveMaxDelay: 4
+  idleMoveMinRange: 1
+  idleMoveMaxRange: 2
+  idleTargetPos: {x: 0, y: 0, z: 0}
   stunImage: {fileID: 8047805162225614863}
   skills: {fileID: 2045045671511107145}
   firstSkillData: {fileID: 11400000, guid: fb4493b8386135e4cae241ecc3ae41e3, type: 2}

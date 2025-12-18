@@ -144,15 +144,11 @@ public abstract class BossAI : MonsterAI
     protected void PerformAttack()
     {
         stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
+        isSkillUsing = true;
         isAttacking = true;
         StartCoroutine(AttackEndDelay());
+        StartCoroutine(SkillEndCoroutine());
         ResetAttackCooldown();
-    }
-
-    protected IEnumerator SkillEndCoroutine()
-    {
-        yield return new WaitUntil(() =>!animator.IsPlayingAction);
-        isSkillUsing = false;
     }
 
 

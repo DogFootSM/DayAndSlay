@@ -187,7 +187,14 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {
         stateMachine.ChangeState(new NewMonsterAttackState(transform, player.transform));
         isAttacking = true;
+        isSkillUsing = true;
+        StartCoroutine(SkillEndCoroutine());
         StartCoroutine(AttackEndDelay());
+    }
+    protected IEnumerator SkillEndCoroutine()
+    {
+        yield return new WaitUntil(() =>!animator.IsPlayingAction);
+        isSkillUsing = false;
     }
 
     protected virtual void Die()
@@ -204,7 +211,6 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     protected IEnumerator AttackEndDelay()
     {
         yield return new WaitForSeconds(model.AttackCooldown);
-    
         isAttacking = false;
     }
 
