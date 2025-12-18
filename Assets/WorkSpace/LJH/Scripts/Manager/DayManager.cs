@@ -10,6 +10,11 @@ using Zenject;
 public class DayManager : MonoBehaviour, ISavable
 {
     [SerializeField] private NpcSpawner npcSpawner;
+
+    /// <summary>
+    /// ø¿¥√¿Ã ∏Áƒ•¿Œ¡ˆ
+    /// </summary>
+    [SerializeField] private int currentDay;
     
     [SerializeField] private Image morning;
     [SerializeField] private Image day;
@@ -197,8 +202,6 @@ public class DayManager : MonoBehaviour, ISavable
     
     private void PreDayEvents()
     {
-        IngameManager.instance.AddDay();
-
         if (IngameManager.instance.IsTaxDay())
         {
             StartCoroutine(TaxRoutine());
