@@ -292,6 +292,8 @@ public class DataManager : MonoBehaviour
     /// <param name="characterAnimatorController">현재 캐릭터</param>
     public void LoadPresetData(CharacterAnimatorController characterAnimatorController)
     {
+        spriteNames.Clear();
+        
         IDataReader dataReader = sqlManager.ReadDataColumn(new[]
             {
                 //TODO:망토, 모자 등 애니메이션 추가 필요 데이터 테이블 컬럼에도 추가해야함
