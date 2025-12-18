@@ -81,6 +81,8 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         
         if (isSkillUsing && model.curHp > 0) return;
         
+        if(model.curHp <= 0)
+        
         if (tree == null) return;
         tree.Tick();
     

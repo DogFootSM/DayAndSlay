@@ -81,9 +81,9 @@ public class MinoMethod : BossMethod
 
         mino.SetIsMinoGiga(true);
 
-        monsterData.Attack *= 2;
-        monsterData.AttackRange += 3;
-        monsterData.MoveSpeed += 3;
+        model.Attack *= 2;
+        model.AttackRange += 3;
+        model.MoveSpeed += 3;
 
         StartCoroutine(GigantismScaleCoroutine());
     }
@@ -119,9 +119,9 @@ public class MinoMethod : BossMethod
         mino.SetIsMinoGiga(false);
         
         transform.localScale = new Vector3(3, 3, 3);
-        monsterData.Attack /= 2;
-        monsterData.AttackRange -= 3;
-        monsterData.MoveSpeed -= 3;
+        model.Attack /= 2;
+        model.AttackRange -= 3;
+        model.MoveSpeed -= 3;
     }
 
     private void StoneSkin()

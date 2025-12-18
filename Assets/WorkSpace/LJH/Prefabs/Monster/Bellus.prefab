@@ -5493,10 +5493,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -35469,7 +35469,11 @@ MonoBehaviour:
   tempDamage: 0
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
   healPack: {fileID: 9201345305476871192, guid: b6b85a199a3e2834584ca75c5a9858c5, type: 3}
-  ai: {fileID: 0}
+  idleMoveMinDelay: 2
+  idleMoveMaxDelay: 4
+  idleMoveMinRange: 1
+  idleMoveMaxRange: 2
+  idleTargetPos: {x: 0, y: 0, z: 0}
   stunImage: {fileID: 6645325212385548913}
   skills: {fileID: 491394525959005449}
   firstSkillData: {fileID: 11400000, guid: 34d4622be84ee004c99aaa951922bfe4, type: 2}

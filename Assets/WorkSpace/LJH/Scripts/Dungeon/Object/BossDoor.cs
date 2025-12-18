@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,11 +15,17 @@ public class BossDoor : InteractableObj
     [SerializeField] private GameObject dungeonExitPopUp;
     [SerializeField] private Button yesButton;
     [SerializeField] private Button noButton;
+    [SerializeField] private GameObject BlackWindow;
 
     [SerializeField] private PlayerRoot player;
     [Inject]
     private MapManager mapManager;
-    
+
+    private void OnDisable()
+    {
+        BlackWindow.SetActive(false);
+    }
+
     private void Start()
     {
         player = FindObjectOfType<PlayerRoot>();
@@ -49,10 +56,10 @@ public class BossDoor : InteractableObj
     /// </summary>
     private void YesButton()
     {
+        BlackWindow.SetActive(true);
+        Respawn();
         Loading.LoadScene(scene);
         SceneManager.LoadScene(loadingScene.Name);
-
-        Invoke(nameof(Respawn), 0.5f);
     }
 
     /// <summary>
