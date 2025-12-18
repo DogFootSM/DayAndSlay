@@ -25,6 +25,8 @@ public class DungeonDoor : MonoBehaviour
     [SerializeField] private List<Tilemap> floorTilemap =  new List<Tilemap>();
 
     [SerializeField] private bool isReverse;
+    
+    Rigidbody2D rb;
     public void SetIsReverse(bool isReverse) => this.isReverse = isReverse;
     
     private void Start()
@@ -125,6 +127,8 @@ public class DungeonDoor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if(rb == null) rb = player.attachedRigidbody;
+            
             if (room.name == "BossRoom")
             {
                 SoundManager.Instance.PlayBGM(BGMSound.BOSSROOM);
@@ -134,12 +138,31 @@ public class DungeonDoor : MonoBehaviour
             minimap.CamPosSet(room.transform.position);
             
             Vector3 randomPos = GetRandomFloorPosition(room);
+
+            //rb.position = randomPos;
+            //rb.velocity = Vector2.zero;
+            //rb.angularVelocity = 0f;
             
-            Rigidbody2D rb = player.attachedRigidbody;
-            rb.position = randomPos;
-            rb.velocity = Vector2.zero;
-            rb.angularVelocity = 0f;
+            StartCoroutine(TeleportPlayer(randomPos));
         }
+    }
+    
+    private IEnumerator TeleportPlayer(Vector3 targetPos)
+    {
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        rb.isKinematic = true;
+
+        // 물리 프레임 정렬
+        yield return new WaitForFixedUpdate();
+
+        rb.transform.position = targetPos;
+
+        // 위치 적용 안정화
+        yield return new WaitForFixedUpdate();
+
+        rb.isKinematic = false;
     }
     
     private Vector3 GetRandomFloorPosition(Room targetRoom)
