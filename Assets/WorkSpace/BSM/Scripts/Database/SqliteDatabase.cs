@@ -16,21 +16,41 @@ public class SqliteDatabase
     private IDbCommand dbCommand;
 
     private IDataReader dbDataReader;
-
+    private string path = "";
+    
     public SqliteDatabase()
     {
-        string path = Path.Join(Application.streamingAssetsPath, dbFileName);
-
-        dbConnection = new SqliteConnection("URI=file:" + path);
-        dbConnection.Open(); 
+        path = Path.Join(Application.streamingAssetsPath, dbFileName);
+        ConnectOpen();
     }
 
     ~SqliteDatabase()
     {
+        ConnectDispose();
+    }
+
+    public void ConnectOpen()
+    {
+        if (dbConnection == null)
+        {
+            dbConnection = new SqliteConnection("URI=file:" + path);
+        }
+        
+        if (dbConnection.State == ConnectionState.Closed)
+        {
+            Debug.Log($"DB 오픈 전 :{dbConnection.State}");
+            dbConnection.Open(); 
+        } 
+    }
+    
+    public void ConnectDispose()
+    {
+        Debug.Log("DB 연결 종료");
+        dbConnection.Dispose();
         dbConnection.Close();
         dbConnection = null;
     }
-
+    
     /// <summary>
     /// 테이블 생성 테스트용 코드
     /// </summary>
@@ -188,10 +208,26 @@ public class SqliteDatabase
         condition ??= string.Empty;
         conditionValue ??= string.Empty;
 
-        if (column.Length == 0 || columnValue.Length == 0 || (column.Length != columnValue.Length))
+        if (column.Length == 0)
         {
-            throw new ArgumentException("Update 조건 오류");
+            throw new ArgumentException("Column Length 조건 오류");
         }
+
+        if (columnValue.Length == 0)
+        {
+            throw new ArgumentException("columnValue Length 조건 오류");
+        }
+
+        if ((column.Length != columnValue.Length))
+        {
+            Debug.Log($"col Length:{column.Length} / columnValue: {columnValue.Length}");
+            throw new ArgumentException("column.Length != columnValue.Length 조건 오류");
+        }
+        
+        // if (column.Length == 0 || columnValue.Length == 0 || (column.Length != columnValue.Length))
+        // {
+        //     throw new ArgumentException("Update 조건 오류");
+        // }
 
         string query = "UPDATE Character SET ";
 
@@ -397,6 +433,8 @@ public class SqliteDatabase
     /// <param name="slotID">현재 생성한 슬롯 ID</param> 
     public void SkillInsertTable(string slotID)
     {  
+        Debug.Log($"SkillInsertTable {slotID}");
+        
         using (dbCommand = dbConnection.CreateCommand())
         {
             //SQL, 즉 c에서는 \ 이스케이프 문자로 쓰여 경로를 제대로 인식하지 못함
@@ -408,7 +446,7 @@ public class SqliteDatabase
             string query = "INSERT INTO CharacterSkill (slot_id, skill_id, skill_level, skill_unlocked) " +
                            "SELECT @slot, skill_id, skill_level, skill_unlocked " +
                            "FROM SkillConfig.Skills";
-            
+            Debug.Log($"insert Command : {slotID}");
             dbCommand.Parameters.Add(new SqliteParameter("@slot", slotID));
             
             dbCommand.CommandText = query;

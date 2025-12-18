@@ -213,6 +213,11 @@ public class DataManager : MonoBehaviour
     /// <param name="presets"></param>
     public void SavePresetData(List<Image> presets, int WeaponType, int weaponTier)
     {
+        if (spriteColumns.Count > 0)
+        {
+            spriteColumns.Clear();
+        }
+        
         for (int i = 0; i < presets.Count; i++)
         {
             //착용 에셋명 저장
@@ -222,7 +227,7 @@ public class DataManager : MonoBehaviour
         sqlManager.CharacterInsertTable(
             new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID) },
             new[] { $"{SlotId}" });
-
+        
         sqlManager.UpdateCharacterDataColumn(new[]
             {
                 sqlManager.GetCharacterColumn(CharacterDataColumns.HAIR_SPRITE),

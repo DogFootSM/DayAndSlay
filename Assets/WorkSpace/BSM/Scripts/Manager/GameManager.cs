@@ -12,6 +12,7 @@ using Zenject;
 public class GameManager : MonoBehaviour
 {
     [Inject] private DataManager dataManager;
+    [Inject] private SqlManager sqlManager;
     [SerializeField] private GameObject QuitAskPanel;
     [SerializeField] private SceneReference mainMenuScene;
     
@@ -293,6 +294,7 @@ public class GameManager : MonoBehaviour
     public void GotoMainMenu()
     {
         SaveConfig(); 
+        sqlManager.ConnectionDispose();
         soundManager.PlayBGM(BGMSound.START_SCENE_BGM);
         SceneManager.LoadScene(mainMenuScene.Name); 
         PlayerRoot playerRoot = FindObjectOfType<PlayerRoot>();

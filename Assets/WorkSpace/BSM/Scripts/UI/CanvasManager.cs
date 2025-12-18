@@ -10,6 +10,8 @@ using Zenject;
 
 public class CanvasManager : MonoBehaviour
 {
+    [Inject] private SqlManager sqlManager;
+    
     [SerializedDictionary("Canvas Type", "Canvas Object")] [SerializeField]
     private AYellowpaper.SerializedCollections.SerializedDictionary<CanvasType, GameObject> canvasDict;
 
@@ -35,6 +37,11 @@ public class CanvasManager : MonoBehaviour
             return;
         }
 
+        if (canvasType == CanvasType.GAMESTART)
+        {
+            sqlManager.ConnectionOpen();
+        }
+        
         canvasStack.Push(canvasDict[canvasType]);
 
         canvasDict[canvasType].SetActive(true);

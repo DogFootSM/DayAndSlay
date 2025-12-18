@@ -169,5 +169,14 @@ public class SqlManager : IInitializable
     {
         return sqlDatabase.SkillUpdateTable(column, columnValue, condition, conditionValue);   
     }
-    
+
+    public void ConnectionDispose()
+    {
+        sqlDatabase.ConnectDispose();
+    }
+
+    public void ConnectionOpen()
+    {
+        sqlDatabase.ConnectOpen();
+    }
 }
