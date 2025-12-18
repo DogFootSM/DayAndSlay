@@ -27,6 +27,11 @@ public class Bed : InteractableObj
             {
                 popUp.GetComponent<PopUp>().SetText("오늘은 낮잠을 자면 안될거 같아");
             }
+
+            if (!DungeonManager.hasDungeonEntered)
+            {
+                popUp.GetComponent<PopUp>().SetText("내일이 첫 장사일인데.. \n오늘 밤은 던젼에 가야하지 않을까..?");
+            }
             
             popUp.GetComponent<PopUp>().objName = "침대";
             popUp.SetActive(!popUp.gameObject.activeSelf);

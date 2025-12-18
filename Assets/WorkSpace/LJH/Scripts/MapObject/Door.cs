@@ -71,7 +71,7 @@ public class Door : InteractableObj
     public override void UiOnOffMethod(Collision2D collision)
     {
         
-        
+        /*
         if (collision.gameObject.CompareTag("NPC"))
         {
             if(doorType == DoorType.DOOR)
@@ -82,14 +82,13 @@ public class Door : InteractableObj
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
             }
         }
-
-        else if (collision.gameObject.CompareTag("Player"))
+        */
+        if (collision.gameObject.CompareTag("Player"))
         {
             if (DayManager.instance.GetDayOrNight() == DayAndNight.DAY)
             {
                 popUp.GetComponent<PopUp>().SetText($"피곤하긴 하지만 손님이 우선이지..");
             }
-            
             
             switch (doorType)
             {
@@ -122,7 +121,7 @@ public class Door : InteractableObj
                 npc.StateMachine.ChangeState(new NpcIdleState(npc));
             }
         }
-
+        /*
         else if (collider.gameObject.CompareTag("Player"))
         {
             switch (doorType)
@@ -142,6 +141,7 @@ public class Door : InteractableObj
 
             popUp.SetActive(!popUp.gameObject.activeSelf);
         }
+        */
     }
 
     private Grid GetCurrentGrid(Vector3 worldPos)

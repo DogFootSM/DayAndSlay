@@ -31,7 +31,7 @@ public class Npc : MonoBehaviour
     public Vector3? TargetPos => tableWithItem ? tableWithItem.transform.position : null;
 
     private Coroutine moveCoroutine;
-    private float moveSpeed = 3f;
+    private float moveSpeed;
 
     private string currentAnim = "";
 
@@ -160,11 +160,20 @@ public class Npc : MonoBehaviour
     {
         Init();
         SetupItemWish();
+        SetMoveSpeed();
         rb = GetComponent<Rigidbody2D>();
         StateMachine.ChangeState(new NpcDecisionState(this));
         npcCol = GetComponent<Collider2D>();
         playerCol = player.GetComponent<Collider2D>();
         wantItemName = wantItem.Name;
+    }
+    
+    /// <summary>
+    /// NPC 이동속도 지정
+    /// </summary>
+    private void SetMoveSpeed()
+    {
+        moveSpeed = 3 + Random.Range(-0.6f, 0.6f);
     }
 
     private bool isNight = false;

@@ -21,7 +21,7 @@ public class NpcDecisionInStoreState : INpcState
         
         if (npc.CheckHeIsAngry())
         {
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, targetSensor.GetLeavePosition() + new Vector3(0, -2f, 0), new NpcGoneState(npc)));
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, targetSensor.GetLeavePosition() + new Vector3(0, -3.5f, 0), new NpcGoneState(npc)));
             return;
         }
         // 랜덤 포지션으로 이동
