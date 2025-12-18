@@ -306,10 +306,13 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// 보유중인 아이템을 테이블 오브젝트에 등록하기 위한 테이블과의 상호작용
+    /// History : 2025.12.13
+    /// 작성자 : 이재호
+    /// KeyCode 스페이스바로 변경
     /// </summary>
     private void InventoryToTableItem()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (tableObject != null)
             {
