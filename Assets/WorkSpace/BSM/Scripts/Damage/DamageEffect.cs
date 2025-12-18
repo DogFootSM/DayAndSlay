@@ -34,6 +34,12 @@ public class DamageEffect : MonoBehaviour
         {
             _bodyRenderer.color = Color.white;
         }
+
+        if (_skinEffectCo != null)
+        {
+            StopCoroutine(_skinEffectCo);
+            _skinEffectCo = null;
+        } 
     }
 
     /// <summary>
