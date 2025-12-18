@@ -27,7 +27,8 @@ public class NpcSearchTableState : INpcState
         {
             npc.SetTargetTable(table);
             
-            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position + new Vector3(0, -2f, 0), new NpcItemBuyState(npc, table)));
+            npc.GetComponent<Collider2D>().isTrigger = true;
+            npc.StateMachine.ChangeState(new NpcMoveState(npc, table.transform.position + new Vector3(0, -1f, 0), new NpcItemBuyState(npc, table)));
         }
         else
         {
