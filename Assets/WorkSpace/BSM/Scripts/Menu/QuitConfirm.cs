@@ -41,6 +41,8 @@ public class QuitConfirm : MonoBehaviour
         {
             gameManager.GotoMainMenu();
         } 
+        
+        gameObject.SetActive(false);
     }
 
     /// <summary>

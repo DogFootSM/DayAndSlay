@@ -59,7 +59,7 @@ public class InventoryController : MonoBehaviour
     protected void SetSlotItemData()
     { 
         dataReader = sqlManager.ReadItemDataColumn("slot_id", $"{dataManager.SlotId}");
- 
+
         while (dataReader.Read())
         {
             BSM_ItemData data = new BSM_ItemData()

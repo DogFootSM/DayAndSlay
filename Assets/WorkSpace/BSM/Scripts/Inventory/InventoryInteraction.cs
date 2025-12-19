@@ -396,7 +396,7 @@ public class InventoryInteraction :
             if (inventorySlots[i].CurSlotItem != null)
             {
                 int equipState = inventorySlots[i].IsEquip ? 1 : 0;
-                items.Add(($"{inventorySlots[i].CurSlotItem.ItemId}", $"1", $"{inventorySlots[i].ItemCount}", $"{i}",
+                items.Add(($"{inventorySlots[i].CurSlotItem.ItemId}", $"{dataManager.SlotId}", $"{inventorySlots[i].ItemCount}", $"{i}",
                     equipState));
             }
         }
