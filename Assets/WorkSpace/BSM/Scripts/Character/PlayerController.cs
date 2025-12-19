@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour
     public bool IsDead => isDead;
 
     public static Action<int> OnChangedDebtState;
+    [FormerlySerializedAs("CanVelocity")] [FormerlySerializedAs("IsDash")] public bool UseVelocity;
+    
     
     private void Awake()
     {
@@ -269,7 +271,14 @@ public class PlayerController : MonoBehaviour
             curWeapon.OnDirectionChanged?.Invoke(new Vector2(posX, posY)); 
             skillSlotInvoker.OnDirectionChanged?.Invoke(new Vector2(posX, posY));
             LastMoveInputKeyCheck();
-        } 
+        }
+        else
+        {
+            if (!UseVelocity)
+            {
+                characterRb.velocity = Vector2.zero;
+            } 
+        }
     }
  
     /// <summary>

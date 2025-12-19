@@ -52,7 +52,7 @@ public class PlayerDodge : PlayerState
     { 
         //회피기 사용 불가 변경
         playerController.CanDodge = false;        
-        
+         
         Vector2 direction = playerController.LastMoveKey switch
         {
             Direction.Down => Vector2.up,
@@ -68,6 +68,7 @@ public class PlayerDodge : PlayerState
 
     private IEnumerator DodgeCoroutine(Vector2 direction, float power)
     {
+        playerController.UseVelocity = true;
         playerController.CharacterRb.velocity = direction * power;
         playerController.BodyAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
         playerController.WeaponAnimator.Play(backDashHashMap[playerController.LastMoveKey]);
@@ -79,6 +80,8 @@ public class PlayerDodge : PlayerState
             yield return null;
             elapsedTime += Time.deltaTime * 5f;
         }
+        
+        playerController.UseVelocity = false;
         
         //회피기 쿨다운 리셋 진행
         playerController.ResetDodgeCoolDown(BuffType.BACKDASH);

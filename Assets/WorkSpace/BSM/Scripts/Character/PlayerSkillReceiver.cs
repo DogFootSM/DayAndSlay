@@ -346,10 +346,12 @@ public class PlayerSkillReceiver : MonoBehaviour
     /// <returns></returns>
     private IEnumerator DashRoutine()
     {
+        playerController.UseVelocity = true;
         Physics2D.IgnoreLayerCollision(playerLayer, monsterLayer, true);
         isDashDone = false;
         yield return WaitCache.GetWait(0.25f);
-
+        
+        playerController.UseVelocity = false;
         //돌진 애니메이션 Off
         Physics2D.IgnoreLayerCollision(playerLayer, monsterLayer, false);
         isDashDone = true;
