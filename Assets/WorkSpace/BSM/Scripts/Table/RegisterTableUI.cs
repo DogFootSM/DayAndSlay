@@ -19,12 +19,16 @@ public class RegisterTableUI : MonoBehaviour
     public UnityAction<ItemData> OnRegisterItemEvents;
     public UnityAction OnRegisterUIResetEvents;
     
+    private Sprite defaultSprite;
+    
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
         
         registerItemButton.onClick.AddListener(tableManager.Register);
         panelCloseButton.onClick.AddListener(() => panelCloseButton.gameObject.transform.parent.gameObject.SetActive(false));
+        
+        defaultSprite = registerItemImage.sprite;
     }
 
     private void OnEnable()
@@ -49,9 +53,14 @@ public class RegisterTableUI : MonoBehaviour
         registerItemText.text = item.Name;
     }
 
+    /// <summary>
+    /// History : 2025.12.19
+    /// 작성자 : 이재호
+    /// itemImage의 스프라이트를 기본 스프라이트로 변경
+    /// </summary>
     private void ResetRegisterTableUI()
     {
-        registerItemImage.sprite = null;
+        registerItemImage.sprite = defaultSprite;
         registerItemText.text = "";
     }
 }

@@ -16,9 +16,12 @@ public class RegisterTableSlot : MonoBehaviour, IPointerClickHandler
     
     private ItemData itemData;
     private InventorySlot inventoryToTableSlot;
+    
+    private Sprite defaultSprite;
     private void Awake()
     {
         ProjectContext.Instance.Container.Inject(this);
+        defaultSprite = itemImage.sprite;
     }
     
     /// <summary>
@@ -33,10 +36,15 @@ public class RegisterTableSlot : MonoBehaviour, IPointerClickHandler
 
     }
 
+    /// <summary>
+    /// History : 2025.12.19
+    /// 작성자 : 이재호
+    /// itemImage의 스프라이트를 기본 스프라이트로 변경
+    /// </summary>
     public void ResetRegisterItem()
     {
         itemData = null;
-        itemImage.sprite = null;
+        itemImage.sprite = defaultSprite;
         inventoryToTableSlot = null;
     }
     
