@@ -92,8 +92,7 @@ public class DayManager : MonoBehaviour, ISavable
     private void SetDayOrNight(DayAndNight dn)
     {
         SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
-
-        Debug.Log($"현재 상태 :{dn}");
+        
         foreach (var torch in torches)
         {
             torch.TorchSwitch(dn == DayAndNight.NIGHT);
