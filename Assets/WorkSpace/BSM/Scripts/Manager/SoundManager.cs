@@ -54,7 +54,8 @@ public class SoundManager : MonoBehaviour
     /// <param name="volume">Audio Mixer MASTER 설정할 값</param>
     public void SetMasterVolume(float volume)
     { 
-        audioMixer.SetFloat("MASTER", 20f * Mathf.Log10(volume)); 
+        audioMixer.SetFloat("MASTER", 20f * Mathf.Log10(volume));
+        MonsterSound.OnChangedVolume?.Invoke(GetMasterVolume() * GetSfxVolume());
     }
 
     /// <summary>
@@ -95,6 +96,7 @@ public class SoundManager : MonoBehaviour
     public void SetSFxVolume(float volume)
     {
         audioMixer.SetFloat("SFX", 20f * Mathf.Log10(volume));   
+        MonsterSound.OnChangedVolume?.Invoke(GetMasterVolume() * GetSfxVolume());
     }
 
     /// <summary>
@@ -137,11 +139,13 @@ public class SoundManager : MonoBehaviour
         {
             bgmAudioSource.mute = true;
             sfxAudioSource.mute = true;
+            MonsterSound.OnChangedMute?.Invoke(true);
         }
         else
         {
             bgmAudioSource.mute = isBgmMute;
             sfxAudioSource.mute = isSfxMute;
+            MonsterSound.OnChangedMute?.Invoke(isSfxMute);
         } 
     }
      
@@ -172,6 +176,7 @@ public class SoundManager : MonoBehaviour
         
         //마스터 볼륨 뮤트가 체크되어 있지 않을 경우 SFX 뮤트 업데이트
         sfxAudioSource.mute = isSfxMute;
+        MonsterSound.OnChangedMute?.Invoke(isSfxMute);
     }
 
     /// <summary>
