@@ -9,7 +9,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Zenject;
 
-public class DayManager : MonoBehaviour, ISavable
+public class DayManager : MonoBehaviour
 {
     [SerializeField] private NpcSpawner npcSpawner;
 
@@ -42,10 +42,6 @@ public class DayManager : MonoBehaviour, ISavable
 
     Coroutine timeCoroutine;
 
-    [Inject] DataManager dataManager;
-    [Inject] SqlManager sqlManager;
-    [Inject] SaveManager saveManager;
-
     private bool isdayStarted = false;
     private bool isEveningStarted = false;
     private bool isNightStarted = false;
@@ -53,7 +49,8 @@ public class DayManager : MonoBehaviour, ISavable
     private bool isMorning = true;
 
     private int currentDayTime = 0; //현재 시간이 새벽인지, 밤인지 구분 0 == 낮, 1 == 밤
-
+    public int CurrentDayTime => currentDayTime;
+    
     /// <summary>
     ///  시계 영역
     /// </summary>
@@ -81,8 +78,6 @@ public class DayManager : MonoBehaviour, ISavable
         {
             Destroy(gameObject);
         }
-
-        saveManager.SavableRegister(this);
     }
     
     /// <summary>
@@ -92,7 +87,7 @@ public class DayManager : MonoBehaviour, ISavable
     private void SetDayOrNight(DayAndNight dn)
     {
         SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
-        
+    
         foreach (var torch in torches)
         {
             torch.TorchSwitch(dn == DayAndNight.NIGHT);
@@ -392,34 +387,5 @@ public class DayManager : MonoBehaviour, ISavable
         {
             torches.Add(torch);
         }
-    }
-
-    /// <summary>
-    /// History : 2025.12.19
-    /// 작성자 : 백선명
-    /// 변경 내용 : 저장 성공 여부 체크 후 낮, 밤 상태 변경
-    /// 낮밤 저장
-    /// </summary>
-    /// <param name="sqlManager"></param>
-    public bool Save(SqlManager sqlManager)
-    {
-        if (GetDayOrNight() == DayAndNight.NIGHT)
-        {
-            IngameManager.instance.AddDay();
-            StartMorning();
-        }
-        else if(GetDayOrNight() == DayAndNight.MORNING)
-        {
-            StartNight();
-        }
-        
-        bool isSuccess = sqlManager.UpdateCharacterDataColumn
-        (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTTIME) },
-            new[] { $"{currentDayTime}" },
-            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
-            $"{dataManager.SlotId}"
-        );
-        
-        return isSuccess;
     }
 }
