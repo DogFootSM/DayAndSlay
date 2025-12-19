@@ -38,7 +38,14 @@ public class SqliteDatabase
         
         if (dbConnection.State == ConnectionState.Closed)
         {
-            dbConnection.Open(); 
+            dbConnection.Open();
+            
+            //Item, Skill Table 외래키 연결 재설정
+            using (dbCommand = dbConnection.CreateCommand())
+            {
+                dbCommand.CommandText = "PRAGMA foreign_keys = ON";
+                dbCommand.ExecuteNonQuery();
+            }
         } 
     }
     
@@ -320,10 +327,9 @@ public class SqliteDatabase
             string query = $"DELETE FROM Character WHERE {condition} = @value";
                 
             dbCommand.Parameters.Add(new SqliteParameter($"@value", conditionValue));
-            
             dbCommand.CommandText = query;
             dbCommand.ExecuteNonQuery(); 
-        } 
+        }
     }
     
     /// <summary>
