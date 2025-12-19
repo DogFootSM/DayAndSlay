@@ -70,10 +70,16 @@ public class BossDoor : InteractableObj
         dungeonExitPopUp.SetActive(false);
     }
 
+    /// <summary>
+    /// History : 2025.12.19
+    /// 작성자 : 백선명
+    /// 변경 내용 : 보스 클리어 후 Morning 상태로 변경
+    /// </summary>
     private void Respawn()
     {
-        player.TranslateScenePosition(new Vector2(-83.75f, -30f));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
+        player.TranslateScenePosition(new Vector2(59f, -34f));
+        mapManager.MapChange(MapType.TOWN_STORE2F);
+        DayManager.instance.StartMorning();
     }
     
 }
