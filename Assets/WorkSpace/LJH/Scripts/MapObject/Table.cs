@@ -62,4 +62,13 @@ public class Table : InteractableObj
         curItemData = null;
         registeredItemRenderer.GetComponent<SpriteRenderer>().sprite = null;
     }
+
+    /// <summary>
+    /// NPC가 호출하는 함수 / 테이블에 있는 아이템 제거함
+    /// </summary>
+    public void BuyItem()
+    {
+        curItemData = null;
+        registeredItemRenderer.GetComponent<SpriteRenderer>().sprite = null;
+    }
 }

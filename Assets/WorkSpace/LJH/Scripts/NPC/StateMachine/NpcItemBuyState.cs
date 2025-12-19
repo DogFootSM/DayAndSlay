@@ -15,6 +15,7 @@ public class NpcItemBuyState : INpcState
     public void Enter()
     {
         npc.BuyItemFromTable();
+        table.BuyItem();
     }
 
     public void Update() { }
