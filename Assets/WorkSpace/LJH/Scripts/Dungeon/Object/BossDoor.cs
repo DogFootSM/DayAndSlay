@@ -75,6 +75,7 @@ public class BossDoor : InteractableObj
     /// </summary>
     private void Respawn()
     {
+        GameManager.Instance.HasUnsavedChanges = true;
         player.TranslateScenePosition(new Vector2(59f, -34f));
         mapManager.MapChange(MapType.TOWN_STORE2F);
         GameManager.Instance.SearchDayManager();

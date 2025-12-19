@@ -40,6 +40,7 @@ public class GameOverCanvas : MonoBehaviour
     /// </summary>
     private void Respawn()
     {
+        GameManager.Instance.HasUnsavedChanges = true;
         IngameManager.shouldAddDay = true;
         playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
         mapManager.MapChange(MapType.TOWN_STORE2F);
