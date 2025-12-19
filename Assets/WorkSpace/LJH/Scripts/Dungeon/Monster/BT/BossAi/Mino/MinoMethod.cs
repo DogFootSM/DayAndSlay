@@ -82,10 +82,20 @@ public class MinoMethod : BossMethod
         mino.SetIsMinoGiga(true);
 
         model.Attack *= 2;
-        model.AttackRange += 3;
-        model.MoveSpeed += 3;
+        model.AttackRange += 2f;
+        model.MoveSpeed += 1;
 
+        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+
+        StartCoroutine(GigantismForceCoroutine(playerRb));
         StartCoroutine(GigantismScaleCoroutine());
+    }
+
+    private IEnumerator GigantismForceCoroutine(Rigidbody2D rigid)
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        rigid.velocity = Vector2.zero;
     }
     
     private IEnumerator GigantismScaleCoroutine()

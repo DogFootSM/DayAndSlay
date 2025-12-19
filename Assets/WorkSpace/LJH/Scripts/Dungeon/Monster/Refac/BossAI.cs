@@ -66,7 +66,7 @@ public abstract class BossAI : MonsterAI
 
         return new List<BTNode>
         {   
-            new IsPreparedAttackNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackCooldown),
+            new IsPreparedAttackNode(transform, player.transform, model),
             new Selector(patterns)
         };
     }
@@ -78,7 +78,7 @@ public abstract class BossAI : MonsterAI
 
         return new List<BTNode>
         {
-            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+            new IsPreparedAttackNode(transform, player.transform, model),
             new Selector(patterns)
         };
     }

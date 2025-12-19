@@ -4,8 +4,7 @@ public class IsPreparedAttackNode : BTNode
 {
     private Transform self;            // 몬스터
     private Transform target;         // 플레이어
-    private float range;             // 기준 거리
-    private float cooldown;         // 공격 쿨다운
+    private MonsterModel model;      //  모델
     private float currentCooldown; // 남은 쿨다운
 
     /// <summary>
@@ -14,12 +13,11 @@ public class IsPreparedAttackNode : BTNode
     /// <param name="self">자신</param>
     /// <param name="target">플레이어</param>
     /// <param name="range">거리</param>
-    public IsPreparedAttackNode(Transform self, Transform target, float range, float cooldown)
+    public IsPreparedAttackNode(Transform self, Transform target, MonsterModel model)
     {
         this.self = self;
         this.target = target;
-        this.range = range;
-        this.cooldown = cooldown;
+        this.model = model;
         currentCooldown = 0;
     }
 
@@ -31,9 +29,9 @@ public class IsPreparedAttackNode : BTNode
             currentCooldown -= Time.deltaTime;
 
 
-        if (distance <= range && currentCooldown <= 0f)
+        if (distance <= model.AttackRange && currentCooldown <= 0f)
         {
-            currentCooldown = cooldown;
+            currentCooldown = model.AttackCooldown;
             return NodeState.Success;
         }
 

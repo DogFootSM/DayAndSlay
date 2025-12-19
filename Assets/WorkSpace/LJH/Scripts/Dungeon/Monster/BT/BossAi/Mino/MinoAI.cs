@@ -12,7 +12,27 @@ public class MinoAI : BossAI
     protected override List<BTNode> BuildSkillSelector()
     {
         List<BTNode> list = new List<BTNode>();
-
+        
+        // 네 번째 스킬 (ultimate)
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new WaitWhileActionNode(() => isMinoGiga),
+            new IsHPThresholdCheckNode(50f, GetMonsterModel()),
+            new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
+            new ActionNode(PerformSkillFourth),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+        }));
+        
+        // 세 번째 스킬 (StoneSkin)
+        list.Add(new Sequence(new List<BTNode>
+        {
+            new HpMultiThresholdNode(model, thresholds),
+            new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
+            new ActionNode(PerformSkillThird),
+            new WaitWhileActionNode(() => animator.IsPlayingAction),
+        }));
+        
+        
        // 첫 번째 스킬 (Butt)
         list.Add(new Sequence(new List<BTNode>
         {
@@ -31,25 +51,6 @@ public class MinoAI : BossAI
             new WaitWhileActionNode(() => animator.IsPlayingAction),
         }));
         
-        // 세 번째 스킬 (StoneSkin)
-        list.Add(new Sequence(new List<BTNode>
-        {
-            new HpMultiThresholdNode(model, thresholds),
-            new IsPreparedCooldownNode(() => CanSkill(skillThirdTimer)),
-            new ActionNode(PerformSkillThird),
-            new WaitWhileActionNode(() => animator.IsPlayingAction),
-        }));
-        
-        // 네 번째 스킬 (ultimate)
-        list.Add(new Sequence(new List<BTNode>
-        {
-            new WaitWhileActionNode(() => isMinoGiga),
-            new IsHPThresholdCheckNode(50f, GetMonsterModel()),
-            new IsPreparedCooldownNode(() => CanSkill(skillFourthTimer)),
-            new ActionNode(PerformSkillFourth),
-            new WaitWhileActionNode(() => animator.IsPlayingAction),
-        }));
-
         return list;
     }
 
@@ -60,7 +61,7 @@ public class MinoAI : BossAI
         // 일반 공격
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsAttackRangeNode(transform, player.transform, model.AttackRange),
+            new IsAttackRangeNode(transform, player.transform, model),
             new IsPreparedCooldownNode(CanAttack),
             new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),

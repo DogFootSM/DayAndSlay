@@ -60,7 +60,7 @@ public class BellusAI : NepenthesAI
 
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsAttackRangeNode(transform, player.transform, 2f),
+            new IsAttackRangeNode(transform, player.transform, model),
             new IsPreparedCooldownNode(CanAttack),
             new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),

@@ -1,12 +1,18 @@
 using UnityEngine;
 
-public class IsAttackRangeNode : BTNode
+public class IsPreparedSkillNode : BTNode
 {
     private Transform self;            // 몬스터
     private Transform target;         // 플레이어
-    private MonsterModel model;             // 기준 거리
+    private MonsterModel model;      //  모델
 
-    public IsAttackRangeNode(Transform self, Transform target, MonsterModel model)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="self">자신</param>
+    /// <param name="target">플레이어</param>
+    /// <param name="range">거리</param>
+    public IsPreparedSkillNode(Transform self, Transform target, MonsterModel model)
     {
         this.self = self;
         this.target = target;
@@ -16,6 +22,9 @@ public class IsAttackRangeNode : BTNode
     public override NodeState Tick()
     {
         float distance = Vector3.Distance(self.position, target.position);
+
+
+
         if (distance <= model.AttackRange)
         {
             return NodeState.Success;

@@ -78,8 +78,12 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     protected virtual void Update()
     {   
         if (GetIsStun() && model.curHp > 0) return;
-        
-        if (isSkillUsing && model.curHp > 0) return;
+
+        if (isSkillUsing && model.curHp > 0)
+        {
+            Debug.Log("스킬 사용중이라 트리 멈춤");
+            return;
+        }
         
         if (tree == null) return;
             tree.Tick();
@@ -117,7 +121,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {
         return new List<BTNode>
         {
-            new IsPreparedAttackNode(transform, player.transform, monsterData.AttackRange, monsterData.AttackCooldown),
+            new IsPreparedAttackNode(transform, player.transform, model),
             new ActionNode(Attack)
         };
     }
@@ -126,7 +130,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     {
         return new List<BTNode>
         {
-            new IsPreparedChaseNode(transform, player.transform, monsterData.ChaseRange, monsterData.AttackRange),
+            new IsPreparedChaseNode(transform, player.transform, model),
             new ActionNode(Move)
         };
     }
@@ -191,6 +195,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
         StartCoroutine(SkillEndCoroutine());
         StartCoroutine(AttackEndDelay());
     }
+    
     protected IEnumerator SkillEndCoroutine()
     {
         yield return new WaitUntil(() =>!animator.IsPlayingAction);
@@ -219,7 +224,7 @@ public class MonsterAI : MonoBehaviour, IEffectReceiver
     public MonsterMethod GetMonsterMethod() => method;
     public MonsterAnimator GetMonsterAnimator() => animator;
     
-    public float GetChaseRange() => monsterData.ChaseRange;
+    public float GetChaseRange() => model.ChaseRange;
     public void TakeDamage(float damage)
     {
         float calcDefense = model.def;

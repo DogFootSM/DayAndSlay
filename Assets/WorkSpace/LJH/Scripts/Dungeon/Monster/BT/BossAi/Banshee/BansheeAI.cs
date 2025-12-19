@@ -55,7 +55,7 @@ public class BansheeAI : BossAI
         // 일반 공격
         list.Add(new Sequence(new List<BTNode>
         {
-            new IsAttackRangeNode(transform, player.transform, model.AttackRange),
+            new IsAttackRangeNode(transform, player.transform, model),
             new IsPreparedCooldownNode(CanAttack),
             new ActionNode(PerformAttack),
             new WaitWhileActionNode(() => animator.IsPlayingAction),
