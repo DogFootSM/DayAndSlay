@@ -10,7 +10,8 @@ public class SaveManager : MonoBehaviour
     [Inject] private SqlManager sqlManager;
     
     private GameManager gameManager => GameManager.Instance;
-    
+    private DayManager dayManager => DayManager.instance;
+
     private List<ISavable> savables = new List<ISavable>();
     
     private void Awake()
@@ -39,6 +40,16 @@ public class SaveManager : MonoBehaviour
     public bool GameDataSave()
     {
         bool success = true;
+        
+        if (dayManager.GetDayOrNight() == DayAndNight.NIGHT)
+        {
+            IngameManager.instance.AddDay();
+            dayManager.StartMorning();
+        }
+        else if(dayManager.GetDayOrNight() == DayAndNight.MORNING)
+        {
+            dayManager.StartNight();
+        }
         
         foreach (var savable in savables)
         {

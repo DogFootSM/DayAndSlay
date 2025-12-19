@@ -159,6 +159,7 @@ public class PlayerModel : MonoBehaviour, ISavable
     private IDataReader dataReader;
     private GameManager gameManager => GameManager.Instance;
     private SoundManager soundManager => SoundManager.Instance;
+    private DayManager dayManager => DayManager.instance;
     
     private PlayerStats playerStats;
     public PlayerStats PlayerStats => playerStats;
@@ -736,6 +737,7 @@ public class PlayerModel : MonoBehaviour, ISavable
                 sqlManager.GetCharacterColumn(CharacterDataColumns.IS1STAGECLEARED),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.IS2STAGECLEARED),
                 sqlManager.GetCharacterColumn(CharacterDataColumns.IS3STAGECLEARED),
+                sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTTIME)
             },
             new[]
             {
@@ -756,6 +758,7 @@ public class PlayerModel : MonoBehaviour, ISavable
                 $"{(DungeonManager.is1StageCleared ? 1 : 0)}",
                 $"{(DungeonManager.is2StageCleared ? 1 : 0)}",
                 $"{(DungeonManager.is3StageCleared ? 1 : 0)}",
+                $"{dayManager.CurrentDayTime}"
             },
             "slot_id",
             $"{dataManager.SlotId}"
