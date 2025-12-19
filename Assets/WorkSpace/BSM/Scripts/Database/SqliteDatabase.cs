@@ -365,7 +365,6 @@ public class SqliteDatabase
             }
             
             query += ") ON CONFLICT(slot_id, item_id) DO UPDATE SET item_amount = excluded.item_amount, inventory_slot_id = excluded.inventory_slot_id, is_equipment = excluded.is_equipment";
- 
             dbCommand.CommandText = query;
             int result = dbCommand.ExecuteNonQuery();
 
