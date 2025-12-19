@@ -71,15 +71,13 @@ public class BossDoor : InteractableObj
     }
 
     /// <summary>
-    /// History : 2025.12.19
-    /// 작성자 : 백선명
-    /// 변경 내용 : 보스 클리어 후 Morning 상태로 변경
+    /// 보스 클리어 후 캐릭터 마을 이동
     /// </summary>
     private void Respawn()
     {
         player.TranslateScenePosition(new Vector2(59f, -34f));
         mapManager.MapChange(MapType.TOWN_STORE2F);
-        DayManager.instance.StartMorning();
+        GameManager.Instance.SearchDayManager();
     }
     
 }

@@ -210,6 +210,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     public void StartMorning()
     {
+        GameManager.Instance.HasUnsavedChanges = true;
         currentDayTime = 0;
         UpdateClockDisplay(8, 0);
         SetDayOrNight(DayAndNight.MORNING);

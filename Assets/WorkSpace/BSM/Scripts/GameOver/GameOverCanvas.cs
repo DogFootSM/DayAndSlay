@@ -17,9 +17,7 @@ public class GameOverCanvas : MonoBehaviour
     [SerializeField] private PlayerController playerController;
 
     [Inject] private MapManager mapManager;
-    
-    private DayManager dayManager => DayManager.instance;
-    
+
     private void Awake()
     {
         confirmButton.onClick.AddListener(MoveToTown);
@@ -36,9 +34,6 @@ public class GameOverCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// History : 2025.12.19
-    /// 작성자 : 백선명
-    /// 변경 내용 : 리스폰 시 Morning 상태로 변경
     /// History : 2025.12.18
     /// 작성자 : 이재호
     /// 날짜 추가해야됨을 알려주는 static 변수 조작 추가
@@ -48,6 +43,6 @@ public class GameOverCanvas : MonoBehaviour
         IngameManager.shouldAddDay = true;
         playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
         mapManager.MapChange(MapType.TOWN_STORE2F);
-        dayManager.StartMorning();
+        GameManager.Instance.SearchDayManager();
     }
 }
