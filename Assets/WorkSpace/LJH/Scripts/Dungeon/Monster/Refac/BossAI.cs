@@ -52,7 +52,7 @@ public abstract class BossAI : MonsterAI
             new Sequence(BuildDieSequence()),
             new Sequence(BuildStunSequence()),
             new Sequence(BuildSkillSequence()),
-            new Sequence(BuildAttackSequence()),
+            //new Sequence(BuildAttackSequence()),
             new Sequence(BuildChaseSequence()),
             new Sequence(BuildIdleSequence())
         });
