@@ -850,7 +850,11 @@ MonoBehaviour:
   tempDamage: 0
   itemPrefab: {fileID: 108242960735011436, guid: c2026446040e1bb428320ea7a48d88a9, type: 3}
   healPack: {fileID: 9201345305476871192, guid: b6b85a199a3e2834584ca75c5a9858c5, type: 3}
-  ai: {fileID: 0}
+  idleMoveMinDelay: 2
+  idleMoveMaxDelay: 4
+  idleMoveMinRange: 1
+  idleMoveMaxRange: 2
+  idleTargetPos: {x: 0, y: 0, z: 0}
   stunImage: {fileID: 8792055915491572188}
 --- !u!114 &-6053290282728119347
 MonoBehaviour:
@@ -1025,7 +1029,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 823319002062565818, guid: 9c3c0f666afde004c91537987db36407, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.208
   m_Pitch: 1
   Loop: 0
