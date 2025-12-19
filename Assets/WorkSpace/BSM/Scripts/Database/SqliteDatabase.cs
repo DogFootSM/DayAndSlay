@@ -102,7 +102,8 @@ public class SqliteDatabase
                                 hasdungeonentered   INTEGER DEFAULT 0,
                                 is1stagecleared     INTEGER DEFAULT 0,
                                 is2stagecleared     INTEGER DEFAULT 0,
-                                is3stagecleared     INTEGER DEFAULT 0
+                                is3stagecleared     INTEGER DEFAULT 0,
+                                currenttime         INTEGER DEFAULT 1
                                 )";
 
             dbCommand.ExecuteNonQuery();
