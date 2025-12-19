@@ -353,8 +353,8 @@ public class Npc : MonoBehaviour
         if (tableWithItem != null)
         {
             player.GrantExperience(wantItem.SellPrice);
-            
             IngameManager.instance.SetGold(wantItem.SellPrice);
+            wantItemManager.InActiveWantItem(this);
             StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요
         }
