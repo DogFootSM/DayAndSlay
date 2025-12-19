@@ -17,7 +17,7 @@ public class GameOverCanvas : MonoBehaviour
     [SerializeField] private PlayerController playerController;
 
     [Inject] private MapManager mapManager;
-    
+
     private void Awake()
     {
         confirmButton.onClick.AddListener(MoveToTown);
@@ -43,5 +43,6 @@ public class GameOverCanvas : MonoBehaviour
         IngameManager.shouldAddDay = true;
         playerRoot.TranslateScenePosition(new Vector2(59f, -34f));
         mapManager.MapChange(MapType.TOWN_STORE2F);
+        GameManager.Instance.SearchDayManager();
     }
 }

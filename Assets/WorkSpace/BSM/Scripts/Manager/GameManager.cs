@@ -47,7 +47,8 @@ public class GameManager : MonoBehaviour
     
     private SoundManager soundManager => SoundManager.Instance;
     private Coroutine borderlessCo;
-
+    private Coroutine searchDayManagerCo;
+    
     //디스플레이 설정 정보
     private int windowMode;
     private (int, int) resolution;
@@ -318,4 +319,22 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
+
+    /// <summary>
+    /// 던전 씬 -> 마을 씬 이동 시 DayManager를 찾음
+    /// </summary>
+    public void SearchDayManager()
+    {
+        searchDayManagerCo = StartCoroutine(SearchDayManagerCoroutine());
+    }
+
+    private IEnumerator SearchDayManagerCoroutine()
+    {
+        yield return new WaitUntil(() => DayManager.instance != null);
+        DayManager.instance.StartMorning(); 
+        
+        StopCoroutine(searchDayManagerCo);
+        searchDayManagerCo = null;
+    }
+    
 }

@@ -102,7 +102,8 @@ public class SqliteDatabase
                                 hasdungeonentered   INTEGER DEFAULT 0,
                                 is1stagecleared     INTEGER DEFAULT 0,
                                 is2stagecleared     INTEGER DEFAULT 0,
-                                is3stagecleared     INTEGER DEFAULT 0
+                                is3stagecleared     INTEGER DEFAULT 0,
+                                currenttime         INTEGER DEFAULT 1
                                 )";
 
             dbCommand.ExecuteNonQuery();
@@ -206,26 +207,10 @@ public class SqliteDatabase
         condition ??= string.Empty;
         conditionValue ??= string.Empty;
 
-        if (column.Length == 0)
+        if (column.Length == 0 || columnValue.Length == 0 || (column.Length != columnValue.Length))
         {
-            throw new ArgumentException("Column Length 조건 오류");
+            throw new ArgumentException("Update 조건 오류");
         }
-
-        if (columnValue.Length == 0)
-        {
-            throw new ArgumentException("columnValue Length 조건 오류");
-        }
-
-        if ((column.Length != columnValue.Length))
-        {
-            Debug.Log($"col Length:{column.Length} / columnValue: {columnValue.Length}");
-            throw new ArgumentException("column.Length != columnValue.Length 조건 오류");
-        }
-        
-        // if (column.Length == 0 || columnValue.Length == 0 || (column.Length != columnValue.Length))
-        // {
-        //     throw new ArgumentException("Update 조건 오류");
-        // }
 
         string query = "UPDATE Character SET ";
 
@@ -431,8 +416,6 @@ public class SqliteDatabase
     /// <param name="slotID">현재 생성한 슬롯 ID</param> 
     public void SkillInsertTable(string slotID)
     {  
-        Debug.Log($"SkillInsertTable {slotID}");
-        
         using (dbCommand = dbConnection.CreateCommand())
         {
             //SQL, 즉 c에서는 \ 이스케이프 문자로 쓰여 경로를 제대로 인식하지 못함
@@ -444,7 +427,7 @@ public class SqliteDatabase
             string query = "INSERT INTO CharacterSkill (slot_id, skill_id, skill_level, skill_unlocked) " +
                            "SELECT @slot, skill_id, skill_level, skill_unlocked " +
                            "FROM SkillConfig.Skills";
-            Debug.Log($"insert Command : {slotID}");
+
             dbCommand.Parameters.Add(new SqliteParameter("@slot", slotID));
             
             dbCommand.CommandText = query;

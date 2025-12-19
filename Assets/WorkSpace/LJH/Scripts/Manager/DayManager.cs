@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,7 +17,7 @@ public class DayManager : MonoBehaviour, ISavable
     /// 오늘이 며칠인지
     /// </summary>
     [SerializeField] private int currentDay;
-    
+
     [SerializeField] private Image morning;
     [SerializeField] private Image day;
     [SerializeField] private Image evening;
@@ -24,22 +26,19 @@ public class DayManager : MonoBehaviour, ISavable
     [SerializeField] private GameObject taxUI;
     [SerializeField] private GameObject wantItemList;
     [SerializeField] private Volume townSceneVolume;
-    
-    [SerializeField] private List<GameObject> lights;
-    [SerializeField] private List<Light2D> _lights = new List<Light2D>();
-    [SerializeField] private Light2D globalLight;
+
     private float morningIntensity = 0.75f;
     private float dayIntensity = 1f;
     private float nightIntensity = 0.8f;
     private float intensityIntervel = 0.1f;
     private List<ITorchSwitch> torches = new List<ITorchSwitch>();
-    
+
     public static DayManager instance;
 
     public DayAndNight dayOrNight;
 
     // 9Minute
-    [SerializeField] private  int DefaultDayCount = 480;
+    [SerializeField] private int DefaultDayCount = 480;
 
     Coroutine timeCoroutine;
 
@@ -53,6 +52,8 @@ public class DayManager : MonoBehaviour, ISavable
 
     private bool isMorning = true;
 
+    private int currentDayTime = 0; //현재 시간이 새벽인지, 밤인지 구분 0 == 낮, 1 == 밤
+
     /// <summary>
     ///  시계 영역
     /// </summary>
@@ -64,60 +65,12 @@ public class DayManager : MonoBehaviour, ISavable
 
     private int lastTotalMinutes = -1;
     private int hour;
-    private int minute;
-
+    private int minute; 
+    
     public DayAndNight GetDayOrNight() => dayOrNight;
 
     private ColorAdjustments ca;
-    /// <summary>
-    /// 아침,낮,밤 설정
-    /// </summary>
-    /// <param name="dn">DayAndNight enum값</param>
-    public void SetDayOrNight(DayAndNight dn)
-    {
-        SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
-
-        foreach (var torch in torches)
-        {
-            torch.TorchSwitch(dn == DayAndNight.NIGHT);
-        }
-        
-        switch (dn)
-        {
-            case DayAndNight.MORNING:
-                morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
-                townSceneVolume.profile.TryGet(out ca);
-                ca.active = true;
-                ca.colorFilter.value = new Color(0.6f, 0.6f, 0.6f);
-                break;
-            
-            case DayAndNight.DAY:
-                day.color = new Color(day.color.r, day.color.g, day.color.b, 1f);
-                townSceneVolume.profile.TryGet(out ca);
-                ca.active = true;
-                ca.colorFilter.value = new Color(1f, 1f, 1f);
-                break;
-            
-            case DayAndNight.NIGHT:
-                night.color = new Color(night.color.r, night.color.g, night.color.b, 1f);
-                townSceneVolume.profile.TryGet(out ca);
-                ca.active = true;
-                ca.colorFilter.value = new Color(0.33f, 0.33f, 0.33f);
-                
-                break;
-        }
-
-        dayOrNight = dn;
-    }
     
-    private void SetAllAlphaToZero()
-    {
-        morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 0f);
-        day.color = new Color(day.color.r, day.color.g, day.color.b, 0f);
-        evening.color = new Color(evening.color.r, evening.color.g, evening.color.b, 0f);
-        night.color = new Color(night.color.r, night.color.g, night.color.b, 0f);
-    }
-
     private void Awake()
     {
         if (instance == null)
@@ -128,43 +81,76 @@ public class DayManager : MonoBehaviour, ISavable
         {
             Destroy(gameObject);
         }
+
+        saveManager.SavableRegister(this);
+    }
+    
+    /// <summary>
+    /// 아침,낮,밤 설정
+    /// </summary>
+    /// <param name="dn">DayAndNight enum값</param>
+    private void SetDayOrNight(DayAndNight dn)
+    {
+        SetAllAlphaToZero(); // 일단 모두 투명하게 만듭니다.
+        
+        foreach (var torch in torches)
+        {
+            torch.TorchSwitch(dn == DayAndNight.NIGHT);
+        }
+
+        switch (dn)
+        {
+            case DayAndNight.MORNING:
+                morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 1f);
+                townSceneVolume.profile.TryGet(out ca);
+                ca.active = true;
+                ca.colorFilter.value = new Color(0.6f, 0.6f, 0.6f);
+                break;
+
+            case DayAndNight.DAY:
+                day.color = new Color(day.color.r, day.color.g, day.color.b, 1f);
+                townSceneVolume.profile.TryGet(out ca);
+                ca.active = true;
+                ca.colorFilter.value = new Color(1f, 1f, 1f);
+                break;
+
+            case DayAndNight.NIGHT:
+                night.color = new Color(night.color.r, night.color.g, night.color.b, 1f);
+                townSceneVolume.profile.TryGet(out ca);
+                ca.active = true;
+                ca.colorFilter.value = new Color(0.33f, 0.33f, 0.33f);
+
+                break;
+        }
+
+        dayOrNight = dn;
     }
 
-    private void Start()
+    private void SetAllAlphaToZero()
     {
-        // foreach (var light in lights)
-        // {
-        //     if (light.GetComponent<Light2D>()) _lights.Add(light.GetComponent<Light2D>());
-        //     else _lights.Add(light.GetComponentInChildren<Light2D>());
-        // }
-
-        if (DungeonManager.hasDungeonEntered)
-        {
-            StartMorning();
-        }
-        else
-        {
-            StartNight();
-        }
+        morning.color = new Color(morning.color.r, morning.color.g, morning.color.b, 0f);
+        day.color = new Color(day.color.r, day.color.g, day.color.b, 0f);
+        evening.color = new Color(evening.color.r, evening.color.g, evening.color.b, 0f);
+        night.color = new Color(night.color.r, night.color.g, night.color.b, 0f);
     }
 
     public void OpenStore()
     {
-        if(dayOrNight == DayAndNight.MORNING) ToggleDayNight();
+        if (dayOrNight == DayAndNight.MORNING) ToggleDayNight();
     }
-    
+
     //아침 시작시 8시 > 9시까지 흐르게 해주는 코루틴
     private IEnumerator FlowToNineCoroutine()
     {
         isMorning = false;
-        
+
         float clockMinutes = 8 * 60; // 8시 시작 → 480분
-        float target = 9 * 60;       // 9시 → 540분
+        float target = 9 * 60; // 9시 → 540분
 
         while (clockMinutes < target)
         {
             // 빠른 진행 (원하면 속도 조절 가능)
-            clockMinutes += Time.deltaTime * 60f; 
+            clockMinutes += Time.deltaTime * 60f;
             // 600배속 → 60초 정도면 1시간 흐름
 
             int hour = (int)(clockMinutes / 60);
@@ -181,7 +167,6 @@ public class DayManager : MonoBehaviour, ISavable
         // 낮 시작되며 엔피씨 스폰 시작
         StartDay();
         StartCoroutine(npcSpawner.NpcSpawnCoroutine());
-
     }
 
 
@@ -194,12 +179,12 @@ public class DayManager : MonoBehaviour, ISavable
         {
             StartNight();
         }
-        else if(dayOrNight == DayAndNight.MORNING)
+        else if (dayOrNight == DayAndNight.MORNING)
         {
             PreDayEvents(); // 아침 시작 전 이벤트 처리
         }
     }
-    
+
     private void PreDayEvents()
     {
         if (IngameManager.instance.IsTaxDay())
@@ -210,7 +195,7 @@ public class DayManager : MonoBehaviour, ISavable
 
         StartCoroutine(FlowToNineCoroutine());
     }
-    
+
     private IEnumerator TaxRoutine()
     {
         taxUI.SetActive(true);
@@ -219,64 +204,14 @@ public class DayManager : MonoBehaviour, ISavable
         StartCoroutine(FlowToNineCoroutine());
     }
 
-    private void SetNightFilterAlpha(DayAndNight dn)
-    {
-        switch (dn)
-        {
-            case DayAndNight.MORNING:
-                LightSwitch(false);
-                StartCoroutine(BrightnessFadeCoroutine(morningIntensity));
-                break;
-            
-            case DayAndNight.DAY :
-                LightSwitch(false);
-                StartCoroutine(BrightnessFadeCoroutine(dayIntensity));
-                break;
-            
-            case DayAndNight.NIGHT:
-                LightSwitch(true);
-                StartCoroutine(BrightnessFadeCoroutine(nightIntensity));
-                break;
-        }
-    }
-
-    private void LightSwitch(bool onoff)
-    {
-        foreach (var _light in _lights)
-        {
-            _light.enabled = onoff;
-        }
-    }
-
-    private IEnumerator BrightnessFadeCoroutine(float toIntensity)
-    {
-        if (globalLight.intensity > toIntensity)
-        {
-            while (globalLight.intensity > toIntensity)
-            {
-                yield return new WaitForSeconds(intensityIntervel);
-                globalLight.intensity -= intensityIntervel;
-            }
-        }
-        else
-        {
-            while (globalLight.intensity < toIntensity)
-            {
-                yield return new WaitForSeconds(intensityIntervel);
-                globalLight.intensity += intensityIntervel;
-            }
-        }
-
-        globalLight.intensity = toIntensity;
-    }
-
     /// <summary>
     /// 저장 및 던젼 종료시 호출
     /// </summary>
     public void StartMorning()
     {
+        GameManager.Instance.HasUnsavedChanges = true;
+        currentDayTime = 0;
         UpdateClockDisplay(8, 0);
-        SetNightFilterAlpha(DayAndNight.MORNING);
         SetDayOrNight(DayAndNight.MORNING);
         isMorning = true;
     }
@@ -288,7 +223,6 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     private void StartDay()
     {
-        SetNightFilterAlpha(DayAndNight.DAY);
         wantItemList.SetActive(true);
         SetDayOrNight(DayAndNight.DAY);
 
@@ -315,7 +249,7 @@ public class DayManager : MonoBehaviour, ISavable
             elapsedGameTime += Time.deltaTime;
             // 게임 내 시계 시간은 gameClockScale 배속으로 누적
             elapsedClockTime += Time.deltaTime * gameClockScale;
-            
+
             int currentTotalMinutes = Mathf.FloorToInt(elapsedClockTime);
             if (currentTotalMinutes != lastTotalMinutes)
             {
@@ -391,8 +325,9 @@ public class DayManager : MonoBehaviour, ISavable
     /// </summary>
     public void StartNight()
     {
+        currentDayTime = 1;
         UpdateClockDisplay(21, 0);
-        
+
         //남아있는 npc가 있을 경우 삭제 해줌
         foreach (Npc npc in npcSpawner.GetNpcList())
         {
@@ -406,28 +341,13 @@ public class DayManager : MonoBehaviour, ISavable
         }
 
         SetDayOrNight(DayAndNight.NIGHT);
-        SetNightFilterAlpha(DayAndNight.NIGHT);
-        
-        morning.color = new Color(1,1,1,0);
-        day.color = new Color(1,1,1,0);
-        evening.color = new Color(1,1,1,0);
-        night.color = new Color(1,1,1,1);
+
+        morning.color = new Color(1, 1, 1, 0);
+        day.color = new Color(1, 1, 1, 0);
+        evening.color = new Color(1, 1, 1, 0);
+        night.color = new Color(1, 1, 1, 1);
     }
 
-    /// <summary>
-    /// 낮밤 저장
-    /// </summary>
-    /// <param name="sqlManager"></param>
-    public bool Save(SqlManager sqlManager)
-    {
-        return sqlManager.UpdateCharacterDataColumn
-        (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.GOLD) },
-            new[] { $"{dayOrNight}" },
-            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
-            $"{dataManager.SlotId}"
-        );
-    }
-    
     /// <summary>
     /// 시계 UI에 표시
     /// </summary>
@@ -436,15 +356,15 @@ public class DayManager : MonoBehaviour, ISavable
     private void UpdateClockDisplay(int hour, int minute)
     {
         string ampm = (hour >= 12) ? "오후" : "오전";
-    
-   
+
+
         int displayHour;
 
         if (hour == 0)
         {
             displayHour = 12;
         }
-        else if (hour > 12) 
+        else if (hour > 12)
         {
             displayHour = hour - 12;
         }
@@ -471,7 +391,35 @@ public class DayManager : MonoBehaviour, ISavable
         if (!torches.Contains(torch))
         {
             torches.Add(torch);
-        } 
+        }
     }
-    
+
+    /// <summary>
+    /// History : 2025.12.19
+    /// 작성자 : 백선명
+    /// 변경 내용 : 저장 성공 여부 체크 후 낮, 밤 상태 변경
+    /// 낮밤 저장
+    /// </summary>
+    /// <param name="sqlManager"></param>
+    public bool Save(SqlManager sqlManager)
+    {
+        if (GetDayOrNight() == DayAndNight.NIGHT)
+        {
+            IngameManager.instance.AddDay();
+            StartMorning();
+        }
+        else if(GetDayOrNight() == DayAndNight.MORNING)
+        {
+            StartNight();
+        }
+        
+        bool isSuccess = sqlManager.UpdateCharacterDataColumn
+        (new[] { sqlManager.GetCharacterColumn(CharacterDataColumns.CURRENTTIME) },
+            new[] { $"{currentDayTime}" },
+            sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
+            $"{dataManager.SlotId}"
+        );
+        
+        return isSuccess;
+    }
 }

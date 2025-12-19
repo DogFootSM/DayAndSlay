@@ -70,10 +70,14 @@ public class BossDoor : InteractableObj
         dungeonExitPopUp.SetActive(false);
     }
 
+    /// <summary>
+    /// 보스 클리어 후 캐릭터 마을 이동
+    /// </summary>
     private void Respawn()
     {
-        player.TranslateScenePosition(new Vector2(-83.75f, -30f));
-        mapManager.MapChange(MapType.TOWN_OUTSIDE);
+        player.TranslateScenePosition(new Vector2(59f, -34f));
+        mapManager.MapChange(MapType.TOWN_STORE2F);
+        GameManager.Instance.SearchDayManager();
     }
     
 }
