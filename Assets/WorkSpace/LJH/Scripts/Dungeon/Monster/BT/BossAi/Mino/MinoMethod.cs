@@ -69,7 +69,6 @@ public class MinoMethod : BossMethod
     private void Stomp()
     {
         sound.PlaySFX(SoundType.SKILL2);
-        skills.SetAllEffectPos(secondSkillData, transform.position);
     }
     
 

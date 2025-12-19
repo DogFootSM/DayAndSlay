@@ -162,7 +162,9 @@ public abstract class BossMethod : MonsterMethod
             yield return new WaitForSeconds(delay);
         }
     }
-    
+
+    private Vector2 size;
+    private Vector2 center;
     public void Animation_DoHitCheck(int skillIndex) 
     {
         MonsterSkillData data = null;
@@ -189,15 +191,16 @@ public abstract class BossMethod : MonsterMethod
             data.AttackCollider =  tempCollider;
 
             if (data == null || data.AttackCollider == null) return;
-
-            Collider2D attackCollider = data.AttackCollider;
-
-            float radius = attackCollider.bounds.extents.x;
-            Vector2 center = attackCollider.transform.position;
+            
+            BoxCollider2D attackCollider = data.AttackCollider as BoxCollider2D;
+            
+            size = new(attackCollider.size.x * transform.localScale.x, attackCollider.size.y * transform.localScale.y) ;
+            center = attackCollider.transform.position;
 
             LayerMask playerLayer = LayerMask.GetMask("Player");
 
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, radius, playerLayer);
+            Collider2D[] hitColliders = Physics2D.OverlapBoxAll(center, size, 0, playerLayer);
+
 
             _hitPlayers.Clear();
 
@@ -225,7 +228,13 @@ public abstract class BossMethod : MonsterMethod
         }
     }
 
-    
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(center, size);
+    }
+
+
     public override void StunMethod(float duration)
     {
         ai.ReceiveStun(duration);
