@@ -393,11 +393,11 @@ public class MonsterMethod : MonoBehaviour
         Instantiate(itemPrefab, transform.position, Quaternion.identity);
     }
 
-    private void DropHealPack()
+    protected void DropHealPack()
     {
-        float randomNum = Random.Range(0, 3);
+        float randomNum = Random.Range(0, 4);
         
-        if (randomNum == 2) return;
+        if (randomNum == 0) return;
         
         int healAmountMin = Mathf.FloorToInt(model.MaxHp * 0.1f);
         int healAmountMax = Mathf.FloorToInt(model.MaxHp * 0.2f);

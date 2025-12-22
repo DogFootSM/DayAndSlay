@@ -27,6 +27,7 @@ public class BansheeMethod : BossMethod
     public override void Skill_Fourth()
     {
         SpiritRushWarningZoneChange();
+        DropHealPack();
 
     }
 
@@ -83,10 +84,10 @@ public class BansheeMethod : BossMethod
     private IEnumerator MoveSpeedBuff()
     {
         sound.PlaySFX(SoundType.SKILL3);
-        float preMoveSpeed = monsterData.MoveSpeed;
-        monsterData.MoveSpeed *= 1.5f;
+        float preMoveSpeed = model.MoveSpeed;
+        model.MoveSpeed *= 1.5f;
         yield return new WaitForSeconds(thirdSkillData.Duration);
-        monsterData.MoveSpeed = preMoveSpeed;
+        model.MoveSpeed = preMoveSpeed;
     }
 
 

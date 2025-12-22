@@ -88,6 +88,9 @@ public class MinoMethod : BossMethod
 
         StartCoroutine(GigantismForceCoroutine(playerRb));
         StartCoroutine(GigantismScaleCoroutine());
+        
+        //±Ã±Ø±â ¾µ¶§ ÈúÆÑ ÇÑ¹ø µå¶ø
+        DropHealPack();
     }
 
     private IEnumerator GigantismForceCoroutine(Rigidbody2D rigid)
