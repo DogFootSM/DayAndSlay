@@ -132,5 +132,11 @@ public class BansheeMethod : BossMethod
         
         skills.GetSkillRadius(fourthSkillData)[0].GetComponent<Projectile_Monster>().isRushing = false;
     }
+    
+    public override void DieMethod()
+    {
+        base.DieMethod();
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._8_BANSHEEKILL);
+    }
 
 }

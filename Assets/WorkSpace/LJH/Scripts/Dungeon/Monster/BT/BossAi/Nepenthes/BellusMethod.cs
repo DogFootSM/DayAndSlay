@@ -78,5 +78,11 @@ public class BellusMethod : BossMethod
     /// </summary>
     public override void Skill_Fourth()
     {}
+    
+    public override void DieMethod()
+    {
+        base.DieMethod();
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._6_BELLUSKILL);
+    }
 
 }

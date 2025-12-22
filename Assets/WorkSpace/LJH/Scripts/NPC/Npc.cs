@@ -354,6 +354,9 @@ public class Npc : MonoBehaviour
         {
             player.GrantExperience(wantItem.SellPrice);
             IngameManager.instance.SetGold(wantItem.SellPrice);
+            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._1_FIRSTSALE);
+            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._2_FIRSTSTEP, SteamStatAPI.GOLD, wantItem.SellPrice);
+
             wantItemManager.InActiveWantItem(this);
             StartCoroutine(LeaveCoroutine());
             // 골드 플레이어에게 지급 로직 필요

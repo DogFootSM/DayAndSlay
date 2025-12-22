@@ -342,6 +342,8 @@ public class MonsterMethod : MonoBehaviour
         animator.PlayDie();
         sound.PlaySFX(SoundType.DEATH);
         StartCoroutine(MonsterDestroyRoutine());
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._3_FIRSTKILL);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._4_HUNDREDKILL, SteamStatAPI.MONSTERKILLS, 1);
     }
 
     private IEnumerator MonsterDestroyRoutine()

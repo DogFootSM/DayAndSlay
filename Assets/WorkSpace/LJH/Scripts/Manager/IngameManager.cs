@@ -44,6 +44,11 @@ public class IngameManager : MonoBehaviour
             if (debt == value) return;
             debt = value;
             OnDebtChanged();
+
+            if (debt <= 0)
+            {
+                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._10_RICHMAN);
+            }
         }
     }
 

@@ -78,9 +78,38 @@ public class EquipCreateButton : MonoBehaviour
         //제작 완료 팝업
         okayPopup.SetCurItemInfo(curSelectedItem);
         okayPopup.gameObject.SetActive(true);
+        AchievementWeaponMaster(curSelectedItem);
         yield return new WaitUntil( () => !okayPopup.gameObject.activeSelf);
         
+        
+        
         inventory.AddItemToInventory(curSelectedItem);
+    }
+
+    /// <summary>
+    /// 5티어 무기일 경우 도전과제
+    /// </summary>
+    /// <param name="item"></param>
+    private void AchievementWeaponMaster(ItemData item)
+    {
+        switch (item.ItemId)
+        {
+            case 10000502 :
+                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.BOW, 1);
+                break;
+            
+            case 10010502 :
+                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.SWORD, 1);
+                break;
+            
+            case 10020502 :
+                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.SPEAR, 1);
+                break;
+            
+            case 10030502 :
+                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.WAND, 1);
+                break;
+        }
     }
     
     public void SetSlotList(List<InventorySlot> slotList) => this.slotList = slotList;

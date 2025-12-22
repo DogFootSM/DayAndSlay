@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Steamworks;
+using Steamworks.Data;
 using UnityEngine;
 
 public class SteamworksManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class SteamworksManager : MonoBehaviour
 
     public static SteamworksManager SteamworksInstance;
     
-    private int[] StatMaxValues = new int[(int)SteamStatAPI.SIZE] {1,2,3,4,5,1};
+    private int[] StatMaxValues = new int[(int)SteamStatAPI.SIZE] {100,500,1,1,1,1};
     private bool connectedToSteam = false;
     
     
@@ -37,7 +38,7 @@ public class SteamworksManager : MonoBehaviour
         {
             Debug.Log("연결 실패");
             connectedToSteam = false;
-        } 
+        }
     }
 
     private void Update()
