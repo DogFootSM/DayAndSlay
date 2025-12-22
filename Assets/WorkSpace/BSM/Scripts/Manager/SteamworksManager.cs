@@ -82,7 +82,7 @@ public class SteamworksManager : MonoBehaviour
     /// <returns></returns>
     public bool CheckUnlockAchievement(SteamAchievementAPI achievementAPI)
     {
-        var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + (int)achievementAPI);
+        var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + achievementAPI);
          
         return ach.State;
     }

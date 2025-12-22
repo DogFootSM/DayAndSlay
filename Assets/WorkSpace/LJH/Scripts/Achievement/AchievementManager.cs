@@ -5,7 +5,7 @@ using UnityEngine;
 public class AchievementManager : MonoBehaviour
 {
     public static AchievementManager Instance;
-    private SteamworksManager steamWorkInstance = SteamworksManager.SteamworksInstance;
+    private SteamworksManager steamWorkInstance;
     private void Awake()
     {
         if (Instance == null)
@@ -17,6 +17,11 @@ public class AchievementManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        steamWorkInstance = SteamworksManager.SteamworksInstance;
     }
 
     /// <summary>
