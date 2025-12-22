@@ -9,8 +9,11 @@ public class SteamworksManager : MonoBehaviour
     private const uint AppId = 4276190;
 
     public static SteamworksManager SteamworksInstance;
-
+    
+    private int[] StatMaxValues = new int[(int)SteamStatAPI.SIZE] {1,2,3,4,5,1};
     private bool connectedToSteam = false;
+    
+    
     
     private void Awake()
     {
@@ -79,28 +82,22 @@ public class SteamworksManager : MonoBehaviour
     public bool CheckUnlockAchievement(SteamAchievementAPI achievementAPI)
     {
         var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + (int)achievementAPI);
-
+         
         return ach.State;
     }
  
     /// <summary>
     /// 도전 과제 클리어 조건 확인
     /// </summary>
-    /// <param name="statsKey">통계 API 키</param>
-    /// <param name="statsValue">통계 클리어 비교 값</param>
+    /// <param name="statsKey">통계 API 키 And Max Value 인덱스</param>
     /// <returns></returns> 
-    public bool CheckUserStat(string[] statsKey, int[] statsValue)
+    public bool CheckUserStat(SteamStatAPI[] statsKey)
     {
-        if (statsKey.Length != statsValue.Length)
-        {
-            throw new Exception("Stats 체크 조건이 잘못 됨");
-        }
- 
         for (int i = 0; i < statsKey.Length; i++)
         {
-            int value = SteamUserStats.GetStatInt(statsKey[i]);
+            int value = SteamUserStats.GetStatInt(statsKey[i].ToString());
 
-            if (value < statsValue[i])
+            if (value < StatMaxValues[(int)statsKey[i]])
             {
                 return false;
             }
@@ -108,5 +105,6 @@ public class SteamworksManager : MonoBehaviour
         
         return true;
     }
+
     
 }

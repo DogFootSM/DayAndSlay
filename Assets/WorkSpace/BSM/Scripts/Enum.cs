@@ -465,5 +465,5 @@ public enum SteamAchievementAPI
 
 public enum SteamStatAPI
 {
-    MONSTERKILLS, GOLD, SWORD, SPEAR, BOW, WAND
+    MONSTERKILLS, GOLD, SWORD, SPEAR, BOW, WAND, SIZE
 }
