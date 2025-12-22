@@ -456,4 +456,14 @@ public enum BuffType
 public enum WeaponTierType
 {
     TIER_1_1 =1, TIER_2_1, TIER_3_1, TIER_4_1, TIER_5_1, NONE
-} 
+}
+
+public enum SteamAchievementAPI
+{
+    _0_STOREOPEN, _1_FIRSTSALE, _2_FIRSTSTEP, _3_FIRSTKILL, _4_HUNDREDKILL, _5_MINOKILL, _6_BELLUSKILL, _7_MALUSKILL, _8_BANSHEEKILL, _9_WEAPONMATSER, _10_RICHMAN
+}
+
+public enum SteamStatAPI
+{
+    MONSTERKILLS, GOLD, SWORD, SPEAR, BOW, WAND
+}

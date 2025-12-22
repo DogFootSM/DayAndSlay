@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SteamworksManager : MonoBehaviour
 {
-    public uint AppId;
+    private const uint AppId = 4276190;
 
     public static SteamworksManager SteamworksInstance;
 
@@ -28,9 +28,11 @@ public class SteamworksManager : MonoBehaviour
         {
             Steamworks.SteamClient.Init(AppId); 
             connectedToSteam = true;
+            Debug.Log($"연결됨. {Steamworks.SteamClient.State}");
         }
         catch (Exception e)
         {
+            Debug.Log("연결 실패");
             connectedToSteam = false;
         } 
     }
@@ -59,12 +61,12 @@ public class SteamworksManager : MonoBehaviour
     /// <summary>
     /// 도전 과제 해금
     /// </summary>
-    /// <param name="achievement"></param>
-    public void UnlockAchievement(SteamAchievement achievement)
+    /// <param name="achievementAPI"></param>
+    public void UnlockAchievement(SteamAchievementAPI achievementAPI)
     { 
         if (connectedToSteam)
         {
-            var ach = new Steamworks.Data.Achievement("TEST_ACHIEVEMENT_1_" + (int)achievement);
+            var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + (int)achievementAPI);
             ach.Trigger();
         }
     }
@@ -72,16 +74,15 @@ public class SteamworksManager : MonoBehaviour
     /// <summary>
     /// 현재 도전 과제가 해금된 상태인지 확인
     /// </summary>
-    /// <param name="achievement"></param>
+    /// <param name="achievementAPI"></param>
     /// <returns></returns>
-    public bool CheckUnlockAchievement(SteamAchievement achievement)
+    public bool CheckUnlockAchievement(SteamAchievementAPI achievementAPI)
     {
-        var ach = new Steamworks.Data.Achievement("TEST_ACHIEVEMENT_1_" + (int)achievement);
+        var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + (int)achievementAPI);
 
         return ach.State;
     }
-    
-    
+ 
     /// <summary>
     /// 도전 과제 클리어 조건 확인
     /// </summary>
@@ -94,7 +95,7 @@ public class SteamworksManager : MonoBehaviour
         {
             throw new Exception("Stats 체크 조건이 잘못 됨");
         }
-
+ 
         for (int i = 0; i < statsKey.Length; i++)
         {
             int value = SteamUserStats.GetStatInt(statsKey[i]);
