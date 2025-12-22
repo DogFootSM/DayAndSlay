@@ -51,8 +51,8 @@ public class SqliteDatabase
     
     public void ConnectDispose()
     {
-        dbConnection.Dispose();
         dbConnection.Close();
+        dbConnection.Dispose();
         dbConnection = null;
     }
     
