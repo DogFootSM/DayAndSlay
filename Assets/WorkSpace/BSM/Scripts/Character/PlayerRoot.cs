@@ -28,9 +28,13 @@ public class PlayerRoot : MonoBehaviour
         }
         
         ProjectContext.Instance.Container.Inject(this);
+    }
+
+    private void Start()
+    {
         SetDayOrNightState(); 
     }
-  
+
     public void TranslateScenePosition(Vector2 position)
     {
         transform.position = position;
