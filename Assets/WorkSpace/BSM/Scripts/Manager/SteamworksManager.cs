@@ -11,7 +11,7 @@ public class SteamworksManager : MonoBehaviour
 
     public static SteamworksManager SteamworksInstance;
     
-    private int[] StatMaxValues = new int[(int)SteamStatAPI.SIZE] {100,500,1,1,1,1};
+    private int[] StatMaxValues = new int[(int)SteamStatAPI.SIZE] {int.MinValue, 100,500,1,1,1,1};
     private bool connectedToSteam = false;
     
     
@@ -70,7 +70,7 @@ public class SteamworksManager : MonoBehaviour
     { 
         if (connectedToSteam)
         {
-            var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + (int)achievementAPI);
+            var ach = new Steamworks.Data.Achievement("ACHIEVEMENT" + achievementAPI);
             ach.Trigger();
         }
     }

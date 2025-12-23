@@ -36,6 +36,8 @@ public class MonsterMethod : MonoBehaviour
     
     public void SetPlayer(GameObject player) => this.player = player;
     
+    private SteamStatAPI[] statArray = new SteamStatAPI[1]{SteamStatAPI.MONSTERKILLS};
+    
     #region Idle
 
     [SerializeField] private float idleMoveMinDelay = 2f;
@@ -342,8 +344,10 @@ public class MonsterMethod : MonoBehaviour
         animator.PlayDie();
         sound.PlaySFX(SoundType.DEATH);
         StartCoroutine(MonsterDestroyRoutine());
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._3_FIRSTKILL);
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._4_HUNDREDKILL, SteamStatAPI.MONSTERKILLS, 1);
+        
+        //도전과제
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._3_FIRSTKILL, new SteamStatAPI[1]{SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._4_HUNDREDKILL, statArray, 1, SteamStatAPI.MONSTERKILLS);
     }
 
     private IEnumerator MonsterDestroyRoutine()

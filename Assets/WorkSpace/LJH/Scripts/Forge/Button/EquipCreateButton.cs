@@ -12,6 +12,8 @@ public class EquipCreateButton : MonoBehaviour
     
     [SerializeField] private List<InventorySlot> slotList = new List<InventorySlot>();
     
+    private SteamStatAPI[] statArray = new SteamStatAPI[4]{SteamStatAPI.BOW, SteamStatAPI.SHORTSWORD, SteamStatAPI.SPEAR, SteamStatAPI.WAND};
+    
     private void Start()
     {
         inventory = GameObject.FindWithTag("Player")
@@ -92,23 +94,9 @@ public class EquipCreateButton : MonoBehaviour
     /// <param name="item"></param>
     private void AchievementWeaponMaster(ItemData item)
     {
-        switch (item.ItemId)
+        if (item.Tier == 5 && item.Parts == Parts.WEAPON)
         {
-            case 10000502 :
-                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.BOW, 1);
-                break;
-            
-            case 10010502 :
-                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.SWORD, 1);
-                break;
-            
-            case 10020502 :
-                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.SPEAR, 1);
-                break;
-            
-            case 10030502 :
-                AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, SteamStatAPI.WAND, 1);
-                break;
+            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._9_WEAPONMATSER, statArray, 1, (SteamStatAPI)item.WeaponType + 3);
         }
     }
     

@@ -82,7 +82,7 @@ public class BellusMethod : BossMethod
     public override void DieMethod()
     {
         base.DieMethod();
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._6_BELLUSKILL);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._6_BELLUSKILL, new SteamStatAPI[1] {SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
     }
 
 }

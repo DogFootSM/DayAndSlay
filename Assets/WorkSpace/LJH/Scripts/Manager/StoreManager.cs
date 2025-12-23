@@ -59,7 +59,7 @@ public class StoreManager : InteractableObj
         if (DayManager.instance.GetDayOrNight() != DayAndNight.MORNING) return;
         
         DayManager.instance.OpenStore();
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._0_STOREOPEN);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._0_STOREOPEN, new SteamStatAPI[1] {SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
         
     }
     public override void UiOnOffMethod(Collision2D collision)

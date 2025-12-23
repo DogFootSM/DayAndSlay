@@ -73,6 +73,8 @@ public class Npc : MonoBehaviour
     public bool CheckHeIsAngry() => isAngry;
 
     public (GenderType, AgeType) GetNpcType() => (gender, age);
+    
+    private SteamStatAPI[] statArray = new SteamStatAPI[1]{SteamStatAPI.GOLD};
 
     /// <summary>
     /// True = Outside / False = Store
@@ -354,8 +356,8 @@ public class Npc : MonoBehaviour
         {
             player.GrantExperience(wantItem.SellPrice);
             IngameManager.instance.SetGold(wantItem.SellPrice);
-            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._1_FIRSTSALE);
-            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._2_FIRSTSTEP, SteamStatAPI.GOLD, wantItem.SellPrice);
+            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._1_FIRSTSALE, new SteamStatAPI[1]{SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
+            AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._2_FIRSTSTEP, statArray, wantItem.SellPrice, SteamStatAPI.GOLD);
 
             wantItemManager.InActiveWantItem(this);
             StartCoroutine(LeaveCoroutine());

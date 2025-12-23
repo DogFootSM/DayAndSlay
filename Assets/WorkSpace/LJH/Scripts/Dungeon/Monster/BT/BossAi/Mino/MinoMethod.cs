@@ -148,7 +148,7 @@ public class MinoMethod : BossMethod
     {
         DisGigantism();
         base.DieMethod();
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._5_MINOKILL);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._5_MINOKILL, new SteamStatAPI[1] {SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
     }
 
 

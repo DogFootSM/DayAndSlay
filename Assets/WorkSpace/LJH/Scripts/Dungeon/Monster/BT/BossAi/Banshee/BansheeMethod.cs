@@ -136,7 +136,7 @@ public class BansheeMethod : BossMethod
     public override void DieMethod()
     {
         base.DieMethod();
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._8_BANSHEEKILL);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._8_BANSHEEKILL, new SteamStatAPI[1] {SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
     }
 
 }

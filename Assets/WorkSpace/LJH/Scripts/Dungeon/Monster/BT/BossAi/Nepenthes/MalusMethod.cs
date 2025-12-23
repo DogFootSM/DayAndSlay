@@ -66,7 +66,7 @@ public class MalusMethod : BossMethod
     public override void DieMethod()
     {
         base.DieMethod();
-        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._7_MALUSKILL);
+        AchievementManager.Instance.TriggerAchievement(SteamAchievementAPI._7_MALUSKILL, new SteamStatAPI[1] {SteamStatAPI.NONE}, 0, SteamStatAPI.NONE);
     }
     
 }
