@@ -341,6 +341,8 @@ public class DayManager : MonoBehaviour
         day.color = new Color(1, 1, 1, 0);
         evening.color = new Color(1, 1, 1, 0);
         night.color = new Color(1, 1, 1, 1);
+        
+        wantItemList.SetActive(false);
     }
 
     /// <summary>

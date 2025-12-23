@@ -90,13 +90,7 @@ public class Npc : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isIgnoringCollision)
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            PauseMovement();
-
-            if (blockCoroutine == null)
-            {
-                blockCoroutine = StartCoroutine(BlockNPCCoroutine());
-            }
+            moveSpeed = 0;
         }
     }
 
@@ -104,59 +98,11 @@ public class Npc : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (Physics2D.GetIgnoreLayerCollision(15, 20))
-            {
-                StartCoroutine(ResumeNPCCoroutine(1f));
-            }
-
-            else
-            {
-                StartCoroutine(ResumeNPCCoroutine(0f));
-            }
+            SetMoveSpeed();
         }
     }
 
-    private IEnumerator BlockNPCCoroutine()
-    {
-        yield return new WaitForSeconds(2f);
-
-        npcCol.isTrigger = true;
-        blockCoroutine = null;
-        StartCoroutine(ResumeNPCCoroutine(1f));
-
-    }
-
-    private IEnumerator ResumeNPCCoroutine(float seconds)
-    {
-        animator.Play(currentAnim);
-        StateMachine.ChangeState(prevState);
-        prevState = null;
-        
-        yield return new WaitForSeconds(seconds);
-        
-        if (blockCoroutine != null)
-        {
-            StopCoroutine(blockCoroutine);
-            blockCoroutine = null;
-        }
-
-        npcCol.isTrigger = false;
-        transform.position += (transform.position - player.transform.position).normalized * 0.2f;
-        
-    }
     
-    public void PauseMovement()
-    {
-        if (prevState != null) return;
-        
-        prevState = StateMachine.CurrentState;
-        if (moveCoroutine != null)
-        {
-            animator.Play("Idle");
-            StopCoroutine(moveCoroutine);
-            moveCoroutine = null;
-        }
-    }
 
     private void Start()
     {
