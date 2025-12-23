@@ -31,7 +31,7 @@ public class BuffIconController : MonoBehaviour
             CoolDownUIHub.BuffCoolDownMap[buffType].ResetCoolDown(coolDownDuration);
         }
     }
-    
+ 
     /// <summary>
     /// 최초 버프 or 회피기 사용 시 아이콘 이미지 및 UI 등록
     /// </summary>

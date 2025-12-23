@@ -36,6 +36,12 @@ public class PlayerRoot : MonoBehaviour
         transform.position = position;
     }
 
+    private void OnDisable()
+    {
+        CoolDownUIHub.CoolDownImageMap.Clear();
+        CoolDownUIHub.BuffCoolDownMap.Clear();
+    }
+
     /// <summary>
     /// DB에서 저장 시점을 불러옴
     /// 저장 시점에 따라 DayManager Morning or Night 설정
