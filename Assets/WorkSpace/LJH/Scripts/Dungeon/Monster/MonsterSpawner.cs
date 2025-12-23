@@ -21,7 +21,7 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] protected List<GameObject> spawnerList = new List<GameObject>();
     [SerializeField] protected List<GameObject> monsterList = new List<GameObject>();
 
-    [SerializeField] protected Tilemap floorTilemap;
+    [SerializeField] protected Tilemap roadTilemap;
     [SerializeField] protected Tilemap wallTilemap;
 
 
@@ -68,7 +68,7 @@ public class MonsterSpawner : MonoBehaviour
         if (currentCell != prevPlayerCellPos)
         {
             prevPlayerCellPos = currentCell;
-            MonsterActiver(); // 위치 바뀌었을 때만 호출
+            //MonsterActiver(); // 위치 바뀌었을 때만 호출
         }
         
     }
@@ -81,16 +81,16 @@ public class MonsterSpawner : MonoBehaviour
         
         foreach (GameObject spawner in spawnerList)
         {
-            if (floorTilemap == null) continue;
+            if (roadTilemap == null) continue;
 
             List<Vector3> floorPositions = new List<Vector3>();
             
-            BoundsInt bounds = floorTilemap.cellBounds;
+            BoundsInt bounds = roadTilemap.cellBounds;
             
             foreach (Vector3Int pos in bounds.allPositionsWithin)
             {
                 //타일이 바닥인지 검사 && 벽이 아닌지
-                if (floorTilemap.HasTile(pos) && !wallTilemap.HasTile(pos))
+                if (roadTilemap.HasTile(pos) && !wallTilemap.HasTile(pos))
                 {
                     
                     //인접 타일 벽인지 검사
@@ -100,7 +100,7 @@ public class MonsterSpawner : MonoBehaviour
                     }
                     
                     // Cell -> World 좌표 변환
-                    Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
+                    Vector3 worldPos = roadTilemap.CellToWorld(pos) + roadTilemap.cellSize / 2f;
                     floorPositions.Add(worldPos);
                 }
             }
@@ -241,13 +241,13 @@ public class MonsterSpawner : MonoBehaviour
     
     private bool ContainsPlayer(Vector3 worldPos)
     {
-        if (floorTilemap == null) return false;
+        if (roadTilemap == null) return false;
 
-        Vector3Int cell = floorTilemap.WorldToCell(worldPos);
+        Vector3Int cell = roadTilemap.WorldToCell(worldPos);
 
         // bounds 체크 및 실제 바닥 타일 존재 체크
-        if (!floorTilemap.cellBounds.Contains(cell)) return false;
-        return floorTilemap.HasTile(cell);
+        if (!roadTilemap.cellBounds.Contains(cell)) return false;
+        return roadTilemap.HasTile(cell);
     }
 
     private void Init()

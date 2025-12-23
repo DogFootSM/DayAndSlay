@@ -27,10 +27,17 @@ public class DungeonDoor : MonoBehaviour
     [SerializeField] private bool isReverse;
     
     Rigidbody2D rb;
+
+    private MonsterSpawner preMonsterSpawner;
+    private MonsterSpawner monsterSpawner;
+    
+    
     public void SetIsReverse(bool isReverse) => this.isReverse = isReverse;
     
     private void Start()
     {
+        preMonsterSpawner = GetComponentInParent<MonsterSpawner>();
+        monsterSpawner = room.GetComponent<MonsterSpawner>();
         StartCoroutine(RoomFindCoroutine());
     }
 
@@ -163,27 +170,30 @@ public class DungeonDoor : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         rb.isKinematic = false;
+        
+        preMonsterSpawner.MonsterActiver();
+        monsterSpawner.MonsterActiver();
     }
     
     private Vector3 GetRandomFloorPosition(Room targetRoom)
     {
-        Tilemap floorTilemap = targetRoom.transform.GetChild(0).GetComponent<Tilemap>(); // 방의 바닥 타일맵
+        Tilemap roadTilemap = targetRoom.transform.GetChild(2).GetComponent<Tilemap>(); // 방의 로드 타일맵
         Tilemap wallTilemap  = targetRoom.transform.GetChild(1).GetComponent<Tilemap>(); // 벽 타일맵
 
         List<Vector3> floorPositions = new List<Vector3>();
 
-        BoundsInt bounds = floorTilemap.cellBounds;
+        BoundsInt bounds = roadTilemap.cellBounds;
 
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
             // 바닥 타일이어야 하고
-            if (!floorTilemap.HasTile(pos)) continue;
+            if (!roadTilemap.HasTile(pos)) continue;
         
             // 벽이 아니어야 함
             if (wallTilemap.HasTile(pos)) continue;
 
             // Cell → World 변환
-            Vector3 worldPos = floorTilemap.CellToWorld(pos) + floorTilemap.cellSize / 2f;
+            Vector3 worldPos = roadTilemap.CellToWorld(pos) + roadTilemap.cellSize / 2f;
             floorPositions.Add(worldPos);
         }
 
