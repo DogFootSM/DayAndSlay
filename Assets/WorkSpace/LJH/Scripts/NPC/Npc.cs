@@ -113,7 +113,6 @@ public class Npc : MonoBehaviour
         StateMachine.ChangeState(new NpcDecisionState(this));
         npcCol = GetComponent<Collider2D>();
         playerCol = player.GetComponent<Collider2D>();
-        wantItemName = wantItem.Name;
     }
     
     /// <summary>
@@ -155,6 +154,7 @@ public class Npc : MonoBehaviour
         
         wantItemList = SelectItemListByCleared();
         wantItem = wantItemList[Random.Range(0, wantItemList.Count)];
+        wantItemName = wantItem.Name;
     }
 
     private List<ItemData> SelectItemListByCleared()
