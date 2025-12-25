@@ -44,6 +44,7 @@ public class PlayerRoot : MonoBehaviour
     {
         CoolDownUIHub.CoolDownImageMap.Clear();
         CoolDownUIHub.BuffCoolDownMap.Clear();
+        QuickSlotWaitUseUI.QuickSlotWaitUses.Clear();
     }
 
     /// <summary>

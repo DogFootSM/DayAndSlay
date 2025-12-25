@@ -77,14 +77,29 @@ public class InventoryInteraction :
         if (selectedSlot.IsEquip)
         {
             soundManager.PlaySfx(SFXSound.ITEM_UNEQUIP);
-            equipment.UnEquipItem(selectedSlot.CurSlotItem.Parts);
+             
+            bool isCoolDown = equipment.UnEquipItem(selectedSlot.CurSlotItem.Parts);
+
+            //스킬 쿨다운 진행중인 경우 장비 해제 불가
+            if (!isCoolDown)
+            {
+                return;
+            }
+            
             selectedSlot.IsEquip = false;
             UpdateEquipButton();
         }
         else
         { 
             soundManager.PlaySfx(SFXSound.ITEM_EQUIP);
-            equipment.EquipItem(selectedSlot.CurSlotItem);
+            bool isCoolDown = equipment.EquipItem(selectedSlot.CurSlotItem);
+
+            //스킬 쿨다운 진행중인 경우 장비 장착 불가
+            if (!isCoolDown)
+            {
+                return;
+            }
+            
             UpdateEquipState(selectedSlot); 
             UpdateEquipButton();
         }

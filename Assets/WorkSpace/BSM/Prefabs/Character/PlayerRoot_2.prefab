@@ -3591,6 +3591,7 @@ MonoBehaviour:
   WeaponObject: {fileID: 7943323651222186599, guid: 42fb0a3f878cd754d9c5fa7b3e14664b, type: 3}
   DashObject: {fileID: 2530861780919985470, guid: 1862093234c1c884683fd8ccbcdde25c, type: 3}
   buffIconController: {fileID: 119768229439246489}
+  UseVelocity: 0
 --- !u!114 &2893675817127048312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3804,6 +3805,7 @@ MonoBehaviour:
   playerModel: {fileID: 2893675817127048312}
   playerController: {fileID: 2893675817127048313}
   equipmentUI: {fileID: 5074451969411790648}
+  toastMessage: {fileID: 7074677428004950228}
 --- !u!114 &543757550708911548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12920,6 +12922,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -147.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6505650992069934789, guid: e718b94b458f6b3439f3b119f19ae12c, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6659375125444175597, guid: e718b94b458f6b3439f3b119f19ae12c, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -13329,5 +13335,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7074677428004950228 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2612754693970679738, guid: e718b94b458f6b3439f3b119f19ae12c, type: 3}
+  m_PrefabInstance: {fileID: 5074451969233307502}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190553421a2a0b94da3c9e727b71309b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
