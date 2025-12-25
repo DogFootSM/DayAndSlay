@@ -295,6 +295,7 @@ public class GameManager : MonoBehaviour
     public void GotoMainMenu()
     {
         SaveConfig(); 
+        dataManager.SaveQuickSlotSetting();
         sqlManager.ConnectionDispose();
         soundManager.PlayBGM(BGMSound.START_SCENE_BGM);
         SceneManager.LoadScene(mainMenuScene.Name); 
