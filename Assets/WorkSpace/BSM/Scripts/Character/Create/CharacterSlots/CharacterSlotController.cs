@@ -1,0 +1,76 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+using Zenject;
+
+public class CharacterSlotController : MonoBehaviour
+{
+    [Inject] private SqlManager sqlManager;
+    [Inject] private DataManager dataManager;
+    [SerializeField] private List<CharacterSlot> characterSlots;
+    [SerializeField] private Button cancelButton;
+    [SerializeField] private Button confirmButton;
+    [SerializeField] private SceneReference inGameScene;
+    [SerializeField] private CanvasManager canvasManager;
+    [SerializeField] private GameObject DeleteAlert;
+    [SerializeField] private int DeleteSlotId;
+    
+    private SoundManager soundManager => SoundManager.Instance;
+    
+    protected void Awake()
+    {
+        for (int i = 0; i < transform.childCount - 1; i++)
+        {
+            characterSlots[i].slotId = i + 1;
+        }
+
+        cancelButton.onClick.AddListener(() =>
+        {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+            DeleteAlert.SetActive(false);
+        });
+        confirmButton.onClick.AddListener(() =>
+        {
+            soundManager.PlaySfx(SFXSound.UI_BUTTON_CLICK);
+            DeleteSlotConfirm();
+        });
+    }
+
+    /// <summary>
+    /// 삭제 얼럿 활성화
+    /// </summary>
+    /// <param name="slotId">삭제할 데이터 슬롯 id</param>
+    public void DeleteSlot(int slotId)
+    {
+        DeleteSlotId = slotId;
+        DeleteAlert.SetActive(true);
+    }
+
+    /// <summary>
+    /// 슬롯 삭제 완료
+    /// </summary>
+    private void DeleteSlotConfirm()
+    {
+        DeleteAlert.SetActive(false);
+        
+        //해당 Slot_id 컬럼 삭제
+        sqlManager.DeleteDataColumn(sqlManager.GetCharacterColumn(CharacterDataColumns.SLOT_ID),
+            $"{DeleteSlotId}");
+
+        characterSlots[DeleteSlotId - 1].IsCreatedCharacter();
+        dataManager.DeleteQuickSlotSetting(DeleteSlotId);
+    }
+
+    /// <summary>
+    /// 슬롯 선택 시 게임 씬 이동
+    /// </summary>
+    public void LoadInGameScene()
+    {
+        canvasManager.OnActiveLoadingCanvas(inGameScene); 
+    }
+}

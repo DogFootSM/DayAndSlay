@@ -1,0 +1,107 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
+using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
+using Zenject;
+
+public class MapManager : MonoBehaviour
+{
+    [SerializedDictionary("MapType", "MapSize")] [SerializeField]
+    private SerializedDictionary<MapType, List<Vector2>> mapLimitSizeDict = new SerializedDictionary<MapType, List<Vector2>>();
+
+    [SerializedDictionary("MapType", "MapSize")] [SerializeField]
+    private SerializedDictionary<MapType, Tilemap> tileMapsDict = new SerializedDictionary<MapType, Tilemap>();
+
+    public FollowCamera FollowCamera;
+
+    private MapType curMapType;
+
+    Camera camera;
+
+    public List<Vector2> GetMapBoundary()
+    {
+        return mapLimitSizeDict.GetValueOrDefault(curMapType);
+    }
+
+    /// <summary>
+    /// 씬 이동 시 타입 변경
+    /// </summary>
+    /// <param name="mapType"></param>
+    public void MapChange(MapType mapType)
+    {
+        curMapType = mapType;
+        FollowCamera?.OnMapChanged?.Invoke();
+    }
+
+    public void TileMapDictInit(List<Tilemap> tileMaps)
+    {
+        tileMapsDict[MapType.DUNGEON_0] = tileMaps[0];
+        tileMapsDict[MapType.DUNGEON_1] = tileMaps[1];
+        tileMapsDict[MapType.DUNGEON_2] = tileMaps[2];
+        tileMapsDict[MapType.DUNGEON_3] = tileMaps[3];
+        tileMapsDict[MapType.DUNGEON_4] = tileMaps[4];
+        tileMapsDict[MapType.DUNGEON_BOSS] = tileMaps[5];
+
+    }
+
+    public void MapDictInit()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Bounds bounds = tileMapsDict[(MapType)i + 3].localBounds;
+            
+            Vector3 value = Vector3.zero;
+
+            int xOffset = 54;
+            int yOffset = -60;
+            
+            if ((MapType)i + 3 == MapType.DUNGEON_0)
+            {
+                value = new Vector3(0, 0, 0);
+            }
+           
+            if ((MapType)i + 3 == MapType.DUNGEON_1)
+            {
+                value = new Vector3(xOffset, 0, 0);
+            }
+           
+            if ((MapType)i + 3 == MapType.DUNGEON_2)
+            {
+                value = new Vector3(xOffset * 2, 0, 0);
+            }
+           
+            if ((MapType)i + 3 == MapType.DUNGEON_3)
+            {
+                value = new Vector3(0, yOffset, 0);
+            }
+           
+            if ((MapType)i + 3 == MapType.DUNGEON_4)
+            {
+                value = new Vector3(xOffset, yOffset, 0);
+            }
+           
+            if ((MapType)i + 3 == MapType.DUNGEON_BOSS)
+            {
+                value = new Vector3(xOffset * 2, yOffset, 0);
+            }
+
+            camera = Camera.main;
+
+            float halfHeight = camera.orthographicSize;
+            float halfWidth  = camera.orthographicSize * camera.aspect;
+
+            Vector2 bottomLeft = bounds.min + new Vector3(halfWidth, halfHeight, 0) + value;
+            Vector2 topRight = bounds.max - new Vector3(halfWidth, halfHeight, 0) + value;
+            
+
+            List<Vector2> mapBoundary = new List<Vector2>();
+            mapBoundary.Add(bottomLeft);
+            mapBoundary.Add(topRight);
+            mapLimitSizeDict[(MapType)i + 3] = mapBoundary;
+        }
+
+    }
+}

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b47c56a880b1794eba4a2fb48f18638, type: 3}
+  m_Name: SPAS009
+  m_EditorClassIdentifier: 
+  SkillId: SPAS009
+  SkillName: "\uD0DC\uC0B0\uACFC \uAC19\uC740 \uC704\uC5C4"
+  PrerequisiteSkillsId:
+  - SPAS007
+  SkillDescription: "\uADFC\uC5C4\uD55C \uC704\uC5C4\uC744 \uB0B4\uBFDC\uC5B4 \uC8FC\uBCC0
+    \uC801\uC5D0\uAC8C \uC704\uC555\uAC10\uC744 \uC918 \uC9C0\uC18D\uC801\uC778 \uD53C\uD574\uB97C
+    \uC785\uD78C\uB2E4."
+  SkillEffectPrefab:
+  - {fileID: 5368356366596985258, guid: 18ff541678fa26c42b3b20775db15d41, type: 3}
+  - {fileID: 7995281757959348332, guid: 0f07ce9c1ffd1534a90146e4495dde1f, type: 3}
+  SkillCooldown: 18
+  SkillMaxLevel: 6
+  SkillDamage: 0.3
+  SkillDamageIncreaseRate: 0.2
+  SkillIcon: {fileID: 21300000, guid: e3bc9734569f440479fe00b0fcabdc2e, type: 2}
+  RequiredWeapon: 2
+  UseSkillDelay: 0
+  IsActive: 1
+  UseSkillDelayDecreaseRate: 0
+  SkillRange: 0
+  SkillRadiusRange: 4
+  SkillHitCount: 5
+  SkillCastingTime: 0
+  BuffDuration: 10
+  DeBuffDuration: 0
+  SkillAbilityValue: 0
+  SkillAbilityFactor: 0
+  DetectedCount: 3

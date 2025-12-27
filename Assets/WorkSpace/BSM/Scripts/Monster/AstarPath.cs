@@ -1,0 +1,299 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class Node
+{
+    public Node parentNode;
+    public Vector2Int curPosition;
+
+    //출발 노드 -> 현재 노드까지의 거리
+    public int gCost;
+
+    //현재 노드 -> 목표 노드까지 거리
+    public int hCost;
+
+    public int fCost => gCost + hCost;
+}
+
+public class AstarPath : MonoBehaviour
+{
+    [SerializeField] private Tilemap mapTileMap;
+    [SerializeField] private Tilemap obstacleTileMap;
+    [SerializeField] private Tilemap roadTileMap;
+    public Grid mapGrid;
+
+    private Vector2Int[] neighborsDirections = new Vector2Int[]
+    {
+        Vector2Int.left,
+        Vector2Int.right,
+        Vector2Int.up,
+        Vector2Int.down,
+    };
+
+    private Monster monster;
+
+    private Dictionary<Vector2Int, Node> neighborsDict = new Dictionary<Vector2Int, Node>();
+    private List<Node> openList = new List<Node>();
+    private List<Node> closedList = new List<Node>();
+    public List<Vector3> path = new List<Vector3>();
+
+    private Node startNode;
+    private Node currentNode;
+
+    private Vector2Int startPos;
+    private Vector2Int targetPos;
+
+    private void Awake()
+    {
+        startNode = new Node();
+        currentNode = new Node();
+        StartCoroutine(MonsterSpawnWaitCoroutine());
+    }
+
+    private IEnumerator MonsterSpawnWaitCoroutine()
+    {
+        yield return new WaitUntil(() => mapGrid != null);
+
+        monster = GetComponentInParent<Monster>();
+
+        //현재 몬스터의 스폰 위치
+        startPos = (Vector2Int)mapGrid.WorldToCell(transform.position);
+
+        //이재호가 수정 해당 코드를 앞으로 땡겨서 null 방지
+        //startNode = new Node();
+        //currentNode = new Node();
+    }
+
+    /// <summary>
+    /// Player 감지 시마다 시작 위치, 목표 위치 설정
+    /// </summary>
+    /// <param name="startPos">몬스터 현재 위치</param>
+    /// <param name="targetPos">이동 목표 위치</param>
+    public void DetectTarget(Vector2 startPos, Vector2 targetPos)
+    {
+        this.startPos = (Vector2Int)mapGrid.WorldToCell(startPos);
+        this.targetPos = (Vector2Int)mapGrid.WorldToCell(targetPos);
+
+        FindPath(this.startPos, this.targetPos);
+    }
+
+    /// <summary>
+    /// 현재 노드가 로드 타일맵의 가장자리 줄(1번 또는 4번)인지 확인
+    /// </summary>
+    private bool IsRoadEdge(Vector2Int pos)
+    {
+        // 현재 위치가 로드 타일맵 위에 없으면 가장자리가 아님 (예: 잔디)
+        if (!roadTileMap.HasTile((Vector3Int)pos)) return false;
+
+        // 주변 4방향(상하좌우)을 검사합니다.
+        foreach (Vector2Int dir in neighborsDirections)
+        {
+            Vector2Int neighborPos = pos + dir;
+
+            // 인접한 위치가 (맵 경계 밖이거나 또는) 로드 타일이 아니라면,
+            // 현재 위치는 로드 타일의 '가장자리'에 해당합니다.
+            // * 참고: 경계 밖인지 체크하는 IsWalkable과 로직이 겹치지만, 여기서는 로드 타일맵 기준으로만 간단히 검사합니다.
+            if (!roadTileMap.HasTile((Vector3Int)neighborPos))
+            {
+                return true;
+            }
+        }
+
+        // 주변 4방향이 모두 로드 타일이면 가장자리가 아님 (중앙 2번/3번 줄)
+        return false;
+    }
+
+    /// <summary>
+    /// 경로 탐색
+    /// </summary>
+    private void FindPath(Vector2Int startPos, Vector2Int targetPos)
+    {
+        openList.Clear();
+        closedList.Clear();
+        neighborsDict.Clear();
+
+        //시작 노드 초기화
+        startNode.curPosition = startPos;
+        startNode.gCost = 0;
+        startNode.hCost = Heuristic(startPos, targetPos);
+
+        openList.Add(startNode);
+        while (openList.Count > 0)
+        {
+            currentNode = openList[0];
+
+            for (int i = 0; i < openList.Count; i++)
+            {
+                if (openList[i].fCost < currentNode.fCost ||
+                    openList[i].fCost == currentNode.fCost && openList[i].hCost < currentNode.hCost)
+                {
+                    currentNode = openList[i];
+                }
+            }
+
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
+
+            //현재 노드의 위치가 타겟 위치일 경우 경로 추적 종료
+            if (currentNode.curPosition == targetPos)
+            {
+                //경로 검색 완료
+                Trace();
+                return;
+            }
+
+            foreach (Node neighbors in GetNeighbors(currentNode))
+            {
+                if (closedList.Contains(neighbors)) continue;
+
+                // 1. 기본 이동 비용 설정 (현재 10)
+                int moveCost = 10;
+
+                // 2. 현재 노드가 로드 가장자리(1번 또는 4번 줄)인지 확인하고 페널티 부여
+                if (IsRoadEdge(currentNode.curPosition))
+                {
+                    // 로드 중앙(2번/3번)을 지나가는 비용(10)보다 훨씬 높게 설정합니다.
+                    moveCost += 100; // 페널티: 10 + 100 = 110
+                    // (충분히 큰 값을 줘야 A*가 중앙을 선호하게 됩니다. 50~100 정도를 시도해보세요.)
+                }
+
+                // gCost 계산: 출발지부터 현재 노드까지의 비용 + 다음 노드로 이동할 moveCost
+                int gCost = currentNode.gCost + moveCost;
+
+                if (gCost < neighbors.gCost || !openList.Contains(neighbors))
+                {
+                    neighbors.gCost = gCost;
+                    neighbors.hCost = Heuristic(neighbors.curPosition, targetPos);
+                    neighbors.parentNode = currentNode;
+
+                    if (!openList.Contains(neighbors))
+                    {
+                        openList.Add(neighbors);
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 이웃 노드 반환
+    /// </summary>
+    /// <param name="node">현재 노드</param>
+    /// <returns></returns>
+    private List<Node> GetNeighbors(Node node)
+    {
+        List<Node> neighbors = new List<Node>();
+
+        foreach (Vector2Int neighborPos in neighborsDirections)
+        {
+            //현재 노드의 주변 노드 위치 값
+            Vector2Int nextPos = node.curPosition + neighborPos;
+
+            if (!IsWalkable(nextPos)) continue;
+
+            Node neighborNode = GetNextNode(nextPos);
+            neighbors.Add(neighborNode);
+        }
+
+        return neighbors;
+    }
+
+    /// <summary>
+    /// 이웃 노드 객체 반환
+    /// </summary>
+    /// <param name="nodePos"></param>
+    /// <returns></returns>
+    private Node GetNextNode(Vector2Int nodePos)
+    {
+        if (!neighborsDict.ContainsKey(nodePos))
+        {
+            Node node = new Node();
+            neighborsDict[nodePos] = node;
+        }
+
+        neighborsDict[nodePos].curPosition = nodePos;
+        return neighborsDict[nodePos];
+    }
+
+    /// <summary>
+    /// 이동 가능 경로 확인
+    /// </summary>
+    /// <param name="nextPos">이동할 다음 위치</param>
+    /// <returns></returns>
+    public bool IsWalkable(Vector2Int nextPos)
+    {
+        Vector3Int cellPos = (Vector3Int)nextPos;
+
+        //맵의 범위를 넘어서지 않는지?
+        if (!mapTileMap.cellBounds.Contains(cellPos)) return false;
+
+        //장애물 위치인지?
+        if (obstacleTileMap.HasTile(cellPos)) return false;
+
+        //길인지?
+        if (!roadTileMap.HasTile(cellPos)) return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// 캐릭터 추적
+    /// </summary>
+    private void Trace()
+    {
+        path.Clear();
+
+        Node curNode = currentNode;
+
+        while (curNode != null)
+        {
+            Vector3 worldPos = mapTileMap.CellToWorld((Vector3Int)curNode.curPosition);
+            path.Add(worldPos + new Vector3(0.5f, 0.5f, 0));
+            curNode = curNode.parentNode;
+        }
+
+        path.Reverse();
+
+        //for (int i = 0; i < path.Count - 1; i++)
+        //{
+        //    Debug.Log($"경로 :path{i} 위치 {path[i]} / 타겟 위치 :{targetPos}");
+        //    Debug.DrawLine(path[i], path[i + 1], Color.red, 1f);
+        //}
+    }
+
+    /// <summary>
+    /// 거리 계산, 가로, 세로 이동
+    /// </summary>
+    /// <param name="x1">몬스터 좌표</param>
+    /// <param name="x2">캐릭터 좌표</param>
+    /// <returns></returns>
+    private int Heuristic(Vector2Int x1, Vector2Int x2)
+    {
+        return (Mathf.Abs(x1.x - x2.x) + Mathf.Abs(x1.y - x2.y)) * 10;
+    }
+
+    /// <summary>
+    /// 이재호가 추가한 코드
+    /// 타일맵 참조시켜주는 함수
+    /// </summary>
+    public void TileMapReference()
+    {
+        Room room = mapGrid.GetComponent<Room>();
+        mapTileMap = room.mapTilemap;
+        obstacleTileMap = room.obstacleTilemap;
+    }
+
+    /// <summary>
+    /// Change grid & tilemap for Npc by LJH
+    /// </summary>
+    /// <param name="grid"></param>
+    public void SetGridAndTilemap(Grid grid)
+    {
+        mapTileMap = grid.transform.GetChild(0).GetComponent<Tilemap>();
+        obstacleTileMap = grid.transform.GetChild(1).GetComponent<Tilemap>();
+        roadTileMap = grid.transform.GetChild(2).GetComponent<Tilemap>();
+        this.mapGrid = grid;
+    }
+}

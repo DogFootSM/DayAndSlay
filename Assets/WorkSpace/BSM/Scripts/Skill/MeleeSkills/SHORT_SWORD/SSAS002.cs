@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class SSAS002 : MeleeSkill
+{
+    private Vector2 hitPos;
+  
+    public SSAS002(SkillNode skillNode) : base(skillNode)
+    {
+        leftDeg = 90f; 
+        rightDeg = 270f;
+        downDeg = 180f;
+        upDeg = 0f;
+        
+        leftHash = Animator.StringToHash("SkillMotion_Left_2");
+        rightHash = Animator.StringToHash("SkillMotion_Right_2");
+        upHash = Animator.StringToHash("SkillMotion_Up_2");
+        downHash = Animator.StringToHash("SkillMotion_Down_2");
+    }
+
+    public override void UseSkill(Vector2 direction, Vector2 playerPosition)
+    { 
+        ListClear();
+        SetOverlapSize(skillNode.skillData.SkillRadiusRange);
+        skillDamage = GetSkillDamage();
+        
+        //타격 위치 및 이펙트 재생 위치
+        hitPos = playerPosition + (direction * (skillNode.skillData.SkillRadiusRange / 2));
+        
+        //이펙트 재생
+        SoundManager.Instance.PlaySfx(SFXSound.SSAS002);
+        SkillEffect(hitPos, 0, $"{skillNode.skillData.SkillId}_1_Particle", skillNode.skillData.SkillEffectPrefab[0]);
+        
+        //바라보는 방향에 따른 이펙트 회전
+        SetParticleStartRotationFromDeg(0, direction, leftDeg, rightDeg, downDeg, upDeg);
+
+        if (direction.x < 0 || direction.y < 0)
+        {
+            particleSystemRenderer.flip = new Vector3(1f, 0, 0);
+        }
+        else
+        {
+            particleSystemRenderer.flip = new Vector3(0, 0, 0);
+        }
+        
+        
+        //이동 속도 증가 버프
+        float speedBuffFactor = skillNode.skillData.SkillAbilityValue + ((skillNode.CurSkillLevel - 1) * skillNode.skillData.SkillAbilityFactor);
+        ExecuteMoveSpeedBuff(skillNode.skillData.BuffDuration, speedBuffFactor, BuffType.SOWRD_MOVESPEED);
+        
+        Collider2D[] detectedMonster = Physics2D.OverlapBoxAll(hitPos, overlapSize, 0f, monsterLayer);
+        Sort.SortMonstersByNearest(detectedMonster, playerPosition);
+        
+        if (detectedMonster.Length > 0)
+        {
+            int detectedCount = skillNode.skillData.DetectedCount <= detectedMonster.Length ? skillNode.skillData.DetectedCount : detectedMonster.Length;
+            
+            skillActions.Add(new List<Action>());
+ 
+            for (int i = 0; i < detectedCount; i++)
+            {
+                IEffectReceiver monsterReceiver = detectedMonster[i].GetComponent<IEffectReceiver>();
+                skillActions[0].Add(() => Hit(monsterReceiver, skillDamage, skillNode.skillData.SkillHitCount));
+                triggerModules[0].AddCollider(detectedMonster[i]);
+            }
+            
+            skillActions[0].Add(() => RemoveTriggerModuleList()); 
+            interactions[0].ReceiveAction(skillActions[0]);
+        } 
+    }
+
+    public override void ApplyPassiveEffects(CharacterWeaponType weaponType) {}
+  
+    public override void Gizmos()
+    {
+        UnityEngine.Gizmos.color = Color.blue;
+
+        UnityEngine.Gizmos.DrawWireCube(hitPos, overlapSize);
+    }
+}

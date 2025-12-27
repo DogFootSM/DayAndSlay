@@ -1,0 +1,142 @@
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using UnityEngine;
+ 
+public abstract class ProjectileSkill : SkillFactory
+{
+    private SkillParticlePooling skillParticlePool => SkillParticlePooling.Instance;
+    
+    protected List<List<Action>> actions = new List<List<Action>>();
+    protected List<ParticleInteraction> surroundInteraction = new List<ParticleInteraction>();
+    protected List<ParticleSystemRenderer> particleSystemRenderer = new List<ParticleSystemRenderer>();
+    protected ParticleSystem surroundParticleSystem;
+    protected GameObject surroundEffectInstance;
+    
+    protected float skillDamage;
+    
+    public ProjectileSkill(SkillNode skillNode) : base(skillNode)
+    {
+    }
+
+    /// <summary>
+    /// 스킬 사용 시 주변에 재생될 이펙트
+    /// </summary>
+    /// <param name="position">이펙트의 위치</param>
+    /// <param name="effectPrefab">재생할 이펙트 오브젝트</param>
+    /// <param name="effectId">풀에 반납할 이펙트 아이디</param>
+    protected void SingleEffect(Vector2 position, GameObject effectPrefab, string effectId, int index)
+    {
+        //파티클 풀에서 파티클 오브젝트 꺼내옴
+        surroundEffectInstance = skillParticlePool.GetSkillPool(effectId, effectPrefab);
+        surroundEffectInstance.transform.position = position;
+        surroundEffectInstance.transform.parent = null;
+        surroundEffectInstance.SetActive(true);
+        
+        //파티클 재생
+        surroundParticleSystem = surroundEffectInstance.GetComponent<ParticleSystem>();
+        surroundParticleSystem.Play();
+        
+        //풀에 반납할 파티클 아이디 설정
+        surroundInteraction.Add(surroundEffectInstance.GetComponent<ParticleInteraction>());
+        surroundInteraction[index].EffectId = effectId; 
+        
+        //파티클 렌더러 모드
+        particleSystemRenderer.Add(surroundEffectInstance.GetComponent<ParticleSystemRenderer>());
+    }
+    
+    /// <summary>
+    /// 주변에 생성될 이펙트 로테이션 설정
+    /// </summary>
+    /// <param name="direction">스킬을 사용한 방향</param>
+    /// <param name="leftDeg">왼쪽 방향으로 사용 시 설정할 각도</param>
+    /// <param name="rightDeg">오른쪽 방향으로 사용 시 설정할 각도</param>
+    /// <param name="upDeg">위쪽 방향으로 사용 시 설정할 각도</param>
+    /// <param name="downDeg">아래쪽 방향으로 사용 시 설정할 각도</param>
+    protected void SetSurroundPrefabLocalRotation(Vector2 direction, float leftDeg, float rightDeg, float upDeg, float downDeg)
+    {
+        if(direction.x > 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, rightDeg);
+        if(direction.x < 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, leftDeg);
+        if(direction.y > 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, upDeg);
+        if(direction.y < 0) surroundEffectInstance.transform.localRotation = Quaternion.Euler(0, 0, downDeg); 
+    }
+
+    /// <summary>
+    /// 해당 스킬의 레벨에 따른 데미지 설정
+    /// </summary>
+    /// <param name="skillDamage">Skill Data가 가지고 있는 스킬 데미지</param>
+    protected void SetSkillDamage(float skillDamage)
+    {
+        this.skillDamage = skillNode.PlayerModel.PlayerStats.SkillAttack * (skillDamage + (skillDamage * skillNode.skillData.SkillDamageIncreaseRate * skillNode.CurSkillLevel));
+    }
+
+    /// <summary>
+    /// 감지할 OverlapSize 설정
+    /// </summary>
+    /// <param name="direction">바라보고 있는 방향</param>
+    /// <param name="length">현재 스킬의 길이</param>
+    protected void SetOverlapSize(Vector2 direction, float length)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            overlapSize = new Vector2(length, 1f);
+        }
+        else
+        {
+            overlapSize = new Vector2(1f, length);
+        } 
+    }
+    
+    /// <summary>
+    /// 캐스팅 로직 호출
+    /// </summary>
+    /// <param name="castingTime">스킬 사용에 걸리는 시간</param>
+    protected void ExecuteCasting(float castingTime)
+    {
+        float finalCastingTime = castingTime - skillNode.PlayerModel.CastingTimeReduction;
+        
+        // 캐스팅 시간이 0보다 작아지지 않도록 최소값 설정
+        finalCastingTime = Mathf.Max(0, finalCastingTime);
+        
+        skillNode.PlayerSkillReceiver.ReceiveCasting(finalCastingTime);
+    }
+    
+    /// <summary>
+    /// 몬스터에게 데미지 전달
+    /// </summary>
+    /// <param name="monster">감지한 몬스터</param>
+    /// <param name="damage">스킬 데미지</param>
+    /// <param name="hitCount">몬스터 타격 횟수</param>
+    protected void Hit(IEffectReceiver receiver, int hitCount, float damage)
+    {
+        skillNode.PlayerSkillReceiver.StartCoroutine(HitCoroutine(receiver, damage, hitCount));
+    }
+
+    /// <summary>
+    /// 일정 시간만큼 지연 후 몬스터 Hit
+    /// </summary>
+    /// <param name="monster"></param>
+    /// <param name="damage"></param>
+    /// <param name="hitCount"></param>
+    /// <returns></returns>
+    private IEnumerator HitCoroutine(IEffectReceiver monster, float damage, int hitCount)
+    {
+        for (int i = 0; i < hitCount; i++)
+        {
+            monster.TakeDamage(damage);
+            yield return WaitCache.GetWait(0.15f);
+        }
+    }
+    
+    /// <summary>
+    /// 캐스팅 이후 수행할 동작 코루틴
+    /// </summary>
+    /// <param name="action">캐스팅 완료 후 수행할 함수</param>
+    /// <returns></returns>
+    protected IEnumerator WaitCastRoutine(Action action)
+    {
+        yield return new WaitUntil(() => !skillNode.PlayerModel.IsCasting);
+        action?.Invoke();
+    }
+    
+}

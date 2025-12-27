@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b47c56a880b1794eba4a2fb48f18638, type: 3}
+  m_Name: SSAS009
+  m_EditorClassIdentifier: 
+  SkillId: SSAS009
+  SkillName: "\uB2EC\uC758 \uBA54\uC544\uB9AC"
+  PrerequisiteSkillsId:
+  - SSAS006
+  SkillDescription: "\uC18C\uB9AC\uB97C \uC9C8\uB7EC \uB2EC\uC758 \uAE30\uC6B4\uC774
+    \uC8FC\uBCC0\uC744 \uBA54\uC544\uB9AC \uCE5C\uB2E4. \uC8FC\uBCC0 \uC801\uC740
+    \uAE30\uC808\uD558\uBA70 \uD53C\uD574\uB97C \uC785\uB294\uB2E4."
+  SkillEffectPrefab:
+  - {fileID: 2568013567545476908, guid: 30903522d58ab2e4da3acf6af3a0d470, type: 3}
+  SkillCooldown: 30
+  SkillMaxLevel: 6
+  SkillDamage: 1.9
+  SkillDamageIncreaseRate: 0.2
+  SkillIcon: {fileID: 21300000, guid: c2e0b85f8172267459e1348704baf343, type: 2}
+  RequiredWeapon: 1
+  UseSkillDelay: 0.7
+  IsActive: 1
+  UseSkillDelayDecreaseRate: 0.3
+  SkillRange: 0
+  SkillRadiusRange: 3
+  SkillHitCount: 1
+  SkillCastingTime: 0
+  BuffDuration: 0
+  DeBuffDuration: 3
+  SkillAbilityValue: 0
+  SkillAbilityFactor: 0.03
+  DetectedCount: 8

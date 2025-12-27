@@ -1,0 +1,92 @@
+using AYellowpaper.SerializedCollections;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class MapLoader : MonoBehaviour
+{
+    [SerializeField] private Tilemap wallTilemap;
+    [SerializeField] private Tilemap mapTilemap;
+    [SerializeField] private Tilemap objectTilemap;
+    [SerializeField] private Tilemap waterTilemap;
+
+    [SerializeField] private RuleTile wallTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private List<Tile> floorTileList; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private RuleTile objectTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+    [SerializeField] private RuleTile waterTile; // index 0=벽, 1=바닥, 2=오브젝트 3=물
+
+    private DictList<List<Tile>> tileDictList = new DictList<List<Tile>>();
+    [SerializeField] private List<string> csvFileNames_stage1;
+    [SerializeField] private List<string> csvFileNames_stage2;
+    [SerializeField] private List<string> csvFileNames_stage3;
+    void Start()
+    {
+        TileDictMaker();
+        
+        switch (IngameManager.instance.GetStage())
+        {
+            
+            case StageNum.STAGE1:
+                LoadMap(csvFileNames_stage1[Random.Range(0, csvFileNames_stage1.Count)]);
+                break;
+            case StageNum.STAGE2:
+                LoadMap(csvFileNames_stage2[Random.Range(0, csvFileNames_stage2.Count)]);
+                break;
+            case StageNum.STAGE3:
+                LoadMap(csvFileNames_stage3[Random.Range(0, csvFileNames_stage3.Count)]);
+                break;
+        }
+    }
+
+    void LoadMap(string fileName)
+    {
+        TextAsset mapData = Resources.Load<TextAsset>(fileName);
+        string[] lines = mapData.text.Split('\n');
+
+        for (int y = 0; y < lines.Length; y++)
+        {
+            string[] row = lines[y].Trim().Split(',');
+
+            for (int x = 0; x < row.Length; x++)
+            {
+                string cell = row[x].Trim();
+                if (string.IsNullOrWhiteSpace(cell)) cell = "1"; // 빈칸은 바닥 처리
+
+                if (int.TryParse(cell, out int tileIndex) && tileIndex >= 0 && tileIndex < tileDictList.Count)
+                {
+                    Vector3Int pos = new Vector3Int(x - 20, -y + 20, 0); // y 뒤집는 건 유니티 기준
+
+                    switch (tileIndex)
+                    {
+                        case 0:
+                            wallTilemap.SetTile(pos, wallTile);
+                            break;
+                        case 1:
+                            mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
+                            break;
+                        case 2:
+                            mapTilemap.SetTile(pos, tileDictList[tileIndex][Random.Range(0, floorTileList.Count)]);
+                            wallTilemap.SetTile(pos, objectTile);
+                            break;
+                        case 3:
+                            wallTilemap.SetTile(pos, waterTile);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 타일 리스트에 들어있는 요소를 딕녀너리로 넣어줌
+    /// </summary>
+    void TileDictMaker()
+    {
+            tileDictList.Add($"wall", floorTileList);
+            tileDictList.Add($"floor", floorTileList);
+            tileDictList.Add($"object", floorTileList);
+            tileDictList.Add($"water", floorTileList);
+    }
+}
