@@ -18,4 +18,4 @@
 - 캐릭터를 성장 시키는 RPG + 상점 운영 게임
 
 # 3. 영상 및 기술서
-- Youtube : https://www.youtube.com/watch?v=IzX5wLx4hvM
+- Youtube : https://www.youtube.com/watch?v=GXATCjpVMts
